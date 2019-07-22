@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="productSQL">
+	<!-- 총글수 -->
+	<select id="getTotalA" parameterType="java.util.Map" resultType="Integer">
+  		select count(*) from ${tableName} 
+ 	</select>
+ 	<!-- 검색 : 총글수 -->
+ 	<select id="getTotalSearchA" parameterType="java.util.Map" resultType="Integer">
+ 		select count(*) from ${tableName}
+ 		inner join ${joinName}
+		on ${tableName}.product_name_no = ${joinName}.product_name_no			 
+ 		where ${searchOption} like '%'||#{keyword}||'%'
+ 	</select> 	
+ 	
+	<!-- 재고 리스트 가져오기 -->
+	<select id="inventoryList" parameterType="java.util.Map" resultType="product">
+			select * from 
+			(select rownum rn, tt.* from 
+			(select p.*,pn.product_name_instockdate from product p,product_name pn 
+			where p.product_name_no=pn.product_name_no 
+			order by p.product_name_no asc)
+			 tt) 
+			where (rn between #{startNum} and #{endNum}) 
+	</select>
+
+ 	<!--검색 : 재고 리스트-->
+ 	<select id="inventorySearch" parameterType="java.util.Map" resultType="product">
+		 		select * from 
+				(select rownum rn, tt.* from 
+				(select * from product
+				inner join product_name 
+				on product.product_name_no = product_name.product_name_no
+				where product.${searchOption} like '%'||#{keyword}||'%'
+				order by product.product_name_no asc) tt) 
+				where (rn between #{startNum} and #{endNum})
+ 	</select>
+ 
+ 	<!-- 재고 반영용 상품 정보 가져오기 -->
+ 	<select id="getProductInfo" parameterType="String" resultType="product">
+ 		select * from product where productid=#{productID}
+ 	</select>
+  	<!-- 재고 및 단가 반영 -->
+ 	<update id="doModify" parameterType="java.util.Map">
+ 	begin
+ 		update product set stock=#{stock},unitcost=#{unitcost} where productid=#{productID};
+ 		update product_name set product_name_instockdate=sysdate where product_name_no=#{product_name_no};
+ 	end;	
+ 	</update>	
+ 	<!-- 상품 리스트 가져오기 -->
+	<select id="productList" parameterType="java.util.Map" resultType="product">
+		 		select * from 
+				(select rownum rn, tt.* from 
+				(select * from product_name
+				inner join product
+				on product.product_name_no = product_name.product_name_no
+                inner join product_category
+                on product_name.product_category_no=product_category.product_category				
+				order by product_name.product_name_no asc) tt) 
+				where (rn between #{startNum} and #{endNum})
+	</select>
+
+ 	<!--검색 : 상품 리스트-->
+ 	<select id="productSearch" parameterType="java.util.Map" resultType="product">
+		 		select * from 
+				(select rownum rn, tt.* from 
+				(select * from product_name
+				inner join product
+				on product.product_name_no = product_name.product_name_no
+                inner join product_category
+                on product_name.product_category_no=product_category.product_category				
+				where ${searchOption} like '%'||#{keyword}||'%'
+				order by product.product_name_no asc) tt) 
+				where (rn between #{startNum} and #{endNum})
+ 	</select>	
+ 	<select id="getProduct_NameInfo" parameterType="String" resultType="product">
+ 		select * from product
+ 		inner join product_name
+ 		on product.product_name_no = product_name.product_name_no
+ 		inner join product_category
+ 		on product_name.product_category_no=product_category.product_category
+ 		where product.product_name_no=#{product_name_no} 		
+ 	</select>
+  	<!-- 상품 삭제-->	
+ 	<delete id="productDelete" parameterType="String">
+ 	 	begin
+		delete product_name where product_name_no = #{product_name_no};
+		delete product where product_name_no = #{product_name_no}	
+		end;
+	</delete>	
+
+	<!-- 등재 상품 목록:전부 가져오기(product_name)-->
+	<select id="getProductList" resultType="product">
+		select * from product 
+		inner join product_name
+ 		on product.product_name_no = product_name.product_name_no
+ 		inner join product_category
+ 		on product_name.product_category_no=product_category.product_category 			
+		where product_onstore='YES'
+	</select>
+	<!-- 사용자 총글수(ALL) -->
+	<select id="getTotalItemA" parameterType="java.util.Map" resultType="Integer">
+  		select count(*) from product
+ 		inner join product_name
+ 		on product.product_name_no = product_name.product_name_no
+ 		inner join product_category
+ 		on product_name.product_category_no=product_category.product_category 	 		
+ 	</select>
+	<!-- 사용자 총글수(Category) --> 	
+	<select id="getSelectedItemA" parameterType="java.util.Map" resultType="Integer">
+  		select count(*) from product
+  		inner join product_name
+ 		on product.product_name_no = product_name.product_name_no
+ 		inner join product_category
+ 		on product_name.product_category_no=product_category.product_category 	
+  		where product_category_no=#{product_category_no} and product_onstore='YES'
+ 	</select> 	
+ 	<select id="getAllList" parameterType="java.util.Map" resultType="product">
+		 		select * from 
+				(select rownum rn, tt.* from 
+				(select * from product_name inner join product
+				 on product.product_name_no = product_name.product_name_no
+                 inner join product_category
+                on product_name.product_category_no=product_category.product_category				
+				order by #{order})tt) 
+				where (rn between #{startNum} and #{endNum}) and product_onstore='YES' 	
+ 	</select>
+  	<select id="getSelectedList" parameterType="java.util.Map" resultType="product">
+ 		 		select * from 
+				(select rownum rn, tt.* from 
+				(select * from product
+				inner join product_name
+				on product.product_name_no = product_name.product_name_no
+                inner join product_category
+                on product_name.product_category_no=product_category.product_category				
+				order by #{order}) tt) 
+				where (rn between #{startNum} and #{endNum}) and product_onstore='YES' 
+				and product_category_no=#{product_category_no} 	
+ 	</select>	
+ 	<insert id="product_nameUpload" parameterType="product">
+ 	 insert into product_name values(product_seq.nextVal,
+ 	 								#{product_category_no},
+ 	 								#{product_name_title},
+ 	 								#{product_name_detail},
+ 	 								#{product_name_price},
+ 	 								#{product_name_instockdate},
+ 	 								#{product_name_image},
+ 	 								0,
+ 	 								0,
+ 	 								0,
+ 	 								#{product_onstore});
+ 	</insert>
+  	<insert id="productUpload" parameterType="product">
+ 	 insert into product values(#{productid}||product_seq.curVal,
+ 	 								#{unitcost},
+ 	 								#{product_name_title},
+ 	 								0,
+ 	 								#{promotioncode},
+ 	 								#{productname},
+ 	 								#{product_name_no})
+ 	</insert>	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

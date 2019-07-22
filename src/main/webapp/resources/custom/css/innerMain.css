@@ -1,0 +1,49 @@
+
+
+#goLogin{
+	cursor : Pointer;
+}
+
+#goSignUp{
+	cursor : Pointer;
+}
+
+#body{
+	width : 100%;
+	margin-right : auto;
+	margin-left : auto;
+}
+
+a.list-group-item:link{
+	color: #000080;
+}
+a.list-group-item:visited{
+	color: #000080;
+}
+a.list-group-item:hover{
+	color: #a4a4ff;
+}
+a.list-group-item:active{
+	color: #000080;
+}
+
+a.top {
+  font-size: 30px;
+  color: darkgray;  
+  z-index: 2147483647; 
+  position: -webkit-sticky;
+  position: sticky;
+  top: 550px;	
+  display: none;
+}
+a.top:link {color: darkgray; text-decoration: none;}
+a.top:visited {color: darkgray; text-decoration: none;}
+a.top:hover {color: #6a6a6a; text-decoration: underline; font-weight: bold;}
+a.top:active {color: #e6e6e6; text-decoration: none;}
+
+div#introduceImg{
+	width: 100%;
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center center;	
+}

@@ -1,0 +1,41 @@
+<image list>
+//women items : each download from https://unsplash.com/
+footer : Photo by Alexandru Zdrobau on Unsplash
+1. (LCWG0001.jpg) long coat women green(check) <- alexandru-zdrobau-200768-unsplash
+footer : Photo by Fezbot2000 on Unsplash
+2. (LPWG0000.jpg) long pola women gray <-fezbot2000-365718-unsplash
+footer : Photo by Frank Flores on Unsplash
+3.(CPWG0000.jpg) cotton pants women gray <-frank-flores-394933-unsplash
+//for detail show : each download from https://unsplash.com/
+footer : Photo by Melody Jacob on Unsplash
+1. (LDWR0002.jpg) long dress women red(title) <- melody-jacob-1400391-unsplash
+2. (LD_detail1.jpg) long dress women red(detail1) <-melody-jacob-1400392-unsplash
+3. (LD_detail2.jpg) long dress women red(detail2) <- melody-jacob-1400393-unsplash
+
+----------------end of women items
+//for detail show : each belongs to coloshop template properties
+1. (LSMM1002.jpg) long sleeves men mustard(title) 
+2. (LS_detail1.jpg) long sleeves men mustard(detail1) 
+3. (LS_detail2.jpg) long sleeves men mustard(detail2) 
+4. (LS_detail3.jpg) long sleeves men mustard(detail3) 
+//men items : each download from https://unsplash.com/
+footer : Photo by Mubariz Mehdizadeh on Unsplash
+1. (LSMB0000.jpg) long sleeve men black <- mubariz-mehdizadeh-380433-unsplash
+footer : Photo by Dami Adebayo on Unsplash
+2. (LJMB0000.jpg) leather jacket men brown <- dami-adebayo-208876-unsplash
+footer : Photo by KAL VISUALS on Unsplash
+3. (PJMB0000.jpg) pocket jean men black <- kal-visuals-1334809-unsplash
+--------------------end of men items
+//women item
+footer : Photo by Mohammad Metri on Unsplash
+1.(HSWF0000.jpg) highheeled show women flower-pattern <- mohammad-metri-1178191-unsplash
+//item-watch
+footer : Photo by Luke Chesser on Unsplash
+1. (AWMR1004.jpg) apple watch men regular <- luke-chesser-22238-unsplash
+//for detail item (skyblue sneaker)
+footer : Photo by Ngoc Thuan on Unsplash
+1. (CSXS0000jpg) converse sneaker unisex skyblue(title)  <-ngoc-thuan-1482908-unsplash 
+2. (CS_detail1.jpg) converse sneaker unisex skyblue(detail1) <- ngoc-thuan-1482914-unsplash
+3. (CS_detail2.jpg) converse sneaker unisex skyblue(detail2) <- ngoc-thuan-1482911-unsplash
+4. (CS_detail3.jpg) converse sneaker unisex skyblue(detail3) <- ngoc-thuan-1482910-unsplash
+------end of acc

@@ -1,0 +1,21 @@
+<background list>
+//main slide
+1. title_slide1 (property from coloshop template) -default
+2. title_slide2 (property from cozastore template)
+3. title_slide3 (property from cozastore template)
+//category banner
+1. category1 (property from coloshop template) -default
+2. category2 (property from coloshop template) -default
+3. category3 (property from coloshop template) -default
+4. category4 (property from cozastore template)
+5. category5 (property from cozastore template)
+6. category6 (property from cozastore template)
+//review/qna board banner
+1. board1 (property from coloshop template) -default
+2. board2 (property from coloshop template) -default
+3. board3 (property from coloshop template) -default
+//event banner
+1. event1 (property from coloshop template) -default
+2. event2 (property from cozastore template)
+3. event3 (property from cozastore template)
+4. event4 (property from cozastore template)
