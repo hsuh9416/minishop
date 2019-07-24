@@ -33,5 +33,7 @@ public interface MemberDAO {
 
 	void memberQASend(MessageDTO messageDTO);
 
+	void setNewPwd(MemberDTO memberDTO);
+
 
 } 

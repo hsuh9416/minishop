@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!-- Header -->
-
+<c:if test="${adminDTO == null}">
 	<header class="header trans_300">
 
 		<!-- Top Navigation : 최상단 고정 메뉴바 -->
@@ -114,3 +114,7 @@
 			</ul>
 		</div>
 	</div>
+</c:if>
+<c:if test="${adminDTO != null}">
+	<jsp:include page="/template/adminHeader.jsp"/>	
+</c:if>	

@@ -31,7 +31,7 @@ public class QAManageController {
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("pg",pg);
 		mav.addObject("adminDisplay", "/admin/board/qaManage.jsp");
-		mav.setViewName("/admin/outterMain");
+		mav.setViewName("/main/home");
 		return mav;
 	}
 	
@@ -72,7 +72,7 @@ public class QAManageController {
 		mav.addObject("pg", pg);
 		mav.addObject("qaBoardDTO", qaBoardDTO);
 		mav.addObject("adminDisplay", "/admin/board/qaManageView.jsp");
-		mav.setViewName("/admin/outterMain");
+		mav.setViewName("/main/home");
 		return mav;
 	}	
 	

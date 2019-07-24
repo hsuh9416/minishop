@@ -98,6 +98,12 @@ public class MemberDAOImpl implements MemberDAO {
 		sqlSession.insert("memberSQL.memberQASend",messageDTO);
 	}
 
+	@Override
+	public void setNewPwd(MemberDTO memberDTO) {
+		sqlSession.update("memberSQL.setNewPwd",memberDTO);
+		
+	}
+
 
 
 

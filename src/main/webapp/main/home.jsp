@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page session="false" %>
+<!docType html>
 <html>
 <head>
 
@@ -22,15 +23,14 @@
 
 <body>
 		 <!-- Header -->
-			<jsp:include page="../template/header.jsp"/>
-			
+			<jsp:include page="/template/header.jsp"/>		 	
 		 <!-- Body -->
 		  <!-- Page Content -->
 		  <div class="container" style="padding-top: 170px;">
 		
 		    <div class="row">	
 		    	
-				<jsp:include page="${menu}"/>			
+				<jsp:include page="/template/left.jsp"/>			
 		      
 	           
 				<jsp:include page="${display}"/>

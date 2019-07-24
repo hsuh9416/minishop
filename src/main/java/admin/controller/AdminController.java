@@ -15,18 +15,19 @@ public class AdminController {
 
 	
 	//관리자 화면
-	@RequestMapping(value="/outterMain.do",method = RequestMethod.GET)
-	public ModelAndView outterMain() {
+	@RequestMapping(value="/adminHome.do",method = RequestMethod.GET)
+	public ModelAndView adminHome() {
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("adminDisplay", "/admin/shop/adminManage.jsp");
-		mav.setViewName("/admin/outterMain");
+		mav.addObject("location", "adminHome");
+		mav.addObject("display", "/admin/shop/adminManage.jsp");//초기화면은 임시로 관리자 정보 화면
+		mav.setViewName("/main/home");
 		return mav;
 	}	
 	
 	// 관리자 로그아웃(수정 예정: 마감 메소드 진행시켜야 함)
 	@RequestMapping(value="/adminLogout.do",method=RequestMethod.GET)
 	public ModelAndView adminLogout(HttpServletRequest request,HttpServletResponse response, HttpSession session){
-		session.removeAttribute("adminDTO");//관리자 계정은 로그아웃시에 무조건 적으로 제거해야 하면 자동 로그인도 불허한다.
+		session.removeAttribute("adminDTO");//관리자 계정은 로그아웃시에 무조건적으로 제거되어야 하며 자동 로그인도 불허한다.
 		/*MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");//회원으로서의 관리자 세션 마감 처리
 		if(memberDTO != null) {
 			session.removeAttribute("memberDTO");

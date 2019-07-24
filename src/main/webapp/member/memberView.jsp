@@ -3,20 +3,15 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
-<link rel="stylesheet" type="text/css" href="/mallproject/resources/custom/css/member.css">
-
- <div class="memberView-container">
- 	<div class="container">
- 	<!-- 실행 메뉴 -->
-	 <nav aria-label="breadcrumb">
-	  <ol class="breadcrumb">
-	    <li class="breadcrumb-item active" aria-current="page">회원 정보</li>
-	    <li class="breadcrumb-item"><a href="/mallproject/member/memberModifyForm.do">정보 수정</a></li>
-	    <li class="breadcrumb-item"><a href="/mallproject/member/memberOrderlist.do">주문 현황</a></li>           	    
-	  </ol>
-	</nav>
+<link rel="stylesheet" type="text/css" href="/minishop/resources/custom/css/member.css">
 
 	<!-- 회원 정보 화면 -->
+	<div class="col-lg-8">
+	 	<div class="row" id="titleDiv">
+	 		<div class="col" align="center" style="padding-bottom: 20px;">
+	 			<h3>로그인</h3>		
+	 		</div>
+		</div>	 	
 		<div class="table-resposive">
 			<table id="boardTable" class="table justify-content-center">
 			  <thead class="thead-light">
@@ -41,7 +36,7 @@
 			   	</tr>
 			   	<tr>
 			   		<td>내 장바구니 : </td>
-			   		<td colspan="2"><a id="goCart" href="#cartModal"></a></td>
+			   		<td colspan="2"><a id="goCartMember" href="#cartModal"></a></td>
 			   	</tr>			   	
 			   	<tr>
 			   		<td>주문 중인 건수 :</td>
@@ -49,7 +44,7 @@
 			   	</tr>
 			   	<tr>
 			   		<td>사용 가능한 쿠폰 : </td>
-			   		<td colspan="2"><a id="goCoupon" href="#couponModal">개</a></td>
+			   		<td colspan="2"><a id="goCoupon" href="#couponModal"></a></td>
 			   	</tr>
 			   	<tr>
 			   		<td>사용 가능한 포인트 : </td>
@@ -62,21 +57,19 @@
 			   		</td>
 			   	</tr>	
 			   	<tr>
-			   		<td colspan="3" align="right">
-			   			<input type="button" id="goReviewWrite" class="btn btn-outline-dark" value="리뷰글 쓰기"/>			   		
-			   			<input type="button" id="goQAWrite" class="btn btn-outline-dark" value="문의글 쓰기"/>
-			   			<input type="button" id="personalQA" data-toggle="modal"  class="btn btn-outline-dark" value="1:1 문의"/>			   			
+			   		<td colspan="3" align="right">		   		
+			   			<input type="button" id="memberModify" class="btn btn-outline-dark" value="회원 정보 수정"/>
 			   			<input type="button" id="memberDelete" data-toggle="modal" class="btn btn-outline-dark" value="회원 탈퇴"/>
+						<input type="button" id="personalQA" data-toggle="modal"  class="btn btn-outline-dark" value="1:1 문의"/>	   			
 			   		</td>
 			   	</tr>				   			   				   	
 			   </tbody> 	  
 			</table>
 		</div>
 	</div>
-</div>
 
 	<!-- model personalQAform frame -->
-	<jsp:include page="../member/memberDelete.do"/>		
-	<jsp:include page="../member/personalQAForm.do"/>	
-
-<script type="text/javascript" src="/mallproject/resources/custom/js/member.view.js"></script>	
+	<jsp:include page="/member/memberDelete.do"/>		
+	<jsp:include page="/member/personalQAForm.do"/>	
+<script type="text/javascript" src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script type="text/javascript" src="/minishop/resources/custom/js/member.view.js"></script>	

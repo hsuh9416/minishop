@@ -1,15 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 	<!--Bootsrap 4-->
-	<link rel="stylesheet" type="text/css" href="/mallproject/resources/bootstrap-4.3.1-dist/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="/minishop/resources/bootstrap-4.3.1-dist/css/bootstrap.min.css">
 	
     <!--Fontawesome CDN-->
-	<link rel="stylesheet" href="/mallproject/resources/fontawesome-free-5.9.0-web/css/all.css">	
+	<link rel="stylesheet" href="/minishop/resources/fontawesome-free-5.9.0-web/css/all.css">	
 	
 	<!-- ckeditor4 CDN -->
 		
 	<!--Custom styles-->
-	<link rel="stylesheet" type="text/css" href="/mallproject/css/userboard.css">  
+	<link rel="stylesheet" type="text/css" href="/minishop/css/userboard.css">  
 		<!-- 리뷰 글쓰기 폼 -->	  
  <div class="reviewForm-container">
  	<div class="container">
@@ -67,20 +67,20 @@
 
 
 <script type="text/javascript" src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
-<script type="text/javascript" src="/mallproject/resources/bootstrap-4.3.1-dist/js/bootstrap.bundle.min.js"></script>
-<script type="text/javascript"src="/mallproject/resources/ckeditor_4.12.1_full/ckeditor/ckeditor.js"></script>
-<script type="text/javascript" src="/mallproject/js/board.review.js"></script>
+<script type="text/javascript" src="/minishop/resources/bootstrap4/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript"src="/minishop/resources/ckeditor_4.12.1_full/ckeditor/ckeditor.js"></script>
+<script type="text/javascript" src="/minishop/js/board.review.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){	
 	//에디터 설정
 	var content = CKEDITOR.replace('review_content',{
-		customConfig : '/mallproject/resources/ckeditor_4.12.1_full/ckeditor/config.js'
+		customConfig : '/minishop/resources/ckeditor_4.12.1_full/ckeditor/config.js'
 	});
 	//	
 
 	$.ajax({
 		type : 'get',
-		url : '/mallproject/product/getAllproduct.do',
+		url : '/minishop/product/getAllproduct.do',
 		dataType : 'json',
 		success : function(data){
 			$('#productid option:gt(0)').empty();

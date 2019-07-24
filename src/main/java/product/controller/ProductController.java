@@ -47,6 +47,10 @@ public class ProductController {
 	@RequestMapping(value="/getAllproduct.do",method = RequestMethod.GET)
 	public ModelAndView getAllproduct() {
 		List<ProductDTO> productList = productDAO.getAllproduct();
+		//업로드전 처리
+		for(ProductDTO data: productList) {
+			data.makeProductListHTML();
+		}
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("productList", productList);		
 		mav.setViewName("jsonView");

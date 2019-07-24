@@ -31,11 +31,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="getMember" parameterType="String" resultType="member">
 		select * from member where id=#{id}
 	</select>
-		
+	<!-- 새 비밀번호 설정 -->
+	<update id="setNewPwd" parameterType="member">
+	 update member set pwd=#{pwd} where id=#{id}
+	</update>		
 	 <!-- 회원 정보수정 -->
 	<update id="modify" parameterType="member">
 		update member set name=#{name}
-						 ,pwd=#{pwd}
 						 ,email1=#{email1}
 						 ,email2=#{email2}
 						 ,tel1=#{tel1}

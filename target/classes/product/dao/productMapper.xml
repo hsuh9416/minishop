@@ -99,6 +99,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  		inner join product_category
  		on product_name.product_category_no=product_category.product_category 			
 		where product_onstore='YES'
+		order by product_name.product_name_instockdate desc 
 	</select>
 	<!-- 사용자 총글수(ALL) -->
 	<select id="getTotalItemA" parameterType="java.util.Map" resultType="Integer">

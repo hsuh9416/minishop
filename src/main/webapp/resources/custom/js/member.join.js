@@ -141,7 +141,7 @@ $('#writeBtn').click(function(){
 		}else{
 			$.ajax({
 				type: 'post',
-				url : '/mallproject/member/write.do',
+				url : '/minishop/member/write.do',
 				data : $('#writeForm').serialize(),
 				dataType : 'text',
 				success : function(data){
@@ -149,7 +149,7 @@ $('#writeBtn').click(function(){
 					if(data=='success') {
 					 alert('축하합니다. 회원가입되셨습니다!!(메인 화면으로 이동합니다.)');	
 					 $(this).modal('dispose');
-					 window.location='/mallproject/main/innerMain.do';}
+					 window.location='/minishop/main/innerMain.do';}
 					else if(data=='fail') {
 						$('#writeForm').empty();
 						$('#writeResult').append(failMsg).alert();				
@@ -165,7 +165,7 @@ $('#writeBtn').click(function(){
 		else
 			$.ajax({
 				type : 'post',
-				url : '/mallproject/member/checkId.do',
+				url : '/minishop/member/checkId.do',
 				data : 'id='+$('#id').val(),
 				dataType : 'text',
 				success : function(data){
@@ -195,7 +195,7 @@ $('#getConfirm').click(function(){
 
 		$.ajax({
 			type : 'post',
-			url : '/mallproject/member/checkEmail.do',
+			url : '/minishop/member/checkEmail.do',
 			data : 'email='+email,
 			dataType : 'text',
 			success : function(data){

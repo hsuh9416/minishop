@@ -13,8 +13,9 @@ public class AdminShopController {
 	@RequestMapping(value="/adminManage.do",method = RequestMethod.GET)
 	public ModelAndView adminManage() {
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("adminDisplay", "/admin/shop/adminManage.jsp");
-		mav.setViewName("/admin/outterMain");
+		mav.addObject("location", "adminHome");
+		mav.addObject("display", "/admin/shop/adminManage.jsp");
+		mav.setViewName("/main/home");
 		return mav;
 	}	
 	
@@ -22,8 +23,9 @@ public class AdminShopController {
 	@RequestMapping(value="/salesInfo.do",method = RequestMethod.GET)
 	public ModelAndView salesInfo() {
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("adminDisplay", "/admin/shop/salesInfo.jsp");
-		mav.setViewName("/admin/outterMain");
+		mav.addObject("location", "adminHome");
+		mav.addObject("display", "/admin/shop/salesInfo.jsp");
+		mav.setViewName("/main/home");
 		return mav;
 	}		
 }

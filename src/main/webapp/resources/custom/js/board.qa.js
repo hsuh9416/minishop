@@ -49,7 +49,7 @@ $('#qaWriteBtn').click(function(){
 	else{	
 		$.ajax({
 			type : 'post',
-			url : '/mallproject/board/qa/qaWrite.do',
+			url : '/minishop/board/qa/qaWrite.do',
 			data : {'qa_subject':$('#qa_subject').val(),
 					'user_id' : $('#user_id').val(),
 					'name' :$('#name').val(),
@@ -59,7 +59,7 @@ $('#qaWriteBtn').click(function(){
 					'qa_state':$('#qa_state').val()},
 			success : function(){
 				alert('성공적으로 문의가 접수되었습니다! 문의 게시판으로 이동합니다.');
-				window.location='/mallproject/board/qa/qaList.do';}
+				window.location='/minishop/board/qa/qaList.do';}
 			
 		});
 	}
@@ -75,7 +75,7 @@ $('#qaReturn').click(function(){
 
 
 function boardPaging(pg){
-	location.href='/mallproject/board/qa/qaList.do?pg='+pg;
+	location.href='/minishop/board/qa/qaList.do?pg='+pg;
 }
 
 function boardSearchPaging(pg){
@@ -90,7 +90,7 @@ $('#qaSearchBtn').click(function(event,str){
 	else{
 		$.ajax({
 			type : 'post',
-			url : '/mallproject/board/qa/qaSearch.do',
+			url : '/minishop/board/qa/qaSearch.do',
 			data : {'pg':$('input[name=pg]').val(), 
 				   'searchOption':$('#searchOption').val(),
 				   'keyword':$('#keyword').val()},
@@ -149,7 +149,7 @@ $('#qaSearchBtn').click(function(event,str){
 					{alert('해당 게시물은 작성자와 관리자만 접근할 수 있습니다. 만약 작성자라면 로그인 후에 시도해주세요.');}
 					else{
 						var qa_seq = $(this).parent().prev().text();
-						window.location='/mallproject/board/qa/qaView.do?qa_seq='+qa_seq+'&pg='+$('input[name=pg]').val();
+						window.location='/minishop/board/qa/qaView.do?qa_seq='+qa_seq+'&pg='+$('input[name=pg]').val();
 					}//else
 				});//제목 클릭시!
 			}//success
@@ -158,7 +158,7 @@ $('#qaSearchBtn').click(function(event,str){
 });
 
 $('#qaModifyBtn').click(function(){
-	window.location='/mallproject/board/qa/qaModifyForm.do?qa_seq='+$('#qa_seq').val()+'&pg='+$('#pg').val();
+	window.location='/minishop/board/qa/qaModifyForm.do?qa_seq='+$('#qa_seq').val()+'&pg='+$('#pg').val();
 });
 
 $('#qaDeleteBtn').click(function(){
@@ -174,7 +174,7 @@ $('#qaModifyBtn').click(function(){
 	else{	
 		$.ajax({
 			type : 'post',
-			url : '/mallproject/board/qa/qaModify.do',
+			url : '/minishop/board/qa/qaModify.do',
 			data : {'qa_seq':$('#qa_seq').val(),
 					'qa_subject':$('#qa_subject').val(),
 					'qa_content':$('#qa_content').val(),
@@ -183,7 +183,7 @@ $('#qaModifyBtn').click(function(){
 					'qa_state':$('#qa_state').val()},
 			success : function(){
 				alert('문의 게시글이 수정되었습니다.');
-				window.location='/mallproject/board/qa/qaView.do?qa_seq='+$('#qa_seq').val()+'&pg='+$('#pg').val();}
+				window.location='/minishop/board/qa/qaView.do?qa_seq='+$('#qa_seq').val()+'&pg='+$('#pg').val();}
 		});
 	}
 });

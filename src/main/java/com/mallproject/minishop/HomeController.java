@@ -9,10 +9,9 @@ import org.springframework.web.servlet.ModelAndView;
  * Handles requests for the application home page.
  */
 @Controller
-@RequestMapping(value="/main/**")
 public class HomeController {
 	
-	@RequestMapping(value = "/home.do", method = RequestMethod.GET)
+	@RequestMapping(value = "/main/home.do", method = RequestMethod.GET)
 	public ModelAndView home() {
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("location", "home");
@@ -22,7 +21,7 @@ public class HomeController {
 		return mav;
 	}
 	//사용자 화면 'introduce'
-	@RequestMapping(value="/introduce.do",method = RequestMethod.GET)
+	@RequestMapping(value="/main/introduce.do",method = RequestMethod.GET)
 	public ModelAndView introduce() {
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("location", "");		
@@ -33,13 +32,20 @@ public class HomeController {
 	}
 	
 	//사용자 화면 'contact'
-	@RequestMapping(value="/userContact.do",method = RequestMethod.GET)
+	@RequestMapping(value="/main/userContact.do",method = RequestMethod.GET)
 	public ModelAndView index() {
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("location", "");		
 		mav.addObject("display", "/main/userContact.jsp");
 		mav.addObject("menu", "/template/left.jsp");			
 		mav.setViewName("/main/home");
+		return mav;
+	}
+	//허가받지 않은 페이지 경고
+	@RequestMapping(value = "/error/unauthorized.do", method = RequestMethod.GET)
+	public ModelAndView unauthorized() {
+		ModelAndView mav = new ModelAndView();		
+		mav.setViewName("/error/unauthorized");		
 		return mav;
 	}	
 }

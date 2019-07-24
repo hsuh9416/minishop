@@ -1,9 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
    
-	<link rel="stylesheet" type="text/css" href="/mallproject/resources/bootstrap4/css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="/mallproject/resources/fontawesome5/css/fontawesome.min.css">
-	<link rel="stylesheet" type="text/css" href="/mallproject/resources/custom/css/member.css">
+	<link rel="stylesheet" type="text/css" href="/minishop/resources/bootstrap4/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="/minishop/resources/fontawesome5/css/fontawesome.min.css">
+	<link rel="stylesheet" type="text/css" href="/minishop/resources/custom/css/member.css">
 
 <!-- Modal 출연 구역 -->
   <div class="modal fade" id="PQAModal" role="dialog">
@@ -51,9 +51,9 @@
       </div>
      </div>
 </div>
-	<script type="text/javascript"  src="/mallproject/resources/jquery/jquery-3.2.1.min.js"></script>
-	<script type="text/javascript"  src="/mallproject/resources/bootstrap4/js/bootstrap.bundle.min.js"></script>
-	<script type="text/javascript" src="/mallproject/resources/custom/js/innerMain.js"></script>
+	<script type="text/javascript" src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
+	<script type="text/javascript"  src="/minishop/resources/bootstrap4/js/bootstrap.bundle.min.js"></script>
+	<script type="text/javascript" src="/minishop/resources/custom/js/innerMain.js"></script>
 
 
     

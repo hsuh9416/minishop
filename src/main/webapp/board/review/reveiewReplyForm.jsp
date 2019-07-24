@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
-	<link rel="stylesheet" type="text/css" href="/mallproject/resources/custom/css/userboard.css">
+	<link rel="stylesheet" type="text/css" href="/minishop/resources/custom/css/userboard.css">
 	
 		<!-- 리뷰 글쓰기 폼 -->	  
  <div class="reviewForm-container">
@@ -61,21 +61,21 @@
 
 
 
-<script type="text/javascript"  src="/mallproject/resources/jquery/jquery-3.2.1.min.js"></script>
-<script type="text/javascript"  src="/mallproject/resources/bootstrap4/js/bootstrap.bundle.min.js"></script>
-<script type="text/javascript"	src="/mallproject/resources/ckeditor_4.12.1_full/ckeditor/ckeditor.js"></script>
-<script type="text/javascript" src="/mallproject/resources/custom/js/board.review.js"></script>
+<script type="text/javascript"  src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script type="text/javascript"  src="/minishop/resources/bootstrap4/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript"	src="/minishop/resources/ckeditor_4.12.1_full/ckeditor/ckeditor.js"></script>
+<script type="text/javascript" src="/minishop/resources/custom/js/board.review.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){	
 	//에디터 설정
 	var content = CKEDITOR.replace('review_content',{
-		customConfig : '/mallproject/resources/ckeditor_4.12.1_full/ckeditor/config.js'
+		customConfig : '/minishop/resources/ckeditor_4.12.1_full/ckeditor/config.js'
 	});
 	//	
 
 	$.ajax({
 		type : 'get',
-		url : '/mallproject/product/getAllproduct.do',
+		url : '/minishop/product/getAllproduct.do',
 		dataType : 'json',
 		success : function(data){
 			$('#productid option:gt(0)').empty();

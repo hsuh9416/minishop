@@ -3,38 +3,28 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  
 
 
-<link rel="stylesheet" type="text/css" href="/mallproject/resources/custom/css/member.css">
+<link rel="stylesheet" type="text/css" href="/minishop/resources/custom/css/member.css">
     
- <div class="memberView-container">
- 	<div class="container">
- 	
- 	<!-- 실행 메뉴 -->
-	 <nav aria-label="breadcrumb">
-	  <ol class="breadcrumb">
-	    <li class="breadcrumb-item"><a href="/mallproject/member/memberView.do">회원 정보</a></li>
-	    <li class="breadcrumb-item active" aria-current="page">정보 수정</li>
-	    <li class="breadcrumb-item"><a href="/mallproject/member/memberOrderlist.do">주문 현황</a></li>           	    
-	  </ol>
-	</nav>
-
 	<!-- 회원 정보 수정 -->
-
- <form id="modifyForm">	
+	<div class="col-lg-8">
+	 	<div class="row" id="titleDiv">
+	 		<div class="col" align="center" style="padding-bottom: 20px;">
+	 			<h3>회원 정보 수정</h3>		
+	 		</div>
+		</div>	
+		
+<form id="modifyForm">	
    <div class="form-row">	
-	  <div class="form-group col-md-2">
+ 	  <div class="form-group col-md-3">
+	    <label for="formGroupExampleInput"><strong>아이디</strong></label>
+	    <input type="text" readonly class="form-control-plaintext" name="id" id="id" value="${memberDTO.id}">
+	  </div>	  
+	  <div class="form-group col-md-3">
 	    <label for="formGroupExampleInput"><strong>이름</strong></label>
 	    <input type="text" class="form-control" name="name" id="name" value="${memberDTO.name}" data-toggle="tooltip" data-placement="right" title="회원님의 이름을 입력하세요.">
 	  </div>	
    </div>	
 
-   <div class="form-row">     
-	  <div class="form-group col-md-2">
-	    <label for="formGroupExampleInput"><strong>아이디</strong></label>
-	    <input type="text" readonly class="form-control-plaintext" name="id" id="id" value="${memberDTO.id}">
-	  </div>		
-	</div>
-
-	
    <div class="form-row">
 	    <div class="form-group col-md-3">
 	      <label for="inputEmail4"><strong>비밀번호</strong></label>
@@ -58,10 +48,10 @@
       <input type="text" class="form-control" id="email1" name="email1" value="${memberDTO.email1}">
     </div>
 	<span>@</span>  
-    <div class="form-group col-md-2">
+    <div class="form-group col-md-3">
       	<input type="text" class="form-control" name="email2" id="email2">
     </div>
-    <div class="form-group col-md-2">
+    <div class="form-group col-md-3">
       <select id="emailInput" name="email2" class="form-control">
 		<option value="">직접 입력</option>   
 		<option value="gmail.com">gmail.com</option>
@@ -102,20 +92,23 @@
 
    <label for="address2"><strong>상세 주소</strong></label>	
  	 <div class="form-row" id="address2">
-	    <div class="form-group col-md-3">
+	    <div class="form-group col-6">
 	    	<input type="text" readonly class="form-control" name="addr1" id="addr1" value="${memberDTO.addr1 }">
 	    </div>
-	   	<div class="form-group col-md-3">
+	   	<div class="form-group col-4">
 	    	<input type="text" readonly class="form-control" name="extra" id="extra" value="">
 	    </div>
-	    <div class="form-group col-md-3">
+
+  	</div>	
+   	<div id="wrap">
+  		<img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnFoldWrap" onclick="foldDaumPostcode()" alt="접기 버튼">
+  	</div> 	 
+  	 <div class="form-row" id="address2">
+	    <div class="form-group col-10">
 			<input type="text" class="form-control" name="addr2" id="addr2" value="${memberDTO.addr2}">
 	    </div>
-  	</div>	 
-  	
-  	<div id="wrap">
-  		<img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnFoldWrap" onclick="foldDaumPostcode()" alt="접기 버튼">
-  	</div>
+  	 </div>	 	
+
   	
 	<div class="form-group">
 		<div class="row">
@@ -124,23 +117,13 @@
 				<input type="button" value="다시작성" class="btn btn-outline-dark" id="resetBtn">  				    									
 			</div>
 		</div>	
-	</div>	  	
-	
- </form>	
-
-	</div>
+	</div>	  		
+ </form>			
 </div>
-
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
-<script type="text/javascript" src="/mallproject/resources/custom/js/member.post.js"></script>
-<script type="text/javascript" src="/mallproject/resources/custom/js/member.modify.js"></script>
-<script type="text/javascript">
-$(document).ready(function(){
-	$('#email2').val('${memberDTO.email2}');
-	$('#tel1').val('${memberDTO.tel1}');
-	$('#wrap').hide();
-});
-</script>
+<script type="text/javascript" src="/minishop/resources/custom/js/member.post.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script type="text/javascript" src="/minishop/resources/custom/js/member.modify.js"></script>
 
 
 

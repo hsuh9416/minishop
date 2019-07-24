@@ -55,7 +55,6 @@ public class PreInterceptors extends HandlerInterceptorAdapter{
 				uri.contains("personalQAForm")||//1대1 문의 접근 제어
 				uri.contains("Modify")||//일체의 수정 제어
 				uri.contains("Write")||//일체의 작성 제어
-				uri.contains("admin")||//관리자 제어
 				uri.contains("Reply")||//답글 제어
 				uri.contains("logout")//로그아웃 제어
 				) {
@@ -65,25 +64,31 @@ public class PreInterceptors extends HandlerInterceptorAdapter{
 				OrderDTO orderDTO = (OrderDTO) session.getAttribute("orderDTO");
 				if(orderDTO!=null) return true;}
 			logger.info("올바르지 않은 접근입니다.");	
-			if(addr[0].contains("/mallproject/main/home")) return false;
-			else {response.sendRedirect(request.getContextPath()+"/main/home.do");
-			return false;}
+			response.sendRedirect(request.getContextPath()+"/error/noLogin.jsp");//경고 페이지 이동
+			return false;
 			}		
 		}
 		//END 2.로그인 전 접근인지 확인	
 		
 		//START 3.관리자 계정의 이중 접근인지 확인
 		//관리자 로그인까지 처리후 쇼핑몰 내부로 이동하려 할 경우
-		AdminDTO adminDTO = (AdminDTO) session.getAttribute("AdminDTO");
-		
-		if(adminDTO != null && !uri.contains("/admin/")) {//관리자계정이 개설된 상태에서 관리자 메뉴 이외로 접근할 경우 제지
+		AdminDTO adminDTO = (AdminDTO) session.getAttribute("adminDTO");
+		if(adminDTO == null && uri.contains("/admin/")) {//관리자가 아닌데 또는 관리자 로그인 없이 관리자페이지에 접근하는 경우
+			logger.info("관리자계정만 접근 가능합니다.");
+			response.sendRedirect(request.getContextPath()+"/error/unauthorized.do");//경고 페이지 이동
+			return false;			
+		}
+		else if(adminDTO != null && !uri.contains("/admin/")) {//관리자계정이 개설된 상태에서 관리자 메뉴 이외로 접근할 경우 제지
 			logger.info("관리자계정의 이중 접근은 불가능합니다.");
-				response.sendRedirect(request.getContextPath()+"/admin/outterMain.do");
+				response.sendRedirect(request.getContextPath()+"/admin/adminHome.do");
 			return false;}
 		//END 3. 관리자 계정의 이중 접근인지 확인
 		
 		//START 4. 로그인 후 로그인/회원가입 폼에 접근
-			if((uri.contains("/member/loginForm") ||uri.contains("/member/writeForm")) && memberDTO !=null) {
+			if((uri.contains("/member/loginForm") ||
+				uri.contains("/member/loginModal") ||
+				uri.contains("/member/findForm") ||				
+				uri.contains("/member/writeForm")) && memberDTO !=null) {
 			logger.info("로그인 후에 접근할 수 없는 경로입니다.");
 				response.sendRedirect(request.getContextPath()+"/main/home.do");
 			return false;}		

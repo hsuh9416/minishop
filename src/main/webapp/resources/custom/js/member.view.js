@@ -7,18 +7,18 @@ var order;
 $(document).ready(function(){
 	$.ajax({
 		type: 'get',
-		url : '/mallproject/member/getUserInfo.do',
+		url : '/minishop/member/getUserInfo.do',
 		dataType : 'json',
 		success : function(data){
 			cart = data.map.cartList;
-			if(cart=='') $('#goCart').text('장바구니에 담긴 상품이 없습니다.');
-			else $('#goCart').text(cart.length);
+			if(cart=='') $('#goCartMember').text('장바구니에 담긴 상품이 없습니다.');
+			else $('#goCart').text(cart.length+'건');
 			coupon = data.map.couponList;
 			if(coupon=='') $('#goCoupon').text('사용할 수 있는 쿠폰이 존재하지 않습니다.');
-			else $('#goCoupon').text(coupon.length);		
+			else $('#goCoupon').text(coupon.length+'개');		
 			order = data.map.orderList;
 			if(order=='') $('#orderlistPg').text('주문하신 내역이 없습니다.');
-			else $('#orderlistPg').text(order.length);		
+			else $('#orderlistPg').text(order.length+'건');		
 	
 		}				
 	});//에이작스
@@ -62,12 +62,12 @@ $('#sendQABtn').click(function(){
 	else {
 		$.ajax({
 			type : 'POST',
-			url : '/mallproject/member/memberQASend.do',
+			url : '/minishop/member/memberQASend.do',
 			data : {'subject': $('#QAtype').val() ,'content' : $('#QAdetail').val(), 'sendAddr' : $('#QAreturnAddr').val()},
 				 
 			success : function(){
 				alert('문의가 성공적으로 접수되었습니다. 문의사항은 기재하신 메일주소로 시일 내에 답변해드리겠습니다. 감사합니다.');
-				window.location='/mallproject/member/memberView.do';
+				window.location='/minishop/member/memberView.do';
 			}
 				 
 		});
@@ -84,18 +84,15 @@ $('#deleteBtn').click(function(){
 	alert('삭제?!');
 	$.ajax({
 		type : 'get',
-		url : '/mallproject/member/delete.do',
+		url : '/minishop/member/delete.do',
 		success : function(){	
 				alert('정상적으로 삭제되었습니다. 탈퇴 후의 개인정보 관리 및 자세한 사항은 메일을 통해 확인 바랍니다.');
-				window.location='/mallproject/main/innerMain.do';
+				window.location='/minishop/main/innerMain.do';
 			}
 		});	
 });//deleteBtn
 
-/* 문의 게시글 쓰기*/
-$('#goQAWrite').click(function(){
-	window.location='/mallproject/board/qa/qaWriteForm.do';});
-
-/* 문의 게시글 쓰기*/
-$('#goReviewWrite').click(function(){
-	window.location='/mallproject/board/review/reviewWriteForm.do';});
+/* 회원 정보 수정 가기 */
+$('#memberModify').click(function(){
+	window.location='/minishop/member/memberModifyForm.do';
+});

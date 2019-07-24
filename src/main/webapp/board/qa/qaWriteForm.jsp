@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
-<link rel="stylesheet" type="text/css" href="/mallproject/resources/custom/css/userboard.css">
+<link rel="stylesheet" type="text/css" href="/minishop/resources/custom/css/userboard.css">
 		<!-- 문의 글쓰기 폼 -->	  
  <div class="qaForm-container">
  	<div class="container">
@@ -61,14 +61,14 @@
 <div id="missing"></div>		
 
 
-<script type="text/javascript"  src="/mallproject/resources/jquery/jquery-3.2.1.min.js"></script>
-<script type="text/javascript"  src="/mallproject/resources/bootstrap4/js/bootstrap.bundle.min.js"></script>
-<script type="text/javascript" src="/mallproject/resources/custom/js/board.qa.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script type="text/javascript"  src="/minishop/resources/bootstrap4/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="/minishop/resources/custom/js/board.qa.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
 	$.ajax({
 		type : 'get',
-		url : '/mallproject/product/getProductList.do',
+		url : '/minishop/product/getProductList.do',
 		dataType : 'json',
 		success : function(data){
 			$('#productid option:gt(0)').empty();
@@ -84,7 +84,7 @@ $(document).ready(function(){
 	$('#productid').change(function(){
 		$('#imgDiv').empty();
 		if($("#productid option:selected").val()!=''){
-			var getImgOn='<img style="height:80px;weight:60px;" src="/mallproject/storage/'+$("#productid option:selected").val()+'.jpg">';
+			var getImgOn='<img style="height:80px;weight:60px;" src="/minishop/storage/'+$("#productid option:selected").val()+'.jpg">';
 			$('#imgDiv').html(getImgOn);
 		}
 	});//선택지가 바뀔 때 마다

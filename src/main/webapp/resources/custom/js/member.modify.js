@@ -1,10 +1,12 @@
 /**
  * 회원 수정 관련 메소드
  */
+$(document).ready(function(){
+	$('#email2').val('${memberDTO.email2}');
+	$('#tel1').val('${memberDTO.tel1}');
+	$('#wrap').hide();
+});//ready
 
-$('#personalQA').click(function(){
-	$('#PQAModal').modal();
-});
 
 /*메일에서 셀렉트 박스 선택지 변경시*/
 $('#emailInput').change(function() {
@@ -40,7 +42,12 @@ $('#repwd').focusout(function(){
 	 }
 });
 $('#pwdChange').change(function(){
-	alert('비번 변경!!');
+	if($('#pwdChange').is(':checked')==true){
+	 var pwdPop = window.open('/minishop/member/changePwdForm.do','비밀번호 변경','width=400,height=300,resizable=no');		
+	}
+	if($('#pwdChange').is(':checked')==false){
+		
+	}
 });
 
 $('#modifyBtn').click(function(){
@@ -63,12 +70,12 @@ $('#modifyBtn').click(function(){
 	}else{
 		$.ajax({
 			type: 'post',
-			url : '/mallproject/member/memberModify.do',
+			url : '/minishop/member/memberModify.do',
 			data : $('#modifyForm').serialize(),
 			dataType : 'text',
 			success : function(data){
 				if(data=='success') {alert('성공적으로 수정되었습니다.');
-					window.location='/mallproject/member/memberView.do';}
+					window.location='/minishop/member/memberView.do';}
 				else if(data=='fail') {
 					alert('오류가 발생하여 수정에 실패하였습니다. 다시 한번 시도해주세요.');
 					window.location.reload();

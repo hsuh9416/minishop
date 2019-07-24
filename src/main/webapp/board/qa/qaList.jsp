@@ -3,18 +3,21 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-	<link rel="stylesheet" type="text/css" href="/mallproject/resources/custom/css/userboard.css">
+	<link rel="stylesheet" type="text/css" href="/minishop/resources/custom/css/userboard.css">
 
 <div class="boardList-container">
 	<div class="container-fluid">
  	<!-- 실행 메뉴 -->
 		 <nav aria-label="breadcrumb">
 		  <ol class="breadcrumb">
-		    <li class="breadcrumb-item"><a href="/mallproject/board/review/reviewList.do">후기 게시판</a></li>
+		    <li class="breadcrumb-item"><a href="/minishop/board/review/reviewList.do">후기 게시판</a></li>
 		    <li class="breadcrumb-item active"  aria-current="page">문의 게시판</li>	    
 		  </ol>
 		</nav>	
 	</div>
+</div>
+<div class="col-lg-8">
+
 </div>
 <div class="container-fluid">
 		<input type="hidden" id="pg" value="${pg}">
@@ -69,14 +72,14 @@
 		</div>
   	</form>
 </div>  	
-<script type="text/javascript"  src="/mallproject/resources/jquery/jquery-3.2.1.min.js"></script>
-<script type="text/javascript"  src="/mallproject/resources/bootstrap4/js/bootstrap.bundle.min.js"></script>
-<script type="text/javascript" src="/mallproject/resources/custom/js/board.qa.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script type="text/javascript"  src="/minishop/resources/bootstrap4/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="/minishop/resources/custom/js/board.qa.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
 	$.ajax({
 		type : 'post',
-		url : '/mallproject/board/qa/getQaList.do',
+		url : '/minishop/board/qa/getQaList.do',
 		data : 'pg='+$('#pg').val(),
 		dataType : 'json',
 		success : function(data){
@@ -111,7 +114,7 @@ $(document).ready(function(){
 				}))).append($('<td/>',{
 					align : 'center',
 					text : items.name,
-				}).append($('<td/>',{
+				})).append($('<td/>',{
 					align : 'center',
 					text : productid				
 				})).append($('<td/>',{
@@ -133,7 +136,7 @@ $(document).ready(function(){
 				{alert('해당 게시물은 작성자와 관리자만 접근할 수 있습니다. 만약 작성자라면 로그인 후에 시도해주세요.');}
 				else{
 					var qa_seq = $(this).parent().prev().text();
-					window.location='/mallproject/board/qa/qaView.do?qa_seq='+qa_seq+'&pg='+$('#pg').val();
+					window.location='/minishop/board/qa/qaView.do?qa_seq='+qa_seq+'&pg='+$('#pg').val();
 				}//else
 			});//제목 클릭시!
 		}//success

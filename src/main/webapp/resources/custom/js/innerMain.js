@@ -10,27 +10,42 @@ $(document).ready(function(){
 		$('#menuDiv').show();	
 		$('#titleDiv').hide();		
 	}			
-	$(window).on('resize', function(){
-		if(window.innerWidth < 992){
-				$('#menuDiv').hide();
-				$('#titleDiv').show();	
-		}
-		else if(window.innerWidth>991){
-			$('#menuDiv').show();	
-			$('#titleDiv').hide();		
-		}
-	});	
-	
-	$(document).on('scroll', function(){
-		if ( $( this ).scrollTop() > 0) {
-			$( '.top' ).show();
-		} else {
-			$( '.top' ).hide();
-		}
-		
-	});	
+
+	//목록 불러오기(신상품순서)
+	$.ajax({
+		type: 'get',
+		url:'/minishop/product/getAllproduct.do',
+		dataType: 'json',
+		success: function(data){
+			$('#mainList').empty();
+			$.each(data.productList, function(index, items){
+				$('#mainList').append(items.productListHTML);
+			});//each
+					
+		}//success
+	});
 	
 });//ready
+
+$(window).on('resize', function(){
+	if(window.innerWidth < 992){
+			$('#menuDiv').hide();
+			$('#titleDiv').show();	
+	}
+	else if(window.innerWidth>991){
+		$('#menuDiv').show();	
+		$('#titleDiv').hide();		
+	}
+});	
+
+$(document).on('scroll', function(){
+	if ( $( this ).scrollTop() > 0) {
+		$( '.top' ).show();
+	} else {
+		$( '.top' ).hide();
+	}
+	
+});	
 
 $( '.top' ).click( function() {
 	$( 'html, body' ).animate( { scrollTop : 0 }, 400 );
@@ -38,7 +53,7 @@ $( '.top' ).click( function() {
 } );
 
 $('#goLogin').click(function(){
-	$('#loginModal').modal();
+	var loginPop = window.open('/minishop/member/loginPopup.do','Login','width=450,height=350,resizable=no');
 });
 
 $('#goLogout').click(function(){
@@ -47,7 +62,7 @@ $('#goLogout').click(function(){
 		 url : '/minishop/member/logout.do',
 		 success : function(){	
 				alert('로그아웃 하셨습니다');
-				window.location='/minishop/main/innerMain.do';
+				window.location='/minishop/main/home.do';
 			}
 	 });
 });
@@ -57,7 +72,7 @@ $('#goSignUp').click(function(){
 });
 
 $('#mgoLogin').click(function(){
-	$('#loginModal').modal();
+	window.location='/minishop/member/loginForm.do'
 });
 
 $('#mgoLogout').click(function(){
@@ -67,7 +82,7 @@ $('#mgoLogout').click(function(){
 		 url : '/minishop/member/logout.do',
 		 success : function(){	
 				alert('로그아웃 하셨습니다');
-				window.location='/minishop/main/innerMain.do';
+				window.location='/minishop/main/home.do';
 			}
 	 });
 });
@@ -139,7 +154,7 @@ $('#deleteBtn').click(function(){
 		 success : function(data){	
 			 if(data=='success'){
 				alert('정상적으로 삭제되었습니다. 탈퇴 후의 개인정보 관리 및 자세한 사항은 메일을 통해 확인 바랍니다.');
-				window.location='/minishop/main/innerMain.do';
+				window.location='/minishop/main/home.do';
 			 }
 			 else{
 				alert('비밀번호가 일치하지 않습니다. 다시한번 확인 부탁드립니다.');

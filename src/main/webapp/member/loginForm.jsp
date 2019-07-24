@@ -68,15 +68,19 @@
 					<label for="id"><strong>비밀번호</strong></label>
 					<input type="password" class="form-control" name="loginPwd" id="loginPwd" data-toggle="tooltip" data-placement="right" title="비밀번호를 입력하세요." placeholder="비밀번호 입력" >
 				</div>					  		  	
-			</div> 						   
+			</div> 
+				<div class="form-row">
+					<p style="color:red;">[주의]회원님께서는 회원 아이디로 조회 부탁드립니다</p>
+				</div>										   
 				<div class="form-group">
 				   <div class="row">
 					 <div class="col" align="right">          	
 						<button type="reset" id="resetLogin" class="btn btn-outline-secondary">다시 작성</button>																	
 						<button type="button" id="loginBtn" class="btn btn-outline-success">주문조회</button>			
 					</div>
-				 </div>	
-				</div>								 
+				 </div>
+				 <div id="loginResult"></div>	
+			  </div>								 
       </div>   
     </div>
   </div>  

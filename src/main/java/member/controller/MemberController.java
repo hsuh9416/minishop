@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -44,11 +45,11 @@ public class MemberController {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
-	//로그인창 띄우기 : 모달창
-	@RequestMapping(value="/loginModal.do",method = RequestMethod.GET)
-	public ModelAndView loginModal() {
+	//로그인창 띄우기 : 팝업창
+	@RequestMapping(value="/loginPopup.do",method = RequestMethod.GET)
+	public ModelAndView loginPopup() {
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("/member/loginModal");
+		mav.setViewName("/member/loginPopup");
 		return mav;
 	}
 	//로그인 화면
@@ -72,11 +73,10 @@ public class MemberController {
 		return mav;
 	}		
 	
-	/*
-	//로그인 체크
+	//로그인 체크(주문조회도 로그인으로 받음)
 	@RequestMapping(value="/login.do",method = RequestMethod.POST)
 	@ResponseBody
-	public String login(@RequestParam String id, String pwd,String autoLogin,HttpSession session,HttpServletResponse response){
+	public String login(@RequestParam String id, String pwd,String autoLogin,HttpSession session,HttpServletResponse response,Model model){
 		MemberDTO memberDTO = memberDAO.checkId(id);
 		if(memberDTO==null) {
 			GuestDTO questDTO = memberDAO.orderCheck(id,pwd);//회원이 아니면 orderCheck 먼저
@@ -133,7 +133,7 @@ public class MemberController {
 		}
 		
 	}	
-*/
+
 
 	//회원가입 화면
 	@RequestMapping(value="/writeForm.do",method=RequestMethod.GET)
@@ -196,17 +196,32 @@ public class MemberController {
 	@RequestMapping(value="/memberModifyForm.do",method=RequestMethod.GET)
 	public ModelAndView memberModifyForm(){
 		ModelAndView mav = new ModelAndView();
+		mav.addObject("location", "memberModify");
 		mav.addObject("display", "/member/memberModifyForm.jsp");
 		mav.setViewName("/main/home");
 		return mav;
 	}	
-
-	//회원 정보수정
+	//비번 변경 폼
+	@RequestMapping(value="/changePwdForm.do",method=RequestMethod.GET)
+	public ModelAndView changePwdForm() {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("/main/changePwdForm");
+		return mav;		
+	}
+	//비번 변경
+	@RequestMapping(value="/changePwd.do",method=RequestMethod.POST)
+	@ResponseBody
+	public void changePwd(@RequestParam String newPwd,HttpSession session) {
+	MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
+	String pwd = passwordEncoder.encode(newPwd);
+	memberDTO.setPwd(pwd);
+	memberDAO.setNewPwd(memberDTO);
+	session.setAttribute("memberDTO", memberDTO);
+	}
+	//회원 정보수정(비번 제외)
 	@RequestMapping(value="/memberModify.do",method=RequestMethod.POST)
 	@ResponseBody
 	public String modify(@ModelAttribute MemberDTO memberDTO,HttpSession session) {
-		String pwd = passwordEncoder.encode(memberDTO.getPwd());
-		memberDTO.setPwd(pwd);
 		int result = memberDAO.modify(memberDTO);
 		session.setAttribute("memberDTO", memberDTO);
 		if(result==1) return "success";		
@@ -217,6 +232,7 @@ public class MemberController {
 	@RequestMapping(value="/memberView.do",method=RequestMethod.GET)
 	public ModelAndView memberView(){
 		ModelAndView mav = new ModelAndView();
+		mav.addObject("location", "memberView");
 		mav.addObject("display", "/member/memberView.jsp");
 		mav.setViewName("/main/home");
 		return mav;

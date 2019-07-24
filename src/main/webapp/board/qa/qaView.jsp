@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<link rel="stylesheet" type="text/css" href="/mallproject/resources/custom/css/userboard.css">
+<link rel="stylesheet" type="text/css" href="/minishop/resources/custom/css/userboard.css">
 
 <div class="qaForm-container">
 	<div class="container">
@@ -82,15 +82,15 @@
 				<input type="button" class="btn btn-outline-dark" value="문의 삭제하기" id="qaDeleteBtn">			
 			  </c:if>
 				<input type="button" value="목록" class="btn btn-outline-dark"
-					onclick="location.href='/mallproject/board/qa/qaList.do?pg=${pg}'">										    									
+					onclick="location.href='/minishop/board/qa/qaList.do?pg=${pg}'">										    									
 				</div>
 		    </div>	
 		</div>	
 </div>
 
-<script type="text/javascript"  src="/mallproject/resources/jquery/jquery-3.2.1.min.js"></script>
-<script type="text/javascript"  src="/mallproject/resources/bootstrap4/js/bootstrap.bundle.min.js"></script>
-<script type="text/javascript" src="/mallproject/resources/custom/js/board.qa.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script type="text/javascript"  src="/minishop/resources/bootstrap4/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="/minishop/resources/custom/js/board.qa.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
 	if('${qaBoardDTO.qa_reply}'=='1'){
@@ -98,7 +98,7 @@ $(document).ready(function(){
 		$('#adminAns').addClass('fas fa-check-circle');		
 		$.ajax({
 			type : 'post',
-			url : '/mallproject/board/qa/getQaAns.do',
+			url : '/minishop/board/qa/getQaAns.do',
 			data : {'seq' : '${qaBoardDTO.qa_seq}'},
 			dataType : 'json',
 			success : function(data){

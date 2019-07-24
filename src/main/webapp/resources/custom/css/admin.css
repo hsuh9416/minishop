@@ -1,6 +1,6 @@
 @charset "UTF-8";
 
-@import url('https://fonts.googleapis.com/css?family=Annie+Use+Your+Telescope&display=swap');
+@import url(//fonts.googleapis.com/earlyaccess/hanna.css);
 
 /* General */
 
@@ -11,7 +11,7 @@
 }
 body
 {
-	font-family: 'Poppins', sans-serif;
+	font-family: 'Hanna', fantasy;
 	font-size: 14px;
 	line-height: 23px;
 	font-weight: 400;
@@ -33,7 +33,7 @@ ul
 }
 p
 {
-	font-family: 'Poppins', sans-serif;
+	font-family: 'Hanna', fantasy;
 	font-size: 14px;
 	line-height: 1.7;
 	font-weight: 500;

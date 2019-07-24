@@ -70,7 +70,7 @@
 		</div>		     
    </div>
 <script type="text/javascript" src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
-<script type="text/javascript" src="/minishop/resources/bootstrap-4.3.1-dist/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="/minishop/resources/bootstrap4/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
 <script type="text/javascript" src="/minishop/js/board.review.js"></script>
 <script type="text/javascript"></script>

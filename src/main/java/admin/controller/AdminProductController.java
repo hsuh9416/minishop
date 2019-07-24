@@ -34,7 +34,7 @@ public class AdminProductController {
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("pg",pg);
 		mav.addObject("adminDisplay", "/admin/product/inventoryManage.jsp");
-		mav.setViewName("/admin/outterMain");
+		mav.setViewName("/main/home");
 		return mav;
 	}	
 
@@ -103,7 +103,7 @@ public class AdminProductController {
 		mav.addObject("pg", pg);
 		mav.addObject("productDTO", productDTO);		
 		mav.addObject("adminDisplay", "/admin/product/inventoryModify.jsp");
-		mav.setViewName("/admin/outterMain");
+		mav.setViewName("/main/home");
 		return mav;
 	}	
 	//재고 변동 반영
@@ -120,7 +120,7 @@ public class AdminProductController {
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("pg",pg);
 		mav.addObject("adminDisplay", "/admin/product/productManage.jsp");
-		mav.setViewName("/admin/outterMain");
+		mav.setViewName("/main/home");
 		return mav;
 	}	
 	
@@ -189,7 +189,7 @@ public class AdminProductController {
 		mav.addObject("productDTO",productDTO);
 		mav.addObject("pg", pg);
 		mav.addObject("adminDisplay", "/admin/product/productView.jsp");
-		mav.setViewName("/admin/outterMain");
+		mav.setViewName("/main/home");
 		return mav;
 	}
 	
@@ -198,7 +198,7 @@ public class AdminProductController {
 	public ModelAndView productUpload() {
 		ModelAndView mav = new ModelAndView();	
 		mav.addObject("adminDisplay", "/admin/product/productUpload.jsp");
-		mav.setViewName("/admin/outterMain");
+		mav.setViewName("/main/home");
 		return mav;
 	}
 
@@ -224,7 +224,7 @@ public class AdminProductController {
 
 		ModelAndView mav = new ModelAndView();	
 		mav.addObject("adminDisplay", "/admin/product/productUpload.jsp");
-		mav.setViewName("/admin/outterMain");
+		mav.setViewName("/main/home");
 		return mav;
 	}
 	//상품 삭제
@@ -233,6 +233,6 @@ public class AdminProductController {
 		productDAO.productDelete(product_name_no);
 		model.addAttribute("pg","1");
 		model.addAttribute("display", "/admin/product/productManage.jsp");
-		return "/admin/outterMain";
+		return "/main/home";
 	}
 }
