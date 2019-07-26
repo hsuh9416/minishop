@@ -368,23 +368,14 @@ textarea {
 }
 
 #iconSubject{
-	text-align: center;	
-	width: 250px;
-	height:50px;
 	color: #3e3e3e;
 	font-weight: bold;	
 }
 #iconActive{
-	text-align: center;	
-	width:160px;
-	height: 50px;
 	color: #007900;	
 	font-weight: bold;
 }
 #iconInactive{
-	text-align: center;	
-	width:160px;
-	height: 50px;
 	color: darkgrey;
 	font-weight: bold;	
 }

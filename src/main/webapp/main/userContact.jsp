@@ -19,11 +19,7 @@
 
 		<div class="row">
 			<div class="col">
-				<div id="kakao_map">
-					<div class="map_container">
-						<div id="map"></div>
-					</div>
-				</div>
+				<div id="staticMap" style="width:600px;height:350px;"></div>
 			</div>
 		</div>
 
@@ -53,4 +49,4 @@
 		</div>
 </div>
 
-
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=e210ac65c606d46bf6ac7db34452f668"></script>

@@ -33,7 +33,8 @@ public class AdminProductController {
 	public ModelAndView inventoryManage(@RequestParam(required=false,defaultValue="1") String pg) {
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("pg",pg);
-		mav.addObject("adminDisplay", "/admin/product/inventoryManage.jsp");
+		mav.addObject("location", "inventory");
+		mav.addObject("display", "/admin/product/inventoryManage.jsp");
 		mav.setViewName("/main/home");
 		return mav;
 	}	
@@ -95,15 +96,14 @@ public class AdminProductController {
 		mav.setViewName("jsonView");
 		return mav;	
 	}	
-	//재고 변동 모달띄우기
+	//재고 변동 팝업
 	@RequestMapping(value="/inventoryModify.do",method = RequestMethod.GET)
 	public ModelAndView inventoryModify(@RequestParam(required=false,defaultValue="1") String pg, String productID) {
 		ProductDTO productDTO = productDAO.getProductInfo(productID);
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("pg", pg);
 		mav.addObject("productDTO", productDTO);		
-		mav.addObject("adminDisplay", "/admin/product/inventoryModify.jsp");
-		mav.setViewName("/main/home");
+		mav.setViewName("/admin/product/inventoryModify");
 		return mav;
 	}	
 	//재고 변동 반영
@@ -119,7 +119,8 @@ public class AdminProductController {
 	public ModelAndView productManage(@RequestParam(required=false,defaultValue="1") String pg) {
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("pg",pg);
-		mav.addObject("adminDisplay", "/admin/product/productManage.jsp");
+		mav.addObject("location", "adminProduct");		
+		mav.addObject("display", "/admin/product/productManage.jsp");
 		mav.setViewName("/main/home");
 		return mav;
 	}	
@@ -188,7 +189,8 @@ public class AdminProductController {
 		ProductDTO productDTO = productDAO.getProduct_NameInfo(product_name_no);
 		mav.addObject("productDTO",productDTO);
 		mav.addObject("pg", pg);
-		mav.addObject("adminDisplay", "/admin/product/productView.jsp");
+		mav.addObject("location", "adminProduct");
+		mav.addObject("display", "/admin/product/productView.jsp");
 		mav.setViewName("/main/home");
 		return mav;
 	}
@@ -197,7 +199,8 @@ public class AdminProductController {
 	@RequestMapping(value="/productUpload.do",method=RequestMethod.GET)
 	public ModelAndView productUpload() {
 		ModelAndView mav = new ModelAndView();	
-		mav.addObject("adminDisplay", "/admin/product/productUpload.jsp");
+		mav.addObject("location", "adminProduct");	
+		mav.addObject("display", "/admin/product/productUpload.jsp");
 		mav.setViewName("/main/home");
 		return mav;
 	}
@@ -223,7 +226,7 @@ public class AdminProductController {
 		productDTO.setProduct_name_image(fileName);*/
 
 		ModelAndView mav = new ModelAndView();	
-		mav.addObject("adminDisplay", "/admin/product/productUpload.jsp");
+		mav.addObject("display", "/admin/product/productUpload.jsp");
 		mav.setViewName("/main/home");
 		return mav;
 	}

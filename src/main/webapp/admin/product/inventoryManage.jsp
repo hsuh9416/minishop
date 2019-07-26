@@ -3,28 +3,16 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-	<!--Bootsrap 4-->
-	<link rel="stylesheet" type="text/css" href="/mallproject/resources/bootstrap-4.3.1-dist/css/bootstrap.min.css">
-	
-    <!--Fontawesome CDN-->
-	<link rel="stylesheet" href="/mallproject/resources/fontawesome-free-5.9.0-web/css/all.css">
 
 	<!--Custom styles-->
-	<link rel="stylesheet" href="/mallproject/css/userproduct.css">
-
-<div class="productForm-container">
-	<div class="container-fluid">
- 	<!-- 실행 메뉴 -->
-		 <nav aria-label="breadcrumb">
-		  <ol class="breadcrumb">
-		    <li class="breadcrumb-item active"  aria-current="page">상품 재고 관리</li>	    
-		  </ol>
-		</nav>	
-	</div>
-</div>
-
-<div class="container-fluid">
-		<input type="hidden" id="pg" value="${pg}">
+	<link rel="stylesheet" href="/minishop/resources/custom/css/userproduct.css">
+	
+	<div class="col-lg-8">
+		 <div class="row" id="titleDiv">
+		 	<div class="col" align="center" style="padding-bottom: 20px;">
+				<h3>입점상품현황</h3>
+			</div>	
+		</div>
 		<div class="table-responsive">
 			<table id="inventoryTable" class="table justify-content-center">
 			  <thead class="thead-dark">
@@ -44,56 +32,48 @@
 			   	</tr>
 			   </tbody> 	  
 			</table>
+		</div>	
+		<div class="row">
+			<div class="col-12" align="left">
+				<a id="reloadIcon"><i class="fas fa-retweet">새로고침</i></a>
+			</div>
+		</div>	
+		<div class="row">
+			<div class="col-12" align="center">
+				<nav aria-label="Page navigation example">
+			  		<ul class="pagination justify-content-center" id="productPagingDiv"></ul>
+				</nav>			
+			</div>
 		</div>
-</div>
-<div class="container-fluid">
-	<div class="form-row">
-	<div class="justify-content-right">
-		<a id="reloadIcon"><i class="fas fa-retweet">새로고침</i></a>
+			
+		<form id="inventorySearch" name="inventorySearch">	
+			<input type="hidden" name="pg" id="pg" value="1">					
+			<div class="form-row justify-content-center" style="padding-top: 20px;padding-left:20px;">
+				<div class="form-group col-2">
+					<select name="searchOption" id="searchOption" class="form-control">
+						<option value="productid">등록코드</option>
+						<option value="productname">상품명</option>
+				        <option value="product_name">상품코드</option>
+				    </select>			
+				</div>
+				<div class="form-group col-4">
+				    <input type="text"  class="form-control" name="keyword" id="keyword" value="${keyword}" size="20">		
+				</div>
+				<div class="form-group col-2">
+				    <input type="button" id="inventorySearchBtn" class="btn btn-outline-dark" value="검색">		
+				</div>
+			</div>				
+		</form>		
+			
 	</div>
-	</div>
-</div>	
-<br><br>
-	<div class="container-fluid">
-		<nav aria-label="Page navigation example">
-		  <ul class="pagination justify-content-center" id="productPagingDiv"></ul>
-		</nav>
-	</div>
-
-<div class="container-fluid">
-	<form id="inventorySearch" name="inventorySearch">
-		<div class="form-row justify-content-center">
-		   <span>
-			<input type="hidden" name="pg" id="pg" value="1">
-			</span>
-			<span style="margin-left:20px;">
-			<select name="searchOption" id="searchOption" class="form-control">
-				<option value="productid">등록코드</option>
-				<option value="productname">상품명</option>
-		        <option value="product_name">상품코드</option>
-		    </select>
-		    </span>
-		    <span style="margin-left:20px;">
-		    <input type="text"  class="form-control" name="keyword" id="keyword" value="${keyword}" size="20">
-		    </span>
-		   <span style="margin-left:20px;">
-		    <input type="button" id="inventorySearchBtn" class="btn btn-outline-dark" value="검색">
-		   </span>
-	   
-		</div>
-  	</form>
-</div>  	
-	<!-- model personalQAform frame -->
-	<jsp:include page="/admin/product/inventoryModify.jsp"/>		
-	
+<div><input type="hidden" class="margin_down"></div>
 <script type="text/javascript" src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
-<script type="text/javascript" src="/mallproject/resources/bootstrap-4.3.1-dist/js/bootstrap.bundle.min.js"></script>
-<script type="text/javascript" src="/mapplroject/js/admin.product.js"></script>
+<script type="text/javascript" src="/minishop/resources/custom/js/admin.product.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
 	$.ajax({
 		type : 'post',
-		url : '/mallproject/admin/product/inventoryList.do',
+		url : '/minishop/admin/product/inventoryList.do',
 		data : 'pg='+$('#pg').val(),
 		dataType : 'json',
 		success : function(data){
@@ -129,21 +109,21 @@ $(document).ready(function(){
 					align : 'center',
 					html : instockdate				
 				})).appendTo($('#inventoryTable tbody'));			
-			});//each
+			});//each		
 			
-
 			$('#productPagingDiv').html(data.productPaging.pagingHTML);
 			
 			$('#inventoryTable').on('click','#subjectA',function(){
 					var productID = $(this).text();
-					window.location='/mallproject/admin/product/inventoryModify.do?productID='+productID+'&pg='+$('#pg').val();
+					var loginPop = window.open('/minishop/admin/product/inventoryModify.do?productID='+productID+'&pg='+$('#pg').val(),'재고수정','width=450,height=350,resizable=no');
+					//window.location='/minishop/admin/product/inventoryModify.do?productID='+productID+'&pg='+$('#pg').val();
 			});//제목 클릭시!
 		}//success
 	});//ajax
 });//onready
 
 function productPaging(pg){
-	location.href='/mallproject/admin/product/inventoryManage.do?pg='+pg;
+	location.href='/minishop/admin/product/inventoryManage.do?pg='+pg;
 }
 
 function productSearchPaging(pg){
@@ -159,7 +139,7 @@ $('#inventorySearchBtn').click(function(event,str){
 	else
 		$.ajax({
 			type : 'post',
-			url : '/mallproject/admin/product/inventorySearch.do',
+			url : '/minishop/admin/product/inventorySearch.do',
 			data : {'pg':$('input[name=pg]').val(), 
 				   'searchOption':$('#searchOption option:selected').val(),
 				   'keyword':$('#keyword').val()},
@@ -203,7 +183,8 @@ $('#inventorySearchBtn').click(function(event,str){
 				
 				$('#inventoryTable').on('click','#subjectA',function(){
 						var productID = $(this).text();
-						window.location='/mallproject/admin/product/inventoryModify.do?productID='+productID+'&pg='+$('#pg').val();
+						var loginPop = window.open('/minishop/admin/product/inventoryModify.do?productID='+productID+'&pg='+$('#pg').val(),'재고수정','width=450,height=350,resizable=no');
+						//window.location='/minishop/admin/product/inventoryModify.do?productID='+productID+'&pg='+$('#pg').val();
 				});//제목 클릭시!
 			}//success
 		});//에이작스	

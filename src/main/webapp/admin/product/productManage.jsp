@@ -3,28 +3,15 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-	<!--Bootsrap 4-->
-	<link rel="stylesheet" type="text/css" href="/mallproject/resources/bootstrap-4.3.1-dist/css/bootstrap.min.css">
-	
-    <!--Fontawesome CDN-->
-	<link rel="stylesheet" href="/mallproject/resources/fontawesome-free-5.9.0-web/css/all.css">
-
 	<!--Custom styles-->
-	<link rel="stylesheet" href="/mallproject/css/userproduct.css">
-
-<div class="productForm-container">
-	<div class="container-fluid">
- 	<!-- 실행 메뉴 -->
-		 <nav aria-label="breadcrumb">
-		  <ol class="breadcrumb">
-		    <li class="breadcrumb-item active"  aria-current="page">상품 등록 관리</li>
-			<li class="breadcrumb-item"><a href="/mallproject/admin/product/productUpload.do">개별 상품 등록</a></li>				    	    
-		  </ol>
-		</nav>	
-	</div>
-</div>
-<div class="container-fluid">
-		<input type="hidden" id="pg" value="${pg}">
+	<link rel="stylesheet" href="/minishop/resources/custom/css/userproduct.css">
+	<div class="col-lg-8">
+		<input type="hidden" id="pg" value="${pg}">	
+		 <div class="row" id="titleDiv">
+		 	<div class="col" align="center" style="padding-bottom: 20px;">
+				<h3>등록상품현황</h3>
+			</div>	
+		</div>
 		<div class="table-responsive">
 			<table id="productTable" class="table justify-content-center">
 			  <thead class="thead-dark">
@@ -45,52 +32,43 @@
 			   	</tr>
 			   </tbody> 	  
 			</table>
+		</div>				
+		<div class="row">
+			<div class="col-12" align="center">
+				<nav aria-label="Page navigation example">
+			  		<ul class="pagination justify-content-center" id="productPagingDiv"></ul>
+				</nav>			
+			</div>
 		</div>
-</div>
 
-<div class="container-fluid">
-		<nav aria-label="Page navigation">
-		  <ul class="pagination justify-content-center" id="productPagingDiv"></ul>
-		</nav>
-</div>
-<br><br>
-
- 
-<div class="container-fluid">
-	<form id="productSearch" name="productSearch">
-		<div class="form-row justify-content-center">
-		   <span>
-			<input type="hidden" name="pg" id="pg" value="1">
-			</span>
-			<span style="margin-left:20px;">
-			<select name="searchOption" id="searchOption" class="form-control">
-		        <option value="productid">등록코드</option>			
-		        <option value="product_name_no">상품코드</option>
-				<option value="productname">상품명</option>
-		    </select>
-		    </span>
-		    <span style="margin-left:20px;">
-		    <input type="text"  class="form-control" name="keyword" id="keyword" value="${keyword}" size="20">
-		    </span>
-		   <span style="margin-left:20px;">
-		    <input type="button" id="productSearchBtn" class="btn btn-outline-dark" value="검색">
-		   </span>
-		   <span style="margin-left:20px;">
-		    <input type="button" id="goUpload" class="btn btn-outline-dark" value="상품 등록">
-		   </span>	   
-		</div>
-  	</form>
-</div>  
-
+		<form id="inventorySearch" name="inventorySearch">	
+			<input type="hidden" name="pg" id="pg" value="1">					
+			<div class="form-row justify-content-center" style="padding-top: 20px;padding-left:20px;">
+				<div class="form-group col-2">
+					<select name="searchOption" id="searchOption" class="form-control">
+				        <option value="productid">등록코드</option>			
+				        <option value="product_name_no">상품코드</option>
+						<option value="productname">상품명</option>
+				    </select>	
+						</div>
+				<div class="form-group col-4">
+				    <input type="text"  class="form-control" name="keyword" id="keyword" value="${keyword}" size="20">		
+				</div>
+				<div class="form-group col-4">
+					<input type="button" id="productSearchBtn" class="btn btn-outline-dark" value="검색">
+					<input type="button" id="goUpload" class="btn btn-outline-dark" value="상품 등록">				    	
+				</div>
+			</div>				
+		</form>	
+	</div>	 
 <div><input type="hidden" class="margin_down"></div>	
 <script type="text/javascript" src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
-<script type="text/javascript" src="/mallproject/resources/bootstrap-4.3.1-dist/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript" src="/mapplroject/js/admin.product.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
 	$.ajax({
 		type : 'post',
-		url : '/mallproject/admin/product/productList.do',
+		url : '/minishop/admin/product/productList.do',
 		data : 'pg='+$('#pg').val(),
 		dataType : 'json',
 		success : function(data){
@@ -113,7 +91,7 @@ $(document).ready(function(){
 				}))).append($('<td/>',{
 					align: 'center'
 				}).append($('<img/>',{
-					src: '/mallproject/storage/'+items.product_name_image,
+					src: '/minishop/storage/'+items.product_name_image,
 					width: '100',
 					height: '100',
 					id : 'imageA'
@@ -140,7 +118,7 @@ $(document).ready(function(){
 			
 			$('#productTable').on('click','#imageA',function(){
 					var product_name_no = $(this).parent().prev().text();
-					window.location='/mallproject/admin/product/productView.do?product_name_no='+product_name_no+'&pg='+$('#pg').val();
+					window.location='/minishop/admin/product/productView.do?product_name_no='+product_name_no+'&pg='+$('#pg').val();
 			});//제목 클릭시!
 			
 
@@ -150,7 +128,7 @@ $(document).ready(function(){
 				else {
 					var result =confirm('해당 상품을 정말로 삭제하시겠습니까? 삭제시에는 재고관리 목록에서도 제거됩니다.');
 					if(result){
-						window.location='/mallproject/admin/product/productDelete.do?product_name_no='+$(this).text();					
+						window.location='/minishop/admin/product/productDelete.do?product_name_no='+$(this).text();					
 					}
 
 				}
@@ -162,7 +140,7 @@ $(document).ready(function(){
 });//onready
 
 function productPaging(pg){
-	location.href='/mallproject/admin/product/productManage.do?pg='+pg;
+	location.href='/minishop/admin/product/productManage.do?pg='+pg;
 }
 
 function productSearchPaging(pg){
@@ -178,7 +156,7 @@ $('#productSearchBtn').click(function(event,str){
 	else
 		$.ajax({
 			type : 'post',
-			url : '/mallproject/admin/product/productSearch.do',
+			url : '/minishop/admin/product/productSearch.do',
 			data : {'pg':$('input[name=pg]').val(), 
 				   'searchOption':$('#searchOption option:selected').val(),
 				   'keyword':$('#keyword').val()},
@@ -203,7 +181,7 @@ $('#productSearchBtn').click(function(event,str){
 					}))).append($('<td/>',{
 						align: 'center'
 					}).append($('<img/>',{
-						src: '/mallproject/storage/'+items.product_name_image,
+						src: '/minishop/storage/'+items.product_name_image,
 						width: '100',
 						height: '100',
 						id : 'imageA'
@@ -230,7 +208,7 @@ $('#productSearchBtn').click(function(event,str){
 				
 				$('#productTable').on('click','#imageA',function(){
 						var product_name_no = $(this).parent().prev().text();
-						window.location='/mallproject/admin/product/productView.do?product_name_no='+product_name_no+'&pg='+$('#pg').val();
+						window.location='/minishop/admin/product/productView.do?product_name_no='+product_name_no+'&pg='+$('#pg').val();
 				});//제목 클릭시!
 				
 				$('#productTable').on('click','#checkA',function(){
@@ -239,7 +217,7 @@ $('#productSearchBtn').click(function(event,str){
 					else {
 						var result =confirm('해당 상품을 정말로 삭제하시겠습니까? 삭제시에는 재고관리 목록에서도 제거됩니다.');
 						if(result){
-							window.location='/mallproject/admin/product/productDelete.do?product_name_no='+$(this).text();					
+							window.location='/minishop/admin/product/productDelete.do?product_name_no='+$(this).text();					
 						}
 
 					}
@@ -251,6 +229,6 @@ $('#productSearchBtn').click(function(event,str){
 });
 
 $('#goUpload').click(function(){
-	window.load='/mallproject/admin/product/productUpload.do';
+	window.load='/minishop/admin/product/productUpload.do';
 });
 </script>

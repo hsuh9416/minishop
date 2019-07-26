@@ -42,16 +42,28 @@
 				<div class="row">
 					<div class="col-lg-12 text-right">
 						<div class="logo_container">
-							<a href="/minishop/main/home.do">Kissin'<span>BUGs</span></a>
+							<a href="/minishop/admin/adminHome.do">Kissin'<span>BUGs</span></a>
 						</div>
 						<nav class="navbar">
 							<ul class="navbar_menu">
-								<li><a href="/minishop/main/home.do">메인</a></li>
-								<li><a href="#">상점관리</a></li>								
-								<li><a href="#">상품관리</a></li>
-								<li><a href="#">고객관리</a></li>
-								<li><a href="#">주문관리</a></li>								
-								<li><a href="#">게시판관리</a></li>
+								<li class="nav-item">
+									<a href="/minishop/admin/adminHome.do">메인</a>
+								</li>
+								<li class="nav-item">
+									<a href="/minishop/admin/shop/adminManage.do">상점관리</a>
+								</li>								
+								<li class="nav-item">
+							        <a href="/minishop/admin/product/inventoryManage.do">상품관리</a>														
+								</li>
+								<li class="nav-item">
+									<a href="/minishop/admin/user/userManage.do">고객관리</a>
+								</li>
+								<li class="nav-item">
+									<a href="/minishop/admin/order/orderManage.do">주문관리</a>
+								</li>								
+								<li class="nav-item">
+									<a href="/minishop/admin/qa/qaManage.do">문의글관리</a>
+								</li>
 							</ul>
 							<div class="hamburger_container">
 								<i class="fa fa-bars" aria-hidden="true"></i>
@@ -79,12 +91,43 @@
 							<li><a id="goAdminManage" href="/minishop/admin/shop/adminManage.do"><i class="fa fa-address-card" aria-hidden="true"></i>내 정보</a></li>														
 					</ul>
 				</li>
-				<li class="menu_item"><a href="/minishop/main/home.do">메인</a></li>
-				<li class="menu_item"><a href="#">상점관리</a></li>								
-				<li class="menu_item"><a href="#">상품관리</a></li>
-				<li class="menu_item"><a href="#">고객관리</a></li>
-				<li class="menu_item"><a href="#">주문관리</a></li>								
-				<li class="menu_item"><a href="#">게시판관리</a></li>
+				<li class="menu_item"><a href="/minishop/admin/adminHome.do">메인</a></li>
+				<li class="menu_item has-children">
+					<a href="#">
+						상점관리
+						<i class="fa fa-angle-down"></i>					
+					</a>
+					<ul class="menu_selection">
+							<li><a href="/minishop/admin/shop/adminManage.do"><i class="fas fa-store-alt"></i>상점정보</a></li>
+							<li><a href="/minishop/admin/shop/salesInfo.do"><i class="fas fa-won-sign"></i>매출현황</a></li>														
+					</ul>							
+				</li>								
+				<li class="menu_item has-children">
+					<a href="#">
+						상품관리
+						<i class="fa fa-angle-down"></i>					
+					</a>
+					<ul class="menu_selection">
+							<li><a href="/minishop/admin/product/inventoryManage.do"><i class="fas fa-dolly-flatbed" aria-hidden="true"></i>입점재고관리</a></li>
+							<li><a href="/minishop/admin/product/productManage.do"><i class="fa fa-address-card" aria-hidden="true"></i>등록상품관리</a></li>														
+					</ul>				
+				</li>
+				<li class="menu_item has-children">
+					<a href="#">
+						고객관리
+						<i class="fa fa-angle-down"></i>					
+					</a>
+					<ul class="menu_selection">
+							<li><a href="/minishop/admin/user/userManage.do"><i class="fas fa-users"></i>고객정보관리</a></li>
+							<li><a href="/minishop/admin/user/personalQAManage.do"><i class="fas fa-user-secret"></i>1:1문의관리</a></li>														
+					</ul>						
+				</li>
+				<li class="menu_item">
+					<a href="/minishop/admin/order/orderList.do">주문관리</a>					
+				</li>								
+				<li class="menu_item">
+					<a href="/minishop/admin/qa/qaManage.do">문의글관리</a>
+				</li>
 			</ul>
 		</div>
 	</div>

@@ -22,7 +22,7 @@
 		<div class="container-fluid">
 		 <form name="reviewViewForm">	
 			<input type="hidden" name="pg" value="${reviewBoardDTO.pg}"/>
-			<input type="hidden" name="seq" value="${reviewBoardDTO.review_seq }"/>
+			<input type="hidden" name="seq" value="${reviewBoardDTO.review_seq}"/>
 			<input type="hidden" name="pseq" value="${reviewBoardDTO.review_seq}"/>
 			<table id="viewTable" class="table justify-content-center">
 			  <thead class="thead-dark">
@@ -47,7 +47,7 @@
 			   		</tr>
 			   		<tr>
 			   			<td colspan="5" class="align-middle">
-			   				<textarea></textarea>
+			   				<textarea>${reviewBoardDTO.review_content}</textarea>
 			   			</td>
 			   		</tr>		   
 			   </tbody>
@@ -71,6 +71,6 @@
    </div>
 <script type="text/javascript" src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script type="text/javascript" src="/minishop/resources/bootstrap4/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js"></script>
 <script type="text/javascript" src="/minishop/js/board.review.js"></script>
 <script type="text/javascript"></script>

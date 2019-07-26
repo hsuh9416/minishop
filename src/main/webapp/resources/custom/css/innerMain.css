@@ -47,3 +47,83 @@ div#introduceImg{
 	background-size: cover;
 	background-position: center center;	
 }
+
+/* header 드롭다운 설정 */
+.header_menu
+{
+	display: inline-block;
+	position: relative;
+	min-width: 50px;
+	padding-left: 20px;
+	text-align: center;
+	vertical-align: middle;
+	background: #1e1e27;
+}
+.header_menu > a
+{
+	display: block;
+	color: #b5aec4;
+	font-weight: 400;
+	height: 50px;
+	line-height: 50px;
+	font-size: 13px;
+}
+.header_menu > a > i
+{
+	margin-left: 8px;
+}
+.header_menu:hover .header_menu_selection
+{
+	visibility: visible;
+	opacity: 1;
+	top: 100%;
+}
+.header_menu_selection
+{
+	display: block;
+	position: absolute;
+	right: 0;
+	top: 120%;
+	margin: 0;
+	width: 100%;
+	background: #FFFFFF;
+	visibility: hidden;
+	opacity: 0;
+	z-index: 1;
+	box-shadow: 0 0 25px rgba(63, 78, 100, 0.15);
+	-webkit-transition: opacity 0.3s ease;
+	-moz-transition: opacity 0.3s ease;
+	-ms-transition: opacity 0.3s ease;
+	-o-transition: opacity 0.3s ease;
+	transition: all 0.3s ease;
+}
+.header_menu_selection li
+{
+	padding-left: 10px;
+	padding-right: 10px;
+	line-height: 50px;
+}
+.header_menu_selection li a
+{
+	display: block;
+	color: #232530;
+	border-bottom: solid 1px #dddddd;
+	font-size: 14px;
+	-webkit-transition: all 0.3s ease;
+	-moz-transition: all 0.3s ease;
+	-ms-transition: all 0.3s ease;
+	-o-transition: all 0.3s ease;
+	transition: all 0.3s ease;
+}
+.header_menu_selection li a:hover
+{
+	color: #b5aec4;
+}
+.header_menu_selection li:last-child a
+{
+	border-bottom: none;
+}
+.header_menu_selection li a i
+{
+	margin-right: 10px;
+}

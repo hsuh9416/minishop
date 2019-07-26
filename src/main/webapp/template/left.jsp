@@ -20,7 +20,7 @@
 			     </div>			
 			</c:if>
 			<c:if test="${location=='adminHome'}">
-		        <h2></h2>
+		        <h2>빠른 조회</h2>
 			     <div class="list-group list-group-lg">
 			          <a href="/minishop/admin/shop/salesInfo.do" class="list-group-item">매출현황</a>
 			          <a href="/minishop/admin/order/orderList.do" class="list-group-item">고객주문 조회</a>			          
@@ -72,8 +72,25 @@
 			          <a href="javascript:history.back()" class="list-group-item">돌아가기</a>
 			     </div>					
 			</c:if>			
-											
+
+			<c:if test="${location=='inventory'}">
+		        <h2>입점상품관리</h2>			
+			     <div class="list-group list-group-lg">	     
+			          <a href="/minishop/admin/product/productManage.do" class="list-group-item">등록상품관리</a>				          				     
+			          <a href="javascript:history.back()" class="list-group-item">돌아가기</a>
+			     </div>					
+			</c:if>	
+
+			<c:if test="${location=='adminProduct'}">
+		        <h2>등록상품관리</h2>			
+			     <div class="list-group list-group-lg">	     
+			          <a href="/minishop/admin/product/inventoryManage.do" class="list-group-item">입점상품관리</a>
+			          <a href="/minishop/admin/product/productUpload.do" class="list-group-item">상품등록</a>		          				          				     
+			          <a href="javascript:history.back()" class="list-group-item">돌아가기</a>
+			     </div>					
+			</c:if>				
+			
 		</div>		
-	</div>
+	</div>		
       <!-- /.col-lg-3 -->		
 	</c:if>	      

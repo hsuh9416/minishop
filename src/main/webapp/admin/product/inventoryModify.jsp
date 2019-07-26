@@ -1,59 +1,52 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-   <!--Made with love by Mutiullah Samim -->
-   
-	<!--Bootsrap 4-->
-	<link rel="stylesheet" type="text/css" href="/mallproject/resources/bootstrap-4.3.1-dist/css/bootstrap.min.css">
-	
-    <!--Fontawesome CDN-->
-	<link rel="stylesheet" href="/mallproject/resources/fontawesome-free-5.9.0-web/css/all.css">
-
-	<!--Custom styles-->
-	<link rel="stylesheet" href="/mallproject/css/userproduct.css">
-	
-<div class="productForm-container">
-	<div class="container-fluid">
- 	<!-- 실행 메뉴 -->
-		 <nav aria-label="breadcrumb">
-		  <ol class="breadcrumb">
-		    <li class="breadcrumb-item active"  aria-current="page">상품 재고 관리</li>	    
-		  </ol>
-		</nav>	
-	</div>
-</div>
-<div class="modifyForm-container">
+ <link rel="stylesheet" type="text/css" href="/minishop/resources/bootstrap4/css/bootstrap.min.css">
+ <link rel="stylesheet" type="text/css" href="/minishop/resources/fontawesome5/css/all.css">
+ 	<link rel="stylesheet" href="/minishop/resources/custom/css/userproduct.css">
+<style>
+#invMod{
+	padding-top:20px;
+}
+</style>
+<div id="invMod" class="container">
    <input type="hidden" id="productID" value="${productDTO.productID}">
    <input type="hidden" id="product_name_no" value="${productDTO.product_name_no}">   
    <input type="hidden" id="pg " value="${pg}">
-		<div class="form-row justify-content-center">	
-			<div class="form-group col-md-3">
-				<i id="iconGeneral" class="fas fa-dolly-flatbed">상품 등록코드</i><span><strong>${productDTO.productID}</strong></span>
-			</div>
+		<div class="form-row">	
+			<div class="form-group col-12">
+				<h4 align="center">[상품 수량 및 단가 변경]</h4>
+			</div>		
+
 		</div>
+		<div class="form-row">	
+			<div class="form-group col-12" align="right">
+				<i id="iconGeneral" class="fas fa-dolly-flatbed">등록코드</i> : ${productDTO.productID}
+			</div>
+		</div>		
 		<div class="form-row justify-content-center">						
-			<div class="form-group col-md-2">
+			<div class="form-group col-4">
 				<label for="beforeVal"><strong>재고 반영 전</strong></label>			
 				<input type="number" class="form-control-plaintext" id="beforeVal" value="${productDTO.stock}" readonly>	
 			</div>
-			<div class="form-group col-md-2">
+			<div class="form-group col-4">
 				<label for="stock"><strong>재고 반영 후</strong></label>			
 				<input type="number" class="form-control-plaintext" id="stock" value="" readonly>				
 			</div>				
-			<div class="form-group col-md-3">
+			<div class="form-group col-3">
 				<label for="numberUpDown"><strong>재고증감</strong></label>		
 				<input type="number"  class="form-control" id="numberUpDown" value="0">	
 			</div>															  		  	
 		</div>	
  		<div class="form-row justify-content-center">	
- 			<div class="form-group col-md-2">
+ 			<div class="form-group col-4">
 				<label for="beforeCost"><strong>단가 반영 전</strong></label>			
 				<input type="number" class="form-control" id="beforeCost" value="${productDTO.unitcost}" readonly>	
 			</div>
-			<div class="form-group col-md-2">
+			<div class="form-group col-4">
 				<label for="unitcost"><strong>단가 반영 후</strong></label>			
 				<input type="number" class="form-control" id="unitcost" value="" readonly>				
 			</div>				
-			<div class="form-group col-md-3">
+			<div class="form-group col-4">
 				<label for="costUpDown"><strong>단가증감</strong></label>		
 				<input type="number"  class="form-control" id="costUpDown" value="0">					  		  	
 			</div>	
@@ -68,9 +61,9 @@
 			</div>		
 <div id="modifyResult"></div>								
 </div>
+
 <script type="text/javascript" src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
-<script type="text/javascript" src="/mallproject/resources/bootstrap-4.3.1-dist/js/bootstrap.bundle.min.js"></script>
-<script type="text/javascript" src="/mapplroject/js/admin.product.js"></script>
+<script type="text/javascript" src="/minishop/resources/bootstrap4/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript">
 $(function(){
 	var beforeVal = parseInt('${productDTO.stock}',10);
@@ -115,13 +108,14 @@ $('#doModify').click(function(){
 	if(result){
 		$.ajax({
 			type : 'post',
-			url : '/mallproject/admin/product/doModify.do',
+			url : '/minishop/admin/product/doModify.do',
 			data : {'productID':$('#productID').val(),
 					'product_name_no' :$('#product_name_no').val(),
 					'stock':$('#stock').val(), 
 				   'unitcost':$('#unitcost').val()},
 			success : function(){
-				window.location='/mallproject/admin/product/inventoryManage.do';
+				opener.location.reload();
+				window.close();
 			}			
 		});
 	}
