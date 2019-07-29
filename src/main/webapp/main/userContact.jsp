@@ -1,25 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-		<div class="col-lg-11" >
-			<div class="row">			
-				<!-- Breadcrumbs -->
-			<div class="container-fluid">
-		 	<!-- 실행 메뉴 -->
-				 <nav aria-label="breadcrumb">
-				  <ol class="breadcrumb">
-				    <li class="breadcrumb-item"><a href="/mallproject/board/review/reviewList.do">찾아 오시는 길</a></li>
-				  </ol>
-				</nav>	
-			</div>
+		<div class="col-lg-8" >
 
-			</div>
+		<div class="row" id="titleDiv">
+		 	<div class="col" align="center" style="padding-bottom: 20px;">
+		 		<h3>찾아 오시는 길</h3>		
+		 	</div>
+		</div>
 
 		<!-- Map Container -->
 
 		<div class="row">
 			<div class="col">
-				<div id="staticMap" style="width:600px;height:350px;"></div>
+				<div id="staticMap" style="width:100%;height:350px;"></div>
 			</div>
 		</div>
 
@@ -49,4 +43,5 @@
 		</div>
 </div>
 
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=e210ac65c606d46bf6ac7db34452f668"></script>
+  <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=e210ac65c606d46bf6ac7db34452f668"></script>
+  <script type="text/javascript" src="/minishop/resources/custom/js/map.kakao.js"></script>

@@ -300,7 +300,8 @@ public class MemberController {
 	@ResponseBody
 	public String modify(@ModelAttribute MemberDTO memberDTO,HttpSession session) {
 		int result = memberDAO.modify(memberDTO);
-		session.setAttribute("memberDTO", memberDTO);
+		MemberDTO renew = memberDAO.getUser(memberDTO.getId());
+		session.setAttribute("memberDTO", renew);
 		if(result==1) return "success";		
 		else return "fail";
 	}
@@ -328,7 +329,7 @@ public class MemberController {
 	@ResponseBody
 	public ModelAndView getUserInfo(HttpSession session) {;
 		Map<String,Object> map = new HashMap<String,Object>();
-		MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
+		MemberDTO memberDTO = (MemberDTO)session.getAttribute("memberDTO");
 		map = tradingDAO.getUserInfo(memberDTO.getId());		
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("map", map);

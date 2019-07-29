@@ -5,21 +5,12 @@
 
 	<link rel="stylesheet" type="text/css" href="/minishop/resources/custom/css/userboard.css">
 
-<div class="boardList-container">
-	<div class="container-fluid">
- 	<!-- 실행 메뉴 -->
-		 <nav aria-label="breadcrumb">
-		  <ol class="breadcrumb">
-		    <li class="breadcrumb-item"><a href="/minishop/board/review/reviewList.do">후기 게시판</a></li>
-		    <li class="breadcrumb-item active"  aria-current="page">문의 게시판</li>	    
-		  </ol>
-		</nav>	
-	</div>
-</div>
-<div class="col-lg-8">
-
-</div>
-<div class="container-fluid">
+	<div class="col-lg-8">
+	 	<div class="row" id="titleDiv">
+	 		<div class="col" align="center" style="padding-bottom: 20px;">
+	 			<h3>문의 게시판</h3>		
+	 		</div>
+		</div>
 		<input type="hidden" id="pg" value="${pg}">
 		<div class="table-responsive">
 			<table id="qaTable" class="table justify-content-center">
@@ -41,15 +32,12 @@
 			   	</tr>
 			   </tbody> 	  
 			</table>
-		</div>
-</div>
-
-<div class="container-fluid">
-		<nav aria-label="Page navigation example">
-		  <ul class="pagination justify-content-center" id="boardPagingDiv"></ul>
-		</nav>
-</div>
-<br><br>
+		</div>		
+		<div class="container-fluid">
+				<nav aria-label="Page navigation example">
+				  <ul class="pagination justify-content-center" id="boardPagingDiv"></ul>
+				</nav>
+		</div>		
 <div class="container-fluid">
 	<form id="qaSearch" name="qaSearch">
 		<div class="form-row justify-content-center">
@@ -71,7 +59,9 @@
 		   </span>
 		</div>
   	</form>
-</div>  	
+</div>  			
+	</div>
+
 <script type="text/javascript" src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script type="text/javascript"  src="/minishop/resources/bootstrap4/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript" src="/minishop/resources/custom/js/board.qa.js"></script>

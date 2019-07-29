@@ -46,7 +46,7 @@
  	 	<!-- Footer -->
 			<jsp:include page="/template/footer.jsp"/>
 </body>
-  <!-- Bootstrap core JavaScript -->
+  <!-- JavaScript --> 
   <script type="text/javascript" src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
   <script type="text/javascript" src="/minishop/resources/bootstrap4/js/bootstrap.bundle.min.js"></script>
   <script type="text/javascript" src="/minishop/resources/template/js/custom.js"></script> 

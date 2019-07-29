@@ -47,7 +47,7 @@ public class QAManageController {
 		int totalA = boardDAO.getAdminQATotalA();
 		map.put("startNum", startNum+"");
 		map.put("endNum", endNum+"");		
-		List<QAboardDTO> qalist = boardDAO.qaManageList(startNum, map);
+		List<QAboardDTO> qalist = boardDAO.qaManageList(map);
 	
 		//페이징 처리
 		BoardPaging boardPaging = new BoardPaging();

@@ -111,6 +111,12 @@ public class MemberDAOImpl implements MemberDAO {
 		return sqlSession.selectOne("memberSQL.findLostId",map);
 	}
 
+	//회원 조회
+	@Override
+	public MemberDTO getUser(String id) {
+		return sqlSession.selectOne("memberSQL.getMember",id);//재반환
+	}
+
 
 
 

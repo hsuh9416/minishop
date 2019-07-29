@@ -135,12 +135,12 @@ else {alert('인증 실패하였습니다. 새로운 인증 번호를 받으시�
 }
 	$('#confirmDiv').hide();	
 });
-/*자식창에서 부모창으로 제어하는 메소드 현재 사용불가
+
 $('#resetEmailBtn').click(function(){
-	$('#email1',window.opener).val($('#changechangeEmail1').val());
-	$('#email2',window.opener).val($('#changechangeEmail2').val());
+	$('#email1',opener.document).val($('#changeEmail1').val());
+	$('#email2',opener.document).val($('#changeEmail2').val());
 	window.close();
 
 });
-*/
+
 </script>

@@ -8,14 +8,14 @@
 	<!--Custom styles-->
 	<link rel="stylesheet" href="/minishop/resources/custom/css/userboard.css">
 	<div class="col-lg-8">
-	
+	<input type="hidden" id="pg" value="${pg}"/>
 		 <div class="row" id="titleDiv">
 		 	<div class="col" align="center" style="padding-bottom: 20px;">
 				<h3>답변대기중인 문의글 현황</h3>
 			</div>	
 		</div>
 		
-		<div class="table-responsive">
+		<div class="table">
 			<table id="qaTable" class="table justify-content-center">
 			  <thead class="thead-dark">
 			    <tr>
@@ -24,8 +24,7 @@
 					<th scope="col">작성자</th>
 					<th scope="col">상품번호</th>					
 					<th scope="col">작성일</th>
-					<th scope="col">구분</th>						
-					<th scope="col">답변</th>					
+					<th scope="col">구분</th>					
 			  </tr>
 			   </thead>  
 			   <tbody>
@@ -42,29 +41,7 @@
 			  <ul class="pagination justify-content-center" id="boardPagingDiv"></ul>
 			</nav>
 	</div>
-
-<div class="container-fluid">
-	<form id="qaSearch" name="qaSearch">
-		<div class="form-row justify-content-center">
-		   <span>
-			<input type="hidden" name="pg" id="pg" value="1">
-			</span>
-			<span style="margin-left:20px;">
-			<select name="searchOption" id="searchOption" class="form-control">
-				<option value="name">작성자</option>
-				<option value="user_id">아이디</option>
-		        <option value="qa_subject">제목</option>
-		    </select>
-		    </span>
-		    <span style="margin-left:20px;">
-		    <input type="text"  class="form-control" name="keyword" id="keyword" value="${keyword}" size="20">
-		    </span>
-		   <span style="margin-left:20px;">
-		    <input type="button" id="qaSearchBtn" class="btn btn-outline-dark" value="검색">
-		   </span>
-		</div>
-  	</form>
-</div>  			
+ 			
 	</div>	
 
 
@@ -124,9 +101,6 @@ $(document).ready(function(){
 				})).append($('<td/>',{
 					align : 'center',
 					html : state			
-				})).append($('<td/>',{
-					align : 'center',
-					html : isreplied					
 				})).appendTo($('#qaTable tbody'));
 			});//each
 			

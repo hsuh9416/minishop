@@ -61,7 +61,7 @@ $('#loginPwd').focusout(function(){
 					else if(data=='adminLogin'){
 						var result = confirm('관리자 로그인을 하시겠습니까?');
 						if(result){alert('로그인하셨습니다. 관리자 화면으로 이동합니다.');
-							window.location='/minishop/admin/outterMain.do';}
+							window.location='/minishop/admin/adminHome.do';}
 						else {
 							window.location='/minishop/admin/adminLogout.do';
 						}

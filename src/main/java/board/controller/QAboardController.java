@@ -62,6 +62,7 @@ public class QAboardController {
 	public ModelAndView qaList(@RequestParam(required=false,defaultValue="1") String pg) {
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("pg",pg);
+		mav.addObject("location","qaList");
 		mav.addObject("display", "/board/qa/qaList.jsp");
 		mav.setViewName("/main/home");
 		return mav;

@@ -29,13 +29,13 @@ var isreplied ='미답변';
 $('#isSecret').click(function(){
 	//alert($('#qa_state').val());
 	if($('#qa_state').val()=='0'){
-		$('#isSecret i').removeClass('fas fa-lock');
-		$('#isSecret i').addClass('fas fa-lock-open');	
+		$('#isSecret i').removeClass('fas fa-lock-open');
+		$('#isSecret i').addClass('fas fa-lock');	
 		$('#qa_state').val('1');
 	}
 	else if($('#qa_state').val()=='1'){
-		$('#isSecret i').removeClass('fas fa-lock-open');	
-		$('#isSecret i').addClass('fas fa-lock');	
+		$('#isSecret i').removeClass('fas fa-lock');	
+		$('#isSecret i').addClass('fas fa-lock-open');		
 		$('#qa_state').val('0');		
 	}
 });
@@ -157,7 +157,7 @@ $('#qaSearchBtn').click(function(event,str){
 	}
 });
 
-$('#qaModifyBtn').click(function(){
+$('#qaModifyFormBtn').click(function(){
 	window.location='/minishop/board/qa/qaModifyForm.do?qa_seq='+$('#qa_seq').val()+'&pg='+$('#pg').val();
 });
 
@@ -167,11 +167,15 @@ $('#qaDeleteBtn').click(function(){
 
 $('#qaModifyBtn').click(function(){
 	$('#missingMod').empty();
-	if($('#qa_subject').val()=='') $('#missingMod').append(notitleMsg).alert();
-	else if($('#qa_content').val()=='') $('#missingMod').append(noContentMsg).alert();
-	else if($('#qa_pwd').val()=='') $('#missingMod').append(emptyPwdMsg).alert();
-	else if($('#qa_pwd').val()!=$('#qa_check').val()) $('#missingMod').append(missMatchingPwdMsg).alert();
-	else{	
+	if($('#qa_subject').val()==''){ 
+		$('#missingMod').append(notitleMsg).alert();
+	}else if($('#qa_content').val()==''){
+		$('#missingMod').append(noContentMsg).alert();
+	}else if($('#qa_pwd').val()==''){
+		$('#missingMod').append(emptyPwdMsg).alert();
+	}else if($('#qa_pwd').val()!=$('#qa_check').val()){
+		$('#missingMod').append(missMatchingPwdMsg).alert();
+	}else{	
 		$.ajax({
 			type : 'post',
 			url : '/minishop/board/qa/qaModify.do',
@@ -185,7 +189,7 @@ $('#qaModifyBtn').click(function(){
 				alert('문의 게시글이 수정되었습니다.');
 				window.location='/minishop/board/qa/qaView.do?qa_seq='+$('#qa_seq').val()+'&pg='+$('#pg').val();}
 		});
-	}
-});
+	}//else
+});//qaModify
 
 

@@ -37,5 +37,7 @@ public interface MemberDAO {
 
 	MemberDTO findLostId(Map<String, String> map);
 
+	MemberDTO getUser(String id);
+
 
 } 

@@ -4,16 +4,16 @@
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <link rel="stylesheet" type="text/css" href="/minishop/resources/custom/css/member.css">
-
+<link rel="stylesheet" type="text/css" href="/minishop/resources/fontawesome5/css/all.css">
 	<!-- 회원 정보 화면 -->
 	<div class="col-lg-8">
 	 	<div class="row" id="titleDiv">
 	 		<div class="col" align="center" style="padding-bottom: 20px;">
-	 			<h3>로그인</h3>		
+	 			<h3>회원 정보</h3>		
 	 		</div>
 		</div>	 	
-		<div class="table-resposive">
-			<table id="boardTable" class="table justify-content-center">
+		<div class="table">
+			<table id="userTable" class="table justify-content-center">
 			  <thead class="thead-light">
 			    <tr>
 					<th scope="col" colspan="4">${memberDTO.name} 님 방문을 환영합니다.</th>
@@ -36,7 +36,7 @@
 			   	</tr>
 			   	<tr>
 			   		<td>내 장바구니 : </td>
-			   		<td colspan="2"><a id="goCartMember" href="#cartModal"></a></td>
+			   		<td colspan="2"><a id="goCartMember" href="#l"></a></td>
 			   	</tr>			   	
 			   	<tr>
 			   		<td>주문 중인 건수 :</td>
@@ -44,7 +44,7 @@
 			   	</tr>
 			   	<tr>
 			   		<td>사용 가능한 쿠폰 : </td>
-			   		<td colspan="2"><a id="goCoupon" href="#couponModal"></a></td>
+			   		<td colspan="2"><a id="goCoupon" href="#"></a></td>
 			   	</tr>
 			   	<tr>
 			   		<td>사용 가능한 포인트 : </td>

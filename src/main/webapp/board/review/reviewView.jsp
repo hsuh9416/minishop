@@ -2,24 +2,15 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-	<!--Bootsrap 4-->
-	<link rel="stylesheet" type="text/css" href="/minishop/resources/bootstrap-4.3.1-dist/css/bootstrap.min.css">
-	
-    <!--Fontawesome CDN-->
-	<link rel="stylesheet" href="/minishop/resources/fontawesome-free-5.9.0-web/css/all.css">
+<link rel="stylesheet" type="text/css" href="/minishop/resources/custom/css/userboard.css">
 
-	<!--Custom styles-->
-	<link rel="stylesheet" href="/minishop/css/userboard.css">
- <div class="reviewForm-container">
- 	<div class="container">
- 	<!-- 실행 메뉴 -->
-	 <nav aria-label="breadcrumb">
-	  <ol class="breadcrumb">
-	    <li class="breadcrumb-item active" aria-current="page">고객 리뷰 게시글 작성</li>       	    
-	  </ol>
-	</nav>
-    </div>
-		<div class="container-fluid">
+		<!-- 리뷰 수정 폼 -->	  
+<div class="col-lg-8">
+	<div class="row" id="titleDiv">
+	 	<div class="col" align="center" style="padding-bottom: 20px;">
+	 		<h3>후기 수정</h3>		
+	 	</div>
+	</div>
 		 <form name="reviewViewForm">	
 			<input type="hidden" name="pg" value="${reviewBoardDTO.pg}"/>
 			<input type="hidden" name="seq" value="${reviewBoardDTO.review_seq}"/>
@@ -53,13 +44,12 @@
 			   </tbody>
 			</table>  			
 	   	</form>
-	   </div>
 		<div class="form-group" id="btnDiv">
 			<div class="row">
 				<div class="col" align="right">   
 			  <c:if test="${reviewBoardDTO.user_id==memberDTO.id }">
 
-				<input type="button" class="btn btn-outline-dark" value="수정하기"  id="reviewModifyBtn">
+				<input type="button" class="btn btn-outline-dark" value="수정하기"  id="reviewModifyFormBtn">
 				<input type="button" class="btn btn-outline-dark" value="삭제하기" id="reviewDeleteBtn">				  	
 			  </c:if>		  
 				<input type="button" class="btn btn-outline-dark" value="답글달기" id="reviewReplyBtn">			  
@@ -68,9 +58,8 @@
 				</div>
 		    </div>	
 		</div>		     
-   </div>
+</div>
 <script type="text/javascript" src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script type="text/javascript" src="/minishop/resources/bootstrap4/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js"></script>
-<script type="text/javascript" src="/minishop/js/board.review.js"></script>
+<script type="text/javascript" src="/minishop/resources/custom/js/board.review.js"></script>
 <script type="text/javascript"></script>

@@ -46,7 +46,7 @@
   <label for="email"><strong>이메일 주소</strong></label>	
   <div class="form-row" id="email">
     <div class="form-group col-md-2">
-      <input type="text" class="form-control" id="email1" name="email1" value="${memberDTO.email1}" readonly>
+      <input type="text" class="form-control" id="email1" name="email1" value="" readonly>
     </div>
 	<span>@</span>  
     <div class="form-group col-md-3">
@@ -128,6 +128,14 @@
 <script type="text/javascript" src="/minishop/resources/custom/js/member.post.js"></script>
 <script type="text/javascript" src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script type="text/javascript" src="/minishop/resources/custom/js/member.modify.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#email1').val('${memberDTO.email1}');	
+	$('#email2').val('${memberDTO.email2}');
+	$('#tel1').val('${memberDTO.tel1}');
+	$('#wrap').hide();
+});//ready
+</script>
 
 
 

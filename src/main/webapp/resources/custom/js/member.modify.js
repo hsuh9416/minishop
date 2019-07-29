@@ -1,11 +1,7 @@
 /**
  * 회원 수정 관련 메소드
  */
-$(document).ready(function(){
-	$('#email2').val('${memberDTO.email2}');
-	$('#tel1').val('${memberDTO.tel1}');
-	$('#wrap').hide();
-});//ready
+
 
 
 /*메일에서 셀렉트 박스 선택지 변경시*/
@@ -33,7 +29,7 @@ $('#repwd').focusout(function(){
 		 $.ajax({
 			 type : 'post',
 			 url : '/minishop/member/checkPwd.do',
-			 data: 'pwd='+$('#rePwd').val(),
+			 data: 'pwd='+$('#repwd').val(),
 			 dataType: 'text',
 			 success: function(data){
 				 if(data=='success'){

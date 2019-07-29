@@ -43,6 +43,22 @@
 
       </div>
 		<!-- /.col-lg-9 -->      
-
-
+<script type="text/javascript" src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	//목록 불러오기(신상품순서)
+	$.ajax({
+		type: 'get',
+		url:'/minishop/product/getAllproduct.do',
+		dataType: 'json',
+		success: function(data){
+			$('#mainList').empty();
+			$.each(data.productList, function(index, items){
+				$('#mainList').append(items.productListHTML);
+			});//each
+					
+		}//success
+	});
+});
+</script>
 

@@ -24,7 +24,7 @@ public class HomeController {
 	@RequestMapping(value="/main/introduce.do",method = RequestMethod.GET)
 	public ModelAndView introduce() {
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("location", "");		
+		mav.addObject("location", "introduce");		
 		mav.addObject("display", "/main/introduce.jsp");
 		mav.addObject("menu", "/template/left.jsp");			
 		mav.setViewName("/main/home");
@@ -35,7 +35,7 @@ public class HomeController {
 	@RequestMapping(value="/main/userContact.do",method = RequestMethod.GET)
 	public ModelAndView index() {
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("location", "");		
+		mav.addObject("location", "userContact");		
 		mav.addObject("display", "/main/userContact.jsp");
 		mav.addObject("menu", "/template/left.jsp");			
 		mav.setViewName("/main/home");

@@ -62,6 +62,7 @@ public class ReviewboardController {
 	public ModelAndView boardList(@RequestParam(required=false,defaultValue="1") String pg) {
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("pg",pg);
+		mav.addObject("location", "reviewList");
 		mav.addObject("display", "/board/review/reviewList.jsp");
 		mav.setViewName("/main/home");
 		return mav;

@@ -115,7 +115,7 @@ public class BoardDAOImpl implements BoardDAO {
 	}
 
 	@Override
-	public List<QAboardDTO> qaManageList(int startNum, Map<String, String> map) {
+	public List<QAboardDTO> qaManageList(Map<String, String> map) {
 		return sqlSession.selectList("boardSQL.qaManageList", map);
 	}
 

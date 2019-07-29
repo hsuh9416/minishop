@@ -5,17 +5,13 @@
 
 <link rel="stylesheet" type="text/css" href="/minishop/resources/custom/css/userboard.css">
 
-<div class="qaForm-container">
-	<div class="container">
-	 	<!-- 실행 메뉴 -->
-		 <nav aria-label="breadcrumb">
-		  <ol class="breadcrumb">
-		    <li class="breadcrumb-item active" aria-current="page">고객 문의 게시글</li>       	    
-		  </ol>
-		</nav>
-	</div>
-<div class="container-fluid">
-  <form name="qaViewForm">
+	<div class="col-lg-8">
+	 	<div class="row" id="titleDiv">
+	 		<div class="col" align="center" style="padding-bottom: 20px;">
+	 			<h3>고객 문의글</h3>		
+	 		</div>
+		</div>
+ <form name="qaViewForm">
 	<input type="hidden" id="pg" name="pg" value="${pg}"/>
 	<input type="hidden" id="qa_seq" name="qa_seq" value="${qaBoardDTO.qa_seq }"/>
 	<input type="hidden" id="qa_pseq" name="qa_pseq" value="${qaBoardDTO.qa_seq}"/>
@@ -68,13 +64,12 @@
 		</table>
 	  </div>
 	</form>	
-</div>
 		<div class="form-group" id="btnDiv">
 			<div class="row">
 				<div class="col" align="right">   
 			  <c:if test="${qaBoardDTO.user_id==memberDTO.id }">
 			  	<c:if test="${qaBoardDTO.qa_reply=='0'}">
-				<input type="button" class="btn btn-outline-dark" value="문의 수정하기"  id="qaModifyBtn">			  	
+				<input type="button" class="btn btn-outline-dark" value="문의 수정하기"  id="qaModifyFormBtn">			  	
 			  	</c:if>
 			  	<c:if test="${qaBoardDTO.qa_reply=='1'}">
 				<input type="button" class="btn btn-outline-dark" value="답변시 수정불가"  disabled>			  	
@@ -85,8 +80,9 @@
 					onclick="location.href='/minishop/board/qa/qaList.do?pg=${pg}'">										    									
 				</div>
 		    </div>	
-		</div>	
-</div>
+		</div>				
+	</div>
+
 
 <script type="text/javascript" src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script type="text/javascript"  src="/minishop/resources/bootstrap4/js/bootstrap.bundle.min.js"></script>
@@ -102,7 +98,7 @@ $(document).ready(function(){
 			data : {'seq' : '${qaBoardDTO.qa_seq}'},
 			dataType : 'json',
 			success : function(data){
-				data.adminboardDTO.admin_content.replace(/(?:\r\n|\r|\n)/g, '<br />');
+				data.adminboardDTO.admin_content.replace(/(?:\r\n|\r|\n)/g, '<br>');
 				$('#answer').html(data.adminboardDTO.admin_content);
 			}
 		});		

@@ -28,7 +28,11 @@ public interface BoardDAO {
 	
 	void qaModify(Map<String, String> modifymap);
 
-	
+	List<QAboardDTO> qaManageList(Map<String, String> map);
+
+	int getAdminQATotalA();
+
+	void qaManageWrite(Map<String, String> map);	
 	
 
 	
@@ -47,11 +51,7 @@ public interface BoardDAO {
 
 	int hitUpdate(int seq);
 
-	List<QAboardDTO> qaManageList(int startNum, Map<String, String> map);
 
-	int getAdminQATotalA();
-
-	void qaManageWrite(Map<String, String> map);
 
 
 
