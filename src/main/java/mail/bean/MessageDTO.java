@@ -11,6 +11,7 @@ import lombok.Data;
 @Component
 @Data
 public class MessageDTO {
+ private String type;//메세지 종류
  private String sender;
  private String sendAddr;
  private String receiver; 

@@ -18,6 +18,7 @@ $('#emailInput').change(function() {
 
 //이름과 비밀번호의 조건을 충족시키면 툴팁이 더이상 발생하지 않는다.
 $('#name').focusout(function(){
+
 	 if($('#name').val()!=''){ 
 		 $('#name').tooltip('disable');
 	 } 
@@ -25,30 +26,35 @@ $('#name').focusout(function(){
 		 $('#name').tooltip('enable');
 	 }
 });
-$('#pwd').focusout(function(){
-	 if($('#pwd').val()!=''){ 
-		 $('#pwd').tooltip('disable');
-	 } 
-	 else{
-		 $('#pwd').tooltip('enable');
-	 }
-});
 $('#repwd').focusout(function(){
-	 if($('#pwd').val()!=$('#repwd').val()){ 
-		 $('#pwd').tooltip('disable');
+	$('#pwdDiv').empty();
+	 if($('#repwd').val()!=''){ 
+		 $('#repwd').tooltip('disable');
+		 $.ajax({
+			 type : 'post',
+			 url : '/minishop/member/checkPwd.do',
+			 data: 'pwd='+$('#rePwd').val(),
+			 dataType: 'text',
+			 success: function(data){
+				 if(data=='success'){
+					 $('#checkPwd').val($('#repwd').val());
+				 }
+				 else if(data=='fail'){
+					$('#pwdDiv').text('비밀번호가 일치하지 않습니다!').attr('color','red'); 
+				 }
+			 }
+		 });
 	 } 
 	 else{
-		 $('#pwd').tooltip('enable');
+		 $('#repwd').tooltip('enable');
 	 }
 });
-$('#pwdChange').change(function(){
-	if($('#pwdChange').is(':checked')==true){
-	 var pwdPop = window.open('/minishop/member/changePwdForm.do','비밀번호 변경','width=400,height=300,resizable=no');		
-	}
-	if($('#pwdChange').is(':checked')==false){
-		
-	}
+
+//비밀번호 변경창 popup
+$('#pwdChangeBtn').click(function(){
+	 var pwdPop = window.open('/minishop/member/changePwdForm.do','비밀번호 변경','width=400,height=400,resizable=no');		
 });
+
 
 $('#modifyBtn').click(function(){
 	//alert('수정하기!');
@@ -59,13 +65,9 @@ $('#modifyBtn').click(function(){
 		$('#name').tooltip('enable');
 		$('#name').tooltip('show');
 		$('#name').focus();	
-	}else if($('#pwd').val()==''){
-		$('#pwd').tooltip('enable');
-		$('#pwd').tooltip('show');	
-		$('#pwd').focus();
-	}else if($('#pwd').val()!=$('#repwd').val()){
+	}else if($('#repwd').val()==''|| $('#checkPwd').val()!=$('#repwd').val()){
 		$('#repwd').tooltip('enable');
-		$('#repwd').tooltip('show');
+		$('#repwd').tooltip('show');	
 		$('#repwd').focus();
 	}else{
 		$.ajax({
@@ -88,3 +90,8 @@ $('#modifyBtn').click(function(){
 $('#resetBtn').click(function(){
 	window.location.reload();
 });//리셋
+
+//이메일 재설정
+$('#changeEmailBtn').click(function(){
+	 var pwdPop = window.open('/minishop/member/changeEmailForm.do','이메일 변경','width=800,height=200,resizable=no');	
+});

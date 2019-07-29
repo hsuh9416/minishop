@@ -59,7 +59,7 @@ p{color:red;}
 				<div class="row">
 					<div class="col" align="right">          	
 						<button type="reset" class="btn btn-outline-secondary">다시 작성</button>	
-						<button type="button" id="findBtn" class="btn btn-outline-info">아이디/비밀번호 찾기</button>																	
+						<button type="button" id="popFindBtn" class="btn btn-outline-info">아이디/비밀번호 찾기</button>																	
 						<button type="button" id="mloginBtn" class="btn btn-outline-success">로그인</button>			
 					</div>
 				</div>													

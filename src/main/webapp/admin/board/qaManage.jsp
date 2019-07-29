@@ -3,28 +3,18 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-	<!--Bootsrap 4-->
-	<link rel="stylesheet" type="text/css" href="/mallproject/resources/bootstrap-4.3.1-dist/css/bootstrap.min.css">
+
 	
-    <!--Fontawesome CDN-->
-	<link rel="stylesheet" href="/mallproject/resources/fontawesome-free-5.9.0-web/css/all.css">
-
 	<!--Custom styles-->
-	<link rel="stylesheet" href="/mallproject/css/userboard.css">
-
-<div class="boardList-container">
-	<div class="container-fluid">
- 	<!-- 실행 메뉴 -->
-		 <nav aria-label="breadcrumb">
-		  <ol class="breadcrumb">
-		    <li class="breadcrumb-item"><a href="/mallproject/board/review/reviewList.do">후기 게시판</a></li>
-		    <li class="breadcrumb-item active"  aria-current="page">문의 게시판</li>	    
-		  </ol>
-		</nav>	
-	</div>
-</div>
-<div class="container-fluid">
-		<input type="hidden" id="pg" value="${pg}">
+	<link rel="stylesheet" href="/minishop/resources/custom/css/userboard.css">
+	<div class="col-lg-8">
+	
+		 <div class="row" id="titleDiv">
+		 	<div class="col" align="center" style="padding-bottom: 20px;">
+				<h3>답변대기중인 문의글 현황</h3>
+			</div>	
+		</div>
+		
 		<div class="table-responsive">
 			<table id="qaTable" class="table justify-content-center">
 			  <thead class="thead-dark">
@@ -45,15 +35,13 @@
 			   	</tr>
 			   </tbody> 	  
 			</table>
-		</div>
-</div>
+		</div>		
 
-<div class="container-fluid">
-		<nav aria-label="Page navigation example">
-		  <ul class="pagination justify-content-center" id="boardPagingDiv"></ul>
-		</nav>
-</div>
-<br><br>
+	<div class="container-fluid">
+			<nav aria-label="Page navigation example">
+			  <ul class="pagination justify-content-center" id="boardPagingDiv"></ul>
+			</nav>
+	</div>
 
 <div class="container-fluid">
 	<form id="qaSearch" name="qaSearch">
@@ -76,18 +64,23 @@
 		   </span>
 		</div>
   	</form>
-</div>  	
+</div>  			
+	</div>	
+
+
+
+
+
 
 
 <script type="text/javascript" src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
-<script type="text/javascript" src="/mallproject/resources/bootstrap-4.3.1-dist/js/bootstrap.bundle.min.js"></script>
-<script type="text/javascript" src="/mallproject/js/board.qa.js"></script>
+<script type="text/javascript" src="/minishop/resources/custom/js/board.qa.js"></script>
 <script type="text/javascript">
 
 $(document).ready(function(){
 	$.ajax({
 		type : 'get',
-		url : '/mallproject/admin/board/getQaList.do',
+		url : '/minishop/admin/board/getQaList.do',
 		data : 'pg='+$('#pg').val(),
 		dataType : 'json',
 		success : function(data){
@@ -119,7 +112,7 @@ $(document).ready(function(){
 						id : 'subjectA',
 						text : subject,
 						class : items.qa_seq+''
-				}))).append($('<td/>',{
+						}))).append($('<td/>',{
 					align : 'center',
 					text : items.name,
 				})).append($('<td/>',{
@@ -141,13 +134,13 @@ $(document).ready(function(){
 			
 			$('#qaTable').on('click','#subjectA',function(){
 				var qa_seq = $(this).parent().prev().text();
-				window.location='/mallproject/admin/board/qaManageView.do?qa_seq='+qa_seq+'&pg='+$('#pg').val();
+				window.location='/minishop/admin/board/qaManageView.do?qa_seq='+qa_seq+'&pg='+$('#pg').val();
 			});//제목 클릭시!
 		}//success
 	});//ajax
 });//onready
 
 function boardPaging(pg){
-	location.href='/mallproject/admin/board/qaManage.do?pg='+pg;
+	location.href='/minishop/admin/board/qaManage.do?pg='+pg;
 }
 </script>

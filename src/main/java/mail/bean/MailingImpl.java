@@ -25,13 +25,29 @@ public class MailingImpl implements Mailing {
 		  
 		return checkNum;
 	  }
-	  
+	
+	@Override
+	public String getKey(int length) {
+	        char pwCollection[] = new char[] { 
+	                          '1','2','3','4','5','6','7','8','9','0', 
+	                          'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z', 
+	                          'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z', 
+	                          '!','@','#','$','%','^','&','*','(',')'};//배열에 선언 
+
+	        String getKey = ""; 
+
+	        for (int i = 0; i < length; i++) { 
+	          int selectRandomPw = (int)(Math.random()*(pwCollection.length));
+	          getKey += pwCollection[selectRandomPw]; 
+	        }   
+		return getKey;
+	}	  
 	@Override
 	public MessageDTO sendConfirmMail(MessageDTO messageDTO,String checkNum) {
 		messageDTO.setSender("[Kissin' Bugs]");
 		messageDTO.setSubject("[Kissin' Bugs]인증번호를 확인해주세요!");
 		String confirmText = "안녕하세요, Kissin' Bugs에 관심을 가져주셔서 감사합니다.\n"+
-							" 저희 사이트는 사내 규정에 따라 가입시에 고객님꼐 이메일 인증을 요청하고 있습니다.\n"+
+							" 저희 사이트는 사내 규정에 따라 가입시와 이메일 변경시에 고객님께 이메일 인증을 요청하고 있습니다.\n"+
 							"해당 메일 내에 있는 이메일 인증번호를 입력해주시기 바랍니다.\n"+
 							"========================================\n"+
 							"인증번호는 ["+checkNum+"]입니다.\n"+
@@ -119,5 +135,24 @@ public class MailingImpl implements Mailing {
 		}
 	
 	}
+
+	//비번 재설정 메일 전송
+	@Override
+	public MessageDTO sendResetPwdMail(MessageDTO messageDTO, String resetPwd) {
+		messageDTO.setSender("[Kissin' Bugs]");
+		messageDTO.setSubject("[Kissin' Bugs]비밀번호 재설정!");
+		String confirmText = "안녕하세요, Kissin' Bugs입니다.\n"+
+							" 저희 사이트는 사내 규정에 따라  비밀번호 조회시 임시번호를 발급합니다.\n"+
+							"해당 메일 내에 있는 임시번호로 로그인 바랍니다.\n"+
+							"========================================\n"+
+							"임시 비밀번호는 ["+resetPwd+"]입니다.\n"+
+							"========================================\n"+
+							"*주> 비밀번호 변경을 원하시는 경우에는 임시번호로 우선 로그인하신 후, 회원정보 수정란에서 새로운 비밀번호로 변경하시기 바랍니다.";		
+		messageDTO.setContent(confirmText);
+		
+		return messageDTO;
+	}
+
+
 
 }

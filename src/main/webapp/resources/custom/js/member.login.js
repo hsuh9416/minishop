@@ -136,3 +136,11 @@ $('#loginPwd').focusout(function(){
 	 
  });//팝업 로그인 버튼
  
+ //아이디/비밀번호 검색창 이동
+ $('#popFindBtn').click(function(){
+		window.close();
+		window.opener.location.href='/minishop/member/findForm.do';	
+	});
+ $('#findBtn').click(function(){
+		window.location.href='/minishop/member/findForm.do';	
+	}); 

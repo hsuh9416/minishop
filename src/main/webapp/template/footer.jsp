@@ -1,10 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
     <!-- 일부  사용된 template에 대한 저작권 표시 -->
 	<footer class="footer">
 		<div class="container">
 		
 			<div class="row">
+			 <c:if test="${adminDTO == null}">			
 				<div class="col-lg-4">
 					<div class="footer_nav_container d-flex flex-sm-row flex-column align-items-center justify-content-lg-start justify-content-center text-center">
 						<ul class="footer_nav">
@@ -13,8 +15,11 @@
 							<li><a href="/minishop/main/userContact.do">Contact us</a></li>
 						</ul>
 					</div>
-				</div>      
+				</div>   
+			</c:if>   				
 	        </div>
+
+	        
 			<div class="row">
 				<div class="col-lg-12">
 					<div class="footer_nav_container">

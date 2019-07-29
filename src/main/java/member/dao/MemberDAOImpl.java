@@ -98,10 +98,17 @@ public class MemberDAOImpl implements MemberDAO {
 		sqlSession.insert("memberSQL.memberQASend",messageDTO);
 	}
 
+	//비밀번호 재설정
 	@Override
 	public void setNewPwd(MemberDTO memberDTO) {
 		sqlSession.update("memberSQL.setNewPwd",memberDTO);
 		
+	}
+
+	//아이디 검색
+	@Override
+	public MemberDTO findLostId(Map<String, String> map) {
+		return sqlSession.selectOne("memberSQL.findLostId",map);
 	}
 
 

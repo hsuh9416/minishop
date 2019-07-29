@@ -24,6 +24,7 @@ $(document).ready(function(){
 					
 		}//success
 	});
+
 	
 });//ready
 
@@ -188,3 +189,4 @@ var staticMapContainer  = document.getElementById('staticMap'), // 이미지 지
 
 // 이미지 지도를 생성합니다
 var staticMap = new kakao.maps.StaticMap(staticMapContainer, staticMapOption);
+

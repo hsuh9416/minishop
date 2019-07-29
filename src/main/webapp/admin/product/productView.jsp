@@ -33,7 +33,7 @@
 				<div class="form-group col-3">
 					<i id="iconSubject" class="far fa-file-alt">상품코드 #${productDTO.product_name_no}</i>
 				</div>	
-				<div class="form-group col-3">
+				<div class="form-group col-4">
 					<i id="iconSubject" class="fas fa-dolly-flatbed">등록코드 #${productDTO.productID}</i>
 				</div>	
 				<div class="form-group col-5">
@@ -41,15 +41,15 @@
 				</div>
 			</div>
 	        <div class="form-row justify-content-center">	
-				<div class="form-group col-4">
+				<div class="form-group col-3">
 					<i id="iconSubject" class="fas fa-list">분류 ${productDTO.product_category_name}</i>
 				</div>		
-				<div class="form-group col-6">
+				<div class="form-group col-4">
 					<i id="iconSubject" class="fas fa-won-sign">
 					 	정상가 <fmt:formatNumber type="number" value="${productDTO.product_name_price}" pattern="#,###"/>(원)/(개)
 					</i>
 				</div>						        				
-				<div class="form-group col-2">
+				<div class="form-group col-5">
 				 <c:if test="${productDTO.product_onstore=='YES'}">
 					<i id="iconActive" class="fas fa-dolly-flatbed">상태 <strong>[입점]</strong></i>
 				 </c:if>
@@ -63,38 +63,41 @@
 	    </div>
 	  </div>
 	  <!-- 상품 기본 정보:END -->
-	  
+	  <!-- 상품 옵션 정보:START -->
 	  <div class="card">
-	    <div class="card-header" id="headingTwo">
+	    <div class="card-header" id="headingTwo"  align="center">
 	      <h2 class="mb-0">
 	        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
 	          	상품 옵션 정보
 	        </button>
 	      </h2>
 	    </div>
+	    
 	    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#productInfo">
 	      <div class="card-body">
-	       <div class="form-row">
+	       <div class="form-row justify-content-center">
 				<div class="form-group col-3">
-					<i id="iconSubject"class="fas fa-won-sign">단위당 정상가격
-					<strong><fmt:formatNumber type="number" value="${productDTO.product_name_price}" pattern="#,###"/>(원)</strong>
+					<i id="iconSubject"class="fas fa-won-sign">판매가
+					<strong id="pridceDiff"><fmt:formatNumber type="number" value="${productDTO.unitcost}" pattern="#,###"/>(원)/(개)</strong>
 					</i>
 				</div>	
-				<div class="form-group col-3">
-					<i id="iconSubject" class="fas fa-won-sign">단위당 판매가격
-					<strong><fmt:formatNumber type="number" value="${productDTO.unitcost}" pattern="#,###"/>(원)</strong>
+				<div class="form-group col-4">
+					<i id="iconSubject" class="fas fa-won-sign">원가대비
+					<strong><fmt:formatNumber type="number" value="${productDTO.product_name_price-productDTO.unitcost}" pattern="#,###"/>(원)/(개)</strong>
 					</i>
-				</div>	
-				<div class="form-group col-2">
+				</div>					
+				<div class="form-group col-5">
 					<i id="iconGeneral" class="fas fa-shopping-cart">누적판매량 <strong>${productDTO.product_salesMount}</strong>(개)</i>
-				</div>		
-				<div class="form-group col-1">
+				</div>	
+			</div>
+			<div class="form-row justify-content-center">	
+				<div class="form-group col-3">
 					<i id="iconMinimum" class="fas fa-eye">조회수<strong>${productDTO.product_hit}</strong></i>
 				</div>	
-				<div class="form-group col-1">
+				<div class="form-group col-4">
 					<i id="iconMinimum" class="fas fa-heart">관심도<strong>${productDTO.product_like}</strong></i>
 				</div>
-				<div class="form-group col-2">
+				<div class="form-group col-5">
 				 <c:if test="${productDTO.promotioncode=='1'}">
 					<i id="iconActive" class="fas fa-percent"><strong>[할인가능]</strong></i>
 				 </c:if>
@@ -106,9 +109,10 @@
 	      </div>
 	    </div>
 	  </div>
-	  
+	  <!-- 상품 옵션 정보:END -->
+	  	  
 	  <div class="card">
-	    <div class="card-header" id="headingThree">
+	    <div class="card-header" id="headingThree"  align="center">
 	      <h2 class="mb-0">
 	        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
 	        	 상품 상세 정보
@@ -149,6 +153,8 @@
 <script type="text/javascript" src="/minishop/resources/custom/js/admin.product.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
+if(${productDTO.product_name_price > productDTO.unitcost}) $('#pridceDiff').attr('color','red');
+else if(${productDTO.product_name_price < productDTO.unitcost}) $('#pridceDiff').attr('color','blue');
 
 });
 </script>

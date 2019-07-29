@@ -29,7 +29,7 @@
 		<servlet-name>appServlet</servlet-name>
 		<url-pattern>*.do</url-pattern>
 	</servlet-mapping>
-  	
+  	<!-- async-supported: 비동기 통신 설정 -->
 	<!-- Encoding -->
   <filter>
   	<filter-name>CharacterEncodingFilter</filter-name>

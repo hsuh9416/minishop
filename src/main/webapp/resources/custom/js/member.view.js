@@ -22,6 +22,8 @@ $(document).ready(function(){
 	
 		}				
 	});//에이작스
+	
+	
 });//ready
 
 /* 1대1 문의*/

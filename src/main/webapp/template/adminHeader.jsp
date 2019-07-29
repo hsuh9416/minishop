@@ -62,7 +62,7 @@
 									<a href="/minishop/admin/order/orderManage.do">주문관리</a>
 								</li>								
 								<li class="nav-item">
-									<a href="/minishop/admin/qa/qaManage.do">문의글관리</a>
+									<a href="/minishop/admin/board/qaManage.do">문의글관리</a>
 								</li>
 							</ul>
 							<div class="hamburger_container">

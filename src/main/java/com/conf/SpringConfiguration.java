@@ -14,13 +14,13 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
-
 import com.navercorp.lucy.security.xss.servletfilter.XssEscapeServletFilter;
 
 
 @EnableTransactionManagement
 @Configuration
 public class SpringConfiguration extends WebMvcConfigurationSupport {
+
 	@Bean(name="dataSource")
 	public BasicDataSource getBasicDataSource() {
 		BasicDataSource basicDataSource = new BasicDataSource();
@@ -70,6 +70,7 @@ public class SpringConfiguration extends WebMvcConfigurationSupport {
     public XssEscapeServletFilter xssFilterBean(){
         return new XssEscapeServletFilter();
     }	
+
 }
 
 

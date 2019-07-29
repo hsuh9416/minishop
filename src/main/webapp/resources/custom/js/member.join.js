@@ -30,7 +30,18 @@ var notexistMsg = '<div class="alert alert-success alert-dismissible fade show" 
 '<strong>[사용가능]</strong>사용가능한 아이디입니다'+
 '<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+
 '<span aria-hidden="true">&times;</span></button></div>';
-
+var notAppropriateId = '<div class="alert alert-warning alert-dismissible fade show" role="alert">'+
+'아이디는 최소 5자리 이상으로 설정하여 주시기 바랍니다'+
+'<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+
+'<span aria-hidden="true">&times;</span></button></div>';
+var notAppropriatePwd = '<div class="alert alert-warning alert-dismissible fade show" role="alert">'+
+'비밀번호는 영문자,숫자,특수문자을 각각 하나 이상 포함하여 8자리 이상 16자리 이하로 설정하셔야 합니다'+
+'<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+
+'<span aria-hidden="true">&times;</span></button></div>';
+var checkID = /^.{5,}$/;	
+//아이디는 5자리 이상 필수
+var reg = /^(?=.*[a-zA-Z])(?=.*[\~\․\!\@\#\$\%\^\&\*\(\)\_\-\+\=\[\]\|\\\;\:\\'\"\<\>\,\.\?\/])(?=.*[0-9]).{8,16}$/;
+//하나 이상의 영문자, 하나 이상의 숫자, 하나 이상의 특수문자, 최소 8자 최대 16자
 $(document).ready(function(){
 	$('#confirmDiv').hide();
 });
@@ -128,7 +139,10 @@ $('#writeBtn').click(function(){
 			 $('#repwd').tooltip('enable');
 			 $('#repwd').tooltip('show');
 			 $('#repwd').focus();	
-		}else if($('#id').val()!=$('#checkId').val()){
+		}else if(reg.test($('#pwd').val())==false){
+			$('#writeResult').append(notAppropriatePwd).alert();
+		}
+		else if($('#id').val()!=$('#checkId').val()){
 			 $('#writeResult').append(noCheckMsg).alert();	
 			 $('#id').focus();	
 		}else if($('#email1').val()==''|| $('#email2').val()==''){
@@ -148,8 +162,7 @@ $('#writeBtn').click(function(){
 					$('#writeResult').empty();
 					if(data=='success') {
 					 alert('축하합니다. 회원가입되셨습니다!!(메인 화면으로 이동합니다.)');	
-					 $(this).modal('dispose');
-					 window.location='/minishop/main/innerMain.do';}
+					 window.location='/minishop/main/home.do';}
 					else if(data=='fail') {
 						$('#writeForm').empty();
 						$('#writeResult').append(failMsg).alert();				
@@ -162,7 +175,9 @@ $('#writeBtn').click(function(){
 	$('#id').focusout(function(){
 		$('#writeResult').empty();
 		if($('#id').val()=='') $('#writeResult').append(noIdMsg).alert();
-		else
+		else if(checkID.test($('#id').val())==false){
+			$('#writeResult').append(notAppropriateId).alert();
+		}else
 			$.ajax({
 				type : 'post',
 				url : '/minishop/member/checkId.do',

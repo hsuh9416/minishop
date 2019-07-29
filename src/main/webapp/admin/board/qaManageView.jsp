@@ -2,29 +2,23 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-	<!--Bootsrap 4-->
-	<link rel="stylesheet" type="text/css" href="/mallproject/resources/bootstrap-4.3.1-dist/css/bootstrap.min.css">
-	
-    <!--Fontawesome CDN-->
-	<link rel="stylesheet" href="/mallproject/resources/fontawesome-free-5.9.0-web/css/all.css">
 		
 	<!--Custom styles-->
-	<link rel="stylesheet" href="/mallproject/css/userboard.css">
-<div class="qaForm-container">
-	<div class="container">
-	 	<!-- 실행 메뉴 -->
-		 <nav aria-label="breadcrumb">
-		  <ol class="breadcrumb">
-		    <li class="breadcrumb-item active" aria-current="page">고객 문의 답변</li>       	    
-		  </ol>
-		</nav>
-	</div>
-<div class="container-fluid">
-  <form name="qaViewForm">
-	<input type="hidden" id="pg" name="pg" value="${pg}"/>
-	<input type="hidden" id="admin_pseq" name="admin_pseq" value="${qaBoardDTO.qa_seq }"/>
-	<input type="hidden" id="qa_pseq" name="qa_pseq" value="${qaBoardDTO.qa_seq}"/>
-	<input type="hidden" id="user_id" name="user_id" value="${qaBoardDTO.user_id}"/>	
+	<link rel="stylesheet" href="/minishop/resources/custom/css/userboard.css">
+	
+	<div class="col-lg-8">
+	
+		 <div class="row" id="titleDiv">
+		 	<div class="col" align="center" style="padding-bottom: 20px;">
+				<h3>답변대기중인 문의글</h3>
+			</div>	
+		</div>
+		
+	 <form name="qaViewForm">
+		<input type="hidden" id="pg" name="pg" value="${pg}"/>
+		<input type="hidden" id="admin_pseq" name="admin_pseq" value="${qaBoardDTO.qa_seq }"/>
+		<input type="hidden" id="qa_pseq" name="qa_pseq" value="${qaBoardDTO.qa_seq}"/>
+		<input type="hidden" id="user_id" name="user_id" value="${qaBoardDTO.user_id}"/>	
 		<div class="table-responsive">
 			<table id="viewTable" class="table justify-content-center">
 			  <thead class="thead-dark">
@@ -69,39 +63,33 @@
 		</table>
 	  </div>
 	</form>	
-</div>
+			
 		<div class="form-group" id="btnDiv">
 			<div class="row">
 				<div class="col" align="right">   
 				<input type="button" class="btn btn-outline-dark" id="adminWriteBtn" value="답변 작성">			  	
 				<input type="button"  id="resetAns" class="btn btn-outline-dark" value="답변 재작성">			
 				<input type="button" value="돌아가기" class="btn btn-outline-dark"
-					onclick="location.href='/mallproject/admin/board/qaManage.do?pg=${pg}'">										    									
+					onclick="location.href='/minishop/admin/board/qaManage.do?pg=${pg}'">										    									
 				</div>
 		    </div>	
-		</div>	
-</div>
+		</div>			
+	</div>
 
 <script type="text/javascript" src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
-<script type="text/javascript" src="/mallproject/resources/bootstrap-4.3.1-dist/js/bootstrap.bundle.min.js"></script>
-<script type="text/javascript" src="/mallproject/js/board.qa.js"></script>
+<script type="text/javascript" src="/minishop/resources/custom/js/board.qa.js"></script>
 <script type="text/javascript">
-$('#review_content').summernote({
-    placeholder: 'Hello stand alone ui',
-    tabsize: 2,
-    height: 100
-  });
 
 $('#adminWriteBtn').click(function(){
 	$.ajax({
 		type : 'post',
-		url : '/mallproject/admin/board/qaManageWrite.do',
+		url : '/minishop/admin/board/qaManageWrite.do',
 		data : {'admin_pseq':$('#admin_pseq').val(),
 				'user_id':$('#user_id').val(),	
 				'admin_content' :$('#admin_content').val()},
 		success :function(){
 			alert('답변 작성을 완료하였습니다. 목록으로 돌아갑니다.');
-			window.location='/mallproject/admin/board/qaManage.do?pg='+$('#pg').val();
+			window.location='/minishop/admin/board/qaManage.do?pg='+$('#pg').val();
 		}
 	});
 });

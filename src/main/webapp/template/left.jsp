@@ -50,6 +50,12 @@
 			          <a href="javascript:history.back()" class="list-group-item">돌아가기</a>
 			     </div>					
 			</c:if>	
+			<c:if test="${location=='adminQAList'}">
+		        <h2>답변대기중인<br>문의글 현황</h2>			
+			</c:if>
+			<c:if test="${location=='adminQA'}">
+		        <h2>답변대기중인<br>문의글</h2>			
+			</c:if>			
 			<c:if test="${location=='reivewList'}">
 		        <h2>후기 게시판</h2>			
 			     <div class="list-group list-group-horizontal-lg">
@@ -93,4 +99,4 @@
 		</div>		
 	</div>		
       <!-- /.col-lg-3 -->		
-	</c:if>	      
+	</c:if>		

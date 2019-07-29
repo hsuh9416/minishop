@@ -62,21 +62,12 @@ public class MemberController {
 		mav.setViewName("/main/home");
 		return mav;
 	}	
-	//비번찾기 화면
-	@RequestMapping(value="/findForm.do",method=RequestMethod.GET)
-	public ModelAndView findForm(){
-		ModelAndView mav = new ModelAndView();
-		mav.addObject("location", "findForm");		
-		mav.addObject("display", "/member/findForm.jsp");
-		mav.addObject("menu", "/template/left.jsp");			
-		mav.setViewName("/main/home");
-		return mav;
-	}		
-	
+		
 	//로그인 체크(주문조회도 로그인으로 받음)
 	@RequestMapping(value="/login.do",method = RequestMethod.POST)
 	@ResponseBody
 	public String login(@RequestParam String id, String pwd,String autoLogin,HttpSession session,HttpServletResponse response,Model model){
+
 		MemberDTO memberDTO = memberDAO.checkId(id);
 		if(memberDTO==null) {
 			GuestDTO questDTO = memberDAO.orderCheck(id,pwd);//회원이 아니면 orderCheck 먼저
@@ -160,9 +151,13 @@ public class MemberController {
 	//이메일 인증
 	@RequestMapping(value="/checkEmail.do",method=RequestMethod.POST)
 	@ResponseBody
-	public String checkEmail(@RequestParam String email){
+	public String checkEmail(@RequestParam String email,HttpSession session){
 		MessageDTO messageDTO = new MessageDTO();
-		messageDTO.setReceiver("예비 회원님");
+		MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
+		if(memberDTO!=null) {//null이 아니면 가입이 아닌 이메일 변경
+			messageDTO.setReceiver(memberDTO.getName()+" 회원님");			
+		}
+		else {messageDTO.setReceiver("예비 회원님");}
 		messageDTO.setReceiveAddr(email);
 		String checkNum = mailing.checkNum();
 		messageDTO = mailing.sendConfirmMail(messageDTO, checkNum);
@@ -192,6 +187,60 @@ public class MemberController {
 		else return "fail";
 	}
 	
+	//아이디/비밀번호 검색 화면
+	@RequestMapping(value="/findForm.do",method=RequestMethod.GET)
+	public ModelAndView findForm() {
+	  ModelAndView mav = new ModelAndView();
+		mav.addObject("location", "memberfind");
+		mav.addObject("display", "/member/findForm.jsp");
+		mav.setViewName("/main/home");
+		return mav;	  
+	}
+	//아이디 검색
+	@RequestMapping(value="/findLostId.do",method=RequestMethod.POST)
+	@ResponseBody
+	public String findLostId(@RequestParam Map<String,String> map) {
+		MemberDTO memberDTO = memberDAO.findLostId(map);
+		if(memberDTO==null) return "not_exist"; 
+		String id = memberDTO.getId();
+		StringBuffer data= new StringBuffer();
+		String result;
+		if(id.length()>=5) {
+			for(int i=0;i<id.length()-4;i++) {
+				data.append("*");}
+			result = data+"";
+			result = id.substring(0, 4)+result;//4글자까지 출력하도록 함	
+		 }
+		else {
+			for(int i=0;i<id.length()-2;i++) {
+				data.append("*");}
+			result = data+"";
+			result = id.substring(0, 2)+result;//2글자까지 출력하도록 함	
+		}
+		return result;
+	}
+	
+	//비밀번호 재설정 메일 전송
+	@RequestMapping(value="/findLostPwd.do",method=RequestMethod.POST)
+	@ResponseBody
+	public String findLostPwd(@RequestParam Map<String,String> map){
+		String id = map.get("findID");
+		MemberDTO memberDTO = memberDAO.checkId(id);//아이디로 우선 검색
+		if(memberDTO==null|| !memberDTO.getEmail1().equals(map.get("findPwdemail1")) || !memberDTO.getEmail2().equals(map.get("findPwdemail2")) ) {
+			return "not_exist";
+		}
+		MessageDTO messageDTO = new MessageDTO();
+		messageDTO.setReceiver(memberDTO.getName()+" 님");
+		messageDTO.setReceiveAddr(memberDTO.getEmail1()+"@"+memberDTO.getEmail2());
+		String resetPwd = mailing.getKey(8);//8자리 난수 발생
+		messageDTO = mailing.sendResetPwdMail(messageDTO, resetPwd);
+		AdminDTO adminDTO = adminDAO.getAdmin();
+		mailing.sendMail(adminDTO, messageDTO);//메일 전송
+		memberDTO.setPwd(passwordEncoder.encode(resetPwd));
+		memberDAO.setNewPwd(memberDTO);
+		return resetPwd;//인증번호는 회수함.
+	}	
+	
 	//회원정보수정 화면
 	@RequestMapping(value="/memberModifyForm.do",method=RequestMethod.GET)
 	public ModelAndView memberModifyForm(){
@@ -205,19 +254,47 @@ public class MemberController {
 	@RequestMapping(value="/changePwdForm.do",method=RequestMethod.GET)
 	public ModelAndView changePwdForm() {
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("/main/changePwdForm");
+		mav.setViewName("/member/changePwdForm");
 		return mav;		
 	}
+	//비번 체크
+	@RequestMapping(value="/checkPwd.do",method=RequestMethod.POST)
+	@ResponseBody	
+	public String checkPwd(@RequestParam String pwd,HttpSession session) {
+	MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
+	String objectPwd = memberDTO.getPwd();
+	if(passwordEncoder.matches(pwd, objectPwd)) {
+		return "success";
+	}
+	else {
+		return "fail";
+		}
+	}	
 	//비번 변경
 	@RequestMapping(value="/changePwd.do",method=RequestMethod.POST)
 	@ResponseBody
-	public void changePwd(@RequestParam String newPwd,HttpSession session) {
+	public String changePwd(@RequestParam Map<String,String> map,HttpSession session) {
 	MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
-	String pwd = passwordEncoder.encode(newPwd);
-	memberDTO.setPwd(pwd);
-	memberDAO.setNewPwd(memberDTO);
-	session.setAttribute("memberDTO", memberDTO);
+	String objectPwd = memberDTO.getPwd();
+	if(!passwordEncoder.matches(map.get("pwd"), objectPwd)) {
+		return "fail";
 	}
+	else {
+		String newPwd = passwordEncoder.encode(map.get("newPwd"));
+		memberDTO.setPwd(newPwd);	
+		memberDAO.setNewPwd(memberDTO);	
+		session.setAttribute("memberDTO", memberDTO);		
+		return "success";
+		}
+	}
+	//이메일 변경 폼
+	@RequestMapping(value="/changeEmailForm.do",method=RequestMethod.GET)
+	public ModelAndView changeEmailForm() {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("/member/changeEmailForm");
+		return mav;		
+	}
+	
 	//회원 정보수정(비번 제외)
 	@RequestMapping(value="/memberModify.do",method=RequestMethod.POST)
 	@ResponseBody
@@ -324,4 +401,5 @@ public class MemberController {
 		return "success";		
 	}	
 
-}
+	
+}//class end

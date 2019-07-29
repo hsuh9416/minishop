@@ -65,6 +65,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<insert id="memberQASend" parameterType="message">
 		insert into QAMESSAGE values(message_seq.nextval,#{sender},#{receiver},#{sendAddr},#{receiveAddr},#{subject},#{content},SYSDATE)
 	</insert>
+	<!-- 아이디 검색 -->
+	<select id="findLostId" parameterType="java.util.Map" resultType="member">
+		select * from member where name=#{findName} and email1=#{findIdemail1} and email2=#{findIdemail2}
+	</select>
 </mapper>
 
 

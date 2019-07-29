@@ -34,10 +34,11 @@
 	      <label for="inputPassword4"><strong>재입력</strong></label>
 	      <input type="password" class="form-control" name="repwd" id="repwd" placeholder="비밀번호 재입력 " data-toggle="tooltip" data-placement="right" title="비밀번호가 일치하지 않습니다.">
 	    </div>
-	   <div class="form-group col-md-3">
-	   	<input type="checkbox" value="비밀번호 변경" id="pwdChange"/>비밀번호를 변경합니다.
+	   <div class="form-group col-md-3" style="padding-top:30px;">
+	    <input type="button" class="btn btn-outline-info" value="비밀번호 변경" id="pwdChangeBtn"/>
 	   </div>
-		<div id="pwdDiv"></div>  	    
+	   <div id="pwdDiv"></div>
+	   <input type="hidden" id="checkPwd" value=""/>
    </div>
 
 
@@ -45,20 +46,23 @@
   <label for="email"><strong>이메일 주소</strong></label>	
   <div class="form-row" id="email">
     <div class="form-group col-md-2">
-      <input type="text" class="form-control" id="email1" name="email1" value="${memberDTO.email1}">
+      <input type="text" class="form-control" id="email1" name="email1" value="${memberDTO.email1}" readonly>
     </div>
 	<span>@</span>  
     <div class="form-group col-md-3">
-      	<input type="text" class="form-control" name="email2" id="email2">
+      	<input type="text" class="form-control" name="email2" id="email2" readonly>
     </div>
     <div class="form-group col-md-3">
-      <select id="emailInput" name="email2" class="form-control">
+      <select id="emailInput" name="email2" class="form-control" disabled>
 		<option value="">직접 입력</option>   
 		<option value="gmail.com">gmail.com</option>
 		<option value="hanmail.net">hanmail.net</option>
 		<option value="naver.com">naver.com</option>
       </select>
-    </div>	  
+    </div>	
+    <div class="form-group col-md-3">
+      	<input type="button" class="btn btn-outline-info" value="이메일 변경" id="changeEmailBtn"/>
+    </div>      
   </div>	
 
    <label for="tel"><strong>연락처</strong></label>	

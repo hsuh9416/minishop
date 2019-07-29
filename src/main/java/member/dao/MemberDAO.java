@@ -35,5 +35,7 @@ public interface MemberDAO {
 
 	void setNewPwd(MemberDTO memberDTO);
 
+	MemberDTO findLostId(Map<String, String> map);
+
 
 } 

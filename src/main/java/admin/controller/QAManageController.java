@@ -30,6 +30,7 @@ public class QAManageController {
 	public ModelAndView qaList(@RequestParam(required=false,defaultValue="1") String pg) {
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("pg",pg);
+		mav.addObject("location", "adminQAList");
 		mav.addObject("display", "/admin/board/qaManage.jsp");
 		mav.setViewName("/main/home");
 		return mav;
@@ -70,6 +71,7 @@ public class QAManageController {
 		ModelAndView mav = new ModelAndView();
 		QAboardDTO qaBoardDTO = boardDAO.getQaBoard(qa_seq);
 		mav.addObject("pg", pg);
+		mav.addObject("location", "adminQA");		
 		mav.addObject("qaBoardDTO", qaBoardDTO);
 		mav.addObject("display", "/admin/board/qaManageView.jsp");
 		mav.setViewName("/main/home");

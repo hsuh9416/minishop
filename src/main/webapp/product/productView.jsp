@@ -2,15 +2,15 @@
     pageEncoding="UTF-8"%>
 <meta name="description" content="Colo Shop Template">
 <meta name="viewport" content="width=device-width, initial-scale=1">    
-<link rel="stylesheet" type="text/css" href="/mallproject/resources/styles/bootstrap4/bootstrap.min.css">
-<link href="/mallproject/resouces/plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-<link rel="stylesheet" type="text/css" href="/mallproject/resources/plugins/OwlCarousel2-2.2.1/owl.carousel.css">
-<link rel="stylesheet" type="text/css" href="/mallproject/resources/plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
-<link rel="stylesheet" type="text/css" href="/mallproject/resources/plugins/OwlCarousel2-2.2.1/animate.css">
-<link rel="stylesheet" href="/mallproject/resources/plugins/themify-icons/themify-icons.css">
-<link rel="stylesheet" type="text/css" href="/mallproject/resources/plugins/jquery-ui-1.12.1.custom/jquery-ui.css">
-<link rel="stylesheet" type="text/css" href="/mallproject/resources/styles/single_styles.css">
-<link rel="stylesheet" type="text/css" href="/mallproject/resources/styles/single_responsive.css">
+<link rel="stylesheet" type="text/css" href="/minishop/resources/styles/bootstrap4/bootstrap.min.css">
+<link href="/minishop/resouces/plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="/minishop/resources/plugins/OwlCarousel2-2.2.1/owl.carousel.css">
+<link rel="stylesheet" type="text/css" href="/minishop/resources/plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
+<link rel="stylesheet" type="text/css" href="/minishop/resources/plugins/OwlCarousel2-2.2.1/animate.css">
+<link rel="stylesheet" href="/minishop/resources/plugins/themify-icons/themify-icons.css">
+<link rel="stylesheet" type="text/css" href="/minishop/resources/plugins/jquery-ui-1.12.1.custom/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="/minishop/resources/styles/single_styles.css">
+<link rel="stylesheet" type="text/css" href="/minishop/resources/styles/single_responsive.css">
 
 	<div class="container single_product_container">
 		<div class="row">
@@ -20,7 +20,7 @@
 
 				<div class="breadcrumbs d-flex flex-row align-items-center">
 					<ul>
-						<li><a href="/mallproject/main/innerMain.do">Home</a></li>
+						<li><a href="/minishop/main/innerMain.do">Home</a></li>
 						<li><a href="./categories.do"><i class="fa fa-angle-right" aria-hidden="true"></i>Men's</a></li>
 						<li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>Single Product</a></li>
 					</ul>
@@ -36,9 +36,9 @@
 						<div class="col-lg-3 thumbnails_col order-lg-1 order-2">
 							<div class="single_product_thumbnails">
 								<ul>
-									<li><img src="images/single_1_thumb.jpg" alt="" data-image="/mallproject/resources/images/single_1.jpg"></li>
-									<li class="active"><img src="/mallproject/resources/images/single_2_thumb.jpg" alt="" data-image="images/single_2.jpg"></li>
-									<li><img src="images/single_3_thumb.jpg" alt="" data-image="/mallproject/resources/images/single_3.jpg"></li>
+									<li><img src="images/single_1_thumb.jpg" alt="" data-image="/minishop/resources/images/single_1.jpg"></li>
+									<li class="active"><img src="/minishop/resources/images/single_2_thumb.jpg" alt="" data-image="images/single_2.jpg"></li>
+									<li><img src="images/single_3_thumb.jpg" alt="" data-image="/minishop/resources/images/single_3.jpg"></li>
 								</ul>
 							</div>
 						</div>
@@ -124,7 +124,7 @@
 									<p>Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Pellentesque diam dolor, elementum etos lobortis des mollis ut...</p>
 								</div>
 								<div class="tab_image">
-									<img src="/mallproject/resources/images/desc_1.jpg" alt="">
+									<img src="/minishop/resources/images/desc_1.jpg" alt="">
 								</div>
 								<div class="tab_text_block">
 									<h2>Pocket cotton sweatshirt</h2>
@@ -133,14 +133,14 @@
 							</div>
 							<div class="col-lg-5 offset-lg-2 desc_col">
 								<div class="tab_image">
-									<img src="/mallproject/resources/images/desc_2.jpg" alt="">
+									<img src="/minishop/resources/images/desc_2.jpg" alt="">
 								</div>
 								<div class="tab_text_block">
 									<h2>Pocket cotton sweatshirt</h2>
 									<p>Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Pellentesque diam dolor, elementum etos lobortis des mollis ut...</p>
 								</div>
 								<div class="tab_image desc_last">
-									<img src="/mallproject/resources/images/desc_3.jpg" alt="">
+									<img src="/minishop/resources/images/desc_3.jpg" alt="">
 								</div>
 							</div>
 						</div>
@@ -257,15 +257,15 @@
 	</div>
 
 	 	<!-- shop policies -->
-	<jsp:include page="../template/shopPolicy.jsp"/>
+	<jsp:include page="/template/shopPolicy.jsp"/>
 
 
    
-<script src="/mallproject/resources/js/jquery-3.2.1.min.js"></script>
-<script src="/mallproject/resources/styles/bootstrap4/popper.js"></script>
-<script src="/mallproject/resources/styles/bootstrap4/bootstrap.min.js"></script>
-<script src="/mallproject/resources/plugins/Isotope/isotope.pkgd.min.js"></script>
-<script src="/mallproject/resources/plugins/OwlCarousel2-2.2.1/owl.carousel.js"></script>
-<script src="/mallproject/resources/plugins/easing/easing.js"></script>
-<script src="/mallproject/resources/plugins/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
-<script src="/mallproject/resources/js/single_custom.js"></script>
+<script src="/minishop/resources/js/jquery-3.2.1.min.js"></script>
+<script src="/minishop/resources/styles/bootstrap4/popper.js"></script>
+<script src="/minishop/resources/styles/bootstrap4/bootstrap.min.js"></script>
+<script src="/minishop/resources/plugins/Isotope/isotope.pkgd.min.js"></script>
+<script src="/minishop/resources/plugins/OwlCarousel2-2.2.1/owl.carousel.js"></script>
+<script src="/minishop/resources/plugins/easing/easing.js"></script>
+<script src="/minishop/resources/plugins/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
+<script src="/minishop/resources/js/single_custom.js"></script>
