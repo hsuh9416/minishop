@@ -24,12 +24,12 @@
 				<option value="">[리뷰상품]</option>   
 		      </select>		    
 		    </div>
-		    <div class="form-group col-2" id="imgDiv"></div>	    
+		    <div class="form-group col-3" id="imgDiv"></div>	    
 	   </div>
 	   <div class="form-row justify-content-center">
 		    <div class="form-group col-10">
 		      <label for="review_content"><strong>글 내용</strong></label>
-		      <textarea id="review_content" name="review_content"></textarea>
+		      <textarea id="review_content" name="review_content" rows="10" cols="100"></textarea>
 		    </div>	    
 	   </div>
 	   <div class="form-row justify-content-center">
@@ -40,7 +40,7 @@
 		    <div class="form-group col-3">
 		      <label for="review_repwd"><strong>재확인</strong></label>
 		     <input type="password" class="form-control" name="review_repwd" id="review_repwd" placeholder="비밀번호 재확인">
-		    </div>			       
+		    </div>			    		       
 	   </div>	   
 		<div class="form-group">
 			<div class="row">
@@ -55,17 +55,14 @@
  </div>
 
 		
-
-
+<script type="text/javascript" src="/minishop/resources/ckeditor4/ckeditor.js"></script>
 <script type="text/javascript" src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script type="text/javascript" src="/minishop/resources/bootstrap4/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript" src="/minishop/resources/custom/js/board.review.js"></script>
+<script type="text/javascript" src="/minishop/resources/custom/js/ckeditor4.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){	
-	//에디터 설정
-
-	//	
-
+	
 	$.ajax({
 		type : 'get',
 		url : '/minishop/product/getAllproduct.do',
@@ -82,5 +79,7 @@ $(document).ready(function(){
 		}//success
 	});//ajax
 });//ready
+
+
 
 </script>

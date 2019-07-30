@@ -1,17 +1,24 @@
 package admin.controller;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import admin.bean.FileVO;
@@ -204,7 +211,58 @@ public class AdminProductController {
 		mav.setViewName("/main/home");
 		return mav;
 	}
+	//글쓰기 이미지 업로드
+	@RequestMapping(value="/productImgUpload.do")
+	@ResponseBody
+	public Map<String,Object> productImgUpload(HttpServletRequest request,@RequestParam MultipartFile upload)
+	throws Exception
+	{
+		Map<String,Object> data = new HashMap<String,Object>();
+		String fileUrl = "";
+		String uploadPath = "";
+		String fileName = upload.getOriginalFilename();
 
+	    //이미지 양식 검증
+	     boolean result = false;
+	      int post = fileName.lastIndexOf(".");
+	       String ext = fileName.substring(post + 1).toLowerCase();
+	       String[] images = {"jpg", "jpeg", "png", "gif", "bmp"};
+	        for (String str : images) {
+	            if (str.equals(ext)) {
+	                result = true;
+	                break;
+	            }
+	        }
+	        if(!result) {
+				data.put("uploaded", 0);
+				data.put("fileName", fileName);		
+				data.put("error", "올바른 형식의 이미지가 아닙니다.");
+				return data;
+	        }
+
+	    
+		try {
+			//실제 업로드 과정
+			uploadPath = request.getSession().getServletContext().getRealPath("/")+"\\storage\\product\\"+fileName;//저장경로
+			//System.out.println(uploadPath);
+			upload.transferTo(new File(uploadPath));
+			fileUrl = request.getContextPath()+"/storage/product/"+fileName;//url경로
+			//System.out.println(fileUrl);
+			data.put("fileName", uploadPath);
+			data.put("uploaded", 1);
+			data.put("url", fileUrl);		
+			//DB저장용 product upload
+			String Localpath="D:\\lib\\workspace\\minishop\\src\\main\\webapp\\storage\\product\\";
+			try {
+				FileCopyUtils.copy(upload.getInputStream(), new FileOutputStream(new File(Localpath,fileName)));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}catch(IOException e) {
+			e.printStackTrace();
+		}
+		return data;
+	}
 	//상품 등록
 	@RequestMapping(value="/doUpload.do",method=RequestMethod.POST)
 	public ModelAndView doUpload(@ModelAttribute List<FileVO> data,Model map){

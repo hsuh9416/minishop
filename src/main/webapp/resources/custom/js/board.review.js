@@ -21,17 +21,15 @@ var missMatchingPwdMsg = '<div class="alert alert-warning alert-dismissible fade
 '<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+
 '<span aria-hidden="true">&times;</span></button></div>';
 
-var noProductMsg = '<div class="alert alert-warning alert-dismissible fade show" role="alert">리뷰할 상품을 선택하세요'+
+var noProductMsg = '<div class="alert alert-warning alert-dismissible fade show" role="alert">상품선택은 필수사항입니다'+
 '<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+
 '<span aria-hidden="true">&times;</span></button></div>';
 
-/*Tinymce 에디터 https://www.tiny.cloud/get-tiny (API KEY 받아야 활성화 됨)
-tinymce.init({ selector:'textarea' });*/
 
 $('#productid').change(function(){
 	$('#imgDiv').empty();
 	if($("#productid option:selected").val()=='')
-		 var getImgOn = '<div class="alert alert-warning alert-dismissible fade show" style="height: 100%; width:70%;" role="alert">리뷰할 상품을<br> 선택해주세요.'
+		 var getImgOn = '<div class="alert alert-warning alert-dismissible fade show" style="height: 100%; width:100%;" role="alert">선택<br>필수'
 		 +'<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+
 		 '<span aria-hidden="true">&times;</span></button></div>';
 	else

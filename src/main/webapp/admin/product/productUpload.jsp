@@ -1,24 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-	<!--Bootsrap 4-->
-	<link rel="stylesheet" type="text/css" href="/mallproject/resources/bootstrap-4.3.1-dist/css/bootstrap.min.css">
-	
-    <!--Fontawesome CDN-->
-	<link rel="stylesheet" href="/mallproject/resources/fontawesome-free-5.9.0-web/css/all.css">	
-	
-	<!-- ckeditor4 CDN -->
-		
 	<!--Custom styles-->
-	<link rel="stylesheet" type="text/css" href="/mallproject/css/userboard.css">  
-		<!-- 리뷰 글쓰기 폼 -->	  
- <div class="reviewForm-container">
- 	<div class="container">
- 	<!-- 실행 메뉴 -->
-	 <nav aria-label="breadcrumb">
-	  <ol class="breadcrumb">
-	    <li class="breadcrumb-item active" aria-current="page">상품 등록</li>       	    
-	  </ol>
-	</nav>
+	<link rel="stylesheet" href="/minishop/resources/custom/css/userproduct.css">
+	<div class="col-lg-8">
+		<input type="hidden" id="pg" value="${pg}">	
+		 <div class="row" id="titleDiv">
+		 	<div class="col" align="center" style="padding-bottom: 20px;">
+				<h3>상품등록</h3>
+			</div>	
+		</div>
 	<form name="productUploadForm" id="productUploadForm" method="post" enctype="multipart/form-data">
 	   <div class="form-row">
 		    <div class="form-group col-md-3">
@@ -86,23 +76,40 @@
 			</div>	
 		</div>	
 		</form>				
- 	</div> 
+ 		<div id="missing"></div>	
  </div>
-<div id="missing"></div>		
+	
 
 
 <script type="text/javascript" src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
-<script type="text/javascript" src="/mallproject/resources/bootstrap-4.3.1-dist/js/bootstrap.bundle.min.js"></script>
-<script type="text/javascript"src="/mallproject/resources/ckeditor_4.12.1_full/ckeditor/ckeditor.js"></script>
-<script type="text/javascript" src="/mallproject/js/admin.product.js"></script>
+<script type="text/javascript"src="/minishop/resources/ckeditor4/ckeditor.js"></script>
+<script type="text/javascript" src="/minishop/resources/custom/js/admin.product.js"></script>
+<script type="text/javascript" src="/minishop/resources/custom/js/ckeditor4.js"></script>
 <script type="text/javascript">
-$(document).ready(function(){	
-	//에디터 설정
-	var content = CKEDITOR.replace('product_name_detail',{
-		customConfig : '/mallproject/resources/ckeditor_4.12.1_full/ckeditor/config.js'
-	});
-	//	
-});//ready
+
+$(function(){
+     
+    CKEDITOR.replace( 'product_name_detail', {//해당 이름으로 된 textarea에 에디터를 적용
+        width:'100%',
+        height:'450px',
+        filebrowserImageUploadUrl: '/minishop/admin/product/productImgUpload.do', //여기 경로로 파일을 전달하여 업로드 시킨다.
+        
+    });
+           
+    CKEDITOR.on('dialogDefinition', function( ev ){
+        var dialogName = ev.data.name;
+        var dialogDefinition = ev.data.definition;
+      
+        switch (dialogName) {
+            case 'image': //Image Properties dialog
+                //dialogDefinition.removeContents('info');
+                dialogDefinition.removeContents('Link');
+                dialogDefinition.removeContents('advanced');
+                break;
+        }
+    });
+     
+});
 	$('#productUploadBtn').click(function(event){
 		event.preventDefault();
 		
@@ -116,7 +123,7 @@ $(document).ready(function(){
 		$.ajax({
 			type :'post',
 			enctype : 'multipart/form-data',
-			url : '/mallproject/admin/product/doUpload.do',
+			url : '/minishop/admin/product/doUpload.do',
 			data : data,
 			processData : false,
 			contentType : false,
