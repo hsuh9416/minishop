@@ -43,7 +43,7 @@
 	<form id="reviewSearch" name="reviewSearch">
 		<div class="form-row justify-content-center">
 		   <span>
-			<input type="hidden" name="pg" id="pg" value="1">
+			<input type="hidden" name="pg" value="1">
 			</span>
 			<span style="margin-left:20px;">
 			<select name="searchOption" id="searchOption" class="form-control">
@@ -110,9 +110,12 @@ $(document).ready(function(){
 					text : items.review_logtime			
 				})).appendTo($('#reviewTable tbody'));
 				//답글
+				for(i=0; i<items.review_lev; i++){
+					$('.'+items.review_seq).before('&emsp;');
+				}
 				if(items.review_pseq!=0){
-					$('.'+items.review_pseq).before($('<img/>',{
-						src : '../image/reply.gif'
+					$('.'+items.review_seq).before($('<i/>',{
+						class : 'fab fa-replyd'
 					}));
 				}				
 			});//each
@@ -121,7 +124,7 @@ $(document).ready(function(){
 			
 			$('#reviewTable').on('click','#subjectA',function(){
 					var review_seq = $(this).parent().prev().text();
-					alert(review_seq);
+					window.location='/minishop/board/review/reviewView.do?review_seq='+review_seq+'&pg='+$('#pg').val();
 			});//제목 클릭시!
 		}//success
 	});//ajax

@@ -13,8 +13,9 @@
 		</div>
  <form name="qaViewForm">
 	<input type="hidden" id="pg" name="pg" value="${pg}"/>
-	<input type="hidden" id="qa_seq" name="qa_seq" value="${qaBoardDTO.qa_seq }"/>
+	<input type="hidden" id="qa_seq" name="qa_seq" value="${qaBoardDTO.qa_seq}"/>
 	<input type="hidden" id="qa_pseq" name="qa_pseq" value="${qaBoardDTO.qa_seq}"/>
+	<input type="hidden" id="qa_pwd" value="${qaBoardDTO.qa_pwd}"/>
 		<div class="table-responsive">
 			<table id="viewTable" class="table justify-content-center">
 			  <thead class="thead-dark">
@@ -80,6 +81,18 @@
 					onclick="location.href='/minishop/board/qa/qaList.do?pg=${pg}'">										    									
 				</div>
 		    </div>	
+		</div>	
+		<div id="pwdConfirm" class="form-group row justify-content-center">
+			<input type="hidden" id="purpose" value=""> 
+			<div class="col-4">
+				<input type="text" id="alertText" readonly class="form-control-plaintext" value="글의 비밀번호를 입력하세요"/>
+			</div>
+			<div class="col-3">
+				<input type="password" class="form-control" placeholder="비밀번호 입력" id="rePwd"/>			
+			</div>
+			<div class="col-2">
+				<input type="button" class="btn btn-outline-dark" value="확인" id="checkQaPwd"/>			
+			</div>						
 		</div>				
 	</div>
 
@@ -89,6 +102,7 @@
 <script type="text/javascript" src="/minishop/resources/custom/js/board.qa.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
+	$('#pwdConfirm').hide();
 	if('${qaBoardDTO.qa_reply}'=='1'){
 		$('#adminAns').removeClass('far fa-question-circle');
 		$('#adminAns').addClass('fas fa-check-circle');		

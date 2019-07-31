@@ -4,7 +4,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="boardSQL">
 	<!-- 글쓰기  -->
-	
 	<insert id="qaWrite" parameterType="java.util.Map" >
 		INSERT into BOARD_QA values(
 				board_seq.nextval
@@ -100,27 +99,80 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   	<select id="getReviewBoard" parameterType="String" resultType="review">
   		select * from board_review
   		inner join member 
-		on review_seq.user_id = member.id
+		on board_review.user_id = member.id
 		where review_seq=#{review_seq}
  	</select>	
+ 	
+ 	<!-- 후기 조회수 업데이트 -->
+ 	<update id="hitUpdate" parameterType="Integer">
+		update board_review set review_hit=review_hit+1 where review_seq=#{review_seq}
+	</update>
+	
  	<!-- 관리자 답변 가져오기 -->
  	<select id="getQaAns" parameterType="String" resultType="adminBoard">
  		select * from board_admin where admin_pseq=#{seq}
  	</select>
+ 	
  	<!-- 글 수정 하기 -->
  	<update id="qaModify" parameterType="java.util.Map">
 		update board_qa set qa_subject=#{qa_subject}
 							,qa_content=#{qa_content}
 							,productid=#{productid}
-							,qa_state=#{qa_state}
-							,qa_logtime=sysdate 
 							where qa_seq=#{qa_seq}														
  	</update>
+ 	<update id="reviewModify" parameterType="java.util.Map">
+		update board_review set review_subject=#{review_subject}
+								,review_content=#{review_content}
+								,productid=#{productid}
+								,review_pwd=#{review_pwd} 
+								where review_seq=#{review_seq}
+	</update> 	
+	
+ 	<!-- 글 삭제 -->
+ 	<delete id="qaDelete" parameterType="Integer">
+ 			delete board_qa where qa_seq=#{qa_seq}
+ 	</delete>  	
+ 	<delete id="reviewDelete" parameterType="Integer">
+ 		begin
+ 			update board_review set review_reply=review_reply-1 
+ 			where review_seq=(select review_pseq from board where review_seq=#{review_seq});
+ 			update board_review set review_subject='[원글이 삭제된 답글]'||review_subject where review_pseq=#{review_pseq};
+ 			delete board_review where review_seq=#{review_seq};
+ 		end;
+ 	</delete> 
+ 
+   	<!-- 리뷰 답글 달기 -->
+	<update id="reviewReply1" parameterType="review">
+  		update board_review set review_step=review_step+1 where review_ref=#{review_ref} and review_step>#{review_step}
+ 	</update>
+ 	
+ 	<insert id="reviewReply2" parameterType="java.util.Map">
+		insert into BOARD_REVIEW values(
+			  board_seq.nextval
+			  ,#{productid}
+			  ,#{user_id}
+			  ,#{review_pwd}
+			  ,#{review_subject}
+			  ,#{review_content}
+			  ,#{review_ref}
+			  ,#{review_lev}
+			  ,#{review_step}
+			  ,#{review_pseq}
+			  ,0
+			  ,0
+			  ,SYSDATE)
+ 	</insert>
+ 	
+ 	<update id="reviewReply3" parameterType="Integer">
+ 		update board_review set review_reply=review_reply+1 where review_seq=#{review_seq}
+	</update>
+				
  	<!-- 관리자 문의 총글수 -->
 	<select id="getAdminQATotalA" resultType="Integer">
   		select count(*) from BOARD_QA where qa_reply=0 
- 	</select> 	
- 	<!-- 관리자 문의 리스트 -->
+ 	</select> 
+ 	 	
+  	<!-- 관리자 문의 리스트 -->
  	<select id="qaManageList" parameterType="java.util.Map" resultType="qa">
 		select * from 
 		(select rownum rn, tt.* from 
@@ -130,66 +182,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		 tt) 
 		where (rn between #{startNum} and #{endNum})
  	</select>
+ 	
  	<!-- 관리자 답변 작성 -->
  	<insert id="qaManageWrite" parameterType="java.util.Map">
  		begin
- 		
  		insert into board_admin values(admin_seq.nextval,#{admin_pseq},#{user_id},#{admin_content});
- 		
- 		update board_qa set  qa_reply=1 where qa_seq=#{admin_pseq};
- 		
+ 		update board_qa set qa_reply=1 where qa_seq=#{admin_pseq};
  		end;
- 	</insert>
- <!--
- 	글수정
- 	<update id="boardModify" parameterType="java.util.Map">
-		update board set subject=#{subject}
-						,content=#{content}
-						,logtime=sysdate where seq=#{seq}
-	</update>
-
-	 답글 
-	<update id="boardReply1" parameterType="review">
-  		update board set step=step+1 where ref=#{ref} and step>#{step}
- 	</update>
- 	
- 	<insert id="boardReply2" parameterType="java.util.Map">
-		insert into board values(seq_board.nextval
-							 	,#{id}
-							 	,#{name}
-							 	,#{email}
-							 	,#{subject}
-							 	,#{content}
-							 	,#{ref}
-							 	,#{lev}
-							 	,#{step}
-							 	,#{pseq}
-							 	,0
-							 	,0
-							 	,sysdate)
- 	</insert>
- 	
- 	<update id="boardReply3" parameterType="Integer">
- 		update board set reply=reply+1 where seq=#{seq}
-	</update>
-	
-	조회수 
-	<update id="hitUpdate" parameterType="Integer">
-		update board set hit=hit+1 where seq=#{seq}
-	</update>
- 	
- 	 글삭제 
- 	<delete id="boardDelete" parameterType="Integer">
- 		begin
- 			update board set reply=reply-1 
- 			where seq=(select pseq from board where seq=#{seq});
- 			
- 			update board set subject='[원글이 삭제된 답글] '||subject where pseq=#{seq};
- 			
- 			delete board where seq=#{seq};
- 		end;
- 	</delete>
- 	-->
+ 	</insert>	
 
 </mapper>
 

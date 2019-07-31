@@ -47,6 +47,14 @@
 			<mapping path="/**/**/*.do"/>					
 			<beans:bean id="PreInterceptors" class="com.interceptor.PreInterceptors"/>	 
 		</interceptor>	
+		<!-- AfterInterceptor-->
+		<interceptor>
+			<mapping path="/board/**/*.do"/>
+			<mapping path="/member/*.do"/>
+			<mapping path="/product/*.do"/>
+			<mapping path="/trading/*.do"/>
+			<beans:bean id="AfterInterceptors" class="com.interceptor.AfterInterceptors"/>
+		</interceptor>			
 	</interceptors>	
 	
 	<context:component-scan base-package="com.conf"/>	

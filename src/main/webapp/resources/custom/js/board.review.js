@@ -1,7 +1,9 @@
 /**
  * 리뷰게시판 관련 자바스트립트
  */
- var notitleMsg = '<div class="alert alert-warning alert-dismissible fade show" role="alert">제목을 입력해주세요'+
+ 
+//0.공통 변수
+var notitleMsg = '<div class="alert alert-warning alert-dismissible fade show" role="alert">제목을 입력해주세요'+
 '<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+
 '<span aria-hidden="true">&times;</span></button></div>';
 
@@ -37,6 +39,19 @@ $('#productid').change(function(){
 	$('#imgDiv').html(getImgOn);
 });//선택지가 바뀔 때 마다
 
+$('#reviewReset').click(function(){
+	window.location.reload();
+});
+
+$('#reviewReturn').click(function(){
+	window.history.back();
+});
+
+//1.리뷰 작성
+$('#goReviewWrite').click(function(){
+	window.location='/minishop/board/review/reviewWriteForm.do';
+});
+
 $('#reviewWriteBtn').click(function(){
 	$('#missing').empty();
 	if($('#review_subject').val()=='') $('#missing').append(notitleMsg).alert();
@@ -52,24 +67,17 @@ $('#reviewWriteBtn').click(function(){
 					'user_id' : $('#user_id').val(),
 					'review_content': CKEDITOR.instances.review_content.getData(),
 					'productid': $('#productid option:selected').val(),
-					'review_pwd':$('#review_pwd').val(),					
-					'review_state':$('#review_state').val()},
+					'review_pwd':$('#review_pwd').val()},
 			success : function(){
-				alert('성공적으로 문의가 접수되었습니다! 문의 게시판으로 이동합니다.');
+				alert('성공적으로 리뷰가 접수되었습니다! 리뷰 게시판으로 이동합니다.');
 				window.location='/minishop/board/review/reviewList.do';}
 			
 		});
 	}
 });
 
-$('#reviewReset').click(function(){
-	window.location.reload();
-});
 
-$('#reviewReturn').click(function(){
-	window.history.back();
-});
-
+//2.리뷰 목록
 function boardPaging(pg){
 	location.href='/minishop/board/review/reviewList.do?pg='+pg;
 }
@@ -125,9 +133,12 @@ $('#reviewSearchBtn').click(function(event,str){
 							text : items.review_logtime			
 						})).appendTo($('#reviewTable tbody'));
 						//답글
+						for(i=0; i<items.review_lev; i++){
+							$('.'+items.review_seq).before('&emsp;');
+						}
 						if(items.review_pseq!=0){
-							$('.'+items.review_pseq).before($('<img/>',{
-								src : '../image/reply.gif'
+							$('.'+items.review_seq).before($('<i/>',{
+								class : 'fab fa-replyd'
 							}));
 						}				
 					});//each
@@ -135,49 +146,106 @@ $('#reviewSearchBtn').click(function(event,str){
 					$('#boardPagingDiv').html(data.boardPaging.pagingHTML);
 					
 					$('#reviewTable').on('click','#subjectA',function(){
-							var review_seq = $(this).parent().prev().text();
-							alert(review_seq);
+						var review_seq = $(this).parent().prev().text();
+						window.location='/minishop/board/review/reviewView.do?review_seq='+review_seq+'&pg='+$('#pg').val();
 					});//제목 클릭시!
 				}//success
 		});//에이작스	
 	}
 });
 
-$('#reviewModifyBtn').click(function(){
-	window.location='/minishop/board/review/reviewModifyForm.do?review_seq='+$('#review_seq').val()+'&pg='+$('#pg').val();
+//3.리뷰 보기 화면
+$('#reviewModifyFormBtn').click(function(){
+	$('#alertText').val('수정하실 글의 비밀번호를 입력하세요').css('color','black').css('font-size','15px');	
+	$('#pwdConfirm').show();
+	$('#purpose').val('modify');
+
 });
 
 $('#reviewDeleteBtn').click(function(){
-	
+	$('#alertText').val('삭제하실 글의 비밀번호를 입력하세요').css('color','black').css('font-size','15px');	
+	$('#pwdConfirm').show();
+	$('#purpose').val('delete');
 });
 
-$('#reviewReplyBtn').click(function(){
-	
+$('#checkReviewPwd').click(function(){
+	$('#alertText').val('');
+	if($('#rePwd').val()==''){
+		$('#alertText').val('비밀번호는 필수입력입니다').css('color','red').css('font-size','15px');		
+	}
+	else if($('#rePwd').val()==$('#review_pwd').val()){
+		if($('#purpose').val()=='modify'){
+			window.location='/minishop/board/review/reviewModifyForm.do?review_seq='+$('#review_seq').val()+'&pg='+$('#pg').val();		
+		}
+		else if($('#purpose').val()=='delete'){
+			var realDelete = confirm('정말 삭제하시겠습니까?');
+			if(realDelete){
+				$.ajax({
+					type : 'get',
+					url : '/minishop/board/review/reviewDelete.do',
+					data : 'review_seq='+$('#review_seq').val(),
+					success: function(){
+						window.location='/minishop/board/review/reviewDeleted.jsp';
+					}
+				});
+			}
+		}
+	}
+	else{
+		$('#alertText').val('비밀번호를 다시 입력하세요').css('color','red').css('font-size','15px');			
+	}
 });
 
-$('#reviewModifyBtn').click(function(){
+$('#reviewReplyFormBtn').click(function(){
+	window.location='/minishop/board/review/reviewReplyForm.do?review_pseq='+$('#review_pseq').val()+'&productid='+$('#productid').val()+'&pg='+$('#pg').val();	
+});
+
+//4.리뷰 수정
+$('#reviewModBtn').click(function(){
 	$('#missingMod').empty();
 	if($('#review_subject').val()=='') $('#missingMod').append(notitleMsg).alert();
 	else if($("#productid option:selected").val()=='') $('#missingMod').append(noProductMsg).alert();
 	else if($('#review_content').val()=='') $('#missingMod').append(noContentMsg).alert();
 	else if($('#review_pwd').val()=='') $('#missingMod').append(emptyPwdMsg).alert();
-	else if($('#review_pwd').val()!=$('#review_check').val()) $('#missingMod').append(missMatchingPwdMsg).alert();
+	else if($('#review_pwd').val()!=$('#review_repwd').val()) $('#missingMod').append(missMatchingPwdMsg).alert();
 	else{	
 		$.ajax({
 			type : 'post',
 			url : '/minishop/board/review/reviewModify.do',
 			data : {'review_seq':$('#review_seq').val(),
 					'review_subject':$('#review_subject').val(),
-					'review_content':$('#review_content').val(),
+					'review_content': CKEDITOR.instances.review_content.getData(),
 					'productid': $('#productid option:selected').val(),
-					'review_pwd':$('#review_pwd').val(),					
-					'review_state':$('#review_state').val()},
+					'review_pwd':$('#review_pwd').val()},
 			success : function(){
-				alert('문의 게시글이 수정되었습니다.');
+				alert('리뷰 게시글이 수정되었습니다.');
 				window.location='/minishop/board/review/reviewView.do?review_seq='+$('#review_seq').val()+'&pg='+$('#pg').val();}
 		});
 	}
 });
-$('#goReviewWrite').click(function(){
-	window.location='/minishop/board/review/reviewWriteForm.do';
+
+
+//5.리뷰 답글
+$('#replyWriteBtn').click(function(){
+	$('#missing').empty();
+	if($('#review_subject').val()=='') $('#missing').append(notitleMsg).alert();
+	else if($("#productid option:selected").val()=='') $('#missing').append(noProductMsg).alert();
+	else if(CKEDITOR.instances.review_content.getData()=='') $('#missing').append(noContentMsg).alert();
+	else if($('#review_pwd').val()=='') $('#missing').append(noPwdMsg).alert();
+	else if($('#review_pwd').val()!=$('#review_repwd').val()) $('#missing').append(missMatchingPwdMsg).alert();
+	else{	
+		$.ajax({
+			type : 'post',
+			url : '/minishop/board/review/reviewReply.do',
+			data : {'review_subject':$('#review_subject').val(),
+					'review_pseq' : $('#review_pseq').val(),
+					'review_content': CKEDITOR.instances.review_content.getData(),
+					'review_pwd':$('#review_pwd').val()},
+			success : function(){
+				alert('성공적으로 리뷰가 접수되었습니다! 리뷰 게시판으로 이동합니다.');
+				window.location='/minishop/board/review/reviewList.do';}
+			
+		});
+	}
 });
+

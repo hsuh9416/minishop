@@ -1,6 +1,7 @@
 /**
- * 질의 게시판 관련 자바 스크립트
+ * 문의 게시판 관련 자바 스크립트
  */
+//0.공통 변수
  var notitleMsg = '<div class="alert alert-warning alert-dismissible fade show" role="alert">제목을 입력해주세요'+
 '<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+
 '<span aria-hidden="true">&times;</span></button></div>';
@@ -39,7 +40,15 @@ $('#isSecret').click(function(){
 		$('#qa_state').val('0');		
 	}
 });
+$('#qaReset').click(function(){
+	window.location.reload();
+});
 
+$('#qaReturn').click(function(){
+	window.history.back();
+});
+
+//1.문의 작성
 $('#qaWriteBtn').click(function(){
 	$('#missing').empty();
 	if($('#qa_subject').val()=='') $('#missing').append(notitleMsg).alert();
@@ -65,15 +74,7 @@ $('#qaWriteBtn').click(function(){
 	}
 });
 
-$('#qaReset').click(function(){
-	window.location.reload();
-});
-
-$('#qaReturn').click(function(){
-	window.history.back();
-});
-
-
+//2.문의 목록
 function boardPaging(pg){
 	location.href='/minishop/board/qa/qaList.do?pg='+pg;
 }
@@ -156,15 +157,48 @@ $('#qaSearchBtn').click(function(event,str){
 		});//에이작스	
 	}
 });
-
+//3.문의 보기 화면
 $('#qaModifyFormBtn').click(function(){
-	window.location='/minishop/board/qa/qaModifyForm.do?qa_seq='+$('#qa_seq').val()+'&pg='+$('#pg').val();
+	$('#alertText').val('수정하실 글의 비밀번호를 입력하세요').css('color','black').css('font-size','15px');	
+	$('#pwdConfirm').show();
+	$('#purpose').val('modify');
+
 });
 
 $('#qaDeleteBtn').click(function(){
-	
+	$('#alertText').val('삭제하실 글의 비밀번호를 입력하세요').css('color','black').css('font-size','15px');	
+	$('#pwdConfirm').show();
+	$('#purpose').val('delete');
 });
 
+$('#checkQaPwd').click(function(){
+	if($('#rePwd').val()==''){
+		$('#alertText').val('비밀번호는 필수입력입니다').css('color','red').css('font-size','15px');		
+	}
+	else if($('#rePwd').val()==$('#qa_pwd').val()){
+		if($('#purpose').val()=='modify'){
+			window.location='/minishop/board/qa/qaModifyForm.do?qa_seq='+$('#qa_seq').val()+'&pg='+$('#pg').val();	
+		}
+		else if($('#purpose').val()=='delete'){
+			var realDelete = confirm('정말 삭제하시겠습니까?');
+			if(realDelete){
+				$.ajax({
+					type : 'get',
+					url : '/minishop/board/qa/qaDelete.do',
+					data : 'qa_seq='+$('#qa_seq').val(),
+					success: function(){
+						window.location='/minishop/board/qa/qaDeleted.jsp';
+					}
+				});
+			}
+		}
+	}
+	else{
+		$('#alertText').val('비밀번호를 다시 입력하세요').css('color','red').css('font-size','15px');			
+	}
+});
+
+//4.문의 수정
 $('#qaModifyBtn').click(function(){
 	$('#missingMod').empty();
 	if($('#qa_subject').val()==''){ 

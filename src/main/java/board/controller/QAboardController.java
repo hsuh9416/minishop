@@ -171,13 +171,11 @@ public class QAboardController {
 	}
 	
 	//글삭제 
-	@RequestMapping(value="/qaDelete.do",method= RequestMethod.POST)
-	public ModelAndView boardDelete(@RequestParam String seq) {		
+	@RequestMapping(value="/qaDelete.do",method= RequestMethod.GET)
+	public ModelAndView qaDelete(@RequestParam int qa_seq) {		
 		ModelAndView mav = new ModelAndView();
-		boardDAO.boardDelete(seq);
-		mav.addObject("display", "/board/boardList.jsp");
-		mav.addObject("pg", 1);
-		mav.setViewName("/main/home");
+		boardDAO.qaDelete(qa_seq);
+		mav.setViewName("/board/qa/qaDeleted");
 		return mav;
 	}
 	

@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,6 +28,7 @@ import board.bean.ReviewboardDTO;
 import board.dao.BoardDAO;
 import member.bean.GuestDTO;
 import member.bean.MemberDTO;
+import trading.bean.OrderDTO;
 
 @Controller
 @RequestMapping(value="/board/review/**")
@@ -105,13 +107,7 @@ public class ReviewboardController {
 	@ResponseBody
 	public void boardWrite(@RequestParam Map<String,String> map, HttpSession session) {
 		MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
-		if(memberDTO==null) {
-			GuestDTO guestDTO = (GuestDTO) session.getAttribute("guestDTO");
-			map.put("user_id", guestDTO.getGuest_id());	
-		}
-		else {
-			map.put("user_id", memberDTO.getId());	
-		}
+		map.put("user_id", memberDTO.getId());	
 		
 		boardDAO.reviewWrite(map);
 	}
@@ -171,8 +167,8 @@ public class ReviewboardController {
 		int totalA = boardDAO.getTotalSearchA(map);
 		//페이징 처리
 		boardPaging.setCurrentPage(page);
-		boardPaging.setPageBlock(3);
-		boardPaging.setPageSize(5);
+		boardPaging.setPageBlock(1);
+		boardPaging.setPageSize(3);
 		boardPaging.setTotalA(totalA);
 		boardPaging.makeSearchPagingHTML();		
 		
@@ -187,19 +183,31 @@ public class ReviewboardController {
 		
 	//글보기
 	@RequestMapping(value="/reviewView.do",method=RequestMethod.GET)
-	public ModelAndView reviewView(@RequestParam(required=false,defaultValue="1") String pg,String seq, HttpSession Session,HttpServletRequest request,HttpServletResponse response) {
-		MemberDTO memberDTO = (MemberDTO)Session.getAttribute("memberDTO");
+	public ModelAndView reviewView(@RequestParam(required=false,defaultValue="1") String pg,String review_seq, HttpSession Session,HttpServletRequest request,HttpServletResponse response) {
+		String id="";
+		MemberDTO memberDTO =null; OrderDTO orderDTO=null; GuestDTO guestDTO=null;
+		
+		memberDTO = (MemberDTO)Session.getAttribute("memberDTO");
+		if(memberDTO!=null) id=memberDTO.getId();
+		else if(memberDTO==null) {
+			orderDTO = (OrderDTO) Session.getAttribute("memberDTO");
+			if(orderDTO!=null)	id = orderDTO.getOrder_id();
+			else if(orderDTO==null) {
+				guestDTO = (GuestDTO) Session.getAttribute("guestDTO");
+				if(guestDTO!=null) id = guestDTO.getGuest_id();
+			}
+		}
 		boolean today = false;
 		Cookie[] ar = request.getCookies();
-		if(ar!=null) {
+		if(ar!=null&&(memberDTO!=null|| orderDTO !=null|| guestDTO!=null)) {
 			for(int i=0; i<ar.length; i++) {
-				if((ar[i].getName()).equals(memberDTO.getId()+seq)) {
+				if((ar[i].getName()).equals(id+review_seq)) {
 					today = true;}
 			}//for
 			
 			if(!today) {
-				boardDAO.hitUpdate(Integer.parseInt(seq));
-				Cookie cookie = new Cookie(memberDTO.getId()+seq, seq+"");
+				boardDAO.hitUpdate(Integer.parseInt(review_seq));
+				Cookie cookie = new Cookie(id+review_seq, review_seq+"");
 				//System.out.println(cookie.getName());
 				cookie.setMaxAge(30*60);
 				response.addCookie(cookie);
@@ -208,22 +216,27 @@ public class ReviewboardController {
 		
 		
 		ModelAndView mav = new ModelAndView();
-		ReviewboardDTO reviewboardDTO = boardDAO.getReviewBoard(seq);
+		ReviewboardDTO reviewboardDTO = boardDAO.getReviewBoard(review_seq);
+		//원래 글자로 복귀 시킴
+		String content = StringEscapeUtils.unescapeHtml3(reviewboardDTO.getReview_content());
+		reviewboardDTO.setReview_content(content);
+		//System.out.println(reviewboardDTO.getReview_content());
 		mav.addObject("pg", pg);
 		mav.addObject("reviewboardDTO", reviewboardDTO);
-		mav.addObject("display", "/board/boardView.jsp");
+		mav.addObject("location","reviewView");
+		mav.addObject("display", "/board/review/reviewView.jsp");
 		mav.setViewName("/main/home");
 		return mav;	
 	}
 	
 	//글수정 이동
-	@RequestMapping(value="/reviewModifyForm.do",method= RequestMethod.POST)
-	public ModelAndView reviewModifyForm(@RequestParam String seq,String pg) {
+	@RequestMapping(value="/reviewModifyForm.do",method= RequestMethod.GET)
+	public ModelAndView reviewModifyForm(@RequestParam String review_seq,String pg) {
 		ModelAndView mav = new ModelAndView();
-		ReviewboardDTO reviewboardDTO = boardDAO.getReviewBoard(seq);
+		ReviewboardDTO reviewboardDTO = boardDAO.getReviewBoard(review_seq);
 		mav.addObject("pg", pg);
 		mav.addObject("reviewboardDTO", reviewboardDTO);
-		mav.addObject("display", "/board/boardModifyForm.jsp");
+		mav.addObject("display", "/board/review/reviewModifyForm.jsp");
 		mav.setViewName("/main/home");
 	return mav;	
 	}
@@ -231,33 +244,28 @@ public class ReviewboardController {
 	//글수정 DB
 	@RequestMapping(value="/reviewModify.do",method= RequestMethod.POST)
 	@ResponseBody
-	public void reviewModify(@RequestParam Map<String,String> map, Model model) {
-		Map<String,String> modifymap = new HashMap<String,String>();
-		modifymap.put("pg",map.get("pg"));
-		modifymap.put("seq",map.get("seq"));
-		modifymap.put("subject",map.get("subject"));
-		modifymap.put("content",map.get("content"));		
-		boardDAO.reviewModify(modifymap);
+	public void reviewModify(@RequestParam Map<String,String> map, Model model) {		
+		boardDAO.reviewModify(map);
+
 	}
-	
+
 	//글삭제 
-	@RequestMapping(value="/reviewDelete.do",method= RequestMethod.POST)
-	public ModelAndView reviewDelete(@RequestParam String seq) {		
+	@RequestMapping(value="/reviewDelete.do",method= RequestMethod.GET)
+	public ModelAndView reviewDelete(@RequestParam int review_seq) {		
 		ModelAndView mav = new ModelAndView();
-		boardDAO.boardDelete(seq);
-		mav.addObject("display", "/board/review/reviewList.jsp");
-		mav.addObject("pg", 1);
-		mav.setViewName("/main/home");
+		boardDAO.reviewDelete(review_seq);
+		mav.setViewName("/board/review/reviewDeleted");
 		return mav;
 	}
 	
 	//답글 화면
-	@RequestMapping(value="/reviewReplyForm.do",method= RequestMethod.POST)
-	public ModelAndView boardReplyForm(@RequestParam String pseq,String pg) {
+	@RequestMapping(value="/reviewReplyForm.do",method= RequestMethod.GET)
+	public ModelAndView boardReplyForm(@RequestParam String review_pseq,String productid,String pg) {
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("pseq", pseq);
+		mav.addObject("review_pseq", review_pseq);
+		mav.addObject("productid", productid);		
 		mav.addObject("pg", pg);
-		mav.addObject("display", "/board/reveiew/reviewReplyForm.jsp");
+		mav.addObject("display", "/board/review/reviewReplyForm.jsp");
 		mav.setViewName("/main/home");
 	return mav;	
 	}	
@@ -266,20 +274,11 @@ public class ReviewboardController {
 	@RequestMapping(value="/reviewReply.do",method= RequestMethod.POST)
 	@ResponseBody
 	public void boardReply(@RequestParam Map<String,String> map,HttpSession session) {
-
+		//기존 Map 정보:review_pseq,review_pwd,review_subject,review_content
 		MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
-		String name = memberDTO.getName();
-		String id = memberDTO.getId();
-		String email = memberDTO.getEmail1()+"@"+memberDTO.getEmail2();
-		ReviewboardDTO reviewboardDTO = boardDAO.getReviewBoard(map.get("pseq"));
-		
-		Map<String,String> resource = new HashMap<String,String>();
-		resource.put("id",id);
-		resource.put("name",name);
-		resource.put("email",email);
-		resource.put("subject",map.get("subject"));
-		resource.put("content",map.get("content"));
-		resource.put("pseq",map.get("pseq"));
-		boardDAO.reviewReply(reviewboardDTO,resource);
+		String review_seq = map.get("review_pseq");
+		ReviewboardDTO reviewboardDTO = boardDAO.getReviewBoard(review_seq);
+		map.put("user_id",memberDTO.getId());	
+		boardDAO.reviewReply(reviewboardDTO,map);
 	}	
 }

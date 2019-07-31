@@ -13,8 +13,6 @@ public interface BoardDAO {
 	
 	int getTotalSearchA(Map<String, String> map);	
 	
-	void boardDelete(String seq);	
-	
 	//qa
 	void qaWrite(Map<String, String> map);	
 	
@@ -26,14 +24,15 @@ public interface BoardDAO {
 	
 	AdminboardDTO getQaAns(String seq);
 	
-	void qaModify(Map<String, String> modifymap);
+	void qaModify(Map<String, String> map);
 
 	List<QAboardDTO> qaManageList(Map<String, String> map);
 
 	int getAdminQATotalA();
 
 	void qaManageWrite(Map<String, String> map);	
-	
+
+	void qaDelete(int qa_seq);
 
 	
 	//review
@@ -43,13 +42,17 @@ public interface BoardDAO {
 
 	List<ReviewboardDTO> reviewSearch(Map<String, String> map);
 
-	ReviewboardDTO getReviewBoard(String seq);
+	ReviewboardDTO getReviewBoard(String review_seq);
 
-	void reviewReply(ReviewboardDTO boardDTO, Map<String, String> resource);
+	void reviewReply(ReviewboardDTO reviewboardDTO, Map<String, String> map);
 
-	void reviewModify(Map<String, String> modifymap);
+	int reviewModify(Map<String, String> map);
 
-	int hitUpdate(int seq);
+	int hitUpdate(int review_seq);
+
+	void reviewDelete(int review_seq);
+
+
 
 
 

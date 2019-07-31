@@ -76,6 +76,7 @@ $(document).ready(function(){
 				text : items.productID
 			}).appendTo($('#productid'));
 			});//eachs	
+		$('#productid').val('${qaBoardDTO.productid}');	
 		}//success
 	});//ajax
 });//ready
