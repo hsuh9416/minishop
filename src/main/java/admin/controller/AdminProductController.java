@@ -245,7 +245,7 @@ public class AdminProductController {
 		try {
 			//실제 업로드 과정
 			uploadPath = request.getSession().getServletContext().getRealPath("/")+"\\storage\\product\\"+fileName;//저장경로
-			//System.out.println(uploadPath);
+			System.out.println(uploadPath);
 			upload.transferTo(new File(uploadPath));
 			fileUrl = request.getContextPath()+"/storage/product/"+fileName;//url경로
 			//System.out.println(fileUrl);

@@ -71,14 +71,14 @@ public class PreInterceptors extends HandlerInterceptorAdapter{
 		//END 2.로그인 전 접근인지 확인	
 		
 		//START 3.관리자 계정의 이중 접근인지 확인
-		//관리자 로그인까지 처리후 쇼핑몰 내부로 이동하려 할 경우
+		//관리자 로그인까지 처리후 쇼핑몰 내부로 이동하려 할 경우(일부 메소드 제외)
 		AdminDTO adminDTO = (AdminDTO) session.getAttribute("adminDTO");
 		if(adminDTO == null && uri.contains("/admin/")) {//관리자가 아닌데 또는 관리자 로그인 없이 관리자페이지에 접근하는 경우
 			logger.info("관리자계정만 접근 가능합니다.");
 			response.sendRedirect(request.getContextPath()+"/error/inaccessible.jsp");//경고 페이지 이동
 			return false;			
 		}
-		else if(adminDTO != null && !uri.contains("/admin/")) {//관리자계정이 개설된 상태에서 관리자 메뉴 이외로 접근할 경우 제지
+		else if(adminDTO != null && !uri.contains("/admin/")&&!uri.contains("/storage/")) {//관리자계정이 개설된 상태에서 관리자 메뉴 이외로 접근할 경우 제지
 			logger.info("관리자계정의 이중 접근은 불가능합니다.");
 				response.sendRedirect(request.getContextPath()+"/admin/adminHome.do");
 			return false;}

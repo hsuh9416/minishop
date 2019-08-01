@@ -27,6 +27,7 @@ var state = '비밀글';
 var subject = '[비밀글로 작성된 문의글입니다]';
 var isreplied ='미답변';
 
+
 $('#isSecret').click(function(){
 	//alert($('#qa_state').val());
 	if($('#qa_state').val()=='0'){

@@ -91,7 +91,7 @@ $(document).ready(function(){
 				}))).append($('<td/>',{
 					align: 'center'
 				}).append($('<img/>',{
-					src: '/minishop/storage/onstore/'+items.product_name_image,
+					src: '/minishop/storage/showProduct.do?product_name_image='+items.product_name_image,
 					width: '100',
 					height: '100',
 					id : 'imageA'

@@ -35,7 +35,7 @@ $('#productid').change(function(){
 		 +'<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+
 		 '<span aria-hidden="true">&times;</span></button></div>';
 	else
-		var getImgOn='<img style="height:100%;width:90px;" src="/minishop/storage/'+$("#productid option:selected").val()+'.jpg">';
+		var getImgOn='<img style="height:100%;width:90px;" src="/minishop/storage/showProduct.do?product_name_image='+$("#productid option:selected").val()+'.jpg">';
 	$('#imgDiv').html(getImgOn);
 });//선택지가 바뀔 때 마다
 

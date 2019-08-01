@@ -78,7 +78,7 @@ $(document).ready(function(){
 			});//eachs	
 			$('#productid').val('${reviewboardDTO.productid}');	
 			if($("#productid option:selected").val()!=''){
-				var getImgOn='<img style="height:80px;weight:60px;" src="/minishop/storage/'+$("#productid option:selected").val()+'.jpg">';
+				var getImgOn='<img style="height:80px;weight:60px;" src="/minishop/storage/showProduct.do?product_name_image='+$("#productid option:selected").val()+'.jpg">';
 				$('#imgDiv').html(getImgOn);
 			}
 		}//success
