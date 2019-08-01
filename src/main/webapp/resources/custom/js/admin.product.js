@@ -21,6 +21,23 @@ var missMatchingPwdMsg = '<div class="alert alert-warning alert-dismissible fade
 '<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+
 '<span aria-hidden="true">&times;</span></button></div>';
 
+function toJson(form) {
+	var obj = {};
+	var arr = form;
+	$.each(arr, function() {
+		if (obj[this.name]) {
+			if (! obj[this.name].push) {
+				obj[this.name] = [obj[this.name]];
+			}
+			obj[this.name].push(this.value || '');
+		} else {
+			obj[this.name] = this.value || '';
+		}
+	});
+	obj= JSON.stringify(obj);
+	return obj;
+}
+
 $('#qaWriteBtn').click(function(){
 	$('#missing').empty();
 	if($('#qa_subject').val()=='') $('#missing').append(notitleMsg).alert();
@@ -75,5 +92,11 @@ $('#qaModifyBtn').click(function(){
 		});
 	}
 });
+
+//datepicker:START
+
+//datepicker:END
+
+
 
 

@@ -12,7 +12,8 @@
   <meta name="author" content="">
 
   <title>Kissin' Bugs</title>
-
+  
+ <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
  <link rel="stylesheet" type="text/css" href="/minishop/resources/bootstrap4/css/bootstrap.min.css">
  <link rel="stylesheet" type="text/css" href="/minishop/resources/template/css/main_styles.css">
  <link rel="stylesheet" type="text/css" href="/minishop/resources/template/css/responsive.css">
@@ -48,6 +49,7 @@
 </body>
   <!-- JavaScript --> 
   <script type="text/javascript" src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script type="text/javascript" src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
   <script type="text/javascript" src="/minishop/resources/bootstrap4/js/bootstrap.bundle.min.js"></script>
   <script type="text/javascript" src="/minishop/resources/template/js/custom.js"></script> 
   <script type="text/javascript" src="/minishop/resources/custom/js/innerMain.js"></script>

@@ -17,6 +17,7 @@
 	<resources mapping="/storage/**" location="/storage/" />
 	<resources mapping="/review/**" location="/storage/review/" />
 	<resources mapping="/product/**" location="/storage/product/" />
+	<resources mapping="/storage/onstore/**" location="/storage/onstore/" />	
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
 	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<beans:property name="suffix" value=".jsp" />

@@ -22,7 +22,7 @@ public class ProductDTO {
 	private int product_hit;//조회수
 	private int product_like;//좋아요수
 	private int product_salesMount;//(accumulated) salesMount
-	@JsonFormat(pattern="yyyy.MM.dd")
+	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date product_name_instockdate;//입고 예정일
 	private String product_onstore;//입점여부
 	//table 'product'관련 

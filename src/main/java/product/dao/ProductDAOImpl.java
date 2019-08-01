@@ -16,6 +16,12 @@ import product.bean.ProductDTO;
 public class ProductDAOImpl implements ProductDAO {
 	@Autowired
 	private SqlSession sqlSession;
+	
+	@Override
+	public int getSeq() {
+		return sqlSession.selectOne("productSQL.product_getSeq");
+	}
+	
 	//재고 목록 가져오기
 	@Override
 	public List<ProductDTO> inventoryList(int startNum, int endNum) {
@@ -104,11 +110,17 @@ public class ProductDAOImpl implements ProductDAO {
 
 	//상품 업로드
 	@Override
-	public void productUpload(ProductDTO productDTO) {
-		sqlSession.insert("productSQL.product_nameUpload", productDTO);
-	if(productDTO.getProduct_onstore().equals("YES")) {//바로 입점시 재고도 업데이트
-		sqlSession.insert("productSQL.productUpload", productDTO);}		
+	public int productUpload(ProductDTO productDTO) {
+		return sqlSession.insert("productSQL.product_nameUpload", productDTO);
+
 	}
+	//입점재고 업로드
+
+	@Override
+	public int inventoryUpload(ProductDTO productDTO) {
+		return sqlSession.insert("productSQL.productUpload", productDTO);	
+	}
+
 
 
 

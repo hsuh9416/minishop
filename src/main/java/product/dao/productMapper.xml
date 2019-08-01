@@ -139,9 +139,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				order by #{order}) tt) 
 				where (rn between #{startNum} and #{endNum}) and product_onstore='YES' 
 				and product_category_no=#{product_category_no} 	
- 	</select>	
+ 	</select>
+ 	<!-- 임의의 상품번호 수령 -->	
+ 	<select id="product_getSeq" resultType="Integer">
+ 		select product_seq.nextVal from dual
+ 	</select>
+ 	<!-- 상품 업로드 -->
  	<insert id="product_nameUpload" parameterType="product">
- 	 insert into product_name values(product_seq.nextVal,
+ 	 insert into product_name values(#{product_name_no},
  	 								#{product_category_no},
  	 								#{product_name_title},
  	 								#{product_name_detail},
@@ -151,16 +156,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  	 								0,
  	 								0,
  	 								0,
- 	 								#{product_onstore});
+ 	 								#{product_onstore})
  	</insert>
   	<insert id="productUpload" parameterType="product">
- 	 insert into product values(#{productid}||product_seq.curVal,
- 	 								#{unitcost},
- 	 								#{product_name_title},
- 	 								0,
- 	 								#{promotioncode},
- 	 								#{productname},
- 	 								#{product_name_no})
+ 	 insert into product values(#{productID},
+ 	 							#{unitcost},
+ 	 							0,
+ 	 							#{promotioncode},
+ 	 							#{productName},
+ 	 							#{product_name_no})
  	</insert>	
 </mapper>
 

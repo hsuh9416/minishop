@@ -6,7 +6,8 @@ import java.util.Map;
 import product.bean.ProductDTO;
 
 public interface ProductDAO {
-
+	//공통
+	int getSeq();
 	//관리자-재고 관련
 	List<ProductDTO> inventoryList(int startNum, int endNum);
 
@@ -38,5 +39,7 @@ public interface ProductDAO {
 
 	List<ProductDTO> getAllproduct();
 
-	void productUpload(ProductDTO productDTO);
+	int productUpload(ProductDTO productDTO);
+	
+	int inventoryUpload(ProductDTO productDTO);
 }

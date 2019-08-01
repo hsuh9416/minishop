@@ -3,12 +3,14 @@ package admin.controller;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,7 +23,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import admin.bean.FileVO;
 import product.bean.ProductDTO;
 import product.bean.ProductPaging;
 import product.dao.ProductDAO;
@@ -263,29 +264,94 @@ public class AdminProductController {
 		}
 		return data;
 	}
+	
 	//상품 등록
 	@RequestMapping(value="/doUpload.do",method=RequestMethod.POST)
-	public ModelAndView doUpload(@ModelAttribute List<FileVO> data,Model map){
+	public ModelAndView doUpload(@ModelAttribute ProductDTO productDTO, @RequestParam MultipartFile product_image, String date, Model map,HttpServletRequest request){
+		Date product_name_instockdate = null;
+		String state;
+
 		
-		System.out.println(data);
-		for(FileVO i : data ) {
-			System.out.println(i);			
-		}
-		/*String filePath = "D:\\Spring\\workspace\\springproject\\src\\main\\webapp\\storage";
-		String fileName = product_name_image.getOriginalFilename();
-		File file = new File(filePath,fileName);
-		
+		//1.받아온 글자를 date 형식으로 치환
+		SimpleDateFormat targetDate = new SimpleDateFormat("yyyy-mm-dd");
+		if(date!=null) {
 		try {
-			FileCopyUtils.copy(product_name_image.getInputStream(), new FileOutputStream(file));
-		} catch (IOException e) {
+			product_name_instockdate = targetDate.parse(date);			
+		} catch (ParseException e) {e.printStackTrace();}
+		
+		productDTO.setProduct_name_instockdate(product_name_instockdate);	
+		}
+		//2.파일 형식 확인
+		//업로드 된 파일명
+		String originalfileName = product_image.getOriginalFilename();
+
+	    //이미지 양식 검증(검증 이후 파일 네임을 반환
+	     boolean result = false;
+	      int post = originalfileName.lastIndexOf(".");
+	       String ext = originalfileName.substring(post + 1).toLowerCase();//ext
+	       String[] images = {"jpg", "jpeg", "png", "gif", "bmp"};
+	        for (String str : images) {
+	            if (str.equals(ext)) {
+	                result = true;
+	                break;
+	            }
+	        }
+	        if(!result) {state="WrongFile";}//오류로 복귀
+	        else {
+	        originalfileName = originalfileName.substring(0, post)+"."+ext; //이미지명.
+
+	    	
+			
+		//3.seq 배정받기
+		int product_name_no = productDAO.getSeq();
+		productDTO.setProduct_name_no(product_name_no);//seq 설정
+		productDTO.setProductID(productDTO.getProductID()+product_name_no);//등록코드 변경ex>CSXS2200
+			//업로드될 파일명
+		String uploadfileName = productDTO.getProductID()+"."+ext;//기본적으로는 productID와 동일ex>CSXS2200.jpg		
+		 productDTO.setProduct_name_image(uploadfileName);//이미지 파일명	
+		//4.서버에 업로드
+	     String uploadPath = request.getSession().getServletContext().getRealPath("/")+"\\storage\\onstore\\"+uploadfileName;
+	     try {
+			product_image.transferTo(new File(uploadPath));
+		} catch (IllegalStateException | IOException e) {
 			e.printStackTrace();
 		}
+	     //5.workspace상에 업로드
+	     String filePath = "D:\\lib\\workspace\\minishop\\src\\main\\webapp\\storage\\onstore\\";
+	     
+	     File newFile = new File(filePath,uploadfileName);
+	     
+	     /*이름 업데이트되어 변경:실행결과 변경된 점이 없으므로 유보시킴
+	      * File originalFile = new File(filePath,originalfileName);
+	     originalFile.renameTo(new File(filePath,uploadfileName));*/
+			
+			try {FileCopyUtils.copy(product_image.getInputStream(), new FileOutputStream(newFile));} 
+			catch (IOException e) {e.printStackTrace();}	     
 		
-		productDTO.setProduct_name_image(fileName);*/
-
-		ModelAndView mav = new ModelAndView();	
-		mav.addObject("display", "/admin/product/productUpload.jsp");
-		mav.setViewName("/main/home");
+		System.out.println(productDTO);
+		 
+		//6.DB upload
+		try {
+		int done1 = productDAO.productUpload(productDTO);
+		if(done1==0) {
+			state="입점실패";
+		}
+		else {//즉시 입점시에는 추가로 DB엡데이트
+			if(productDTO.getProduct_onstore().equals("YES")){
+				int done2 = productDAO.inventoryUpload(productDTO);
+				if(done2==1) state = "입점완료";
+				else state="입점실패";					
+			}
+			else state="상품등록완료";
+		}
+		}catch(Exception e) {
+			state="입점실패";
+		}
+		 }
+		//7.결과값 송출
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("stateCode",state);
+		mav.setViewName("/admin/product/stateCode");
 		return mav;
 	}
 	//상품 삭제
