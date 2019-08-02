@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+    
 	<!--Custom styles-->
 	<link rel="stylesheet" href="/minishop/resources/custom/css/userproduct.css">
 
@@ -9,14 +12,17 @@
 		<input type="hidden" id="pg" value="${pg}">	
 		 <div class="row" id="titleDiv">
 		 	<div class="col" align="center" style="padding-bottom: 20px;">
-				<h3>상품등록</h3>
+				<h3>상품 수정</h3>
 			</div>	
 		</div>
-	<form name="uploadForm" id="uploadForm" method="post" enctype="multipart/form-data" action="/minishop/admin/product/doUpload.do">
+	<form name="modifyForm" id="modifyForm" method="post" enctype="multipart/form-data" action="/minishop/admin/product/productModify.do">
+	   <input type="hidden" name="pg" id="pg" value="${pg}">
+	   <input type="hidden" id="product_name_no" name="product_name_no" value="${productDTO.product_name_no}">  
+	   <input type="hidden" name="product_name_image" id="product_name_image" value="${productDTO.product_name_image}">			   		      
 	   <div class="form-row">
 		    <div class="form-group col-5">
 		      <label for="productName"><strong>상품명</strong></label>
-		      <input type="text" class="form-control" name="productName" id="productName" placeholder="상품명 입력">
+		      <input type="text" class="form-control" name="productName" id="productName" value="${productDTO.productName}">
 		    </div>
 		    <div class="form-group col-3">
 		     <label for="product_category_no"><strong>상품분류</strong></label>
@@ -29,8 +35,8 @@
 	   </div>
 	   <div class="form-row">
 		    <div class="form-group col-4">
-		      <label for="product_name_price"><strong>상품예정가격</strong></label>
-		      <input type="number" class="form-control" name="product_name_price" id="product_name_price" placeholder="ex>2000(단가,단위 생략)">
+		      <label for="productName"><strong>상품예정가격</strong></label>
+		      <input type="number" class="form-control" name="product_name_price" id="product_name_price" value="${productDTO.product_name_price}">
 		    </div>
 			<div class="form-group col-5">
 		      <label for="product_name_image"><strong>섬네일 이미지 업로드</strong></label>
@@ -40,7 +46,7 @@
 	   <div class="form-row">
 		    <div class="form-group col-8">
 		      <label for="product_name_title"><strong>상품 페이지 제목</strong></label>
-		      <input type="text" class="form-control" name="product_name_title" id="product_name_title" placeholder="제목 입력">
+		      <input type="text" class="form-control" name="product_name_title" id="product_name_title" value="${productDTO.product_name_title}">
 		    </div>	
 			<div class="form-group col-3">
 		      <label for="inofstore"><strong>입점 여부</strong></label>
@@ -49,7 +55,7 @@
 			  	<label class="custom-control-label" for="inofstore">입점</label>
 			  </div>
 			  <div class="custom-control custom-radio">
-			    <input type="radio"  value="NO" id="outofstore" name="product_onstore" class="custom-control-input" checked>
+			    <input type="radio"  value="NO" id="outofstore" name="product_onstore" class="custom-control-input">
 			    <label class="custom-control-label" for="outofstore">입점 안함</label>
 			  </div>
 		    </div>	        
@@ -57,7 +63,7 @@
 	   <div class="form-row">
 		    <div class="form-group col-10">
 		    	<label for="product_name_detail"><strong>상품 페이지 내용</strong></label>
-		      <textarea id="product_name_detail"></textarea>
+		      <textarea id="product_name_detail">${productDTO.product_name_detail}</textarea>
 		    </div>
 		    <input type="hidden" name="product_name_detail"/>
 	   </div>	   
@@ -65,22 +71,23 @@
 		   <div class="form-row">
 		   	<div class="form-group col-4">
 		   		<label for="product_name_instockdate"><strong>입고(예정)일 </strong></label>
-		   		  <input type="date" class="form-control"  name="date">
+		   		 
+		   		  <input type="date" class="form-control"  name="date" value="<fmt:formatDate value='${productDTO.product_name_instockdate}' pattern='yyyy-MM-dd'/>">
 		   	</div>   	
 		   </div>
 		   <div class="form-row">
 			    <div class="form-group col-4">
 			      <label for="productID"><strong>등록코드</strong></label>
-			      <input type="text" class="form-control" name="productID" id="productID" placeholder="ex>RDBSW0000(알파벳으로만 입력)">
+			      <input type="text" class="form-control-plaintext" name="productID" id="productID" value="${productDTO.productID}" readonly>
 			    </div>	
 			    <div class="form-group col-4">
 			     <label for="unitcost"><strong>판매단가</strong></label>
-				  <input type="number" class="form-control" name="unitcost" id="unitcost" value="0" placeholder="실제로 판매할 단위금액 입력">	    
+				  <input type="number" class="form-control" name="unitcost" id="unitcost" value="${productDTO.unitcost}" placeholder="실제로 판매할 단위금액 입력">	    
 			    </div>	
 				<div class="form-group col-3">
 			      <label for="promotioncode"><strong>추가 할인 가능 여부</strong></label>
 			      <div class="custom-control custom-radio">
-				  	<input type="radio"  value="1" id="dicountable" name="promotioncode" class="custom-control-input" checked>
+				  	<input type="radio"  value="1" id="dicountable" name="promotioncode" class="custom-control-input">
 				  	<label class="custom-control-label" for="dicountable">할인 가능</label>
 				  </div>
 				  <div class="custom-control custom-radio">
@@ -95,26 +102,34 @@
 		<div class="form-group">
 			<div class="row">
 				<div class="col" align="center">      
-					<input type="button" class="btn btn-outline-dark" value="상품 등록" id="productUploadBtn">
-					<input type="button" id="uploadReset" class="btn btn-outline-dark" value="다시작성">
+					<input type="button" class="btn btn-outline-dark" value="상품 수정" id="productModifyBtn">
+					<input type="button" id="modifyReset" class="btn btn-outline-dark" value="다시작성">
 					<input type="button" id="productReturn" class="btn btn-outline-dark" value="뒤로가기">										    									
 				</div>
 			</div>	
 		</div>	
-		</form>				
+		</form>			
  </div>
 	
 
 
 <script type="text/javascript" src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
-<script type="text/javascript"src="/minishop/resources/ckeditor4/ckeditor.js"></script>
+<script type="text/javascript" src="/minishop/resources/ckeditor4/ckeditor.js"></script>
 <script type="text/javascript" src="/minishop/resources/custom/js/admin.product.js"></script>
 <script type="text/javascript">
-//serializeArray가 수행된 form을 JSON 형태로 변형시켜준다.
 var content_detail='';//product_name_detail 저장할 경로
-
+$('#modifyReset').click(function(){
+	window.location.reload();
+});
 $(function(){
-	$('#instore').hide();
+	$('input[type=radio][name=product_onstore][value=${productDTO.product_onstore}]').prop('checked',true);
+	$('#product_category_no').val('${productDTO.product_category_no}');
+	$('input[type=radio][name=promotioncode][value=${productDTO.promotioncode}]').prop('checked',true);
+	if('${productDTO.product_onstore==YES}'){
+		$('#instore').show();
+	}else{
+		$('#instore').hide();
+	}
 	
     CKEDITOR.replace( 'product_name_detail', {//해당 이름으로 된 textarea에 에디터를 적용
         width:'100%',
@@ -138,31 +153,27 @@ $(function(){
     CKEDITOR.instances.product_name_detail.on('change', function() { 
     	content_detail = CKEDITOR.instances.product_name_detail.getData();
     });
-    
+    CKEDITOR.instances.product_name_detail.on('instanceReady', function() { 
+    	content_detail = CKEDITOR.instances.product_name_detail.getData();
+    });
+     
  	$('input[type=radio][name=product_onstore]').change(function(){
  		//alert($('input[type=radio][name=onstore]:checked').val());
  		if($('input[type=radio][name=product_onstore]:checked').val()=='YES'){
  			$('#instore').show();
- 			$('#unitcost').val('0');
+ 			$('#unitcost').val('${productDTO.unitcost}');
  		}
  		else{
  			$('#instore').hide();
- 			$('#unitcost').val('');}
+ 			$('#unitcost').val('0');}
  	});
+ 	
+
 });
 
 
-$('#productUploadBtn').click(function(event){
-		/*JSON 파일 방식: 향후 다시 시도->현시점에는 이중 submit 형태로 시도하도록 함
-		//file과 product_name_detail 변수는 별도 선정해주어야 함:push로 추가
-		var product_name_detail = CKEDITOR.instances.product_name_detail.getData();
-		var form = $('#uploadForm').serializeArray();
-		var file = $('#product_name_image').val();
-		form.push({"name":"product_name_image","value":file});
-		form.push({"name":"product_name_detail","value":product_name_detail});
-		
-		var formData = toJson(form);
-		*/
+$('#productModifyBtn').click(function(event){
+
 		//ckeditor 내용 최종 저장
 		$('input[name=product_name_detail]').val(content_detail);
 		//유효성 검사
@@ -174,10 +185,6 @@ $('#productUploadBtn').click(function(event){
 			alert('가격이 입력되지 않았습니다.');
 			$('#product_name_price').focus();			
 		}
-		else if($('#product_name_image').val()=='')	{
-			alert('사진이 업로드되지 않았습니다.');
-			$('#product_name_image').focus();	
-		}
 		else if($('#product_name_title').val()=='')	{
 			alert('상품 소개 제목이 입력되지 않았습니다.');
 			$('#product_name_title').focus();	
@@ -187,20 +194,16 @@ $('#productUploadBtn').click(function(event){
 			$('#product_name_detail').focus();	
 		}
 		else{
-		if($('input[type=radio][name=product_onstore] :checked').val()=='YES'){
-			if($('#productID').val()=='') {
-				alert('등록코드가 입력되지 않았습니다.');
-				$('#productID').focus();	
-			}
-			else if($('#unitcost').val()=='') {
+		if($('input[name=product_onstore]').val()=='YES'){
+			 if($('#unitcost').val()=='') {
 				alert('판매가격이 입력되지 않았습니다.');
 				$('#unitcost').focus();	
 			}
 			else{
-				$('#uploadForm').submit();
+				$('#modifyForm').submit();
 			}
 		}else{
-			$('#uploadForm').submit();
+			$('#modifyForm').submit();
 		}
 
 		

@@ -45,6 +45,7 @@ public class ProductDAOImpl implements ProductDAO {
 	public int getTotalSearchA(Map<String, String> map) {
 		return sqlSession.selectOne("productSQL.getTotalSearchA", map);
 	}
+	
 	//재고 및 판매단가 변경용 DTO
 	@Override
 	public ProductDTO getProductInfo(String productID) {
@@ -70,11 +71,7 @@ public class ProductDAOImpl implements ProductDAO {
 		}
 
 
-	@Override
-	public void productDelete(String product_name_no) {
-		sqlSession.delete("productSQL.productDelete", product_name_no);
-		
-	}
+
 	//상세 상품 정보 DTO
 	@Override
 	public ProductDTO getProduct_NameInfo(String product_name_no) {
@@ -120,8 +117,22 @@ public class ProductDAOImpl implements ProductDAO {
 	public int inventoryUpload(ProductDTO productDTO) {
 		return sqlSession.insert("productSQL.productUpload", productDTO);	
 	}
-
-
+	//상품 변경
+	@Override
+	public int productModify(ProductDTO productDTO) {
+		return sqlSession.update("productSQL.product_nameModify", productDTO);
+	}
+	@Override
+	public int inventoryModify(ProductDTO productDTO) {
+		return sqlSession.update("productSQL.productModify", productDTO);
+	}
+	//삭제
+	@Override
+	public void productDelete(String product_name_no) {
+		ProductDTO inventory = sqlSession.selectOne("productSQL.getProduct_NameInfo",product_name_no);
+		if(inventory!=null) {sqlSession.delete("productSQL.inventoryDelete", product_name_no);}
+		sqlSession.delete("productSQL.productDelete", product_name_no);
+	}
 
 
 

@@ -134,7 +134,7 @@
 					 	<tr align="center" class="table-dark"><td><strong>등록된 이미지</strong></td></tr>
 					 	<tr align="center">
 					 		<td>
-					 		<img style="width:300px; height:300px;"src="/minishop/storage/${productDTO.product_name_image}">
+					 		<img style="width:300px; height:300px;"src="/minishop/storage/showProduct.do?product_name_image=${productDTO.product_name_image}">
 					 		</td>
 					 	</tr>			 	
 					 	<tr align="center" class="table-dark"><td><strong>등록된 내용</strong></td></tr>	
@@ -146,15 +146,41 @@
 	    </div>
 	  </div>
 	</div>	
-		
+	<div class="form-group">
+			<div class="row">
+				<div class="col" align="center">      
+					<input type="button" id="productModifyBtn"class="btn btn-outline-dark" value="상품 수정">
+					<input type="button" id="productDelete" value="상품 삭제" class="btn btn-outline-dark">
+					<input type="button" id="productReturn" class="btn btn-outline-dark" value="뒤로가기">										    									
+				</div>
+			</div>	
+		</div>		
 </div>	
 <!-- col-lg-8 -->
 <script type="text/javascript" src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script type="text/javascript" src="/minishop/resources/custom/js/admin.product.js"></script>
 <script type="text/javascript">
+$('#productModifyBtn').click(function(){
+	window.location='/minishop/admin/product/productModifyForm.do?product_name_no='+$('#product_name_no').val();
+});
+$('#productDelete').click(function(){
+	if(${productDTO.product_onstore=='YES'}) alert('현재 매장에 등록되어 있는 상품은 삭제하실 수 없습니다. 등록 해제를 하신 후 재시도해주세요.');
+	else {
+		var result =confirm('해당 상품을 정말로 삭제하시겠습니까? 삭제시에는 재고관리 목록에서도 제거됩니다.');
+		if(result){
+			window.location='/minishop/admin/product/productDelete.do?product_name_no='+$('#product_name_no').val();					
+		}
+
+	}
+});
+
 $(document).ready(function(){
-if(${productDTO.product_name_price > productDTO.unitcost}) $('#pridceDiff').attr('color','red');
-else if(${productDTO.product_name_price < productDTO.unitcost}) $('#pridceDiff').attr('color','blue');
+if(${productDTO.product_name_price > productDTO.unitcost}) {
+	$('#pridceDiff').attr('color','red');
+}
+else if(${productDTO.product_name_price < productDTO.unitcost}) {
+	$('#pridceDiff').attr('color','blue');
+}else $('#pridceDiff').attr('color','black');
 
 });
 </script>

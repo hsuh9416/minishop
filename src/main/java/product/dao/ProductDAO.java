@@ -42,4 +42,7 @@ public interface ProductDAO {
 	int productUpload(ProductDTO productDTO);
 	
 	int inventoryUpload(ProductDTO productDTO);
+	
+	int productModify(ProductDTO productDTO);
+	int inventoryModify(ProductDTO productDTO);
 }

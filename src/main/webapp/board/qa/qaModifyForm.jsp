@@ -96,6 +96,18 @@ $(document).ready(function(){
 			$('#imgDiv').html(getImgOn);
 		}
 	});//선택지가 바뀔 때 마다
+	$('#qa_state').val('${qaBoardDTO.qa_state}');
+		if($('#qa_state').val()=='0'){
+			$('#isSecret i').removeClass('fas fa-lock-open');
+			$('#isSecret i').addClass('fas fa-lock');	
+			$('#qa_state').val('1');
+		}
+		else if($('#qa_state').val()=='1'){
+			$('#isSecret i').removeClass('fas fa-lock');	
+			$('#isSecret i').addClass('fas fa-lock-open');		
+			$('#qa_state').val('0');		
+		}
+
 });
 </script>
 

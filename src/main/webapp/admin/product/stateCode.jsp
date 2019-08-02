@@ -14,8 +14,15 @@ $(document).ready(function(){
 	else if(${stateCode=='입점완료'}){
 		alert('입점이 완료되었습니다. 재고는 재고관리 화면에서 반영 바랍니다.');
 		window.location='/minishop/admin/product/inventoryManage.do';
+	}else if(${stateCode=='상품변경완료'}){
+		alert('상품 변경이 완료되었습니다. 상품관리 화면으로 돌아갑니다.');
+		window.location='/minishop/admin/product/productManage.do';		
+	}else if(${stateCode=='deleted'}){
+		alert('상품 삭제가 완료되었습니다. 상품관리 화면으로 돌아갑니다.');
+		window.location='/minishop/admin/product/productManage.do';		
 	}else{
-		alert('오류가 발생하였습니다. 상품관리 화면으로 돌아갑니다.');		
+		alert('오류가 발생하였습니다. 상품관리 화면으로 돌아갑니다.');	
+		window.location='/minishop/admin/product/productManage.do';	
 	}	
 });	
 </script>

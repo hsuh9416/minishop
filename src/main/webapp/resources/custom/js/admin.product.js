@@ -93,10 +93,9 @@ $('#qaModifyBtn').click(function(){
 	}
 });
 
-//datepicker:START
-
-//datepicker:END
-
+$('#productReturn').click(function(){
+	window.history.back();
+});
 
 
 

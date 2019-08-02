@@ -78,14 +78,16 @@ public class AdminProductController {
 		int page = Integer.parseInt(pg);
 		int endNum = page*3;
 		int startNum = endNum-2;
-		
+		keyword = keyword.toUpperCase();
 		Map<String,String> map = new HashMap<String,String>();
 		map.put("startNum", startNum+"");
 		map.put("endNum", endNum+"");
 		map.put("searchOption",searchOption);
 		map.put("keyword", keyword);
 		map.put("tableName", "product");
-		map.put("joinName", "product_name");		
+		map.put("joinName", "product_name");	
+		//검색 분류별 구분
+		map.put("searchTable", "product");	
 		List<ProductDTO> inventorySearchList = productDAO.inventorySearch(map);
 		System.out.println(inventorySearchList);
 		ModelAndView mav = new ModelAndView();
@@ -110,7 +112,8 @@ public class AdminProductController {
 		ProductDTO productDTO = productDAO.getProductInfo(productID);
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("pg", pg);
-		mav.addObject("productDTO", productDTO);		
+		mav.addObject("productDTO", productDTO);	
+		mav.addObject("location", "inventory");
 		mav.setViewName("/admin/product/inventoryModify");
 		return mav;
 	}	
@@ -164,7 +167,7 @@ public class AdminProductController {
 		int page = Integer.parseInt(pg);
 		int endNum = page*3;
 		int startNum = endNum-2;
-		
+		keyword = keyword.toUpperCase();
 		Map<String,String> map = new HashMap<String,String>();
 		map.put("startNum", startNum+"");
 		map.put("endNum", endNum+"");
@@ -172,6 +175,8 @@ public class AdminProductController {
 		map.put("keyword", keyword);
 		map.put("tableName", "product_name");
 		map.put("joinName", "product");			
+		map.put("searchTable", "product");	
+
 		List<ProductDTO> productSearchList = productDAO.productSearch(map);
 		ModelAndView mav = new ModelAndView();
 		int totalA = productDAO.getTotalSearchA(map);		
@@ -244,7 +249,7 @@ public class AdminProductController {
 	    
 		try {
 			//실제 업로드 과정
-			uploadPath = request.getSession().getServletContext().getRealPath("/")+"\\storage\\product\\"+fileName;//저장경로
+			uploadPath = request.getSession().getServletContext().getRealPath("/")+"storage\\product\\"+fileName;//저장경로
 			System.out.println(uploadPath);
 			upload.transferTo(new File(uploadPath));
 			fileUrl = request.getContextPath()+"/storage/product/"+fileName;//url경로
@@ -267,19 +272,23 @@ public class AdminProductController {
 	
 	//상품 등록
 	@RequestMapping(value="/doUpload.do",method=RequestMethod.POST)
-	public ModelAndView doUpload(@ModelAttribute ProductDTO productDTO, @RequestParam MultipartFile product_image, String date, Model map,HttpServletRequest request){
+	public ModelAndView doUpload(@ModelAttribute ProductDTO productDTO, @RequestParam MultipartFile product_image, String date, HttpServletRequest request){
 		Date product_name_instockdate = null;
 		String state;
 
 		
 		//1.받아온 글자를 date 형식으로 치환
 		SimpleDateFormat targetDate = new SimpleDateFormat("yyyy-mm-dd");
-		if(date!=null) {
-		try {
-			product_name_instockdate = targetDate.parse(date);			
-		} catch (ParseException e) {e.printStackTrace();}
-		
-		productDTO.setProduct_name_instockdate(product_name_instockdate);	
+		if(date==null||date.equals("")) {
+			Date today = new Date();
+			productDTO.setProduct_name_instockdate(today);
+		}
+		else {
+			try {
+				product_name_instockdate = targetDate.parse(date);			
+			} catch (ParseException e) {e.printStackTrace();}
+			
+			productDTO.setProduct_name_instockdate(product_name_instockdate);				
 		}
 		//2.파일 형식 확인
 		//업로드 된 파일명
@@ -310,7 +319,7 @@ public class AdminProductController {
 		String uploadfileName = productDTO.getProductID()+"."+ext;//기본적으로는 productID와 동일ex>CSXS2200.jpg		
 		 productDTO.setProduct_name_image(uploadfileName);//이미지 파일명	
 		//4.서버에 업로드
-	     String uploadPath = request.getSession().getServletContext().getRealPath("/")+"\\storage\\onstore\\"+uploadfileName;
+	     String uploadPath = request.getSession().getServletContext().getRealPath("/")+"storage\\onstore\\"+uploadfileName;
 	     try {
 			product_image.transferTo(new File(uploadPath));
 		} catch (IllegalStateException | IOException e) {
@@ -328,7 +337,7 @@ public class AdminProductController {
 			try {FileCopyUtils.copy(product_image.getInputStream(), new FileOutputStream(newFile));} 
 			catch (IOException e) {e.printStackTrace();}	     
 		
-		System.out.println(productDTO);
+		//System.out.println(productDTO);
 		 
 		//6.DB upload
 		try {
@@ -345,6 +354,7 @@ public class AdminProductController {
 			else state="상품등록완료";
 		}
 		}catch(Exception e) {
+			e.printStackTrace();
 			state="입점실패";
 		}
 		 }
@@ -354,12 +364,125 @@ public class AdminProductController {
 		mav.setViewName("/admin/product/stateCode");
 		return mav;
 	}
+	
+	//상품 수정 페이지 이동
+	@RequestMapping(value="/productModifyForm.do",method=RequestMethod.GET)
+	public ModelAndView productModifyForm(@RequestParam String product_name_no) {
+		ModelAndView mav = new ModelAndView();	
+		ProductDTO productDTO = productDAO.getProduct_NameInfo(product_name_no);
+		mav.addObject("location", "adminProduct");	
+		mav.addObject("productDTO", productDTO);	
+		mav.addObject("display", "/admin/product/productModifyForm.jsp");
+		mav.setViewName("/main/home");
+		return mav;
+	}	
+	
+	//상품 수정
+	@RequestMapping(value="/productModify.do",method=RequestMethod.POST)
+	public ModelAndView productModify(@ModelAttribute ProductDTO productDTO, @RequestParam MultipartFile product_image, String date, HttpServletRequest request){
+		Date product_name_instockdate = null;
+		String state="hate";
+		//0.재고 존재 확인
+		String productID = productDTO.getProductID();
+		ProductDTO inventory = productDAO.getProductInfo(productID);
+		//System.out.println(inventory);
+		
+		//1.받아온 글자를 date 형식으로 치환
+		SimpleDateFormat targetDate = new SimpleDateFormat("yyyy-mm-dd");
+		if(date==null||date.equals("")) {
+			Date today = new Date();
+			productDTO.setProduct_name_instockdate(today);
+		}
+		else {
+			try {
+				product_name_instockdate = targetDate.parse(date);			
+			} catch (ParseException e) {e.printStackTrace();}
+			
+			productDTO.setProduct_name_instockdate(product_name_instockdate);				
+		}
+		//2.미입점시 입점처리
+
+		productDTO.setProductID(productDTO.getProductID()+productDTO.getProduct_name_no());//등록코드 변경ex>CSXS2200
+		
+		//3.파일 존재 여부 및 형식 확인
+		//업로드 된 파일명
+		if(!product_image.isEmpty()) {
+		String originalfileName = product_image.getOriginalFilename();
+
+	    //이미지 양식 검증(검증 이후 파일 네임을 반환
+	     boolean result = false;
+	      int post = originalfileName.lastIndexOf(".");
+	       String ext = originalfileName.substring(post + 1).toLowerCase();//ext
+	       String[] images = {"jpg", "jpeg", "png", "gif", "bmp"};
+	        for (String str : images) {
+	            if (str.equals(ext)) {
+	                result = true;
+	                break;
+	            }
+	        }
+	        if(!result) {state="WrongFile";}//오류로 복귀
+	        else {
+	        originalfileName = originalfileName.substring(0, post)+"."+ext; //이미지명.
+	        }
+			//업로드될 파일명
+		 String uploadfileName = productDTO.getProductID()+"."+ext;//기본적으로는 productID와 동일ex>CSXS2200.jpg		
+		 productDTO.setProduct_name_image(uploadfileName);//이미지 파일명		 
+
+			//4.서버에 업로드
+	     String uploadPath = request.getSession().getServletContext().getRealPath("/")+"storage\\onstore\\"+uploadfileName;
+	     try {
+			product_image.transferTo(new File(uploadPath));
+		} catch (IllegalStateException | IOException e) {
+			e.printStackTrace();
+		}
+	     //5.workspace상에 업로드
+	     String filePath = "D:\\lib\\workspace\\minishop\\src\\main\\webapp\\storage\\onstore\\";
+	     
+	     File newFile = new File(filePath,uploadfileName);
+	     
+			try {FileCopyUtils.copy(product_image.getInputStream(), new FileOutputStream(newFile));} 
+			catch (IOException e) {e.printStackTrace();}	  
+		 
+		}//파일 업로드시
+	
+		System.out.println(productDTO);
+		 
+		//6.DB upload
+		try {
+		int done1 = productDAO.productModify(productDTO);
+		if(done1==0) {
+			state="변경실패";
+		}
+		else {//즉시 입점시에는 추가로 DB업데이트
+			if(productDTO.getProduct_onstore().equals("YES")){
+				if(inventory==null) {
+					int done2 = productDAO.inventoryUpload(productDTO);
+					if(done2==1) state = "입점완료";
+					else state="입점실패";	
+				}//재고가 존재하지 않는다면 작성
+				else if(inventory!=null) {
+					int done2 = productDAO.inventoryModify(productDTO);
+				if(done2==1) state = "상품변경완료";
+				else state="변경실패";	}
+				}
+			else state="상품변경완료";
+		
+			}//else
+		}//try
+		catch(Exception e) {e.printStackTrace(); state="변경실패";}
+		
+		//7.결과값 송출
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("stateCode",state);
+		mav.setViewName("/admin/product/stateCode");
+		return mav;
+	}
+	
 	//상품 삭제
-	@RequestMapping(value="/productDelete.do", method=RequestMethod.POST)
+	@RequestMapping(value="/productDelete.do", method=RequestMethod.GET)
 	public String productDelete(@RequestParam String product_name_no,Model model) {
 		productDAO.productDelete(product_name_no);
-		model.addAttribute("pg","1");
-		model.addAttribute("display", "/admin/product/productManage.jsp");
-		return "/main/home";
+		model.addAttribute("stateCode", "deleted");	
+		return "/admin/product/stateCode";
 	}
 }

@@ -6,13 +6,14 @@
 
 	<!--Custom styles-->
 	<link rel="stylesheet" href="/minishop/resources/custom/css/userproduct.css">
-	
+
 	<div class="col-lg-8">
 		 <div class="row" id="titleDiv">
 		 	<div class="col" align="center" style="padding-bottom: 20px;">
 				<h3>입점상품현황</h3>
 			</div>	
 		</div>
+			<input type="hidden" id="pg" value="${pg}">	
 		<div class="table-responsive">
 			<table id="inventoryTable" class="table justify-content-center">
 			  <thead class="thead-dark">
@@ -47,13 +48,13 @@
 		</div>
 			
 		<form id="inventorySearch" name="inventorySearch">	
-			<input type="hidden" name="pg" id="pg" value="1">					
+			<input type="hidden" name="pg" value="1">					
 			<div class="form-row justify-content-center" style="padding-top: 20px;padding-left:20px;">
 				<div class="form-group col-2">
 					<select name="searchOption" id="searchOption" class="form-control">
 						<option value="productid">등록코드</option>
 						<option value="productname">상품명</option>
-				        <option value="product_name">상품코드</option>
+				        <option value="product_name_no">상품코드</option>
 				    </select>			
 				</div>
 				<div class="form-group col-4">
@@ -136,7 +137,7 @@ $('#inventorySearchBtn').click(function(event,str){
 	if(str!='trigger') $('[input=pg]').val(1);
 	if($('#keyword').val()=='') 
 		alert('검색을 원하는 단어를 입력하세요!');
-	else
+	else{
 		$.ajax({
 			type : 'post',
 			url : '/minishop/admin/product/inventorySearch.do',
@@ -176,8 +177,8 @@ $('#inventorySearchBtn').click(function(event,str){
 					})).append($('<td/>',{
 						align : 'center',
 						html : instockdate				
-					})).appendTo($('#inventoryTable tbody'));
-				});//each
+					})).appendTo($('#inventoryTable tbody'));			
+				});//each		
 				
 				$('#productPagingDiv').html(data.productPaging.pagingHTML);
 				
@@ -188,8 +189,84 @@ $('#inventorySearchBtn').click(function(event,str){
 				});//제목 클릭시!
 			}//success
 		});//에이작스	
+	}
 });
 $('#reloadIcon').click(function(){
 	window.location.reload();
+});
+
+function productPaging(pg){
+	location.href='/minishop/admin/product/inventoryManage.do?pg='+pg;
+}
+
+function productSearchPaging(pg){
+	$('input[name=pg]').val(pg);
+	$('#productSearchBtn').trigger('click','trigger');
+}
+
+$('#productSearchBtn').click(function(event,str){
+	if(str!='trigger') $('[input=pg]').val(1);
+	if($('#keyword').val()=='') 
+		alert('검색을 원하는 단어를 입력하세요!');
+	else
+		$.ajax({
+			type : 'post',
+			url : '/minishop/admin/product/productSearch.do',
+			data : {'pg':$('input[name=pg]').val(), 
+				   'searchOption':$('#searchOption option:selected').val(),
+				   'keyword':$('#keyword').val()},
+			dataType : 'json',
+			success : function(data){
+				$('#inventoryTable tr:gt(0)').empty();
+				
+				$.each(data.productSearchList, function(index, items){
+					var discountable = '[할인불가상품]';
+					var isOnMall = '[미등재]';
+					if(items.promotioncode==1){
+						discountable = '[할인가능상품]';}
+					if(items.product_onstore=='YES'){
+						isOnMall = '[등재]';}	
+					$('<tr/>').append($('<a/>',{
+						align: 'center',
+						id : 'checkA',
+						}).prepend($('<i/>',{
+							text : items.product_name_no,
+							id : 'deleteA',
+							class: 'fas fa-trash-alt'
+					}))).append($('<td/>',{
+						align: 'center'
+					}).append($('<img/>',{
+						src:  '/minishop/storage/showProduct.do?product_name_image='+items.product_name_image,
+						width: '100',
+						height: '100',
+						id : 'imageA'
+					}))).append($('<td/>',{
+						align : 'center',
+						html : items.productID				
+					})).append($('<td/>',{
+						align : 'center',
+						html : items.product_category_name				
+					})).append($('<td/>',{
+						align : 'center',
+						html : items.productName				
+					})).append($('<td/>',{
+						align : 'center',
+						html : discountable				
+					})).append($('<td/>',{
+						align : 'center',
+						html : isOnMall,
+						id : 'onMall'					
+					})).appendTo($('#inventoryTable tbody'));
+				});//each
+				
+				$('#productPagingDiv').html(data.productPaging.pagingHTML);
+				
+				$('#inventoryTable').on('click','#subjectA',function(){
+						var productID = $(this).text();
+						var loginPop = window.open('/minishop/admin/product/inventoryModify.do?productID='+productID+'&pg='+$('#pg').val(),'재고수정','width=450,height=350,resizable=no');
+				});//제목 클릭시!
+				
+			}//success
+		});//에이작스	
 });
 </script>

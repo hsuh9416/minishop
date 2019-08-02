@@ -25,17 +25,17 @@ public class StorageController {//서버에 저장된 파일 등을 불러오는
 		FileInputStream fis =null;		
 		int length =0; 
 		
-		String uploadPath = request.getSession().getServletContext().getRealPath("/")+"\\storage\\onstore\\"+product_name_image;
-		  System.out.println(uploadPath);	
+		String uploadPath = request.getSession().getServletContext().getRealPath("/")+"storage\\onstore\\"+product_name_image;
+		  //System.out.println(uploadPath);	
 		  //찾는 이미지가 없을 때 처리
-		  String imgpath = request.getSession().getServletContext().getRealPath("/") + "\\storage\\onstore\\nophoto.jpg";
+		  String imgpath = request.getSession().getServletContext().getRealPath("/") + "storage\\onstore\\nophoto.jpg";
 		  //확장자명에 따라 response type 결정
 		  int post = product_name_image.lastIndexOf(".");
 		  String ext = product_name_image.substring(post + 1).toLowerCase();//확장자명 
 		  response.setContentType("image/"+ext); 
 		   File fileImage = new File(uploadPath);
 		   if(fileImage.exists()){
-		    imgpath = request.getSession().getServletContext().getRealPath("/") + "\\storage\\onstore\\"+ product_name_image; 
+		    imgpath = request.getSession().getServletContext().getRealPath("/") + "storage\\onstore\\"+ product_name_image; 
 		   } 
 		  
 		 

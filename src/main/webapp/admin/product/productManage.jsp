@@ -42,11 +42,11 @@
 		</div>
 
 		<form id="inventorySearch" name="inventorySearch">	
-			<input type="hidden" name="pg" id="pg" value="1">					
+			<input type="hidden" name="pg" value="1">					
 			<div class="form-row justify-content-center" style="padding-top: 20px;padding-left:20px;">
 				<div class="form-group col-2">
-					<select name="searchOption" id="searchOption" class="form-control">
-				        <option value="productid">등록코드</option>			
+					<select name="searchOption" id="searchOption" class="form-control">		
+				        <option value="productid">등록코드</option>					
 				        <option value="product_name_no">상품코드</option>
 						<option value="productname">상품명</option>
 				    </select>	
@@ -55,15 +55,13 @@
 				    <input type="text"  class="form-control" name="keyword" id="keyword" value="${keyword}" size="20">		
 				</div>
 				<div class="form-group col-4">
-					<input type="button" id="productSearchBtn" class="btn btn-outline-dark" value="검색">
-					<input type="button" id="goUpload" class="btn btn-outline-dark" value="상품 등록">				    	
+					<input type="button" id="productSearchBtn" class="btn btn-outline-dark" value="검색">		    	
 				</div>
 			</div>				
 		</form>	
-	</div>	 
-<div><input type="hidden" class="margin_down"></div>	
+	</div>	 	
 <script type="text/javascript" src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
-<script type="text/javascript" src="/mapplroject/js/admin.product.js"></script>
+<script type="text/javascript" src="/minishop/resources/custom/js/admin.product.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
 	$.ajax({
@@ -181,7 +179,7 @@ $('#productSearchBtn').click(function(event,str){
 					}))).append($('<td/>',{
 						align: 'center'
 					}).append($('<img/>',{
-						src: '/minishop/storage/onstore/'+items.product_name_image,
+						src:  '/minishop/storage/showProduct.do?product_name_image='+items.product_name_image,
 						width: '100',
 						height: '100',
 						id : 'imageA'
@@ -228,7 +226,4 @@ $('#productSearchBtn').click(function(event,str){
 		});//에이작스	
 });
 
-$('#goUpload').click(function(){
-	window.load='/minishop/admin/product/productUpload.do';
-});
 </script>
