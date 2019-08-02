@@ -99,7 +99,7 @@ $(document).ready(function(){
 				})).append($('<td/>',{
 					align : 'center'			
 				}).append($('<img/>',{
-					src : '/minishop/storage/'+items.productid+'.jpg',
+					src : '/minishop/storage/showProduct.do?product_name_image='+items.productid,
 					width :'100',
 					height : '100'
 				}))).append($('<td/>',{

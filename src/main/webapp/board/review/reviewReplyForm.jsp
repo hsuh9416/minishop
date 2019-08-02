@@ -81,7 +81,7 @@ $(document).ready(function(){
 			});//eachs	
 			$('#productid').val('${productid}');	
 			if($("#productid option:selected").val()!=''){
-				var getImgOn='<img style="height:80px;weight:60px;" src="/minishop/storage/'+$("#productid option:selected").val()+'.jpg">';
+				var getImgOn='<img style="height:80px;weight:60px;" src="/minishop/storage/'+$("#productid option:selected").val()+'">';
 				$('#imgDiv').html(getImgOn);
 			}
 		}//success

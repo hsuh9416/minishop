@@ -82,7 +82,7 @@ public class ReviewboardController {
 			uploadPath = request.getSession().getServletContext().getRealPath("/")+"\\storage\\review\\"+fileName;//저장경로
 			//System.out.println(uploadPath);
 			upload.transferTo(new File(uploadPath));
-			fileUrl = request.getContextPath()+"\\storage\\"+fileName;//url경로
+			fileUrl = request.getContextPath()+"\\storage\\review\\"+fileName;//url경로
 			//System.out.println(fileUrl);
 			data.put("fileName", uploadPath);
 			data.put("uploaded", 1);
