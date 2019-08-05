@@ -31,21 +31,22 @@ public class ProductDTO {
 	private int stock;
 	private int promotioncode;//0.할인불가 1.할인가능 
 	private String productName;//상품명
-	
+	@JsonFormat(pattern="yyyy-MM-dd")
+	private Date product_registerdate;//최초 입점일
+	private int ordernum;//주문 횟수
 	//table 'product_category' 관련
 	private String product_category_name;
-	
-	//상품 페이지 관련
-	private String type;
 	
 	//메인 화면 리스트 포맷
 	private StringBuffer productListHTML;
 	
 	public void makeProductListHTML(){
 		Date date = new Date();
- 
         long diff = date.getTime() - product_name_instockdate.getTime();
+        long diffNew = date.getTime() - product_registerdate.getTime();
         long diffDays = diff / (24 * 60 * 60 * 1000);
+        long diffNewDays = diffNew/(24 * 60 * 60 * 1000);
+        
         NumberFormat nf = NumberFormat.getCurrencyInstance();
 		productListHTML = new StringBuffer();
 		productListHTML.append("<div class='col-lg-4 col-md-6 mb-4'><div class='card h-100'>");		
@@ -69,12 +70,41 @@ public class ProductDTO {
             	productListHTML.append("<span class='badge badge-pill badge-light'>일시품절</span>");	        		
         }
         else if(diffDays==0 || (diffDays>0 && diffDays<=14)) {//2주내 입고상품은 신규상품으로 분류
-        	productListHTML.append("<span class='badge badge-pill badge-info'>신규입고</span>");	     	
+        	if(ordernum<2) productListHTML.append("<span class='badge badge-pill badge-info'>신규입고</span>");	
+        	else productListHTML.append("<span class='badge badge-pill badge-info'>재입고</span>");
         }
         if(product_salesMount>=300) {//판매 300이상->인기상품
         	productListHTML.append("<span class='badge badge-pill badge-primary'>인기상품</span>");	
         }
+        if(diffNewDays>=0 && diffNewDays<=14) {//2주 내 입점상품은 신규입점으로 분류
+        	productListHTML.append("<span class='badge badge-pill badge-success'>신규입점</span>");	
+        }
         productListHTML.append("</small></div></div></div>");          
 
+	}
+
+	public void makeSpecialListHTML(String condition){
+		Date date = new Date();
+        long timeDiff = date.getTime() - product_registerdate.getTime();
+        long timeDiffDays = timeDiff/(24 * 60 * 60 * 1000);
+        if(condition.equals("sale")) {//세일중인 상품
+        	if(unitcost<product_name_price) {
+        		makeProductListHTML();
+        	}
+        	else return;
+        }
+        else if(condition.equals("newArrival")) {//신상품
+        	
+        	if(timeDiffDays>=0 && timeDiffDays<=14) {
+        		makeProductListHTML();
+        	}
+        	else return;       	
+        }
+        else if(condition.equals("popular")) {//인기상품
+        	if(product_salesMount>=300) {
+        		makeProductListHTML();
+        	}
+        	else return;        	
+        }else return;             
 	}
 }

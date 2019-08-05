@@ -56,7 +56,7 @@ public class ProductDAOImpl implements ProductDAO {
 	public void doModify(Map<String, String> map) {
 		sqlSession.update("productSQL.doModify",map);
 	}	
-	//상품 관련
+	//상품 관리 관련
 	@Override
 	public List<ProductDTO> productList(int startNum, int endNum) {
 		Map<String,Integer> map = new HashMap<String,Integer>();
@@ -70,41 +70,43 @@ public class ProductDAOImpl implements ProductDAO {
 		return sqlSession.selectList("productSQL.productSearch",map);
 		}
 
-
-
 	//상세 상품 정보 DTO
 	@Override
 	public ProductDTO getProduct_NameInfo(String product_name_no) {
 		return sqlSession.selectOne("productSQL.getProduct_NameInfo", product_name_no);
 	}
-	//사용자 관련
-	//상품정보 가져오기 : product_name
 
-	@Override
-	public int getTotalItemA(Map<String, String> map) {
-		return sqlSession.selectOne("productSQL.getTotalItemA",map);
-	}
-
-	@Override
-	public int getSelectedItemA(Map<String, String> map) {
-		return sqlSession.selectOne("productSQL.getSelectedItemA", map);
-	}
-	//
-	
-	//카테고리용 상품
-	@Override
-	public List<ProductDTO> getProductList(Map<String, String> map) {
-		if(map.get("product_category_no")!="1"||map.get("product_category_no")!="2"||map.get("product_category_no")!="3") 
-			return sqlSession.selectList("productSQL.getAllList", map);
-		
-		else return sqlSession.selectList("productSQL.getSelectedList", map);
-	}
-
+	//리뷰 등의 상품 목록
 	@Override
 	public List<ProductDTO> getAllproduct() {
-		return sqlSession.selectList("productSQL.getProductList");
+		return sqlSession.selectList("productSQL.getAllproduct");
 	}
-
+	@Override
+	public List<ProductDTO> getUserProductList(String product_category_name,String order,String searchWord) {
+		Map<String,String> map = new HashMap<String,String>();
+		map.put("product_category_name", product_category_name);
+		if(order.equals("name")) {
+			map.put("order1", "PRODUCT.PRODUCTNAME");
+			map.put("order2", "asc");
+		}else if(order.equals("highPrice")) {
+			map.put("order1", "PRODUCT.UNITCOST");
+			map.put("order2", "desc");
+		}else if(order.equals("lowPrice")) {
+			map.put("order1", "PRODUCT.UNITCOST");
+			map.put("order2", "asc");
+		}
+		else {//new and default
+			map.put("order1", "PRODUCT.PRODUCT_REGISTERDATE");
+			map.put("order2", "desc");			
+		}		
+		map.put("searchWord", searchWord);
+		return sqlSession.selectList("productSQL.getUserProductList",map);
+	}
+	@Override
+	public void product_hitUpdate(int product_name_no) {
+		sqlSession.update("productSQL.product_hitUpdate", product_name_no);
+	}	
+	
 	//상품 업로드
 	@Override
 	public int productUpload(ProductDTO productDTO) {
@@ -133,6 +135,10 @@ public class ProductDAOImpl implements ProductDAO {
 		if(inventory!=null) {sqlSession.delete("productSQL.inventoryDelete", product_name_no);}
 		sqlSession.delete("productSQL.productDelete", product_name_no);
 	}
+
+
+
+
 
 
 

@@ -56,7 +56,7 @@
 							<ul class="navbar_menu">
 								<li><a href="/minishop/main/introduce.do">Kissin' Bugs</a></li>
 								<li><a href="/minishop/main/home.do">메인</a></li>
-								<li><a href="/minishop/product/categories.do?type=All">카테고리</a></li>
+								<li><a href="/minishop/product/categories.do">카테고리</a></li>
 								<li><a href="/minishop/board/review/reviewList.do">고객게시판</a></li>
 								<li><a href="/minishop/main/userContact.do">찾아오시는 길</a></li>
 							</ul>
@@ -107,7 +107,7 @@
 				</li>
 				<li class="menu_item"><a href="/minishop/main/introduce.do">Kissin' Bugs</a></li>
 				<li class="menu_item"><a href="/minishop/main/home.do">메인</a></li>
-				<li class="menu_item"><a href="/minishop/product/categories.do?category=all">카테고리</a></li>
+				<li class="menu_item"><a href="/minishop/product/categories.do">카테고리</a></li>
 				<li class="menu_item"><a href="#">이벤트</a></li>
 				<li class="menu_item"><a href="/minishop/board/review/reviewList.do">고객게시판</a></li>
 				<li class="menu_item"><a href="/minishop/main/userContact.do">찾아오시는 길</a></li>

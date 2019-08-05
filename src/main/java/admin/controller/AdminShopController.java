@@ -18,6 +18,14 @@ public class AdminShopController {
 		mav.setViewName("/main/home");
 		return mav;
 	}	
+
+	//관리자 정보 수정 화면
+	@RequestMapping(value="/adminManageForm.do",method = RequestMethod.GET)
+	public ModelAndView adminManageForm() {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("/admin/shop/adminManageForm");
+		return mav;
+	}	
 	
 	//매출 정보 화면
 	@RequestMapping(value="/salesInfo.do",method = RequestMethod.GET)

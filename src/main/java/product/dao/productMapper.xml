@@ -3,6 +3,11 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="productSQL">
+ 	<!-- 임의의 상품번호 수령 -->	
+ 	<select id="product_getSeq" resultType="Integer">
+ 		select product_seq.nextVal from dual
+ 	</select>
+ 	
 	<!-- 총글수 -->
 	<select id="getTotalA" parameterType="java.util.Map" resultType="Integer">
   		select count(*) from ${tableName} 
@@ -44,10 +49,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   	<!-- 재고 및 단가 반영 -->
  	<update id="doModify" parameterType="java.util.Map">
  	begin
- 		update product set stock=#{stock},unitcost=#{unitcost} where productid=#{productID};
+ 		update product set stock=#{stock},unitcost=#{unitcost},ordernum=ordernum+1 where productid=#{productID};
  		update product_name set product_name_instockdate=sysdate where product_name_no=#{product_name_no};
  	end;	
  	</update>	
+ 	
  	<!-- 상품 리스트 가져오기 -->
 	<select id="productList" parameterType="java.util.Map" resultType="product">
 		 		select * from 
@@ -83,59 +89,50 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  		where product_name.product_name_no=#{product_name_no} 		
  	</select>
 
-	<!-- 등재 상품 목록:전부 가져오기(product_name)-->
-	<select id="getProductList" resultType="product">
-		select * from product_name 
-		left join product
+	<!-- 등재 상품 목록:전부 가져오기(product_name) 이름순-->
+	<select id="getAllproduct" resultType="product">
+    	select * from product 
+		inner join product_name
  		on product.product_name_no = product_name.product_name_no
  		inner join product_category
  		on product_name.product_category_no=product_category.product_category 			
 		where product_onstore='YES'
-		order by product_name.product_name_instockdate desc 
+		ORDER BY PRODUCT.PRODUCTNAME ASC
 	</select>
-	<!-- 사용자 총글수(ALL) -->
-	<select id="getTotalItemA" parameterType="java.util.Map" resultType="Integer">
-  		select count(*) from product_name
- 		left join product
+	
+	<!-- 등재 상품 목록:조건 첨부 가져오기(product_name)-->		
+	<select id="getUserProductList" parameterType="java.util.Map" resultType="product">
+    	select * from product 
+		inner join product_name
  		on product.product_name_no = product_name.product_name_no
  		inner join product_category
- 		on product_name.product_category_no=product_category.product_category 	 		
- 	</select>
-	<!-- 사용자 총글수(Category) --> 	
-	<select id="getSelectedItemA" parameterType="java.util.Map" resultType="Integer">
-  		select count(*) from product_name
-  		left join product
- 		on product.product_name_no = product_name.product_name_no
- 		inner join product_category
- 		on product_name.product_category_no=product_category.product_category 	
-  		where product_category_no=#{product_category_no} and product_onstore='YES'
- 	</select> 	
- 	<select id="getAllList" parameterType="java.util.Map" resultType="product">
-		 		select * from 
-				(select rownum rn, tt.* from 
-				(select * from product_name left join product
-				 on product.product_name_no = product_name.product_name_no
-                 inner join product_category
-                on product_name.product_category_no=product_category.product_category				
-				order by #{order})tt) 
-				where (rn between #{startNum} and #{endNum}) and product_onstore='YES' 	
- 	</select>
-  	<select id="getSelectedList" parameterType="java.util.Map" resultType="product">
- 		 		select * from 
-				(select rownum rn, tt.* from 
-				(select * from product_name 
-				left join product
-				on product.product_name_no = product_name.product_name_no
-                inner join product_category
-                on product_name.product_category_no=product_category.product_category				
-				order by #{order}) tt) 
-				where (rn between #{startNum} and #{endNum}) and product_onstore='YES' 
-				and product_category_no=#{product_category_no} 	
- 	</select>
- 	<!-- 임의의 상품번호 수령 -->	
- 	<select id="product_getSeq" resultType="Integer">
- 		select product_seq.nextVal from dual
- 	</select>
+ 		on product_name.product_category_no=product_category.product_category 			
+		where product_onstore='YES' 
+		<if test="product_category_name != 'ALL'"> 
+			and product_category.product_category_name=#{product_category_name}
+		</if>
+		<if test="searchWord !=''"> 
+			and PRODUCT.PRODUCTNAME like '%'||#{searchWord}||'%'
+		</if>				
+		 <if test="order1 != null and order2 !=''"> ORDER BY
+		  <choose>
+		    <when test="order1 eq 'PRODUCT.PRODUCTNAME'"> PRODUCT.PRODUCTNAME </when>
+		    <when test="order1 eq 'PRODUCT.PRODUCT_REGISTERDATE'"> PRODUCT.PRODUCT_REGISTERDATE </when>
+		    <when test="order1 eq 'PRODUCT.UNITCOST'"> PRODUCT.UNITCOST </when>		    		    
+		    <otherwise> PRODUCT.PRODUCT_REGISTERDATE </otherwise>
+		  </choose> 
+		  <choose>
+		    <when test="order2 eq 'desc'"> DESC </when>
+		    <otherwise> ASC </otherwise>
+		  </choose>
+		 </if> 
+	</select>	
+	
+	<!-- 개별 상품 hipUpdate-->
+	<update id="product_hitUpdate" parameterType="Integer">
+		update product_name set product_hit=product_hit+1 where product_name_no=#{product_name_no}
+	</update>
+	
  	<!-- 상품 업로드 -->
  	<insert id="product_nameUpload" parameterType="product">
  	 insert into product_name values(#{product_name_no},
@@ -156,7 +153,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  	 							0,
  	 							#{promotioncode},
  	 							#{productName},
- 	 							#{product_name_no})
+ 	 							#{product_name_no},
+ 	 							sysdate)
  	</insert>
  	<!-- 상품 수정 -->	
  	<update id="product_nameModify" parameterType="product">

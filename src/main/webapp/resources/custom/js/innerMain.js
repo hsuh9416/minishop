@@ -20,7 +20,7 @@ $(window).on('resize', function(){
 	}
 	else if(window.innerWidth>991){
 		$('#menuDiv').show();	
-		$('#titleDiv').hide();		
+		$('#titleDiv').hide();
 	}
 });	
 

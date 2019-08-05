@@ -51,7 +51,7 @@
 			   	</tr>	
 			   	<tr>
 			   		<td colspan="3" align="right">
-			   			<input type="button" id="changeAdminInfo" class="btn btn-outline-dark" value="관리자 비밀번호 변경"/>		   			
+			   			<input type="button" id="changeAdminInfo" class="btn btn-outline-dark" value="관리자 정보 변경"/>		   			
 			   		</td>
 			   	</tr>				   			   				   	
 			   </tbody> 	  
@@ -64,5 +64,9 @@
 <script type="text/javascript" src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script type="text/javascript" src="/minishop/resources/bootstrap4/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript">
-
+$('#changeAdminInfo').click(function(){
+	var realConfirm = confirm('관리자 정보를 변경합니까?');
+	if(realConfirm){alert('대충 변경하는 짤');}
+	
+});
 </script>

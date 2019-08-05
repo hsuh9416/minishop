@@ -384,3 +384,29 @@ textarea {
 	margin-top:35px;
 }
 
+.list-group li{
+  margin-top:20px;
+  border : 0 none;
+}
+.list-group a{
+  margin-top:-10px;
+  color: black;
+}
+
+.list-group-item a{
+  border : 0 none;	
+}
+
+#searchBtn{
+	cursor : pointer;
+}
+#searchBtn :link :visited{
+	color: black;
+}
+
+#searchBtn :hover{
+	color: orange;
+}
+#searchBtn :active{
+	color: green;
+}

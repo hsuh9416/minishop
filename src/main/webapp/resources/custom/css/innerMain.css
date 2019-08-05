@@ -14,17 +14,24 @@
 	margin-left : auto;
 }
 
+.list-group-item li{
+	border : 0 none;
+}
 a.list-group-item:link{
 	color: #000080;
+	border : 0 none;
 }
 a.list-group-item:visited{
 	color: #000080;
+	border : 0 none;
 }
 a.list-group-item:hover{
 	color: #a4a4ff;
+	border : 0 none;
 }
 a.list-group-item:active{
 	color: #000080;
+	border : 0 none;
 }
 
 a.top {
