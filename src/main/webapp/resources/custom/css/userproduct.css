@@ -410,3 +410,52 @@ textarea {
 #searchBtn :active{
 	color: green;
 }
+
+#userProductTable img{
+	margin-top :20px;
+	width: 350px;
+	height: 400px;
+}
+#userProductTable th{
+	font-size: 20px;
+}
+
+.original_price{
+	color: darkgrey;
+	font-size: 15px;
+	text-decoration: line-through;
+}
+.product_price{
+	color: red;
+	font-weight: bold;
+	font-size: 25px;
+}
+.total_price{
+	color: black;
+	font-weight: bold;
+	font-size: 25px;
+}
+#cart_qty{
+	font-size: 15px;
+	width: 50px;
+	text-align: center;
+}
+#putCartBtn{
+	width: 200px;
+	height: 50px;	
+}
+#product_like :link :visited :hover :active btn{
+	border : 0 none;
+	width: 100px;
+	height: 60px;
+	padding-left: 20px;	
+}
+
+#product_like i{
+	color: red;
+}
+
+#checkAll {
+	width: 20px;
+	height: 20px;
+}

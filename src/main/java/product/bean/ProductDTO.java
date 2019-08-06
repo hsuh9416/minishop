@@ -37,6 +37,9 @@ public class ProductDTO {
 	//table 'product_category' 관련
 	private String product_category_name;
 	
+	//주문 관련
+	private int cart_qty;
+	
 	//메인 화면 리스트 포맷
 	private StringBuffer productListHTML;
 	

@@ -47,6 +47,16 @@ public interface ProductDAO {
 	
 	void productDelete(String product_name_no);
 
+	int getLikeValue(Map<String, String> map);
+
+	int addLike(Map<String, String> map);
+	
+	void removeLike(int SEQ);
+
+
+
+
+
 
 
 }

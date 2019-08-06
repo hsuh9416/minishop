@@ -52,7 +52,8 @@
 
         <div id="mainList" class="row"></div>
         <!-- /.row -->
-        		
+ 	 	<!-- shop policies -->
+		<jsp:include page="/template/shopPolicy.jsp"/>       		
       </div>
 		<!-- /.col-lg-8 -->    
 

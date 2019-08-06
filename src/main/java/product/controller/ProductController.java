@@ -1,6 +1,8 @@
 package product.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -9,9 +11,11 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import member.bean.GuestDTO;
@@ -102,7 +106,7 @@ public class ProductController {
 	//개별 상품 보기
 	@RequestMapping(value="/productView.do",method = RequestMethod.GET)
 	public ModelAndView productView(@RequestParam String product_name_no, HttpSession Session,HttpServletRequest request,HttpServletResponse response) {
-		String id="";
+		String id=""; int SEQ =0;
 		MemberDTO memberDTO =null; OrderDTO orderDTO=null; GuestDTO guestDTO=null;
 		
 		memberDTO = (MemberDTO)Session.getAttribute("memberDTO");
@@ -132,15 +136,58 @@ public class ProductController {
 			}//if not today
 		}//hit update
 		
+		//좋아요 여부 가져오기
+		if(guestDTO==null&&!id.equals("")) {
+			Map<String,String> map = new HashMap<String,String>();
+			map.put("USERID", id);
+			map.put("PRODUCT_NO", product_name_no);		
+			SEQ = productDAO.getLikeValue(map);		
+		}
+
 		
 		ModelAndView mav = new ModelAndView();
 		ProductDTO productDTO = productDAO.getProduct_NameInfo(product_name_no);
 		mav.addObject("productDTO", productDTO);
+		mav.addObject("SEQ",SEQ);		
 		mav.addObject("location","productView");
 		mav.addObject("display", "/product/productView.jsp");
 		mav.setViewName("/main/home");
 		return mav;
 	}
 	
+	//좋아요 처리
+	@RequestMapping(value="/likeOnAndOff.do",method = RequestMethod.GET)
+	@ResponseBody
+	public void likeOnAndOff(@RequestParam int product_name_no, HttpSession session,Model model)
+	{
+		
+		//USERID 가져오기
+		String id="";
+		MemberDTO memberDTO =null; OrderDTO orderDTO=null; GuestDTO guestDTO=null;
+		
+		memberDTO = (MemberDTO)session.getAttribute("memberDTO");
+		if(memberDTO!=null) id=memberDTO.getId();
+		else if(memberDTO==null) {
+			orderDTO = (OrderDTO) session.getAttribute("memberDTO");
+			if(orderDTO!=null)	id = orderDTO.getOrder_id();
+			else if(orderDTO==null) {
+				guestDTO = (GuestDTO) session.getAttribute("guestDTO");
+				if(guestDTO!=null) return;
+			}
+		}
+		
+		//좋아요 여부 가져오기
+		Map<String,String> map = new HashMap<String,String>();
+		map.put("USERID", id);
+		map.put("PRODUCT_NO", product_name_no+"");		
+		int SEQ = productDAO.getLikeValue(map);
+		if(SEQ==0) {
+			SEQ = productDAO.addLike(map);
+			model.addAttribute("SEQ", SEQ);
+		}else {
+			productDAO.removeLike(SEQ);
+			model.addAttribute("SEQ", 0);
+		}
+	}
 	
 }

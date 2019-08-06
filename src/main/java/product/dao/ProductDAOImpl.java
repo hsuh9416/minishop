@@ -131,9 +131,33 @@ public class ProductDAOImpl implements ProductDAO {
 	//삭제
 	@Override
 	public void productDelete(String product_name_no) {
-		ProductDTO inventory = sqlSession.selectOne("productSQL.getProduct_NameInfo",product_name_no);
-		if(inventory!=null) {sqlSession.delete("productSQL.inventoryDelete", product_name_no);}
-		sqlSession.delete("productSQL.productDelete", product_name_no);
+		sqlSession.delete("imageboardSQL.productDelete",product_name_no);
+	}
+
+	//좋아요 여부 가져오기
+	@Override
+	public int getLikeValue(Map<String, String> map) {
+		try {
+			return sqlSession.selectOne("productSQL.getLikeValue", map);		
+		}catch(NullPointerException e) {
+			return 0;
+		}
+	}
+	//좋아요 하기(SEQ 반환)
+	@Override
+	public int addLike(Map<String, String> map) {
+		 sqlSession.insert("productSQL.addLike", map);
+			try {
+				return sqlSession.selectOne("productSQL.getLikeValue", map);		
+			}catch(NullPointerException e) {
+				return 0;
+			}
+	}
+	
+	//좋아요 취소 하기
+	@Override
+	public void removeLike(int SEQ) {
+		sqlSession.delete("productSQL.removeLike", SEQ);
 	}
 
 
@@ -142,6 +166,5 @@ public class ProductDAOImpl implements ProductDAO {
 
 
 
-	
 
 }

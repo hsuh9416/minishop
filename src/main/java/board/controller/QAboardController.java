@@ -34,8 +34,9 @@ public class QAboardController {
 
 	//글쓰기 서식 이동
 	@RequestMapping(value="/qaWriteForm.do",method = RequestMethod.GET)
-	public ModelAndView qaWriteForm() {
+	public ModelAndView qaWriteForm(@RequestParam(required=false) String productID) {
 		ModelAndView mav = new ModelAndView();
+		if(productID!=null) mav.addObject("productID", productID);	
 		mav.addObject("display", "/board/qa/qaWriteForm.jsp");		
 		mav.setViewName("/main/home");
 		return mav;

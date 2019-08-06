@@ -68,7 +68,7 @@
 										<i class="fa fa-shopping-cart" aria-hidden="true"></i>
 										<span id="checkout_items" class="checkout_items">
 											<c:if test="${cartList==null}">0</c:if>
-											<c:if test="${cartList!=null}">${cartList.length}</c:if>											
+											<c:if test="${cartList!=null}">${cartList.size()}</c:if>											
 										</span>
 									</a>
 								</li>

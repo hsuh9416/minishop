@@ -3,7 +3,6 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<link rel="stylesheet" type="text/css" href="/minishop/resources/bootstrap4/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="/minishop/resources/custom/css/userproduct.css">
      <div class="col-lg-8">	
      	<input type="hidden" id="condition" value="${condition}">     	
@@ -36,10 +35,11 @@
 
         <div id="mainList" class="row"></div>
         <!-- /.row -->
+  	 	<!-- shop policies -->
+		<jsp:include page="/template/shopPolicy.jsp"/>
         		
       </div>
 		<!-- /.col-lg-8 -->    
-
 
 
 	

@@ -62,7 +62,6 @@
 <script type="text/javascript" src="/minishop/resources/custom/js/ckeditor4.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){	
-	
 	$.ajax({
 		type : 'get',
 		url : '/minishop/product/getAllproduct.do',
@@ -76,9 +75,13 @@ $(document).ready(function(){
 				text : items.productID
 			}).appendTo($('#productid'));
 			});//eachs	
-		$('#productid').val('${qaBoardDTO.productid}');	
+		if('${productID!=null}') $('#productid').val('${productID}');
+		if($("#productid option:selected").val()!=''){
+			var getImgOn='<img style="height:100%;width:90px;" src="/minishop/storage/showProduct.do?product_name_image='+$("#productid option:selected").val()+'">';
+			$('#imgDiv').html(getImgOn);}
 		}//success
 	});//ajax
+
 });//ready
 
 

@@ -80,6 +80,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				order by product.product_name_no desc) tt) 
 				where (rn between #{startNum} and #{endNum})
  	</select>	
+ 	<!-- 상품 정보 가져오기 -->
  	<select id="getProduct_NameInfo" parameterType="String" resultType="product">
  		select * from product_name
  		left join product
@@ -132,6 +133,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<update id="product_hitUpdate" parameterType="Integer">
 		update product_name set product_hit=product_hit+1 where product_name_no=#{product_name_no}
 	</update>
+	<!-- 개별 상품 좋아요 여부 확인하기 -->
+	<select id="getLikeValue" parameterType="java.util.Map" resultType="Integer">
+		select SEQ from LIKETABLE where USERID=#{USERID} and PRODUCT_NO=#{PRODUCT_NO}
+	</select>
+	<!-- 개별 상품 좋아요 하기 -->
+	<insert id="addLike" parameterType="java.util.Map">
+	begin
+		insert into LIKETABLE values(SEQ.nextVal,#{PRODUCT_NO},#{USERID});
+		update product_name set product_like=product_like+1;
+	end;
+	</insert>
+	<!-- 개별 상품 좋아요 취소하기 -->
+	<delete id="removeLike" parameterType="Integer">
+	begin
+		delete LIKETABLE where SEQ=#{SEQ};
+		update product_name set product_like=product_like-1;
+	end;
+	</delete>		
 	
  	<!-- 상품 업로드 -->
  	<insert id="product_nameUpload" parameterType="product">

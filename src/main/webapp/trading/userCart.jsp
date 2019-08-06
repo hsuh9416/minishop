@@ -3,33 +3,21 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-	<!--Bootsrap 4-->
-	<link rel="stylesheet" type="text/css" href="/mallproject/resources/bootstrap-4.3.1-dist/css/bootstrap.min.css">
-	
-    <!--Fontawesome CDN-->
-	<link rel="stylesheet" href="/mallproject/resources/fontawesome-free-5.9.0-web/css/all.css">
-
 	<!--Custom styles-->
-	<link rel="stylesheet" href="/mallproject/css/userproduct.css">
+	<link rel="stylesheet" type="text/css" href="/minishop/resources/custom/css/userproduct.css">
 
-<div class="productForm-container">
-	<div class="container-fluid">
- 	<!-- 실행 메뉴 -->
-		 <nav aria-label="breadcrumb">
-		  <ol class="breadcrumb">
-		    <li class="breadcrumb-item active"  aria-current="page">장바구니</li>			    	    
-		  </ol>
-		</nav>	
-	</div>
-</div>
-<div class="container-fluid">
-		<input type="hidden" id="pg" value="${pg}">
-		<div class="table-responsive">
-		<form id="cartListForm" method="post" action="/mallproject/trading/removeCart.do">		
+<div class="col-lg-8">
+	 	<div class="row" id="titleDiv">
+	 		<div class="col" align="center" style="padding-bottom: 20px;">
+	 			<h3>장바구니</h3>		
+	 		</div>
+		</div>
+		<div class="table">
+		<form id="cartListForm" method="post" action="/minishop/trading/removeCart.do">		
 			<table id="cartTable" class="table justify-content-center">
 			  <thead class="thead-dark">
 			    <tr>
-					<th scope="col"><input type="checkbox" class="form-check-input" id="checkAll">#</th>			    
+					<th scope="col"><input type="checkbox" class="form-control" id="checkAll"></th>			    
 					<th scope="col">상품이미지</th>				
 					<th scope="col">상품명</th>
 					<th scope="col">판매단가</th>						
@@ -38,92 +26,102 @@
 			  </tr>
 			   </thead>  
 			   <tbody>
-			   	<tr>
+			   		<tr>
 			   		<th scope="row"></th>
-			   			<td colspan="7"></td>			   		
-			   	</tr>
+			   		<td colspan="6"></td>
+			   		</tr>	
 			   </tbody> 	  
 			</table>
 			</form>
 		</div>
-</div>
-<br><br>
 <div style="float : left;">
-	<input type="button" value="선택삭제" id="choiceDelete">
+	<input type="button" class="btn btn-outline-secondary" value="선택삭제" id="choiceDelete">
+</div>
 </div>
 
-
-<div><input type="hidden" class="margin_down"></div>	
 <script type="text/javascript" src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
-<script type="text/javascript" src="/mallproject/resources/bootstrap-4.3.1-dist/js/bootstrap.bundle.min.js"></script>
-<script type="text/javascript" src="/mapplroject/js/admin.product.js"></script>
+<script type="text/javascript" src="/minishop/resources/custom/js/admin.product.js"></script>
 <script type="text/javascript">
+
 $(document).ready(function(){
 	$.ajax({
-		type : 'post',
-		url : '/mallproject/admin/trading/cartList.do',
+		type: 'get',
+		url : '/minishop/trading/getCartList.do',
 		dataType : 'json',
 		success : function(data){
-			$('#cartTable tr:gt(0)').empty();
 			
-			$.each(data.productList, function(index, items){
-				if(data.productList.size()<1||data.productList==null)
-				
-				else{
-					var subTotal = items.productDTO.unitcost*items.cart_qty;
-				}
+			var size = Object.keys(data.cartList).length;
+			//alert(size);
+			$('#cartTable tr:gt(0)').empty();
+			if(size>0){
+			$.each(data.cartList, function(index, items){
 				$('<tr/>').append($('<td/>',{
 					align: 'center',
-					text : items.productDTO.productID
-					}).prepend($('<input/>',{
-						type: 'checkbox',
-						value: items.productDTO.productID,
-						name : 'check',
-						class: 'check'
-				}))).append($('<td/>',{
-					align: 'center'
+					html : items.product_name_no,
+				}).prepend($('<input/>',{
+					type: 'checkbox',
+					value: items.product_name_no,
+					name : 'check',
+					class: 'check'
+			}))).append($('<td/>',{
+					align : 'center'
 				}).append($('<img/>',{
-					src: '/mallproject/storage/'+items.productDTO.product_name_image,
+					src:  '/minishop/storage/showProduct.do?product_name_image='+items.product_name_image,
 					width: '100',
 					height: '100',
 					id : 'imageA'
 				}))).append($('<td/>',{
 					align : 'center',
-					html : items.productDTO.productName			
+					html : items.productName				
 				})).append($('<td/>',{
 					align : 'center',
-					html : items.productDTO.unitcost				
+					html : items.unitcost+'(원)'					
 				})).append($('<td/>',{
 					align : 'center',
-					html : subTotal			
+					html : items.cart_qty+'(개)'				
+				})).append($('<td/>',{
+					align : 'center',
+					html : (items.unitcost*items.cart_qty)+'(원)'				
 				})).appendTo($('#cartTable tbody'));
+				
 			});//each
-				
 			$('#cartTable').on('click','#imageA',function(){
-					var product_name_no = $(this).parent().prev().text();
-					window.location='/mallproject/admin/product/productView.do?product_name_no='+product_name_no+'&pg='+$('#pg').val();
-			});//제목 클릭시!
-			
-
-			$('#checkAll').click(function(){
-				
-				if($('#checkAll').prop('checked')){
-					$('.check').prop('checked', true);
-				}else{
-					$('.check').prop('checked', false);
-				}
-			});
-
-			//선택 삭제
-			$('#choiceDelete').click(function(){
-				if($('.check:checked').length==0) alert("항목을 선택해주세요");
+				if('${memberDTO.id}'=='') alert("먼저 로그인하세요");
 				else{
-					$('#cartListForm').submit();
+					var product_name_no = $(this).parent().prev().text();
+					window.location='/minishop/imageboard/productView.do?product_name_no='+product_name_no;
 				}//else
-			});
+			});//제목 클릭시!
+			}//if
+			else{
+				$('<tr/>').append($('<td/>',{
+					colspan : '6',
+					align : 'center',
+					text : '장바구니에 담긴 상품이 없습니다.',
+				})).appendTo($('#cartTable tbody'));		
+			}
 			
 		}//success
-	});//ajax
-});//onready
+	});
 
+	
+});//onready
+//전체 선택, 해제
+$('#checkAll').click(function(){
+	//alert($('.check').length);
+	
+	if($('#checkAll').prop('checked')){
+		$('.check').prop('checked', true);
+	}else{
+		$('.check').prop('checked', false);
+	}
+});
+
+//선택 삭제
+$('#choiceDelete').click(function(){
+	if($('.check:checked').length==0) alert("항목을 선택해주세요");
+	else{
+		$('#cartListForm').submit();
+	}//else
+});
 </script>

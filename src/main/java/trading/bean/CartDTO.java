@@ -12,11 +12,10 @@ import product.bean.ProductDTO;
 public class CartDTO {
 	private ProductDTO productDTO;//productID로 구분
 	private int cart_qty;
-	
 	public CartDTO(){}
-	public CartDTO(ProductDTO productDTO,int cart_qty) {
+	public CartDTO(ProductDTO productDTO) {
 		this.productDTO = productDTO;
-		this.cart_qty = cart_qty;
 	}
+
 
 }
