@@ -11,7 +11,8 @@ import lombok.Data;
 
 @Component
 @Data
-public class ProductDTO {
+public class ProductDTO{
+	
 	//table 'product_name'관련 : 실제로 업로드된 물품 관련
 	private int product_name_no;//productBoard identification(순수번호)
 	private int product_category_no;//type

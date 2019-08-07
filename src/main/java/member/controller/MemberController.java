@@ -2,6 +2,7 @@ package member.controller;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.Cookie;
@@ -28,6 +29,9 @@ import mail.bean.MessageDTO;
 import member.bean.GuestDTO;
 import member.bean.MemberDTO;
 import member.dao.MemberDAO;
+import product.bean.ProductDTO;
+import trading.bean.OrderDTO;
+import trading.bean.ShoppingCart;
 import trading.dao.TradingDAO;
 
 @Controller
@@ -41,7 +45,6 @@ public class MemberController {
 	private Mailing mailing;
 	@Autowired
 	private AdminDAO adminDAO;
-	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
@@ -70,10 +73,10 @@ public class MemberController {
 
 		MemberDTO memberDTO = memberDAO.checkId(id);
 		if(memberDTO==null) {
-			GuestDTO questDTO = memberDAO.orderCheck(id,pwd);//회원이 아니면 orderCheck 먼저
-			if(questDTO==null) return "fail";
+			OrderDTO orderDTO = memberDAO.orderCheck(id,pwd);//회원이 아니면 orderCheck 먼저
+			if(orderDTO==null) return "fail";
 			else {
-				session.setAttribute("questDTO", questDTO);
+				session.setAttribute("orderDTO", orderDTO);
 				return "guestLogin";}
 		}	
 		//존재하는 경우에는 비번체크
@@ -99,6 +102,20 @@ public class MemberController {
 							Date sessionLimit = new Date(System.currentTimeMillis()+(1000*amount));
 							memberDAO.keepLogin(id, sessionId, sessionLimit);
 												}
+					//장바구니 호출
+					ShoppingCart shoppingCart = tradingDAO.getCartList(memberDTO.getId());
+					System.out.println(shoppingCart);
+					if(shoppingCart!=null) {
+						
+						String json = shoppingCart.getCartList_json();
+						List<ProductDTO> cartList = shoppingCart.makeJsonToList(json);
+						if(cartList!=null) {
+							session.setAttribute("cartList", cartList);
+							shoppingCart.setCartList(cartList);
+						}
+					session.setAttribute("shoppingCart", shoppingCart);
+					}
+					
 						return "userLogin";
 				}
 			}	
@@ -112,6 +129,19 @@ public class MemberController {
 		Object object = session.getAttribute("memberDTO");
 		if(object != null) {
 			MemberDTO memberDTO = (MemberDTO) object;
+			ShoppingCart shoppingCart = (ShoppingCart)session.getAttribute("shoppingCart");
+			if(shoppingCart!=null) {//장바구니가 개설된 때에만 저장한다.
+				List<ProductDTO> cartList = shoppingCart.getCartList();
+				if(cartList!=null) {//cartList에 담긴 것이 없으면 역시 저장하지 않는다.
+					//cartList ->JSON String
+					String cartList_json = shoppingCart.makeListToJson(cartList);
+					shoppingCart.setCartList_json(cartList_json);
+					shoppingCart.setMemberid(memberDTO.getId());
+					tradingDAO.storeCartList(shoppingCart);					
+				}
+		
+			}
+				
 			session.removeAttribute("memberDTO");
 			session.invalidate();
 			Cookie loginCookie = WebUtils.getCookie(request, "loginCookie");

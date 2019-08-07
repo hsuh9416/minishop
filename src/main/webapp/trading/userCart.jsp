@@ -78,7 +78,7 @@ $(document).ready(function(){
 					html : items.unitcost+'(원)'					
 				})).append($('<td/>',{
 					align : 'center',
-					html : items.cart_qty+'(개)'				
+					html : items.cart_qty+'(개)'
 				})).append($('<td/>',{
 					align : 'center',
 					html : (items.unitcost*items.cart_qty)+'(원)'				

@@ -11,9 +11,9 @@ import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Repository;
 
 import mail.bean.MessageDTO;
-import member.bean.GuestDTO;
 import member.bean.MemberDTO;
 import member.bean.PostDTO;
+import trading.bean.OrderDTO;
 
 @Repository
 @DependsOn(value= {"sqlSession"})
@@ -79,7 +79,7 @@ public class MemberDAOImpl implements MemberDAO {
 
 	//주문내역으로 조회-DB 필요
 	@Override
-	public GuestDTO orderCheck(String id, String pwd) {
+	public OrderDTO orderCheck(String id, String pwd) {
 		Map<String,String> map = new HashMap<String,String>();
 		map.put("orderId",id);
 		map.put("orderPwd",pwd);

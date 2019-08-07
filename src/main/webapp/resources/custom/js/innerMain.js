@@ -151,9 +151,7 @@ $('#deleteBtn').click(function(){
 });
 
 $('#goCart').click(function(){
-	//alert($('#goCart span').text());
-	if($('#goCart span').text()=='0') alert('장바구니의 아이템이 담겨 있지 않습니다!');
-	else alert('장바구니는 공사중!');
+	window.location='/minishop/trading/userCart.do';
 });
 
 

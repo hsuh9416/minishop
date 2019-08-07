@@ -26,6 +26,7 @@ public class TradingController {
 	@RequestMapping(value = "/userCart.do", method = RequestMethod.GET)
 	public ModelAndView userCart(HttpSession session){
 		ShoppingCart shoppingCart = (ShoppingCart)session.getAttribute("shoppingCart");
+		if(shoppingCart==null) shoppingCart = new ShoppingCart();
 		List<ProductDTO> cartList = shoppingCart.getCartList();
 		if(cartList==null) cartList = new ArrayList<ProductDTO>();
 		shoppingCart.setCartList(cartList);
@@ -77,7 +78,7 @@ public class TradingController {
 		}		
 	}
 	//장바구니 제거
-	@RequestMapping(value = "/removeCart.do", method = RequestMethod.GET)
+	@RequestMapping(value = "/removeCart.do", method = RequestMethod.POST)
 	public ModelAndView removeCart(@RequestParam int[] check, HttpSession session) {
 		ShoppingCart shoppingCart = (ShoppingCart) session.getAttribute("shoppingCart");
 		for(int product_name_no : check) {
@@ -121,5 +122,6 @@ public class TradingController {
 		mav.setViewName("/main/home");
 		return mav;
 	}
+
 }
 

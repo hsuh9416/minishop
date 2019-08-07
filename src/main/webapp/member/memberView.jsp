@@ -36,7 +36,14 @@
 			   	</tr>
 			   	<tr>
 			   		<td>내 장바구니 : </td>
-			   		<td colspan="2"><a id="goCartMember" href="#l"></a></td>
+			   		<td colspan="2">
+			   		<c:if test="${cartList==null||cartList.size()==0}">		
+			   			장바구니에 담긴 상품이 없습니다.
+			   		</c:if>
+			   		<c:if test="${cartList!=null}">
+				   		<a href="/minishop/trading/userCart.do">${cartList.size()}건</a>	   		
+			   		</c:if>
+					</td>	
 			   	</tr>			   	
 			   	<tr>
 			   		<td>주문 중인 건수 :</td>

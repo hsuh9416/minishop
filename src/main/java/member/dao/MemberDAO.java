@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.Map;
 
 import mail.bean.MessageDTO;
-import member.bean.GuestDTO;
 import member.bean.MemberDTO;
 import member.bean.PostDTO;
+import trading.bean.OrderDTO;
 
 public interface MemberDAO {
 
@@ -27,7 +27,7 @@ public interface MemberDAO {
 
 	void deleteMember(String id);
 
-	GuestDTO orderCheck(String id, String pwd);
+	OrderDTO orderCheck(String id, String pwd);
 
 	MemberDTO getAdmin();
 

@@ -24,7 +24,6 @@ public class AfterInterceptors extends HandlerInterceptorAdapter {
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
 		ModelAndView modelAndView) throws Exception {
 	//START 0.공통
-		logger.info("요청한 주소명: "+request.getRequestURI());
 		HttpSession session = request.getSession();	
 		GuestDTO guestDTO = (GuestDTO) session.getAttribute("guestDTO");//임시계정 확인
 		//logger.info("계정 확인 :"+guestDTO);
@@ -54,12 +53,12 @@ public class AfterInterceptors extends HandlerInterceptorAdapter {
 			GuestDTO newGuest = new GuestDTO();
 			newGuest.setGuest_name("GUEST");
 			newGuest.setGuest_id(UUID.randomUUID().toString());//임시부여 ID
+			logger.info("요청한 주소명: "+request.getRequestURI());
 			logger.info("GuestID 생성!: "+newGuest.getGuest_id());
 			session.setAttribute("guestDTO", newGuest);
 		}
 	//END 2.임시계정 생성
 
-
-	}
+	}//posthandler
 
 }//class

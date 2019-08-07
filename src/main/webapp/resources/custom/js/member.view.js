@@ -10,19 +10,14 @@ $(document).ready(function(){
 		url : '/minishop/member/getUserInfo.do',
 		dataType : 'json',
 		success : function(data){
-			cart = data.map.cartList;
-			if(cart=='') $('#goCartMember').text('장바구니에 담긴 상품이 없습니다.');
-			else $('#goCart').text(cart.length+'건');
 			coupon = data.map.couponList;
 			if(coupon=='') $('#goCoupon').text('사용할 수 있는 쿠폰이 존재하지 않습니다.');
 			else $('#goCoupon').text(coupon.length+'개');		
 			order = data.map.orderList;
 			if(order=='') $('#orderlistPg').text('주문하신 내역이 없습니다.');
 			else $('#orderlistPg').text(order.length+'건');		
-	
 		}				
 	});//에이작스
-	
 	
 });//ready
 
