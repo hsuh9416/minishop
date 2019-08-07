@@ -40,7 +40,6 @@ public class ProductDTO{
 	
 	//주문 관련
 	private int cart_qty;
-	
 	//메인 화면 리스트 포맷
 	private StringBuffer productListHTML;
 	
@@ -111,4 +110,5 @@ public class ProductDTO{
         	else return;        	
         }else return;             
 	}
+
 }

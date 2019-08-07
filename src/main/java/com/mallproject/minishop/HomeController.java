@@ -20,6 +20,7 @@ public class HomeController {
 		mav.setViewName("/main/home");		
 		return mav;
 	}
+
 	//사용자 화면 'introduce'
 	@RequestMapping(value="/main/introduce.do",method = RequestMethod.GET)
 	public ModelAndView introduce() {

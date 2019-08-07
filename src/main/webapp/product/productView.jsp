@@ -11,8 +11,12 @@
 	 		</div>
 		</div>
 		<input type="hidden" id="SEQ" value="${SEQ}"/>
-		<input type="hidden" id="product_name_no" value="${productDTO.product_name_no}"/>
 		<input type="hidden" id="productID" value="${productDTO.productID}"/>
+		<input type="hidden" name="product_name_no" id="product_name_no" value="${productDTO.product_name_no}"/>
+		<form id="buyNowForm" method="post" action="/minishop/trading/orderForm.do">
+			<input type="hidden" name="product_name_no" value=""/>
+			<input type="hidden" name="cart_qty" value="1"/>
+		</form>
 		<div class="table table-borderless">
 			<table id="userProductTable" class="table justify-content-center">
 			  <thead class="thead">
@@ -166,7 +170,11 @@ $('#putCartBtn').click(function(){
 	else{
 		var buyNow = confirm('바로 구입하시겠습니까?');
 		if(buyNow){
-			window.location='/minishop/trading/orderForm.do?product_name_no='+$('#product_name_no').val()+'&cart_qty='+$('#cart_qty').val();
+			var product_name_no = new Array();
+			product_name_no[0] = $('#product_name_no').val();
+			$('input[name=product_name_no]').val(product_name_no);
+			$('input[name=cart_qty]').val($('#cart_qty').val());	
+			$('#buyNowForm').submit();
 			}//if
 		else{
 			$.ajax({

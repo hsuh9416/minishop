@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.JsonElement;
+
 import product.bean.ProductDTO;
 import product.dao.ProductDAO;
 import trading.bean.ShoppingCart;
@@ -87,8 +89,7 @@ public class TradingController {
 		}
 		session.setAttribute("shoppingCart", shoppingCart);
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("display", "/trading/userCart.jsp");
-		mav.setViewName("/main/home");
+		mav.setViewName("/trading/cartModified");
 		return mav;
 	}
 	//cart상의 인덱스 번호를 반환, 없을 경우는 -1
@@ -101,7 +102,7 @@ public class TradingController {
 		return -1;
 	}
 
-	//장바구니 가져요기
+	//장바구니 가져오기
 	@RequestMapping(value="/getCartList.do",method=RequestMethod.GET)
 	@ResponseBody
 	public ModelAndView getCartList(HttpSession session) {
@@ -112,13 +113,43 @@ public class TradingController {
 		 mav.setViewName("jsonView");
 		 return mav;
 	}
+	//장바구니 수량 수정
+	@RequestMapping(value = "/modifyCart.do", method = RequestMethod.GET)
+	public ModelAndView modifyCart(@RequestParam int product_name_no, int changeNum, HttpSession session) {
+		ShoppingCart shoppingCart = (ShoppingCart) session.getAttribute("shoppingCart");
+			int index = this.exists(product_name_no, shoppingCart.getCartList());
+			shoppingCart.getCartList().get(index).setCart_qty(changeNum);
+		session.setAttribute("shoppingCart", shoppingCart);
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("/trading/cartModified");
+		return mav;
+	}
 	//상품 주문서 가져오기
 	@RequestMapping(value="orderForm.do",method=RequestMethod.POST)
-	public ModelAndView orderForm(HttpSession session,String product_name_no,String cart_qty) {
+	public ModelAndView orderForm(HttpSession session,@RequestParam int[] product_name_no,@RequestParam(required = false) int cart_qty) {
 		ModelAndView mav = new ModelAndView();
+		int qty = 0;
+		JsonElement orderList_JSON=null;
+		List<ProductDTO> orderList = new ArrayList<ProductDTO>();
+		if(qty != cart_qty) {//바로 주문한 경우에는 반영한다.		
+			ShoppingCart shoppingCart = new ShoppingCart();
+			ProductDTO productDTO = productDAO.getProduct_NameInfo(product_name_no[0]+"");
+			productDTO.setCart_qty(cart_qty);
+			orderList.add(productDTO);
+			orderList_JSON = shoppingCart.makeListToJsonElement(orderList);
+		}	
+		else {
+			ShoppingCart shoppingCart = (ShoppingCart) session.getAttribute("shoppingCart");	
+			for(int number : product_name_no) {
+				int index = this.exists(number, shoppingCart.getCartList());
+				shoppingCart.getCartList().get(index).setCart_qty(cart_qty);
+				orderList.add(shoppingCart.getCartList().get(index));
+				orderList_JSON = shoppingCart.makeListToJsonElement(orderList);
+			}					
+		}
+		mav.addObject("orderList", orderList);		
+		mav.addObject("orderList_JSON", orderList_JSON);
 		mav.addObject("display", "/trading/orderForm.jsp");	
-		mav.addObject("product_name_no", product_name_no);
-		mav.addObject("cart_qty", cart_qty);
 		mav.setViewName("/main/home");
 		return mav;
 	}

@@ -6,10 +6,12 @@
 	 			<h3>상품 주문서</h3>		
 	 		</div>
 		</div>
-		<div>
-		product_name_no : "${product_name_no}"
-		</div>
-		<div>
-		cart_qty : "${cart_qty}"
-		</div>
+
 </div>
+<script type="text/javascript"  src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	var result = ${orderList_JSON};
+	alert(JSON.stringify(result));
+});
+</script>

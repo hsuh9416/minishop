@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 
 import lombok.Data;
@@ -19,6 +20,8 @@ public class ShoppingCart{
 	private int cartnum;
 	
 	private List<ProductDTO> cartList;//직렬화 대상
+	
+	private int cartTotal;//카트 합계
 	
 	private String cartList_json;
 	
@@ -37,6 +40,11 @@ public class ShoppingCart{
 		Gson gson = new GsonBuilder().create();
 		return gson.toJson(cartList);
 	}
+	//웹으로 보내기 위해 카트를 JSONElement으로 변환
+	public JsonElement makeListToJsonElement(List<ProductDTO> cartList) {
+		Gson gson = new GsonBuilder().create();
+		return gson.toJsonTree(cartList);
+	}	
 	//DB에 저장되어 있던 String을 List로 반환
 	public List<ProductDTO> makeJsonToList(String json){
 		Gson gson = new GsonBuilder().create();
