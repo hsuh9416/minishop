@@ -21,6 +21,9 @@ import product.bean.ProductDTO;
 import trading.bean.OrderDTO;
 import trading.bean.ShoppingCart;
 import trading.dao.TradingDAO;
+/*
+ * 메소드 실행전 실행되는 인터셉터
+ */
 @Component
 public class PreInterceptors extends HandlerInterceptorAdapter{
 	private static final Logger logger = LoggerFactory.getLogger(PreInterceptors.class);

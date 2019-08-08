@@ -3,12 +3,14 @@ package admin.bean;
 import org.springframework.stereotype.Component;
 
 import lombok.Data;
-
+/*
+ * 문의 게시글에 대한 답변을 관리하는 BOARD_ADMIN DB의 구성요소를 관리하는 클래스
+ */
 @Component
 @Data
 public class AdminboardDTO {
 	private int admin_seq;
-	private int admin_pseq;//답변 대상 번호
-	private String user_id;//답변 대상의 유저 아이디
-	private String admin_content;//내용
+	private int admin_pseq;
+	private String user_id;
+	private String admin_content;
 }

@@ -16,7 +16,9 @@ import admin.bean.AdminDTO;
 import member.bean.GuestDTO;
 import member.bean.MemberDTO;
 import trading.bean.OrderDTO;
-
+/*
+ * 메소드 실행후 수행되는 인터셉터
+ */
 @Component
 public class AfterInterceptors extends HandlerInterceptorAdapter {
 	private static final Logger logger = LoggerFactory.getLogger(AfterInterceptors.class);	

@@ -1,6 +1,7 @@
 package mail.bean;
 
 import java.util.Properties;
+import java.util.UUID;
 
 import javax.mail.Message;
 import javax.mail.PasswordAuthentication;
@@ -12,7 +13,9 @@ import javax.mail.internet.MimeMessage;
 import org.springframework.stereotype.Component;
 
 import admin.bean.AdminDTO;
-
+/*
+ * 관리자가 사용자에게 전송하는 메일 관련 메소드를 관리하는 클래스
+ */
 @Component
 public class MailingImpl implements Mailing {
 	 
@@ -61,11 +64,12 @@ public class MailingImpl implements Mailing {
 	public MessageDTO sendWelcomeMail(MessageDTO messageDTO) {
 		messageDTO.setSender("[Kissin' Bugs]");		  
 		messageDTO.setSubject("[Kissin' Bugs]회원 가입하신 것을 환영합니다.");
+		String Discoutcode = UUID.randomUUID().toString(); 
 		String welcomeText = "안녕하세요, Kissin' Bugs에 회원이 되신 것을 환영합니다.\n"+
 				"현재 저희 샵에서는 신규가입 회원님께 [전품목 20% 할인 쿠폰]을 증정하는 이벤트를 진행하고 있습니다. \n"+
 				"일부 상품에 대하여 할인이 적용되지 않는 경우가 있으므로 이 점 양해 부탁드립니다.\n"+
 				"========================================\n"+
-				"증정되는 쿠폰의 코드 넘버는 [newmember]입니다.\n"+
+				"증정되는 쿠폰의 코드 넘버는 ["+Discoutcode+"]입니다.\n"+
 				"========================================\n"+
 				"신감각 편집샵 Kissin' Bugs와 함께 설레는 하루되시기 바랍니다.\n\n"+
 				"\t\t\t\t\t[Kissin' Bugs] 직원 일동 드림";		

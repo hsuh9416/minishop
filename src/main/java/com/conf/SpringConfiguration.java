@@ -15,8 +15,9 @@ import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import com.navercorp.lucy.security.xss.servletfilter.XssEscapeServletFilter;
-
-
+/*
+ * Spring Configuration 클래스
+ */
 @EnableTransactionManagement
 @Configuration
 public class SpringConfiguration extends WebMvcConfigurationSupport {

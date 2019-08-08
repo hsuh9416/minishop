@@ -26,7 +26,9 @@ import org.springframework.web.servlet.ModelAndView;
 import product.bean.ProductDTO;
 import product.bean.ProductPaging;
 import product.dao.ProductDAO;
-
+/*
+ * 관리자: 상품 및 재고 관리를 제어하는 클래스
+ */
 @Controller
 @RequestMapping(value="/admin/product/**")
 public class AdminProductController {
@@ -35,454 +37,502 @@ public class AdminProductController {
 	@Autowired
 	private ProductPaging productPaging;
 	
-	/* 재고 관리*/
-	//재고 관리 화면
+//-----------재고 관리:START-----------//
+	
+	//1. 재고 관리 화면 이동
 	@RequestMapping(value="/inventoryManage.do",method = RequestMethod.GET)
 	public ModelAndView inventoryManage(@RequestParam(required=false,defaultValue="1") String pg) {
+		
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("pg",pg);
-		mav.addObject("location", "inventory");
-		mav.addObject("display", "/admin/product/inventoryManage.jsp");
-		mav.setViewName("/main/home");
+			mav.addObject("pg",pg);
+			mav.addObject("location", "inventory");
+			mav.addObject("display", "/admin/product/inventoryManage.jsp");
+			mav.setViewName("/main/home");
+			
 		return mav;
 	}	
 
-	//글목록 가져오기(3게시물,3블록 표시)
+	//2. 재고 목록 가져오기(한페이지당 3게시물,3블록 표시)
 	@RequestMapping(value="/inventoryList.do",method= RequestMethod.POST)
 	public ModelAndView inventoryList(@RequestParam(required=false,defaultValue="1") String pg){
+		
 		int page = Integer.parseInt(pg);
 		int endNum = page*3;
 		int startNum = endNum-2;		
+		int totalA=0;
+		
 		Map<String,String> map = new HashMap<String,String>();
-		map.put("tableName", "product");		
-		int totalA = productDAO.getTotalA(map);
+			map.put("tableName", "product");		
+			totalA = productDAO.getTotalA(map);
 		
 		List<ProductDTO> inventoryList = productDAO.inventoryList(startNum, endNum);
 	
-		//페이징 처리
-		productPaging.setCurrentPage(page);
-		productPaging.setPageBlock(3);
-		productPaging.setPageSize(3);
-		productPaging.setTotalA(totalA);
-		productPaging.makePagingHTML();;	
+			productPaging.setCurrentPage(page);
+			productPaging.setPageBlock(3);
+			productPaging.setPageSize(3);
+			productPaging.setTotalA(totalA);
+			productPaging.makePagingHTML();;	
 		
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("productPaging", productPaging);
-		mav.addObject("inventoryList", inventoryList);
-		mav.setViewName("jsonView");
+			mav.addObject("productPaging", productPaging);
+			mav.addObject("inventoryList", inventoryList);
+			mav.setViewName("jsonView");
+			
 		return mav;
 	}
-	//검색어 제한 글목록
+	
+	//3. 특정 검색어에 해당하는 재고 목록 가져오기(한페이지당 3게시물,3블록 표시)
 	@RequestMapping(value="/inventorySearch.do",method= RequestMethod.POST)
 	public ModelAndView inventorySearch(@RequestParam(required=false,defaultValue="1") String pg, String keyword,String searchOption) {
+		
 		int page = Integer.parseInt(pg);
 		int endNum = page*3;
 		int startNum = endNum-2;
-		keyword = keyword.toUpperCase();
+		int totalA=0;
+		
+			keyword = keyword.toUpperCase();
+		
 		Map<String,String> map = new HashMap<String,String>();
-		map.put("startNum", startNum+"");
-		map.put("endNum", endNum+"");
-		map.put("searchOption",searchOption);
-		map.put("keyword", keyword);
-		map.put("tableName", "product");
-		map.put("joinName", "product_name");	
-		//검색 분류별 구분
-		map.put("searchTable", "product");	
+			map.put("startNum", startNum+"");
+			map.put("endNum", endNum+"");
+			map.put("searchOption",searchOption);
+			map.put("keyword", keyword);
+			map.put("tableName", "product");
+			map.put("joinName", "product_name");	
+			map.put("searchTable", "product");	
+			totalA = productDAO.getTotalSearchA(map);	
+			
+			productPaging.setCurrentPage(page);
+			productPaging.setPageBlock(3);
+			productPaging.setPageSize(3);
+			productPaging.setTotalA(totalA);
+			productPaging.makeSearchPagingHTML();				
+		
 		List<ProductDTO> inventorySearchList = productDAO.inventorySearch(map);
-		System.out.println(inventorySearchList);
-		ModelAndView mav = new ModelAndView();
-		int totalA = productDAO.getTotalSearchA(map);		
-		//페이징 처리
-		productPaging.setCurrentPage(page);
-		productPaging.setPageBlock(3);
-		productPaging.setPageSize(3);
-		productPaging.setTotalA(totalA);
-		productPaging.makeSearchPagingHTML();		
-		mav.addObject("pg", pg);
-		mav.addObject("inventorySearchList", inventorySearchList);
-		mav.addObject("searchOption", searchOption);
-		mav.addObject("keyword", keyword);
-		mav.addObject("productPaging", productPaging);
-		mav.setViewName("jsonView");
+		
+		ModelAndView mav = new ModelAndView();		
+			mav.addObject("pg", pg);
+			mav.addObject("inventorySearchList", inventorySearchList);
+			mav.addObject("searchOption", searchOption);
+			mav.addObject("keyword", keyword);
+			mav.addObject("productPaging", productPaging);
+			mav.setViewName("jsonView");
+		
 		return mav;	
 	}	
-	//재고 변동 팝업
+	
+	//4. 재고 수정 팝업창 불러오기
 	@RequestMapping(value="/inventoryModify.do",method = RequestMethod.GET)
 	public ModelAndView inventoryModify(@RequestParam(required=false,defaultValue="1") String pg, String productID) {
+		
 		ProductDTO productDTO = productDAO.getProductInfo(productID);
+		
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("pg", pg);
-		mav.addObject("productDTO", productDTO);	
-		mav.addObject("location", "inventory");
-		mav.setViewName("/admin/product/inventoryModify");
+			mav.addObject("pg", pg);
+			mav.addObject("productDTO", productDTO);	
+			mav.addObject("location", "inventory");
+			mav.setViewName("/admin/product/inventoryModify");
+			
 		return mav;
 	}	
-	//재고 변동 반영
+	
+	//5. 재고 수정 반영하기
 	@RequestMapping(value="/doModify.do",method= RequestMethod.POST)
 	@ResponseBody
 	public void doModify(@RequestParam Map<String,String> map){
+		
 		productDAO.doModify(map);
 	}	
+
+//-----------재고 관리:END-----------//
+
+//-----------상품 관리:START-----------//
 	
-	/* 상품 관리*/
-	//등록 관리 화면
+	//1.상품 관리 화면 이동
 	@RequestMapping(value="/productManage.do",method = RequestMethod.GET)
 	public ModelAndView productManage(@RequestParam(required=false,defaultValue="1") String pg) {
+		
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("pg",pg);
-		mav.addObject("location", "adminProduct");		
-		mav.addObject("display", "/admin/product/productManage.jsp");
-		mav.setViewName("/main/home");
+			mav.addObject("pg",pg);
+			mav.addObject("location", "adminProduct");		
+			mav.addObject("display", "/admin/product/productManage.jsp");
+			mav.setViewName("/main/home");
+			
 		return mav;
 	}	
 	
-	//글목록 가져오기(5게시물,3블록 표시)
+	//2. 상품 목록 가져오기(한페이지당 3게시물,3블록 표시)
 	@RequestMapping(value="/productList.do",method= RequestMethod.POST)
 	public ModelAndView productList(@RequestParam(required=false,defaultValue="1") String pg){
+		
 		int page = Integer.parseInt(pg);
 		int endNum = page*3;
-		int startNum = endNum-2;		
+		int startNum = endNum-2;	
+		int totalA = 0;
+		
 		Map<String,String> map = new HashMap<String,String>();
-		map.put("tableName", "product_name");
-		int totalA = productDAO.getTotalA(map);
+			map.put("tableName", "product_name");
+			totalA = productDAO.getTotalA(map);
 		
 		List<ProductDTO> productList = productDAO.productList(startNum, endNum);
 	
-		//페이징 처리
-		productPaging.setCurrentPage(page);
-		productPaging.setPageBlock(3);
-		productPaging.setPageSize(3);
-		productPaging.setTotalA(totalA);
-		productPaging.makePagingHTML();;	
+			productPaging.setCurrentPage(page);
+			productPaging.setPageBlock(3);
+			productPaging.setPageSize(3);
+			productPaging.setTotalA(totalA);
+			productPaging.makePagingHTML();;	
 		
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("productPaging", productPaging);
-		mav.addObject("productList", productList);
-		mav.setViewName("jsonView");
+			mav.addObject("productPaging", productPaging);
+			mav.addObject("productList", productList);
+			mav.setViewName("jsonView");
+			
 		return mav;
 	}
-	//검색어 제한 글목록
+	
+	//3. 특정 검색어에 해당하는 상품 목록 가져오기(한페이지당 3게시물,3블록 표시)
 	@RequestMapping(value="/productSearch.do",method= RequestMethod.POST)
 	public ModelAndView productSearch(@RequestParam(required=false,defaultValue="1") String pg, String keyword,String searchOption) {
+		
 		int page = Integer.parseInt(pg);
 		int endNum = page*3;
 		int startNum = endNum-2;
-		keyword = keyword.toUpperCase();
+		int totalA = 0;
+		
+			keyword = keyword.toUpperCase();
+		
 		Map<String,String> map = new HashMap<String,String>();
-		map.put("startNum", startNum+"");
-		map.put("endNum", endNum+"");
-		map.put("searchOption",searchOption);
-		map.put("keyword", keyword);
-		map.put("tableName", "product_name");
-		map.put("joinName", "product");			
-		map.put("searchTable", "product");	
-
+			map.put("startNum", startNum+"");
+			map.put("endNum", endNum+"");
+			map.put("searchOption",searchOption);
+			map.put("keyword", keyword);
+			map.put("tableName", "product_name");
+			map.put("joinName", "product");			
+			map.put("searchTable", "product");	
+			totalA = productDAO.getTotalSearchA(map);	
+		
+			productPaging.setCurrentPage(page);
+			productPaging.setPageBlock(3);
+			productPaging.setPageSize(3);
+			productPaging.setTotalA(totalA);
+			productPaging.makeSearchPagingHTML();	
+			
 		List<ProductDTO> productSearchList = productDAO.productSearch(map);
+		
 		ModelAndView mav = new ModelAndView();
-		int totalA = productDAO.getTotalSearchA(map);		
-		//페이징 처리
-		productPaging.setCurrentPage(page);
-		productPaging.setPageBlock(3);
-		productPaging.setPageSize(3);
-		productPaging.setTotalA(totalA);
-		productPaging.makeSearchPagingHTML();		
-		mav.addObject("pg", pg);
-		mav.addObject("productSearchList", productSearchList);
-		mav.addObject("searchOption", searchOption);
-		mav.addObject("keyword", keyword);
-		mav.addObject("productPaging", productPaging);
-		mav.setViewName("jsonView");
+			mav.addObject("pg", pg);
+			mav.addObject("productSearchList", productSearchList);
+			mav.addObject("searchOption", searchOption);
+			mav.addObject("keyword", keyword);
+			mav.addObject("productPaging", productPaging);
+			mav.setViewName("jsonView");
+			
 		return mav;	
 	}
 	
-	//특정 상품 뷰로 이동
+	//4. 특정 상품조회 화면 이동 
 	@RequestMapping(value="/productView.do",method=RequestMethod.GET)
 	public ModelAndView productView(@RequestParam(required=false,defaultValue="1") String pg, String product_name_no) {
+		
+		ProductDTO productDTO = productDAO.getProduct_NameInfo(product_name_no);		
+		
 		ModelAndView mav = new ModelAndView();
-		ProductDTO productDTO = productDAO.getProduct_NameInfo(product_name_no);
-		mav.addObject("productDTO",productDTO);
-		mav.addObject("pg", pg);
-		mav.addObject("location", "adminProduct");
-		mav.addObject("display", "/admin/product/productView.jsp");
-		mav.setViewName("/main/home");
+			mav.addObject("productDTO",productDTO);
+			mav.addObject("pg", pg);
+			mav.addObject("location", "adminProduct");
+			mav.addObject("display", "/admin/product/productView.jsp");
+			mav.setViewName("/main/home");
+			
 		return mav;
 	}
 	
-	//상품 등록 페이지 이동
+	//5. 상품 등록 화면 이동
 	@RequestMapping(value="/productUpload.do",method=RequestMethod.GET)
 	public ModelAndView productUpload() {
+		
 		ModelAndView mav = new ModelAndView();	
-		mav.addObject("location", "adminProduct");	
-		mav.addObject("display", "/admin/product/productUpload.jsp");
-		mav.setViewName("/main/home");
+			mav.addObject("location", "adminProduct");	
+			mav.addObject("display", "/admin/product/productUpload.jsp");
+			mav.setViewName("/main/home");
+			
 		return mav;
 	}
-	//글쓰기 이미지 업로드
+	
+	//6. 상품 상세정보 등록 이미지(CKEDITOR4 이미지) 업로드 하기
 	@RequestMapping(value="/productImgUpload.do")
 	@ResponseBody
 	public Map<String,Object> productImgUpload(HttpServletRequest request,@RequestParam MultipartFile upload)
 	throws Exception
 	{
-		Map<String,Object> data = new HashMap<String,Object>();
-		String fileUrl = "";
-		String uploadPath = "";
-		String fileName = upload.getOriginalFilename();
-
-	    //이미지 양식 검증
-	     boolean result = false;
-	      int post = fileName.lastIndexOf(".");
-	       String ext = fileName.substring(post + 1).toLowerCase();
-	       String[] images = {"jpg", "jpeg", "png", "gif", "bmp"};
+		boolean result;
+		int post;
+		String ext;
+		String fileName;
+		String fileUrl;
+		String Localpath;
+		String uploadPath;
+		String[] images;
+		
+			fileName = upload.getOriginalFilename();
+			post = fileName.lastIndexOf(".");
+			ext = fileName.substring(post + 1).toLowerCase();
+			images = new String[]{"jpg", "jpeg", "png", "gif", "bmp"};
+			result = false;
+			
+		Map<String,Object> data= new HashMap<String,Object>();	
+	    		//(1) 이미지 양식 검증
 	        for (String str : images) {
 	            if (str.equals(ext)) {
 	                result = true;
-	                break;
-	            }
-	        }
+	                break;}}
+	        
 	        if(!result) {
-				data.put("uploaded", 0);
-				data.put("fileName", fileName);		
-				data.put("error", "올바른 형식의 이미지가 아닙니다.");
-				return data;
-	        }
+					data.put("uploaded", 0);
+					data.put("fileName", fileName);		
+					data.put("error", "올바른 형식의 이미지가 아닙니다.");
+					
+				return data;}
 
 	    
-		try {
-			//실제 업로드 과정
-			uploadPath = request.getSession().getServletContext().getRealPath("/")+"storage\\product\\"+fileName;//저장경로
-			System.out.println(uploadPath);
-			upload.transferTo(new File(uploadPath));
-			fileUrl = request.getContextPath()+"/storage/product/"+fileName;//url경로
-			//System.out.println(fileUrl);
-			data.put("fileName", uploadPath);
-			data.put("uploaded", 1);
-			data.put("url", fileUrl);		
-			//DB저장용 product upload
-			String Localpath="D:\\lib\\workspace\\minishop\\src\\main\\webapp\\storage\\product\\";
+	        try {
+				//(2) 서버에 업로드
+				uploadPath = request.getSession().getServletContext().getRealPath("/")+"storage\\product\\"+fileName;
+				upload.transferTo(new File(uploadPath));
+				fileUrl = request.getContextPath()+"/storage/product/"+fileName;
+				
+				data.put("fileName", uploadPath);
+				data.put("uploaded", 1);
+				data.put("url", fileUrl);		
+				
+				//(3) WEB 미리보기용 업로드
+				Localpath="D:\\lib\\workspace\\minishop\\src\\main\\webapp\\storage\\product\\";
 			try {
-				FileCopyUtils.copy(upload.getInputStream(), new FileOutputStream(new File(Localpath,fileName)));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}catch(IOException e) {
-			e.printStackTrace();
-		}
+				FileCopyUtils.copy(upload.getInputStream(), new FileOutputStream(new File(Localpath,fileName)));}
+			catch (IOException e) {e.printStackTrace();}}
+	        catch(IOException e) {e.printStackTrace();}
+		
 		return data;
 	}
 	
-	//상품 등록
+	//7. 상품 등록하기
 	@RequestMapping(value="/doUpload.do",method=RequestMethod.POST)
 	public ModelAndView doUpload(@ModelAttribute ProductDTO productDTO, @RequestParam MultipartFile product_image, String date, HttpServletRequest request){
-		Date product_name_instockdate = null;
-		String state;
-
 		
-		//1.받아온 글자를 date 형식으로 치환
+		boolean result;
+		Date product_name_instockdate;
+		File newFile;
+		int done1;
+		int done2;
+		int post;
+		int product_name_no;
+		String ext;
+		String filePath; 
+		String originalfileName;
+		String state;
+		String uploadPath;
+		String uploadfileName;
+		String[] images;
+		
+			//(1) 받아온 글자를 date 형식으로 치환
 		SimpleDateFormat targetDate = new SimpleDateFormat("yyyy-mm-dd");
-		if(date==null||date.equals("")) {
-			Date today = new Date();
-			productDTO.setProduct_name_instockdate(today);
-		}
-		else {
-			try {
-				product_name_instockdate = targetDate.parse(date);			
-			} catch (ParseException e) {e.printStackTrace();}
+			if(date==null||date.equals("")) {
+				Date today = new Date();
+				productDTO.setProduct_name_instockdate(today);
+			}
+			else {
+				try {
+					product_name_instockdate = targetDate.parse(date);			
+				} catch (ParseException e) {e.printStackTrace(); product_name_instockdate=null;}
+				
+				productDTO.setProduct_name_instockdate(product_name_instockdate);}
 			
-			productDTO.setProduct_name_instockdate(product_name_instockdate);				
-		}
-		//2.파일 형식 확인
-		//업로드 된 파일명
-		String originalfileName = product_image.getOriginalFilename();
+			//(2) 이미지 양식 검증(검증 이후 파일 네임을 반환)
+			originalfileName = product_image.getOriginalFilename();
 
-	    //이미지 양식 검증(검증 이후 파일 네임을 반환
-	     boolean result = false;
-	      int post = originalfileName.lastIndexOf(".");
-	       String ext = originalfileName.substring(post + 1).toLowerCase();//ext
-	       String[] images = {"jpg", "jpeg", "png", "gif", "bmp"};
+			
+			post = originalfileName.lastIndexOf(".");
+			ext = originalfileName.substring(post + 1).toLowerCase();
+			images = new String[]{"jpg", "jpeg", "png", "gif", "bmp"};
+			result = false;
+			
 	        for (String str : images) {
 	            if (str.equals(ext)) {
 	                result = true;
-	                break;
-	            }
-	        }
-	        if(!result) {state="WrongFile";}//오류로 복귀
+	                break;}}
+	        
+	        if(!result) {state="WrongFile";}
 	        else {
-	        originalfileName = originalfileName.substring(0, post)+"."+ext; //이미지명.
+	        
+	        	originalfileName = originalfileName.substring(0, post)+"."+ext;
 
 	    	
 			
-		//3.seq 배정받기
-		int product_name_no = productDAO.getSeq();
-		productDTO.setProduct_name_no(product_name_no);//seq 설정
-		productDTO.setProductID(productDTO.getProductID()+product_name_no);//등록코드 변경ex>CSXS2200
-			//업로드될 파일명
-		String uploadfileName = productDTO.getProductID()+"."+ext;//기본적으로는 productID와 동일ex>CSXS2200.jpg		
-		 productDTO.setProduct_name_image(uploadfileName);//이미지 파일명	
-		//4.서버에 업로드
-	     String uploadPath = request.getSession().getServletContext().getRealPath("/")+"storage\\onstore\\"+uploadfileName;
-	     try {
-			product_image.transferTo(new File(uploadPath));
-		} catch (IllegalStateException | IOException e) {
-			e.printStackTrace();
-		}
-	     //5.workspace상에 업로드
-	     String filePath = "D:\\lib\\workspace\\minishop\\src\\main\\webapp\\storage\\onstore\\";
+		        //(3) seq 배정받고 PRODUCTID 재설정
+		        product_name_no = productDAO.getSeq();
+				productDTO.setProduct_name_no(product_name_no);
+				productDTO.setProductID(productDTO.getProductID()+product_name_no);
+				
+	
+				//(4) 서버에 업로드 
+				uploadfileName = productDTO.getProductID()+"."+ext;	
+				productDTO.setProduct_name_image(uploadfileName);
+				uploadPath = request.getSession().getServletContext().getRealPath("/")+"storage\\onstore\\"+uploadfileName;
+		     
+				try {
+					product_image.transferTo(new File(uploadPath));}
+			     catch (IllegalStateException | IOException e) {e.printStackTrace();}
+		     
+				//(5) workspace상에 업로드
+				filePath = "D:\\lib\\workspace\\minishop\\src\\main\\webapp\\storage\\onstore\\";
+				newFile = new File(filePath,uploadfileName);
 	     
-	     File newFile = new File(filePath,uploadfileName);
-	     
-	     /*이름 업데이트되어 변경:실행결과 변경된 점이 없으므로 유보시킴
-	      * File originalFile = new File(filePath,originalfileName);
-	     originalFile.renameTo(new File(filePath,uploadfileName));*/
-			
-			try {FileCopyUtils.copy(product_image.getInputStream(), new FileOutputStream(newFile));} 
-			catch (IOException e) {e.printStackTrace();}	     
-		
-		//System.out.println(productDTO);
-		 
-		//6.DB upload
-		try {
-		int done1 = productDAO.productUpload(productDTO);
-		if(done1==0) {
-			state="입점실패";
-		}
-		else {//즉시 입점시에는 추가로 DB엡데이트
-			if(productDTO.getProduct_onstore().equals("YES")){
-				int done2 = productDAO.inventoryUpload(productDTO);
-				if(done2==1) state = "입점완료";
-				else state="입점실패";					
-			}
-			else state="상품등록완료";
-		}
-		}catch(Exception e) {
-			e.printStackTrace();
-			state="입점실패";
-		}
-		 }
-		//7.결과값 송출
+				try {FileCopyUtils.copy(product_image.getInputStream(), new FileOutputStream(newFile));} 
+				catch (IOException e) {e.printStackTrace();}	     
+
+				//(6) DB upload
+				try {
+					done1 = productDAO.productUpload(productDTO);
+					if(done1==0) {
+						state="입점실패";}
+					else {
+						if(productDTO.getProduct_onstore().equals("YES")){
+							done2 = productDAO.inventoryUpload(productDTO);
+							if(done2==1) state = "입점완료";
+							else state="입점실패";}
+						else state="상품등록완료";}}
+				catch(Exception e) {e.printStackTrace();	state="입점실패";}}
+	        
+		//(7) 최종 반환
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("stateCode",state);
-		mav.setViewName("/admin/product/stateCode");
+			mav.addObject("stateCode",state);
+			mav.setViewName("/admin/product/stateCode");
+			
 		return mav;
 	}
 	
-	//상품 수정 페이지 이동
+	//8. 상품 수정 화면 이동
 	@RequestMapping(value="/productModifyForm.do",method=RequestMethod.GET)
 	public ModelAndView productModifyForm(@RequestParam String product_name_no) {
-		ModelAndView mav = new ModelAndView();	
+		
 		ProductDTO productDTO = productDAO.getProduct_NameInfo(product_name_no);
-		mav.addObject("location", "adminProduct");	
-		mav.addObject("productDTO", productDTO);	
-		mav.addObject("display", "/admin/product/productModifyForm.jsp");
-		mav.setViewName("/main/home");
+		
+		ModelAndView mav = new ModelAndView();	
+			mav.addObject("location", "adminProduct");	
+			mav.addObject("productDTO", productDTO);	
+			mav.addObject("display", "/admin/product/productModifyForm.jsp");
+			mav.setViewName("/main/home");
+			
 		return mav;
 	}	
 	
-	//상품 수정
+	//9. 상품 수정하기
 	@RequestMapping(value="/productModify.do",method=RequestMethod.POST)
 	public ModelAndView productModify(@ModelAttribute ProductDTO productDTO, @RequestParam MultipartFile product_image, String date, HttpServletRequest request){
+		
+		boolean result;
 		Date product_name_instockdate = null;
-		String state="hate";
-		//0.재고 존재 확인
-		String productID = productDTO.getProductID();
-		ProductDTO inventory = productDAO.getProductInfo(productID);
-		//System.out.println(inventory);
+		int done1;
+		int done2;
+		int post;
+		String ext;
+		String filePath;
+		String originalfileName;
+		String state;
+		String uploadfileName;
+		String uploadPath;
+	    String[] images;
+	    
+			//(1) 재고 확인
+		ProductDTO inventory = productDAO.getProductInfo(productDTO.getProductID());
+
 		
-		//1.받아온 글자를 date 형식으로 치환
+			//(2) 받아온 글자를 date 형식으로 치환
 		SimpleDateFormat targetDate = new SimpleDateFormat("yyyy-mm-dd");
-		if(date==null||date.equals("")) {
-			Date today = new Date();
-			productDTO.setProduct_name_instockdate(today);
-		}
-		else {
-			try {
-				product_name_instockdate = targetDate.parse(date);			
-			} catch (ParseException e) {e.printStackTrace();}
+			if(date==null||date.equals("")) {
+				Date today = new Date();
+					productDTO.setProduct_name_instockdate(today);}
+			else {
+				try {
+					product_name_instockdate = targetDate.parse(date);}
+				catch (ParseException e) {e.printStackTrace();}
+	
+			productDTO.setProduct_name_instockdate(product_name_instockdate);}
 			
-			productDTO.setProduct_name_instockdate(product_name_instockdate);				
-		}
-		//2.미입점시 입점처리
-
-		productDTO.setProductID(productDTO.getProductID()+productDTO.getProduct_name_no());//등록코드 변경ex>CSXS2200
+			//(3) 미입점시 입점처리
+			productDTO.setProductID(productDTO.getProductID()+productDTO.getProduct_name_no());
 		
-		//3.파일 존재 여부 및 형식 확인
-		//업로드 된 파일명
-		if(!product_image.isEmpty()) {
-		String originalfileName = product_image.getOriginalFilename();
+			//(4) 이미지 양식 검증(검증 이후 파일 이름을 반환)
+			if(!product_image.isEmpty()) {
+				originalfileName = product_image.getOriginalFilename();
 
-	    //이미지 양식 검증(검증 이후 파일 네임을 반환
-	     boolean result = false;
-	      int post = originalfileName.lastIndexOf(".");
-	       String ext = originalfileName.substring(post + 1).toLowerCase();//ext
-	       String[] images = {"jpg", "jpeg", "png", "gif", "bmp"};
+
+				
+				post = originalfileName.lastIndexOf(".");
+				ext = originalfileName.substring(post + 1).toLowerCase();//ext
+				images = new String[]{"jpg", "jpeg", "png", "gif", "bmp"};
+				result = false;
+				
 	        for (String str : images) {
 	            if (str.equals(ext)) {
 	                result = true;
-	                break;
-	            }
-	        }
-	        if(!result) {state="WrongFile";}//오류로 복귀
-	        else {
-	        originalfileName = originalfileName.substring(0, post)+"."+ext; //이미지명.
-	        }
-			//업로드될 파일명
-		 String uploadfileName = productDTO.getProductID()+"."+ext;//기본적으로는 productID와 동일ex>CSXS2200.jpg		
-		 productDTO.setProduct_name_image(uploadfileName);//이미지 파일명		 
+	                break;}}
+	        
+	        if(!result) {state="WrongFile";}
+	        else {originalfileName = originalfileName.substring(0, post)+"."+ext;}
+	        
+	        	uploadfileName = productDTO.getProductID()+"."+ext;
+	        	productDTO.setProduct_name_image(uploadfileName);
 
-			//4.서버에 업로드
-	     String uploadPath = request.getSession().getServletContext().getRealPath("/")+"storage\\onstore\\"+uploadfileName;
-	     try {
-			product_image.transferTo(new File(uploadPath));
-		} catch (IllegalStateException | IOException e) {
-			e.printStackTrace();
-		}
-	     //5.workspace상에 업로드
-	     String filePath = "D:\\lib\\workspace\\minishop\\src\\main\\webapp\\storage\\onstore\\";
-	     
+	        	//(5) 서버에 업로드
+	        	uploadPath = request.getSession().getServletContext().getRealPath("/")+"storage\\onstore\\"+uploadfileName;
+	        	
+		        try {
+		        	product_image.transferTo(new File(uploadPath));}
+		        catch (IllegalStateException | IOException e) {e.printStackTrace();}
+	        
+		        //(6)workspace상에 업로드
+		        filePath = "D:\\lib\\workspace\\minishop\\src\\main\\webapp\\storage\\onstore\\";
+		        
 	     File newFile = new File(filePath,uploadfileName);
-	     
-			try {FileCopyUtils.copy(product_image.getInputStream(), new FileOutputStream(newFile));} 
-			catch (IOException e) {e.printStackTrace();}	  
-		 
-		}//파일 업로드시
-	
-		System.out.println(productDTO);
-		 
-		//6.DB upload
-		try {
-		int done1 = productDAO.productModify(productDTO);
-		if(done1==0) {
-			state="변경실패";
+				try {FileCopyUtils.copy(product_image.getInputStream(), new FileOutputStream(newFile));} 
+				catch (IOException e) {e.printStackTrace();}	  
 		}
-		else {//즉시 입점시에는 추가로 DB업데이트
-			if(productDTO.getProduct_onstore().equals("YES")){
-				if(inventory==null) {
-					int done2 = productDAO.inventoryUpload(productDTO);
-					if(done2==1) state = "입점완료";
-					else state="입점실패";	
-				}//재고가 존재하지 않는다면 작성
-				else if(inventory!=null) {
-					int done2 = productDAO.inventoryModify(productDTO);
-				if(done2==1) state = "상품변경완료";
-				else state="변경실패";	}
-				}
-			else state="상품변경완료";
+	
+				//(7) DB upload
+			state="변경실패";
+			try {
+				done1 = productDAO.productModify(productDTO);
+				if(done1==0) {state="변경실패";}
+				else {
+					if(productDTO.getProduct_onstore().equals("YES")){
+						if(inventory==null) {
+							done2 = productDAO.inventoryUpload(productDTO);
+							if(done2==1) state = "입점완료";
+							else state="입점실패";	}
+						else if(inventory!=null) {
+							done2 = productDAO.inventoryModify(productDTO);
+						if(done2==1) state = "상품변경완료";
+						else state="변경실패";	}}
+					else state="상품변경완료";}}
+			catch(Exception e) {e.printStackTrace(); state="변경실패";}
 		
-			}//else
-		}//try
-		catch(Exception e) {e.printStackTrace(); state="변경실패";}
-		
-		//7.결과값 송출
+		//(8) 결과 최종 송출
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("stateCode",state);
-		mav.setViewName("/admin/product/stateCode");
+			mav.addObject("stateCode",state);
+			mav.setViewName("/admin/product/stateCode");
+			
 		return mav;
 	}
 	
-	//상품 삭제
+	//10. 상품 삭제하기
 	@RequestMapping(value="/productDelete.do", method=RequestMethod.GET)
 	public String productDelete(@RequestParam String product_name_no,Model model) {
-		productDAO.productDelete(product_name_no);
-		model.addAttribute("stateCode", "deleted");	
+		
+			productDAO.productDelete(product_name_no);
+			model.addAttribute("stateCode", "deleted");	
+		
 		return "/admin/product/stateCode";
 	}
+	
+//-----------상품 관리:END-----------//	
 }

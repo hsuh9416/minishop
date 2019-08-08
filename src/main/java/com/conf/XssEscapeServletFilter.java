@@ -13,6 +13,9 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import com.navercorp.lucy.security.xss.servletfilter.XssEscapeFilter;
 import com.navercorp.lucy.security.xss.servletfilter.XssEscapeServletFilterWrapper;
 
+/*
+ * lucy XSS Filter 설정 클래스
+ */
 public class XssEscapeServletFilter extends OncePerRequestFilter implements Ordered {
     private XssEscapeFilter xssEscapeFilter = XssEscapeFilter.getInstance();
 

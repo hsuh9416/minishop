@@ -8,23 +8,27 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-
+/*
+ *관리자 화면에 대한 접근과 관리자 로그아웃을 제어하는 클래스
+ */
 @Controller
 @RequestMapping(value="/admin/**")
 public class AdminController {
 
 	
-	//관리자 화면
+	//1. 관리자 메인으로 이동
 	@RequestMapping(value="/adminHome.do",method = RequestMethod.GET)
 	public ModelAndView adminHome() {
+		
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("location", "adminHome");
-		mav.addObject("display", "/admin/shop/adminManage.jsp");//초기화면은 임시로 관리자 정보 화면
-		mav.setViewName("/main/home");
+			mav.addObject("location", "adminHome");
+			mav.addObject("display", "/admin/shop/adminManage.jsp");//초기화면은 임시로 관리자 정보 화면
+			mav.setViewName("/main/home");
+			
 		return mav;
 	}	
 	
-	// 관리자 로그아웃(수정 예정: 마감 메소드 진행시켜야 함)
+	//2. 관리자 계정 로그아웃(수정 예정: 마감 메소드 진행시켜야 함)
 	@RequestMapping(value="/adminLogout.do",method=RequestMethod.GET)
 	public ModelAndView adminLogout(HttpServletRequest request,HttpServletResponse response, HttpSession session){
 		session.removeAttribute("adminDTO");//관리자 계정은 로그아웃시에 무조건적으로 제거되어야 하며 자동 로그인도 불허한다.

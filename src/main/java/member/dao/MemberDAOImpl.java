@@ -2,7 +2,6 @@ package member.dao;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Repository;
 
 import mail.bean.MessageDTO;
 import member.bean.MemberDTO;
-import member.bean.PostDTO;
 import trading.bean.OrderDTO;
 
 @Repository
@@ -43,11 +41,7 @@ public class MemberDAOImpl implements MemberDAO {
 		return sqlSession.insert("memberSQL.write", memberDTO);
 	}
 
-	//우편번호 검색
-	@Override
-	public List<PostDTO> getPostList(Map<String,String> map) {
-		return sqlSession.selectList("memberSQL.getPostList", map);
-	}
+
 	
 	//회원 정보수정
 	@Override

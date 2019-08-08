@@ -3,7 +3,9 @@ package board.bean;
 import org.springframework.stereotype.Component;
 
 import lombok.Data;
-
+/*
+ * 게시판 페이징 관련 클래스
+ */
 @Component
 @Data
 public class BoardPaging {
@@ -14,13 +16,15 @@ public class BoardPaging {
 	private StringBuffer pagingHTML;
 	
 	public void makePagingHTML(){
-		pagingHTML = new StringBuffer();
 		
 		int totalP = (totalA+pageSize-1)/pageSize;
 		int startPage = (currentPage-1)/pageBlock*pageBlock+1;
 		int endPage = startPage+pageBlock-1;
-		if(endPage > totalP) endPage = totalP;
-		
+
+			pagingHTML = new StringBuffer();
+			
+		if(endPage > totalP) endPage = totalP;		
+			
 		if(startPage>pageBlock)			
 			pagingHTML.append("<li class='page-item'><a class='page-link' id='paging' href='#' onclick='boardPaging("+(startPage-1)+")'>이전</a></li>");     
 		
@@ -37,13 +41,15 @@ public class BoardPaging {
 	}
 	
 	public void makeSearchPagingHTML(){
-		pagingHTML = new StringBuffer();
-		
+
 		int totalP = (totalA+pageSize-1)/pageSize;
 		int startPage = (currentPage-1)/pageBlock*pageBlock+1;
 		int endPage = startPage+pageBlock-1;
-		if(endPage > totalP) endPage = totalP;
 		
+			pagingHTML = new StringBuffer();
+		
+		if(endPage > totalP) endPage = totalP;
+			
 		if(startPage>pageBlock)			
 			pagingHTML.append("<li class='page-item'><a class='page-link' id='paging' onclick='boardSearchPaging("+(startPage-1)+")'>이전</a></li>");     
 		
@@ -52,7 +58,6 @@ public class BoardPaging {
 				pagingHTML.append("<li class='page-item'><a class='page-link' id='currentPaging' onclick='boardSearchPaging("+i+")'>"+i+"</a></li>");
 			else
 				pagingHTML.append("<li class='page-item'><a class='page-link' id='paging' onclick='boardSearchPaging("+i+")'>"+i+"</a></li>");
-		
 		}
 		
 		if(endPage < totalP)

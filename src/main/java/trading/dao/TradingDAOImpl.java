@@ -12,7 +12,9 @@ import org.springframework.stereotype.Repository;
 import trading.bean.CouponDTO;
 import trading.bean.OrderDTO;
 import trading.bean.ShoppingCart;
-
+/*
+ * 
+ */
 @Repository
 @DependsOn(value= {"sqlSession"})
 public class TradingDAOImpl implements TradingDAO {

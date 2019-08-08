@@ -1,7 +1,9 @@
 package mail.bean;
 
 import admin.bean.AdminDTO;
-
+/*
+ * MailingImpl의 인터페이스
+ */
 public interface Mailing {
 	public String checkNum();
 	public String getKey(int length);
