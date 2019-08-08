@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="salesInfoSQL">
+
+<!-- STATE_OF_SALES : 기간별 매출 정보 호출하기 -->
+<select id="getSalesInfoList" resultType="salesInfo">
+	select * from STATE_OF_SALES
+</select>
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

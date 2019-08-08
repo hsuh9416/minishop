@@ -11,6 +11,7 @@ import trading.bean.OrderDTO;
  */
 public interface MemberDAO {
 
+//----------MEMBER:START----------//		
 	MemberDTO login(String id, String pwd);
 	MemberDTO checkId(String id);
 	int write(MemberDTO memberDTO);
@@ -19,10 +20,11 @@ public interface MemberDAO {
 	MemberDTO checkLoginBefore(String value);
 	void deleteMember(String id);
 	OrderDTO orderCheck(String id, String pwd);
-	MemberDTO getAdmin();
-	void memberQASend(MessageDTO messageDTO);
-	void setNewPwd(MemberDTO memberDTO);
 	MemberDTO findLostId(Map<String, String> map);
+	void setNewPwd(MemberDTO memberDTO);
 	MemberDTO getUser(String id);
-
+//----------MEMBER:END----------//
+//----------QAMESSAGE:START----------//		
+void memberQASend(MessageDTO messageDTO);
+//----------QAMESSAGE:END----------//	
 } 

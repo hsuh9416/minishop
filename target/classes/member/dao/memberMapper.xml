@@ -3,6 +3,16 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="memberSQL">
+	<!-- 로그인 -->
+	<select id="login" parameterType="java.util.Map" resultType="member">
+		select * from member where id=#{id} and pwd=#{pwd}
+	</select>
+
+	<!-- 중복 아이디 체크 -->
+	<select id="checkId" parameterType="String" resultType="member">
+		select * from member where id=#{id}
+	</select>
+		
 	<!-- 회원가입 -->
 	<insert id="write" parameterType="member">
 	begin
@@ -12,30 +22,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	end;		
 	</insert>
 	
-	<!-- 중복 아이디 체크 -->
-	<select id="checkId" parameterType="String" resultType="member">
-		select * from member where id=#{id}
-	</select>
-		
-	<!-- 로그인 -->
-	<select id="login" parameterType="java.util.Map" resultType="member">
-		select * from member where id=#{id} and pwd=#{pwd}
-	</select>
-	
-	<!-- 주문 번호 로그인 -->
-	<select id="orderCheck" parameterType="java.util.Map" resultType="member">
-		select * from member where orderid=#{orderId} and orderpwd=#{orderPwd}
-	</select>	
-	
-	<!-- 회원 정보 호출 -->
-	<select id="getMember" parameterType="String" resultType="member">
-		select * from member where id=#{id}
-	</select>
-	
-	<!-- 새 비밀번호 설정 -->
-	<update id="setNewPwd" parameterType="member">
-	 update member set pwd=#{pwd} where id=#{id}
-	</update>		
 	 <!-- 회원 정보수정 -->
 	<update id="modify" parameterType="member">
 		update member set name=#{name}
@@ -49,27 +35,48 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 						 ,addr2=#{addr2}
 						 where id=#{id}
 	</update>	
+		
 	<!-- 자동로그인 설정/연장 -->
 	<update id="keepLogin" parameterType="java.util.Map">
 	update member set SESSIONID = #{sessionid}, SESSIONLIMIT = #{sessionlimit} 
 	where id = #{id}
 	</update>
+	
 	<!-- 자동로그인 값 가져오기-->
 	<select id="checkLoginBefore" parameterType="String" resultType="member">
 	select * from member where SESSIONID = #{value}
-	</select>
+	</select>	
+
 	<!-- 유저요청을 통한 계정 정지 : 3번 상태인 유저는 로그인 불가 -->
 	<update id="deleteMember" parameterType="String">
 		update member set state=3 where id=#{id}
 	</update>
-	<!-- 회원 1 대 1 문의 사항 저장 -->
-	<insert id="memberQASend" parameterType="message">
-		insert into QAMESSAGE values(message_seq.nextval,#{sender},#{receiver},#{sendAddr},#{receiveAddr},#{subject},#{content},SYSDATE)
-	</insert>
-	<!-- 아이디 검색 -->
+	
+	<!-- 주문 번호 로그인 -->
+	<select id="orderCheck" parameterType="java.util.Map" resultType="member">
+		select * from member where orderid=#{orderId} and orderpwd=#{orderPwd}
+	</select>	
+
+	<!-- 아이디 찾기 검색 -->
 	<select id="findLostId" parameterType="java.util.Map" resultType="member">
 		select * from member where name=#{findName} and email1=#{findIdemail1} and email2=#{findIdemail2}
 	</select>
+	
+	<!-- 새 비밀번호 설정 -->
+	<update id="setNewPwd" parameterType="member">
+	 update member set pwd=#{pwd} where id=#{id}
+	</update>	
+			
+	<!-- 회원 정보 호출 -->
+	<select id="getMember" parameterType="String" resultType="member">
+		select * from member where id=#{id}
+	</select>
+		
+	<!-- QAMESSAGE 회원 1 대 1 문의 사항 저장 -->
+	<insert id="memberQASend" parameterType="message">
+		insert into QAMESSAGE values(message_seq.nextval,#{sender},#{receiver},#{sendAddr},#{receiveAddr},#{subject},#{content},SYSDATE)
+	</insert>	
+	
 </mapper>
 
 

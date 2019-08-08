@@ -13,6 +13,7 @@
 		<typeAlias type="trading.bean.OrderDTO" alias="order"/>			
 		<typeAlias type="product.bean.ProductDTO" alias="product"/>	
 		<typeAlias type="board.bean.QAboardDTO" alias="qa"/>	
-		<typeAlias type="board.bean.ReviewboardDTO" alias="review"/>		
+		<typeAlias type="board.bean.ReviewboardDTO" alias="review"/>
+		<typeAlias type="salesInfo.bean.SalesInfoDTO" alias="salesInfo"/>				
 	</typeAliases>
 </configuration>

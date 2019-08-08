@@ -3,21 +3,28 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="tradingSQL">
-<!-- 거래 정보 가져오기 -->
-<select id="getCartList"  parameterType="String" resultType="cart">
-	SELECT * from SHOPPINGCART where MEMBERID=#{memberid}
-</select>
+
+<!-- 공통 : 특정 회원 주문 정보 호출-->
 <select id="getOrderList"  parameterType="String" resultType="order">
 	SELECT * from ORDERS where ORDER_ID=#{id}
 </select>
+
+<!-- 공통 : 특정 회원 쿠폰 정보 호출-->
 <select id="getCouponList"  parameterType="String" resultType="coupon">
 	SELECT * from BENEFIT_GRANT where GRANT_ID=#{id}
 </select>
-<!-- 회원 장바구니 저장 -->
+
+<!-- 장바구니 : 특정 회원 장바구니 정보 호출-->
+<select id="getCartList"  parameterType="String" resultType="cart">
+	SELECT * from SHOPPINGCART where MEMBERID=#{memberid}
+</select>
+
+<!-- 장바구니 : 회원 장바구니 생성 -->
 <insert id="insertCartList">
 	INSERT into SHOPPINGCART values(CART_SEQ.nextval,#{memberid},#{cartList_json})
 </insert>
-<!-- 회원 장바구니 갱신 -->
+
+<!-- 장바구니 : 회원 장바구니 갱신 -->
 <update id="updateCartList">
 	UPDATE SHOPPINGCART set cartList_json=#{cartList_json} where MEMBERID=#{memberid}
 </update>

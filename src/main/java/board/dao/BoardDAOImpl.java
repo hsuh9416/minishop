@@ -51,6 +51,11 @@ public class BoardDAOImpl implements BoardDAO {
 	public AdminboardDTO getQaAns(String seq) {
 		return sqlSession.selectOne("boardSQL.getQaAns", seq);}	
 	
+	//4. (관리자) 회원 문의글 목록 호출하기
+	@Override
+	public List<QAboardDTO> qaManageList(Map<String, String> map) {
+		return sqlSession.selectList("boardSQL.qaManageList", map);}	
+	
 //-------------------BOARD_ADMIN:END-------------------//		
 	
 //-------------------BOARD_QA:START-------------------//
@@ -87,12 +92,7 @@ public class BoardDAOImpl implements BoardDAO {
 	//6. 문의글 삭제하기
 	@Override
 	public void qaDelete(int qa_seq) {
-		sqlSession.delete("boardSQL.qaDelete", qa_seq);}
-	
-	//7. (관리자) 회원 문의글 목록 호출하기
-	@Override
-	public List<QAboardDTO> qaManageList(Map<String, String> map) {
-		return sqlSession.selectList("boardSQL.qaManageList", map);}
+		sqlSession.delete("boardSQL.qaDelete", qa_seq);}	
 	
 //-------------------BOARD_QA:END-------------------//	
 

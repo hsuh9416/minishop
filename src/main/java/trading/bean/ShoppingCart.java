@@ -12,43 +12,44 @@ import com.google.gson.reflect.TypeToken;
 
 import lombok.Data;
 import product.bean.ProductDTO;
-
+/*
+ * 장바구니 관련 요소 및 SHOPPINGCART DB 요소 관리 클래스
+ */
 @Data
 @Component
 public class ShoppingCart{
 
+	//SHOPPINGCART DB : 직접 저장되는 요소
 	private int cartnum;
+	private String memberid;	
+	private String cartList_json;	
 	
-	private List<ProductDTO> cartList;//직렬화 대상
+	//session으로 관리되는 항목의 구성요소
+	private List<ProductDTO> cartList;
+	private int cartTotal;
 	
-	private int cartTotal;//카트 합계
-	
-	private String cartList_json;
-	
-	private String memberid;
-	
-	public ProductDTO find(int product_name_no) {
-		for(ProductDTO data : this.cartList) {
-			if(data.getProduct_name_no()==product_name_no)
-				return data;
-			}//for
-		return null;
-		}//해당 카트의 존재를 확인
+	//장바구니 내부  해당 상품 여부 조회 : cart상의 인덱스 번호를 반환, 없을 경우는 -1
+	public int exists(int product_name_no, List<ProductDTO> cartList) {
+		for (int i = 0; i < cartList.size(); i++) {
+			if (cartList.get(i).getProduct_name_no()==(product_name_no)) {
+				return i;}}
+		return -1;
+	}	
 	
 	//DB로 저장하기 위해 카트를 JSONString으로 변환
 	public String makeListToJson(List<ProductDTO> cartList) {
 		Gson gson = new GsonBuilder().create();
-		return gson.toJson(cartList);
-	}
+		return gson.toJson(cartList);}
+	
 	//웹으로 보내기 위해 카트를 JSONElement으로 변환
 	public JsonElement makeListToJsonElement(List<ProductDTO> cartList) {
 		Gson gson = new GsonBuilder().create();
-		return gson.toJsonTree(cartList);
-	}	
+		return gson.toJsonTree(cartList);}	
+	
 	//DB에 저장되어 있던 String을 List로 반환
 	public List<ProductDTO> makeJsonToList(String json){
 		Gson gson = new GsonBuilder().create();
 		List<ProductDTO> cartList = gson.fromJson(json, new TypeToken<ArrayList<ProductDTO>>() {}.getType());
-		return cartList;
-	}
+		return cartList;}
+	
 }

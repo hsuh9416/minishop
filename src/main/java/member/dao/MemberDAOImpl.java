@@ -12,107 +12,103 @@ import org.springframework.stereotype.Repository;
 import mail.bean.MessageDTO;
 import member.bean.MemberDTO;
 import trading.bean.OrderDTO;
-
+/*
+ * MEMBER,QAMESSAGE DB 제어 메소드를 관리하는 클래스
+ */
 @Repository
 @DependsOn(value= {"sqlSession"})
 public class MemberDAOImpl implements MemberDAO {
 	@Autowired
 	private SqlSession sqlSession;
-	
-	//로그인
+
+//----------MEMBER:START----------//	
+	//1. 회원 정보 호출
 	@Override
 	public MemberDTO login(String id, String pwd) {
-		Map<String,String> map = new HashMap<String,String>();
-		map.put("id",id);
-		map.put("pwd",pwd);
-		return sqlSession.selectOne("memberSQL.login",map);
 		
+		Map<String,String> map = new HashMap<String,String>();
+			map.put("id",id);
+			map.put("pwd",pwd);
+		return sqlSession.selectOne("memberSQL.login",map);
 	}
 
-	//아이디 체크
+	//2. 아이디 검색 결과 반환
 	@Override
 	public MemberDTO checkId(String id) {
 		return sqlSession.selectOne("memberSQL.checkId", id);
 	}
 
-	//회원가입
+	//3. 회원가입 업로드
 	@Override
 	public int write(MemberDTO memberDTO) {
 		return sqlSession.insert("memberSQL.write", memberDTO);
 	}
-
-
 	
-	//회원 정보수정
+	//4. 회원 정보수정 반영
 	@Override
 	public int modify(MemberDTO memberDTO) {
 		return sqlSession.update("memberSQL.modify", memberDTO);
 	}
 
+	//5. 자동로그인 정보 업로드/업데이트
 	@Override
 	public void keepLogin(String id, String sessionId, Date sessionLimit){
 		Map<String,Object> map = new HashMap<String,Object>();
-		map.put("id", id);
-		map.put("sessionid", sessionId);
-		map.put("sessionlimit", sessionLimit);		
-		sqlSession.update("memberSQL.keepLogin", map);
-		
+			map.put("id", id);
+			map.put("sessionid", sessionId);
+			map.put("sessionlimit", sessionLimit);		
+			sqlSession.update("memberSQL.keepLogin", map);
 	}
 
+	//6. 자동로그인을 통한 회원 정보 호출
 	@Override
 	public MemberDTO checkLoginBefore(String value){
-		
 		return sqlSession.selectOne("memberSQL.checkLoginBefore", value);
 	}
 
+	//7. 회원삭제 요청을 통한 회원정보 만료화 반영
 	@Override
 	public void deleteMember(String id) {
-		sqlSession.update("memberSQL.deleteMember", id);
-		
+		sqlSession.update("memberSQL.deleteMember", id);	
 	}
 
-	//주문내역으로 조회-DB 필요
+	//8. 주문 정보 호출(비회원 로그인)
 	@Override
 	public OrderDTO orderCheck(String id, String pwd) {
 		Map<String,String> map = new HashMap<String,String>();
-		map.put("orderId",id);
-		map.put("orderPwd",pwd);
+			map.put("orderId",id);
+			map.put("orderPwd",pwd);
 		return sqlSession.selectOne("memberSQL.orderCheck",map);
 	}
 
-	//관리자 정보 가져오기
-	@Override
-	public MemberDTO getAdmin() {
-		return sqlSession.selectOne("memberSQL.getAdmin");
-	}
-
-	//회원 문의 사항 저장
-	@Override
-	public void memberQASend(MessageDTO messageDTO) {
-		sqlSession.insert("memberSQL.memberQASend",messageDTO);
-	}
-
-	//비밀번호 재설정
-	@Override
-	public void setNewPwd(MemberDTO memberDTO) {
-		sqlSession.update("memberSQL.setNewPwd",memberDTO);
-		
-	}
-
-	//아이디 검색
+	//9. 아이디 찾기 결과 반환
 	@Override
 	public MemberDTO findLostId(Map<String, String> map) {
 		return sqlSession.selectOne("memberSQL.findLostId",map);
 	}
 
-	//회원 조회
+	//10. 비밀번호 임시번호로 재설정 반영
+	@Override
+	public void setNewPwd(MemberDTO memberDTO) {
+		sqlSession.update("memberSQL.setNewPwd",memberDTO);
+	}
+	
+	//11. 회원 정보 호출
 	@Override
 	public MemberDTO getUser(String id) {
 		return sqlSession.selectOne("memberSQL.getMember",id);//재반환
 	}
 
+//----------MEMBER:END----------//
+	
+//----------QAMESSAGE:START----------//	
 
+	//1. 1:1 문의사항 DB 저장
+	@Override
+	public void memberQASend(MessageDTO messageDTO) {
+		sqlSession.insert("memberSQL.memberQASend",messageDTO);
+	}
 
-
+//----------QAMESSAGE:END----------//		
 	
 }

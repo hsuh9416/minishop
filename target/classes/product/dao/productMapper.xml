@@ -3,16 +3,17 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="productSQL">
- 	<!-- 임의의 상품번호 수령 -->	
+ 	<!-- 공통 : 임의의 상품번호 수령 -->	
  	<select id="product_getSeq" resultType="Integer">
  		select product_seq.nextVal from dual
  	</select>
  	
-	<!-- 총글수 -->
+	<!-- 공통 : 전체 총글수 -->
 	<select id="getTotalA" parameterType="java.util.Map" resultType="Integer">
   		select count(*) from ${tableName} 
  	</select>
- 	<!-- 검색 : 총글수 -->
+ 	
+ 	<!-- 공통 : 검색 총글수 -->
  	<select id="getTotalSearchA" parameterType="java.util.Map" resultType="Integer">
  		select count(*) from ${tableName}
  		inner join ${joinName}
@@ -20,7 +21,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  		where ${searchTable}.${searchOption} like '%'||#{keyword}||'%'
  	</select> 	
  	
-	<!-- 재고 리스트 가져오기 -->
+	<!-- 재고 : 전체 목록 가져오기 -->
 	<select id="inventoryList" parameterType="java.util.Map" resultType="product">
 			select * from 
 			(select rownum rn, tt.* from 
@@ -31,7 +32,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			where (rn between #{startNum} and #{endNum}) 
 	</select>
 
- 	<!--검색 : 재고 리스트-->
+ 	<!-- 재고  : 검색 목록 가져오기-->
  	<select id="inventorySearch" parameterType="java.util.Map" resultType="product">
 		 		select * from 
 				(select rownum rn, tt.* from 
@@ -42,19 +43,44 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				where (rn between #{startNum} and #{endNum})
  	</select>
  
- 	<!-- 재고 반영용 상품 정보 가져오기 -->
- 	<select id="getProductInfo" parameterType="String" resultType="product">
+ 	<!-- 재고 : 특정 재고 정보 가져오기 -->
+ 	<select id="getInventoryInfo" parameterType="String" resultType="product">
  		select * from product where productid=#{productID}
  	</select>
-  	<!-- 재고 및 단가 반영 -->
- 	<update id="doModify" parameterType="java.util.Map">
+ 	
+  	<!-- 재고 : 재고 업데이트 반영 -->
+ 	<update id="inventoryUpdate" parameterType="java.util.Map">
  	begin
  		update product set stock=#{stock},unitcost=#{unitcost},ordernum=ordernum+1 where productid=#{productID};
  		update product_name set product_name_instockdate=sysdate where product_name_no=#{product_name_no};
  	end;	
  	</update>	
  	
- 	<!-- 상품 리스트 가져오기 -->
+ 	<!-- 재고 : 재고 입점 등록 -->
+  	<insert id="inventoryUpload" parameterType="product">
+ 	 insert into product values(#{productID},
+ 	 							#{unitcost},
+ 	 							0,
+ 	 							#{promotioncode},
+ 	 							#{productName},
+ 	 							#{product_name_no},
+ 	 							sysdate)
+ 	</insert>
+ 	
+ 	<!-- 재고 : 재고 수정 -->
+   	<update id="inventoryModify" parameterType="product">
+ 	 update product set unitcost=#{unitcost},
+ 	 					promotioncode=#{promotioncode},
+ 	 					productName=#{productName}
+ 	 		where product_name_no=#{product_name_no}
+ 	</update>	 	
+ 	
+ 	<!-- 재고 : 재고 삭제 -->
+ 	<delete id="inventoryDelete" parameterType="String">
+		delete product where product_name_no = #{product_name_no}		
+	</delete>		
+	 	
+ 	<!-- 상품(공통) : 전체 상품 목록 가져오기 -->
 	<select id="productList" parameterType="java.util.Map" resultType="product">
 		 		select * from 
 				(select rownum rn, tt.* from 
@@ -67,7 +93,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				where (rn between #{startNum} and #{endNum})
 	</select>
 
- 	<!--검색 : 상품 리스트-->
+ 	<!-- 상품(공통) : 검색 상품 목록 가져오기-->
  	<select id="productSearch" parameterType="java.util.Map" resultType="product">
 		 		select * from 
 				(select rownum rn, tt.* from 
@@ -80,8 +106,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				order by product.product_name_no desc) tt) 
 				where (rn between #{startNum} and #{endNum})
  	</select>	
- 	<!-- 상품 정보 가져오기 -->
- 	<select id="getProduct_NameInfo" parameterType="String" resultType="product">
+ 	
+ 	<!-- 상품(공통) : 개별 상품 정보 가져오기 -->
+ 	<select id="getProductInfo" parameterType="String" resultType="product">
  		select * from product_name
  		left join product
  		on product.product_name_no = product_name.product_name_no
@@ -90,18 +117,39 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  		where product_name.product_name_no=#{product_name_no} 		
  	</select>
 
-	<!-- 등재 상품 목록:전부 가져오기(product_name) 이름순-->
-	<select id="getAllproduct" resultType="product">
-    	select * from product 
-		inner join product_name
- 		on product.product_name_no = product_name.product_name_no
- 		inner join product_category
- 		on product_name.product_category_no=product_category.product_category 			
-		where product_onstore='YES'
-		ORDER BY PRODUCT.PRODUCTNAME ASC
-	</select>
-	
-	<!-- 등재 상품 목록:조건 첨부 가져오기(product_name)-->		
+ 	<!-- 상품(관리자) : 상품 업로드 -->
+ 	<insert id="productUpload" parameterType="product">
+ 	 insert into product_name values(#{product_name_no},
+ 	 								#{product_category_no},
+ 	 								#{product_name_title},
+ 	 								#{product_name_detail},
+ 	 								#{product_name_price},
+ 	 								#{product_name_instockdate},
+ 	 								#{product_name_image},
+ 	 								0,
+ 	 								0,
+ 	 								0,
+ 	 								#{product_onstore})
+ 	</insert>
+
+ 	<!-- 상품(관리자) : 상품 수정 -->	
+ 	<update id="productModify" parameterType="product">
+ 	 update product_name set product_category_no=#{product_category_no},
+ 	 						 product_name_title=#{product_name_title},
+ 	 						 product_name_detail=#{product_name_detail},
+ 	 						 product_name_price=#{product_name_price},
+ 	 						 product_name_instockdate=#{product_name_instockdate},
+ 	 						 product_name_image=#{product_name_image},
+ 	 						 product_onstore=#{product_onstore}
+ 	 	where product_name_no=#{product_name_no}
+ 	</update>
+ 	
+   	<!-- 상품(관리자) : 상품 삭제-->	
+ 	<delete id="productDelete" parameterType="String">
+		delete product_name where product_name_no = #{product_name_no}
+	</delete>	
+		
+	<!-- 상품(사용자) : 조건 첨부 가져오기(product_name)-->		
 	<select id="getUserProductList" parameterType="java.util.Map" resultType="product">
     	select * from product 
 		inner join product_name
@@ -129,22 +177,25 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		 </if> 
 	</select>	
 	
-	<!-- 개별 상품 hipUpdate-->
+	<!-- 상품(사용자) : 특정 상품 hitUpdate-->
 	<update id="product_hitUpdate" parameterType="Integer">
 		update product_name set product_hit=product_hit+1 where product_name_no=#{product_name_no}
 	</update>
-	<!-- 개별 상품 좋아요 여부 확인하기 -->
+	
+	<!-- 상품(사용자) : 특정 상품 좋아요 여부 확인하기 -->
 	<select id="getLikeValue" parameterType="java.util.Map" resultType="Integer">
 		select SEQ from LIKETABLE where USERID=#{USERID} and PRODUCT_NO=#{PRODUCT_NO}
 	</select>
-	<!-- 개별 상품 좋아요 하기 -->
+	
+	<!-- 상품(사용자) : 특정 상품 좋아요 하기 -->
 	<insert id="addLike" parameterType="java.util.Map">
 	begin
 		insert into LIKETABLE values(SEQ.nextVal,#{PRODUCT_NO},#{USERID});
 		update product_name set product_like=product_like+1;
 	end;
 	</insert>
-	<!-- 개별 상품 좋아요 취소하기 -->
+	
+	<!-- 상품(사용자) : 특정 상품 좋아요 취소하기 -->
 	<delete id="removeLike" parameterType="Integer">
 	begin
 		delete LIKETABLE where SEQ=#{SEQ};
@@ -152,53 +203,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	end;
 	</delete>		
 	
- 	<!-- 상품 업로드 -->
- 	<insert id="product_nameUpload" parameterType="product">
- 	 insert into product_name values(#{product_name_no},
- 	 								#{product_category_no},
- 	 								#{product_name_title},
- 	 								#{product_name_detail},
- 	 								#{product_name_price},
- 	 								#{product_name_instockdate},
- 	 								#{product_name_image},
- 	 								0,
- 	 								0,
- 	 								0,
- 	 								#{product_onstore})
- 	</insert>
-  	<insert id="productUpload" parameterType="product">
- 	 insert into product values(#{productID},
- 	 							#{unitcost},
- 	 							0,
- 	 							#{promotioncode},
- 	 							#{productName},
- 	 							#{product_name_no},
- 	 							sysdate)
- 	</insert>
- 	<!-- 상품 수정 -->	
- 	<update id="product_nameModify" parameterType="product">
- 	 update product_name set product_category_no=#{product_category_no},
- 	 						 product_name_title=#{product_name_title},
- 	 						 product_name_detail=#{product_name_detail},
- 	 						 product_name_price=#{product_name_price},
- 	 						 product_name_instockdate=#{product_name_instockdate},
- 	 						 product_name_image=#{product_name_image},
- 	 						 product_onstore=#{product_onstore}
- 	 	where product_name_no=#{product_name_no}
- 	</update>
-   	<update id="productModify" parameterType="product">
- 	 update product set unitcost=#{unitcost},
- 	 					promotioncode=#{promotioncode},
- 	 					productName=#{productName}
- 	 		where product_name_no=#{product_name_no}
- 	</update>	 	
-   	<!-- 상품 삭제-->	
- 	<delete id="productDelete" parameterType="String">
-		delete product_name where product_name_no = #{product_name_no}
-	</delete>	
-	<delete id="inventoryDelete" parameterType="String">
-		delete product where product_name_no = #{product_name_no}		
-	</delete>	
 </mapper>
 
 

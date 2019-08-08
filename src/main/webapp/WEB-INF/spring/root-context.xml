@@ -22,7 +22,10 @@
 
 	<context:component-scan base-package="product.bean"/>
 	<context:component-scan base-package="product.dao"/>
-		
+
+	<context:component-scan base-package="salesInfo.bean"/>
+	<context:component-scan base-package="salesInfo.dao"/>
+			
 	<context:component-scan base-package="trading.bean"/>
 	<context:component-scan base-package="trading.dao"/>		
 </beans>

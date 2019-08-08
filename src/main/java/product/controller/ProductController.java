@@ -24,7 +24,9 @@ import product.bean.ProductDTO;
 import product.bean.ProductPaging;
 import product.dao.ProductDAO;
 import trading.bean.OrderDTO;
-
+/*
+ * 상품 관련 활동을 제어하는 클래스
+ */
 @Controller
 @RequestMapping(value="/product/**")
 public class ProductController {
@@ -33,161 +35,172 @@ public class ProductController {
 	@Autowired
 	ProductPaging productPaging;
 	
-	//상품 목록 가기
+	//1. 상품 목록으로 이동
 	@RequestMapping(value="/categories.do",method = RequestMethod.GET)
 	public ModelAndView categories(@RequestParam(required=false,defaultValue="ALL") String product_category_name, @RequestParam(required=false,defaultValue="new") String order) {
+		
 		ModelAndView mav = new ModelAndView();		
-		mav.addObject("location", "categories");
-		mav.addObject("product_category_name", product_category_name);
-		mav.addObject("order",order);
-		mav.addObject("display", "/product/categories.jsp");
-		mav.setViewName("/main/home");
+			mav.addObject("location", "categories");
+			mav.addObject("product_category_name", product_category_name);
+			mav.addObject("order",order);
+			mav.addObject("display", "/product/categories.jsp");
+			mav.setViewName("/main/home");
+			
 		return mav;
 	}
 			
-	//페이징 처리 없는 순수 상품리스트 목록 가져오기:리뷰등의 메서드 활용
+	//2. 전체 목록 호출하기
 	@RequestMapping(value="/getAllproduct.do", method = RequestMethod.GET)
 	public ModelAndView getAllproduct() {
-		List<ProductDTO> productList = productDAO.getAllproduct();
-		//업로드전 처리
-		for(ProductDTO data: productList) {
-			data.makeProductListHTML();
+		
+		List<ProductDTO> productList = productDAO.getUserProductList("ALL","name","");
+		
+		if(productList!=null) {
+			for(ProductDTO data: productList) {data.makeProductListHTML();}			
 		}
+
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("productList", productList);		
-		mav.setViewName("jsonView");
+			mav.addObject("productList", productList);		
+			mav.setViewName("jsonView");
+			
 		return mav;
 	}
 
-	//조건부 검색
+	//3. 검색어 또는 카테고리로 검색한 목록 호출하기
 	@RequestMapping(value="/getUserProductList.do",method = RequestMethod.GET)
 	public ModelAndView getUserProductList(@RequestParam(required=false,defaultValue="ALL") String product_category_name,@RequestParam(required=false,defaultValue="new") String order,@RequestParam(required=false,defaultValue="") String searchWord) {
-		List<ProductDTO> productList = null;
-		productList = productDAO.getUserProductList(product_category_name,order,searchWord);
-		//업로드전 처리
-		for(ProductDTO data: productList) {
-			data.makeProductListHTML();
-		}
+		
+		List<ProductDTO> productList = productDAO.getUserProductList(product_category_name,order,searchWord);
+		
+		if(productList!=null) {
+			for(ProductDTO data: productList) {
+				data.makeProductListHTML();}}
+
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("product_category_name", product_category_name);
-		mav.addObject("order",order);
-		mav.addObject("searchWord",searchWord);
-		mav.addObject("productList", productList);		
-		mav.setViewName("jsonView");
+			mav.addObject("product_category_name", product_category_name);
+			mav.addObject("order",order);
+			mav.addObject("searchWord",searchWord);
+			mav.addObject("productList", productList);		
+			mav.setViewName("jsonView");
+			
 		return mav;
 	}
 	
-	//특별전 이동
+	//4. 특별전으로 이동
 	@RequestMapping(value="/eventProductList.do",method = RequestMethod.GET)
 	public ModelAndView eventProductList(@RequestParam(required=false,defaultValue="new") String condition) {
+		
 		ModelAndView mav = new ModelAndView();		
-		mav.addObject("location", "event");
-		mav.addObject("condition", condition);
-		mav.addObject("display", "/product/eventProductList.jsp");
-		mav.setViewName("/main/home");
+			mav.addObject("location", "event");
+			mav.addObject("condition", condition);
+			mav.addObject("display", "/product/eventProductList.jsp");
+			mav.setViewName("/main/home");
+			
 		return mav;
 	}
 
-	//특별전 리스트 가져오기
+	//5. 특별전 목록 호출
 	@RequestMapping(value="/getSpecialProductList.do",method = RequestMethod.GET)
 	public ModelAndView getSpecialProductList(@RequestParam(required=false,defaultValue="new") String condition) {
-		List<ProductDTO> productList = productDAO.getAllproduct();
-		//업로드전 처리
-		for(ProductDTO data: productList) {
-			data.makeSpecialListHTML(condition);
+		
+		List<ProductDTO> productList = productDAO.getUserProductList("ALL","name","");
+		
+		if(productList!=null) {
+			for(ProductDTO data: productList) {data.makeSpecialListHTML(condition);}			
 		}
+
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("condition",condition);
-		mav.addObject("productList", productList);		
-		mav.setViewName("jsonView");
+			mav.addObject("condition",condition);
+			mav.addObject("productList", productList);		
+			mav.setViewName("jsonView");
+			
 		return mav;
 	}
 
-	//개별 상품 보기
+	//6. 특정 상품 조회 화면 이동
 	@RequestMapping(value="/productView.do",method = RequestMethod.GET)
 	public ModelAndView productView(@RequestParam String product_name_no, HttpSession Session,HttpServletRequest request,HttpServletResponse response) {
-		String id=""; int SEQ =0;
+		
+		String id=""; int SEQ =0; boolean today = false;
 		MemberDTO memberDTO =null; OrderDTO orderDTO=null; GuestDTO guestDTO=null;
 		
+		//(1) 조회자 정보 호출하기
 		memberDTO = (MemberDTO)Session.getAttribute("memberDTO");
 		if(memberDTO!=null) id=memberDTO.getId();
 		else if(memberDTO==null) {
-			orderDTO = (OrderDTO) Session.getAttribute("memberDTO");
+				orderDTO = (OrderDTO) Session.getAttribute("memberDTO");
 			if(orderDTO!=null)	id = orderDTO.getOrder_id();
 			else if(orderDTO==null) {
-				guestDTO = (GuestDTO) Session.getAttribute("guestDTO");
-				if(guestDTO!=null) id = guestDTO.getGuest_id();
-			}
-		}
-		boolean today = false;
+					guestDTO = (GuestDTO) Session.getAttribute("guestDTO");
+				if(guestDTO!=null) id = guestDTO.getGuest_id();}}
+		
+		//(2) 조회수 업데이트
 		Cookie[] ar = request.getCookies();
 		if(ar!=null&&(memberDTO!=null|| orderDTO !=null|| guestDTO!=null)) {
 			for(int i=0; i<ar.length; i++) {
 				if((ar[i].getName()).equals(id+product_name_no)) {
 					today = true;}
-			}//for
+			}
 			
 			if(!today) {
-				productDAO.product_hitUpdate(Integer.parseInt(product_name_no));
+					productDAO.product_hitUpdate(Integer.parseInt(product_name_no));
 				Cookie cookie = new Cookie(id+product_name_no, product_name_no+"");
-				//System.out.println(cookie.getName());
-				cookie.setMaxAge(30*60);
-				response.addCookie(cookie);
-			}//if not today
-		}//hit update
+					cookie.setMaxAge(30*60);
+					response.addCookie(cookie);}
+		}
 		
-		//좋아요 여부 가져오기
+		//(3) 좋아요 여부 호출
 		if(guestDTO==null&&!id.equals("")) {
 			Map<String,String> map = new HashMap<String,String>();
-			map.put("USERID", id);
-			map.put("PRODUCT_NO", product_name_no);		
-			SEQ = productDAO.getLikeValue(map);		
+				map.put("USERID", id);
+				map.put("PRODUCT_NO", product_name_no);		
+				SEQ = productDAO.getLikeValue(map);		
 		}
-
+	
+		//(4) 상품 정보 호출
+		ProductDTO productDTO = productDAO.getProductInfo(product_name_no);
 		
 		ModelAndView mav = new ModelAndView();
-		ProductDTO productDTO = productDAO.getProduct_NameInfo(product_name_no);
-		mav.addObject("productDTO", productDTO);
-		mav.addObject("SEQ",SEQ);		
-		mav.addObject("location","productView");
-		mav.addObject("display", "/product/productView.jsp");
-		mav.setViewName("/main/home");
+			mav.addObject("productDTO", productDTO);
+			mav.addObject("SEQ",SEQ);		
+			mav.addObject("location","productView");
+			mav.addObject("display", "/product/productView.jsp");
+			mav.setViewName("/main/home");
+			
 		return mav;
 	}
 	
-	//좋아요 처리
+	//7. 좋아요 처리하기
 	@RequestMapping(value="/likeOnAndOff.do",method = RequestMethod.GET)
 	@ResponseBody
 	public void likeOnAndOff(@RequestParam int product_name_no, HttpSession session,Model model)
-	{
+	{		
 		
-		//USERID 가져오기
-		String id="";
+		String id=""; int SEQ = 0;
 		MemberDTO memberDTO =null; OrderDTO orderDTO=null; GuestDTO guestDTO=null;
-		
+
+		//(1) 조회자 정보 호출
 		memberDTO = (MemberDTO)session.getAttribute("memberDTO");
 		if(memberDTO!=null) id=memberDTO.getId();
 		else if(memberDTO==null) {
 			orderDTO = (OrderDTO) session.getAttribute("memberDTO");
 			if(orderDTO!=null)	id = orderDTO.getOrder_id();
 			else if(orderDTO==null) {
-				guestDTO = (GuestDTO) session.getAttribute("guestDTO");
-				if(guestDTO!=null) return;
-			}
-		}
+					guestDTO = (GuestDTO) session.getAttribute("guestDTO");
+				if(guestDTO!=null) return;}}
 		
-		//좋아요 여부 가져오기
+		//(2) 좋아요 처리하기
 		Map<String,String> map = new HashMap<String,String>();
-		map.put("USERID", id);
-		map.put("PRODUCT_NO", product_name_no+"");		
-		int SEQ = productDAO.getLikeValue(map);
+			map.put("USERID", id);
+			map.put("PRODUCT_NO", product_name_no+"");		
+			SEQ = productDAO.getLikeValue(map);
+			
 		if(SEQ==0) {
 			SEQ = productDAO.addLike(map);
-			model.addAttribute("SEQ", SEQ);
-		}else {
+			model.addAttribute("SEQ", SEQ);}
+		else {
 			productDAO.removeLike(SEQ);
-			model.addAttribute("SEQ", 0);
-		}
+			model.addAttribute("SEQ", 0);}
 	}
 	
 }

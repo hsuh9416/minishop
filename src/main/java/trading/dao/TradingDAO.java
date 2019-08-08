@@ -8,8 +8,13 @@ import trading.bean.ShoppingCart;
  */
 public interface TradingDAO {
 
-	Map<String, Object> getUserInfo(String id);
+//--------공통: START--------//
+	Map<String, Object> getUserInfo(String id);	
+//--------공통 : END--------//
+//--------장바구니 : START--------//
 	ShoppingCart getCartList(String memberid);
 	void storeCartList(ShoppingCart shoppingCart);
-
+//--------장바구니 : END--------//
+	
+	
 }

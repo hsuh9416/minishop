@@ -5,15 +5,17 @@ import java.util.Date;
 import org.springframework.stereotype.Component;
 
 import lombok.Data;
-
+/*
+ * 주문관련 DB 요소 관리 클래스
+ */
 @Component
 @Data
 public class OrderDTO {
-	//table ORDERS 관련
- private int order_no;//비회원 로그인시의 아이디에 해당
+	//ORDERS DB: 주문서, 비회원 정보
+ private int order_no;
  private String order_id;
  private int order_total;
- private int state;//0.입금대기 1.배송대기 2.발송완료 3.수령대기 4.수령완료 5.환불대기 6.환불완료
+ private int order_state;
  private Date order_date;
  private String order_address;
  private String order_email;
@@ -21,14 +23,14 @@ public class OrderDTO {
  private String order_pwd;
  private String order_name;
  
- //table ordered_product 관련
+ //ORDERED_PRODUCT : 특정 주문서 상세 내역
  private int order_product_no;
  private String order_productid;
  private String order_product_qty;
  private String order_product_total;
- 	//table PAYMENT 관련
- private int payment_method; //0.현금결제  1.현금결제 2.카드결제 3.기타(포인트전부결제 등으로 인해 지불금액이 없는 등의 사유)
- private Date payment_date;
  
+//PAYMENT : 특정 주문서 관련 결제 방법/결제일
+ private int payment_method;
+ private Date payment_date;
  
 }

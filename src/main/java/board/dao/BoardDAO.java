@@ -20,6 +20,7 @@ public interface BoardDAO {
 	int getAdminQATotalA();		
 	void qaManageWrite(Map<String, String> map);	
 	AdminboardDTO getQaAns(String seq);	
+	List<QAboardDTO> qaManageList(Map<String, String> map);	
 //--------BOARD_QA:END--------//
 	
 //--------BOARD_QA:START--------//
@@ -29,7 +30,6 @@ public interface BoardDAO {
 	QAboardDTO getQaBoard(String qa_seq);	
 	void qaModify(Map<String, String> map);
 	void qaDelete(int qa_seq);		
-	List<QAboardDTO> qaManageList(Map<String, String> map);	
 //--------BOARD_QA:END--------//
 	
 //--------BOARD_REVIEW:START--------//

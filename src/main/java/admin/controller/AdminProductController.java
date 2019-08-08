@@ -125,7 +125,7 @@ public class AdminProductController {
 	@RequestMapping(value="/inventoryModify.do",method = RequestMethod.GET)
 	public ModelAndView inventoryModify(@RequestParam(required=false,defaultValue="1") String pg, String productID) {
 		
-		ProductDTO productDTO = productDAO.getProductInfo(productID);
+		ProductDTO productDTO = productDAO.getInventoryInfo(productID);
 		
 		ModelAndView mav = new ModelAndView();
 			mav.addObject("pg", pg);
@@ -141,7 +141,7 @@ public class AdminProductController {
 	@ResponseBody
 	public void doModify(@RequestParam Map<String,String> map){
 		
-		productDAO.doModify(map);
+		productDAO.inventoryUpdate(map);
 	}	
 
 //-----------재고 관리:END-----------//
@@ -234,7 +234,7 @@ public class AdminProductController {
 	@RequestMapping(value="/productView.do",method=RequestMethod.GET)
 	public ModelAndView productView(@RequestParam(required=false,defaultValue="1") String pg, String product_name_no) {
 		
-		ProductDTO productDTO = productDAO.getProduct_NameInfo(product_name_no);		
+		ProductDTO productDTO = productDAO.getProductInfo(product_name_no);		
 		
 		ModelAndView mav = new ModelAndView();
 			mav.addObject("productDTO",productDTO);
@@ -414,7 +414,7 @@ public class AdminProductController {
 	@RequestMapping(value="/productModifyForm.do",method=RequestMethod.GET)
 	public ModelAndView productModifyForm(@RequestParam String product_name_no) {
 		
-		ProductDTO productDTO = productDAO.getProduct_NameInfo(product_name_no);
+		ProductDTO productDTO = productDAO.getProductInfo(product_name_no);
 		
 		ModelAndView mav = new ModelAndView();	
 			mav.addObject("location", "adminProduct");	
@@ -443,7 +443,7 @@ public class AdminProductController {
 	    String[] images;
 	    
 			//(1) 재고 확인
-		ProductDTO inventory = productDAO.getProductInfo(productDTO.getProductID());
+		ProductDTO inventory = productDAO.getInventoryInfo(productDTO.getProductID());
 
 		
 			//(2) 받아온 글자를 date 형식으로 치환
@@ -524,11 +524,13 @@ public class AdminProductController {
 		return mav;
 	}
 	
-	//10. 상품 삭제하기
+	//10. 상품 삭제하기(재고 삭제도 병행)
 	@RequestMapping(value="/productDelete.do", method=RequestMethod.GET)
 	public String productDelete(@RequestParam String product_name_no,Model model) {
 		
 			productDAO.productDelete(product_name_no);
+			productDAO.inventoryDelete(product_name_no);
+			
 			model.addAttribute("stateCode", "deleted");	
 		
 		return "/admin/product/stateCode";

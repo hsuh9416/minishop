@@ -3,7 +3,49 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="boardSQL">
-	<!-- 글쓰기  -->
+	<!-- 일반 : 총글수 -->
+	<select id="getTotalA" parameterType="java.util.Map" resultType="Integer">
+  		select count(*) from ${tableName} 
+ 	</select>
+ 	
+ 	<!-- 일반 : 검색 총글수 -->
+ 	<select id="getTotalSearchA" parameterType="java.util.Map" resultType="int">
+ 		select count(*) from ${tableName}
+ 		inner join member 
+		on ${tableName}.user_id = member.id			 
+ 		where ${searchOption} like '%'||#{keyword}||'%'
+ 	</select> 	
+ 	
+  	<!-- 관리자  : 총글수 -->
+	<select id="getAdminQATotalA" resultType="Integer">
+  		select count(*) from BOARD_QA where qa_reply=0 
+ 	</select> 
+ 		
+ 	<!-- 관리자 : 답변 작성 -->
+ 	<insert id="qaManageWrite" parameterType="java.util.Map">
+ 		begin
+ 		insert into board_admin values(admin_seq.nextval,#{admin_pseq},#{user_id},#{admin_content});
+ 		update board_qa set qa_reply=1 where qa_seq=#{admin_pseq};
+ 		end;
+ 	</insert>	 		
+ 		
+  	<!-- 관리자 : 답변 가져오기 -->
+ 	<select id="getQaAns" parameterType="String" resultType="adminBoard">
+ 		select * from board_admin where admin_pseq=#{seq}
+ 	</select>
+
+  	<!-- 관리자 : 목록 가져오기 -->
+ 	<select id="qaManageList" parameterType="java.util.Map" resultType="qa">
+		select * from 
+		(select rownum rn, tt.* from 
+		(select qa.*,m.name from BOARD_QA qa,MEMBER m 
+		where qa.user_id=m.id and qa_reply=0
+		order by qa_logtime desc)
+		 tt) 
+		where (rn between #{startNum} and #{endNum})
+ 	</select>
+ 	 		
+	<!-- 문의 : 글쓰기  -->
 	<insert id="qaWrite" parameterType="java.util.Map" >
 		INSERT into BOARD_QA values(
 				board_seq.nextval
@@ -16,6 +58,52 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			  ,0
 			  ,SYSDATE)
 	</insert>
+
+	<!-- 문의 : 전체 목록 -->
+	<select id="qaList" parameterType="java.util.Map" resultType="qa">
+		select * from 
+		(select rownum rn, tt.* from 
+		(select qa.*,m.name from board_qa qa,member m 
+		where qa.user_id=m.id 
+		order by qa_logtime desc)
+		 tt) 
+		where (rn between #{startNum} and #{endNum}) 
+	</select>
+	
+ 	<!-- 문의 : 검색 목록 -->
+ 	<select id="qaSearch" parameterType="java.util.Map" resultType="qa">
+		 		select * from 
+				(select rownum rn, tt.* from 
+				(select * from board_qa
+				inner join member 
+				on board_qa.user_id = member.id
+				where ${searchOption} like '%'||#{keyword}||'%'
+				order by qa_logtime desc) tt) 
+				where (rn between #{startNum} and #{endNum})
+ 	</select>
+ 			
+ 	<!--문의 : 특정 글 가져오기 -->
+ 	<select id="getQaBoard" parameterType="String" resultType="qa">
+  		select * from board_qa
+  		inner join member 
+		on board_qa.user_id = member.id
+		where qa_seq=#{qa_seq}
+ 	</select>
+ 	 	
+  	<!-- 문의 : 글 수정 하기 -->
+ 	<update id="qaModify" parameterType="java.util.Map">
+		update board_qa set qa_subject=#{qa_subject}
+							,qa_content=#{qa_content}
+							,productid=#{productid}
+							where qa_seq=#{qa_seq}														
+ 	</update>	 	
+ 	 			
+ 	<!-- 문의 : 글 삭제 -->
+ 	<delete id="qaDelete" parameterType="Integer">
+ 			delete board_qa where qa_seq=#{qa_seq}
+ 	</delete>   	 			
+ 	 			
+ 	 <!-- 후기 : 글 작성 -->			
 	<insert id="reviewWrite" parameterType="review">
 		insert into BOARD_REVIEW values(
 			  board_seq.nextval
@@ -33,17 +121,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			  ,SYSDATE)
 	</insert>	
 	
-	<!-- 목록 -->
-	<select id="qaList" parameterType="java.util.Map" resultType="qa">
-		select * from 
-		(select rownum rn, tt.* from 
-		(select qa.*,m.name from board_qa qa,member m 
-		where qa.user_id=m.id 
-		order by qa_logtime desc)
-		 tt) 
-		where (rn between #{startNum} and #{endNum}) 
-	</select>
-
+	<!-- 후기 : 전체 목록 가져오기 -->
 	<select id="reviewList" parameterType="java.util.Map" resultType="review">
 		select * from 
 		(select rownum rn, tt.* from 
@@ -54,22 +132,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where (rn between #{startNum} and #{endNum}) 
 	</select>	
 	
-	<!-- 총글수 -->
-	<select id="getTotalA" parameterType="java.util.Map" resultType="Integer">
-  		select count(*) from ${tableName} 
- 	</select>
-
- 	<!-- 검색 -->
- 	<select id="qaSearch" parameterType="java.util.Map" resultType="qa">
-		 		select * from 
-				(select rownum rn, tt.* from 
-				(select * from board_qa
-				inner join member 
-				on board_qa.user_id = member.id
-				where ${searchOption} like '%'||#{keyword}||'%'
-				order by qa_logtime desc) tt) 
-				where (rn between #{startNum} and #{endNum})
- 	</select>
+	<!-- 후기 : 검색 목록 가져오기 -->
   	<select id="reviewSearch" parameterType="java.util.Map" resultType="review">
 			    select * from 
 				(select rownum rn, tt.* from 
@@ -81,21 +144,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				where (rn between #{startNum} and #{endNum})
  	</select>
  		
- 	<!-- 검색 : 총글수 -->
- 	<select id="getTotalSearchA" parameterType="java.util.Map" resultType="int">
- 		select count(*) from ${tableName}
- 		inner join member 
-		on ${tableName}.user_id = member.id			 
- 		where ${searchOption} like '%'||#{keyword}||'%'
- 	</select>
- 	 	
- 	<!--글 가져오기 -->
- 	<select id="getQaBoard" parameterType="String" resultType="qa">
-  		select * from board_qa
-  		inner join member 
-		on board_qa.user_id = member.id
-		where qa_seq=#{qa_seq}
- 	</select>
+	<!-- 후기 : 특정 글 가져오기 -->
   	<select id="getReviewBoard" parameterType="String" resultType="review">
   		select * from board_review
   		inner join member 
@@ -103,23 +152,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where review_seq=#{review_seq}
  	</select>	
  	
- 	<!-- 후기 조회수 업데이트 -->
+ 	<!-- 후기  : 조회수 업데이트 -->
  	<update id="hitUpdate" parameterType="Integer">
 		update board_review set review_hit=review_hit+1 where review_seq=#{review_seq}
 	</update>
 	
- 	<!-- 관리자 답변 가져오기 -->
- 	<select id="getQaAns" parameterType="String" resultType="adminBoard">
- 		select * from board_admin where admin_pseq=#{seq}
- 	</select>
- 	
- 	<!-- 글 수정 하기 -->
- 	<update id="qaModify" parameterType="java.util.Map">
-		update board_qa set qa_subject=#{qa_subject}
-							,qa_content=#{qa_content}
-							,productid=#{productid}
-							where qa_seq=#{qa_seq}														
- 	</update>
+	<!-- 후기 : 글 수정 -->
  	<update id="reviewModify" parameterType="java.util.Map">
 		update board_review set review_subject=#{review_subject}
 								,review_content=#{review_content}
@@ -128,10 +166,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 								where review_seq=#{review_seq}
 	</update> 	
 	
- 	<!-- 글 삭제 -->
- 	<delete id="qaDelete" parameterType="Integer">
- 			delete board_qa where qa_seq=#{qa_seq}
- 	</delete>  	
+	<!-- 후기 : 글 삭제 -->
  	<delete id="reviewDelete" parameterType="Integer">
  		begin
  			update board_review set review_reply=review_reply-1 
@@ -141,7 +176,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  		end;
  	</delete> 
  
-   	<!-- 리뷰 답글 달기 -->
+   	<!-- 후기 : 답글 달기(START) -->
 	<update id="reviewReply1" parameterType="review">
   		update board_review set review_step=review_step+1 where review_ref=#{review_ref} and review_step>#{review_step}
  	</update>
@@ -166,30 +201,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  	<update id="reviewReply3" parameterType="Integer">
  		update board_review set review_reply=review_reply+1 where review_seq=#{review_seq}
 	</update>
-				
- 	<!-- 관리자 문의 총글수 -->
-	<select id="getAdminQATotalA" resultType="Integer">
-  		select count(*) from BOARD_QA where qa_reply=0 
- 	</select> 
- 	 	
-  	<!-- 관리자 문의 리스트 -->
- 	<select id="qaManageList" parameterType="java.util.Map" resultType="qa">
-		select * from 
-		(select rownum rn, tt.* from 
-		(select qa.*,m.name from BOARD_QA qa,MEMBER m 
-		where qa.user_id=m.id and qa_reply=0
-		order by qa_logtime desc)
-		 tt) 
-		where (rn between #{startNum} and #{endNum})
- 	</select>
- 	
- 	<!-- 관리자 답변 작성 -->
- 	<insert id="qaManageWrite" parameterType="java.util.Map">
- 		begin
- 		insert into board_admin values(admin_seq.nextval,#{admin_pseq},#{user_id},#{admin_content});
- 		update board_qa set qa_reply=1 where qa_seq=#{admin_pseq};
- 		end;
- 	</insert>	
+   	<!-- 후기 : 답글 달기(END) -->				
 
 </mapper>
 
