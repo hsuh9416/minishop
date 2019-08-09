@@ -107,7 +107,7 @@
 
 
 <script type="text/javascript" src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
-<script type="text/javascript"src="/minishop/resources/ckeditor4/ckeditor.js"></script>
+<script src="https://cdn.ckeditor.com/4.12.1/standard/ckeditor.js"></script>
 <script type="text/javascript" src="/minishop/resources/custom/js/admin.product.js"></script>
 <script type="text/javascript">
 //serializeArray가 수행된 form을 JSON 형태로 변형시켜준다.

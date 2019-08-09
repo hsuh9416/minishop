@@ -20,20 +20,19 @@
 								<!--  My Account -->
 								<li class="account">
 									<a href="#">
-										My Account
+										<c:if test="${memberDTO == null}">My Account</c:if>
+										<c:if test="${memberDTO != null}">${memberDTO.name} 님</c:if>
 										<i class="fa fa-angle-down"></i>
 									</a>
 									<ul class="account_selection">
 										<c:if test="${memberDTO == null}">
-											<li><a id="goLogin"><i class="fa fa-sign-in-alt" aria-hidden="true"></i>Sign In</a></li>
-											<li><a id="goSignUp"><i class="fas fa-user-plus" aria-hidden="true"></i>Register</a></li>										
+											<li><a id="goLogin">Sign In</a></li>
+											<li><a id="goSignUp">Register</a></li>										
 										</c:if>
 										<c:if test="${memberDTO != null}">
-											<li><a id="goLogout" href="#"><i class="fa fa-sign-out-alt" aria-hidden="true"></i>Sign Out</a></li>
-											<li><a id="goUserView" href="/minishop/member/memberView.do"><i class="fa fa-address-card" aria-hidden="true"></i>내 정보</a></li>																					
+											<li><a id="goLogout" href="#">SignOut</a></li>
+											<li><a id="goUserView" href="/minishop/member/memberView.do">My Info</a></li>																					
 										</c:if>										
-										
-
 									</ul>
 								</li>
 							</ul>
@@ -91,17 +90,18 @@
 			<ul class="menu_top_nav">
 				<li class="menu_item has-children">
 					<a href="#">
-						My Account
+						<c:if test="${memberDTO == null}">My Account</c:if>
+						<c:if test="${memberDTO != null}">${memberDTO.name} 님</c:if>
 						<i class="fa fa-angle-down"></i>
 					</a>
 					<ul class="menu_selection">
 						<c:if test="${memberDTO == null}">
-							<li><a id="mgoLogin"><i class="fa fa-sign-in-alt" aria-hidden="true"></i>Sign In</a></li>
-							<li><a id="mgoSignUp"><i class="fas fa-user-plus" aria-hidden="true"></i>Register</a></li>
+							<li><a id="mgoLogin">Sign In</a></li>
+							<li><a id="mgoSignUp">Register</a></li>
 						</c:if>
 						<c:if test="${memberDTO != null}">
-							<li><a id="mgoLogout" href="#"><i class="fa fa-sign-out-alt" aria-hidden="true"></i>Sign Out</a></li>
-							<li><a id="mgoUserView" href="/minishop/member/memberView.do"><i class="fa fa-address-card" aria-hidden="true"></i>내 정보</a></li>														
+							<li><a id="mgoLogout" href="#">Sign Out</a></li>
+							<li><a id="mgoUserView" href="/minishop/member/memberView.do">My Info</a></li>														
 						</c:if>
 					</ul>
 				</li>
@@ -109,7 +109,17 @@
 				<li class="menu_item"><a href="/minishop/main/home.do">메인</a></li>
 				<li class="menu_item"><a href="/minishop/product/categories.do">카테고리</a></li>
 				<li class="menu_item"><a href="#">이벤트</a></li>
-				<li class="menu_item"><a href="/minishop/board/review/reviewList.do">고객게시판</a></li>
+				<li class="menu_item has-children">
+					<a href="#">
+						고객게시판
+						<i class="fa fa-angle-down"></i>
+					</a>
+					<ul class="menu_selection">
+							<li><a href="/minishop/board/qa/qaList.do">문의게시판</a></li>
+							<li><a href="/minishop/board/review/reviewList.do">후기게시판</a></li>														
+
+					</ul>				
+				</li>
 				<li class="menu_item"><a href="/minishop/main/userContact.do">찾아오시는 길</a></li>
 			</ul>
 		</div>

@@ -16,6 +16,7 @@
 		<title>Kissin' Bugs</title>
 	</head>
 	<body>
+	
 	<!--Body Header:START-->
 		<jsp:include page="/template/header.jsp"/>	
 	<!--Body Header:END-->			 	

@@ -7,7 +7,7 @@
 	
 	<div class="col-lg-8">
 	 	<div class="row" id="titleDiv">
-	 		<div class="col" align="center" style="padding-bottom: 20px;">
+	 		<div class="col">
 	 			<h3>후기 게시판</h3>		
 	 		</div>
 		</div>
@@ -39,29 +39,29 @@
 				</nav>
 		</div>		
 		
-<div class="row justify-content-center">
 	<form id="reviewSearch" name="reviewSearch">
 		<div class="form-row justify-content-center">
-		   <span>
 			<input type="hidden" name="pg" value="1">
-			</span>
-			<span style="margin-left:20px;">
+			<div class="col-sm-2">
 			<select name="searchOption" id="searchOption" class="form-control">
 				<option value="name">작성자</option>
 				<option value="user_id">아이디</option>
 		        <option value="review_subject">제목</option>
 		    </select>
-		    </span>
-		    <span style="margin-left:20px;">
-		    <input type="text"  class="form-control" name="keyword" id="keyword" value="${keyword }" size="20">
-		    </span>
-		   <span style="margin-left:20px;">
-		    <input type="button" id="reviewSearchBtn" class="btn btn-outline-dark" value="검색">
-		   </span>   
+			</div>
+			<div class="col-sm-4">
+		    <input type="text"  class="form-control" name="keyword" id="keyword" value="${keyword }">
+			</div>
+			<div class="col-2">
+		    <input type="button" id="reviewSearchBtn" class="form-control btn btn-outline-dark" value="검색">
+			</div>
+			<div class="col-2">
+			    <input type="button" id="goReviewWrite" class="form-control btn btn-outline-dark" value="글쓰기">		
+			</div> 
 		</div>
   	</form>
-</div>  		
-	</div>
+		
+</div>
 
 
 

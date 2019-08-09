@@ -1,4 +1,6 @@
-
+hr{
+	border: solid 1px black;
+}
 
 #goLogin{
 	cursor : Pointer;
@@ -133,4 +135,11 @@ div#introduceImg{
 .header_menu_selection li a i
 {
 	margin-right: 10px;
+}
+
+#titleDiv{
+	text-align : center;
+	text-decoration : underline;
+	text-underline-position: under;
+	padding-bottom : 15px;
 }

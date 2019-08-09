@@ -60,9 +60,9 @@
 
 
 
-<script type="text/javascript" src="/minishop/resources/ckeditor4/ckeditor.js"></script>
 <script type="text/javascript" src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script type="text/javascript" src="/minishop/resources/custom/js/board.review.js"></script>
+<script type="text/javascript" src="https://cdn.ckeditor.com/4.12.1/standard/ckeditor.js"></script>
 <script type="text/javascript" src="/minishop/resources/custom/js/ckeditor4.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){	
@@ -81,7 +81,7 @@ $(document).ready(function(){
 			});//eachs	
 			$('#productid').val('${productid}');	
 			if($("#productid option:selected").val()!=''){
-				var getImgOn='<img style="height:80px;weight:60px;" src="/minishop/storage/'+$("#productid option:selected").val()+'">';
+				var getImgOn='<img style="height:80px;weight:60px;" src="/minishop/storage/showProduct.do?product_name_image='+$("#productid option:selected").val()+'">';
 				$('#imgDiv').html(getImgOn);
 			}
 		}//success

@@ -66,11 +66,9 @@ $(document).ready(function(){
 		success : function(data){
 			
 			var size = Object.keys(data.cartList).length;
-			//alert(size);
-			$('#cartTable tr:gt(0)').empty();
+
 			if(size>0){
 			$.each(data.cartList, function(index, items){			
-				//jquery 방식
 				var unitcost_format=formatNumber(items.unitcost);
 				var totalCost=items.unitcost*items.cart_qty;
 				cartTotal=cartTotal+totalCost;//합계 정산

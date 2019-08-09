@@ -1032,13 +1032,13 @@ section
 }
 .favorite.active::after
 {
-	font-family: 'FontAwesome';
+	font-family: 'Hanna', fantasy;
 	content:'\f004';
 	color: #fe4c50;
 }
 .favorite::after
 {
-	font-family: 'FontAwesome';
+	font-family: 'Hanna', fantasy;
 	content:'\f08a';
 }
 .favorite:hover::after

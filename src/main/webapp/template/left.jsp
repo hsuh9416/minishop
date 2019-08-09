@@ -65,31 +65,15 @@
 			          <a href="javascript:history.back()" class="list-group-item">돌아가기</a>
 			     </div>			
 			</c:if>
-			<c:if test="${location=='qaWrite'}">
-		        <h2>문의글 작성</h2>			
+			<c:if test="${location=='board'}">
+		        <h2>고객 게시판</h2>			
 			     <div class="list-group list-group-lg">
 			          <a href="/minishop/board/qa/qaList.do" class="list-group-item">문의 게시판</a>
 			          <a href="/minishop/board/review/reviewList.do" class="list-group-item">후기 게시판</a>				     
 			          <a href="javascript:history.back()" class="list-group-item">돌아가기</a>
 			     </div>					
-			</c:if>	
-			<c:if test="${location=='qaView'}">
-		        <h2>문의글 보기</h2>			
-			     <div class="list-group list-group-lg">
-			          <a href="/minishop/board/qa/qaWriteForm.do" class="list-group-item">문의글 작성</a>			     
-			          <a href="/minishop/board/qa/qaList.do" class="list-group-item">문의 게시판</a>
-			          <a href="/minishop/board/review/reviewList.do" class="list-group-item">후기 게시판</a>				     
-			          <a href="javascript:history.back()" class="list-group-item">돌아가기</a>
-			     </div>					
-			</c:if>							
-			<c:if test="${location=='qaList'}">
-		        <h2>문의 게시판</h2>			
-			     <div class="list-group list-group-lg">
-			          <a href="/minishop/board/qa/qaWriteForm.do" class="list-group-item">문의글 작성</a>			     
-			          <a href="/minishop/board/review/reviewList.do" class="list-group-item">후기 게시판</a>			     
-			          <a href="javascript:history.back()" class="list-group-item">돌아가기</a>
-			     </div>					
-			</c:if>	
+			</c:if>				
+	
 			<c:if test="${location=='adminQAList'}">
 		        <h2>답변대기중인<br>문의글 현황</h2>
 			     <div class="list-group list-group-lg">		     
@@ -101,32 +85,8 @@
 			     <div class="list-group list-group-lg">		     
 			          <a href="/minishop/admin/board/qaManage.do" class="list-group-item">목록으로</a>
 			     </div>			        
-			</c:if>	
-			<c:if test="${location=='reviewWrite'}">
-		        <h2>후기 작성</h2>			
-			     <div class="list-group list-group-lg">
-			          <a href="/minishop/board/review/reviewList.do" class="list-group-item">후기 게시판</a>
-			          <a href="/minishop/board/qa/qaList.do" class="list-group-item">문의 게시판</a>			     
-			          <a href="javascript:history.back()" class="list-group-item">돌아가기</a>
-			     </div>					
-			</c:if>	
-			<c:if test="${location=='reviewView'}">
-		        <h2>후기 보기</h2>			
-			     <div class="list-group list-group-lg">
-			          <a href="/minishop/board/review/reviewWriteForm.do" class="list-group-item">후기 작성</a>			     
-			          <a href="/minishop/board/review/reviewList.do" class="list-group-item">후기 게시판</a>
-			          <a href="/minishop/board/qa/qaList.do" class="list-group-item">문의 게시판</a>			     
-			          <a href="javascript:history.back()" class="list-group-item">돌아가기</a>
-			     </div>					
-			</c:if>						
-			<c:if test="${location=='reviewList'}">
-		        <h2>후기 게시판</h2>			
-			     <div class="list-group list-group-lg">
-			          <a href="/minishop/board/review/reviewWriteForm.do" class="list-group-item">후기 작성</a>			     
-			          <a href="/minishop/board/qa/qaList.do" class="list-group-item">문의 게시판</a>			     
-			          <a href="javascript:history.back()" class="list-group-item">돌아가기</a>
-			     </div>					
-			</c:if>		
+			</c:if>
+	
 			<c:if test="${location=='memberView'}">
 		        <h2>회원 정보</h2>			
 			     <div class="list-group list-group-lg">

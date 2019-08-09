@@ -2,218 +2,6 @@
 
 @import url(//fonts.googleapis.com/earlyaccess/hanna.css);
 
-/* General */
-
-*
-{
-	margin: 0;
-	padding: 0;
-}
-body
-{
-	font-family: 'Hanna', fantasy;
-	font-size: 14px;
-	line-height: 23px;
-	font-weight: 400;
-	background: #FFFFFF;
-	color: #1e1e27;
-}
-div
-{
-	display: block;
-	position: relative;
-	-webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
-ul
-{
-	list-style: none;
-	margin-bottom: 0px;
-}
-p
-{
-	font-family: 'Hanna', fantasy;
-	font-size: 14px;
-	line-height: 1.7;
-	font-weight: 500;
-	color: #989898;
-	-webkit-font-smoothing: antialiased;
-	-webkit-text-shadow: rgba(0,0,0,.01) 0 0 1px;
-	text-shadow: rgba(0,0,0,.01) 0 0 1px;
-}
-p a
-{
-	display: inline;
-	position: relative;
-	color: inherit;
-	border-bottom: solid 2px #fde0db;
-	-webkit-transition: all 200ms ease;
-	-moz-transition: all 200ms ease;
-	-ms-transition: all 200ms ease;
-	-o-transition: all 200ms ease;
-	transition: all 200ms ease;
-}
-a, a:hover, a:visited, a:active, a:link
-{
-	text-decoration: none;
-	-webkit-font-smoothing: antialiased;
-	-webkit-text-shadow: rgba(0,0,0,.01) 0 0 1px;
-	text-shadow: rgba(0,0,0,.01) 0 0 1px;
-}
-p a:active
-{
-	position: relative;
-	color: #FF6347;
-}
-p a:hover
-{
-	color: #FF6347;
-	background: #fde0db;
-}
-p a:hover::after
-{
-	opacity: 0.2;
-}
-::selection
-{
-	background: #fde0db;
-	color: #FF6347;
-}
-p::selection
-{
-	background: #fde0db;
-}
-h1{font-size: 72px;}
-h2{font-size: 40px;}
-h3{font-size: 28px;}
-h4{font-size: 24px;}
-h5{font-size: 16px;}
-h6{font-size: 14px;}
-h1, h2, h3, h4, h5, h6
-{
-	color: #282828;
-	-webkit-font-smoothing: antialiased;
-	-webkit-text-shadow: rgba(0,0,0,.01) 0 0 1px;
-	text-shadow: rgba(0,0,0,.01) 0 0 1px;
-}
-h1::selection,
-h2::selection,
-h3::selection,
-h4::selection,
-h5::selection,
-h6::selection
-{
-
-}
-::-webkit-input-placeholder
-{
-	font-size: 16px !important;
-	font-weight: 500;
-	color: #777777 !important;
-}
-:-moz-placeholder /* older Firefox*/
-{
-	font-size: 16px !important;
-	font-weight: 500;
-	color: #777777 !important;
-}
-::-moz-placeholder /* Firefox 19+ */
-{
-	font-size: 16px !important;
-	font-weight: 500;
-	color: #777777 !important;
-}
-:-ms-input-placeholder
-{
-	font-size: 16px !important;
-	font-weight: 500;
-	color: #777777 !important;
-}
-::input-placeholder
-{
-	font-size: 16px !important;
-	font-weight: 500;
-	color: #777777 !important;
-}
-.form-control
-{
-	color: #000000;
-}
-section
-{
-	display: block;
-	position: relative;
-	box-sizing: border-box;
-}
-.clear
-{
-	clear: both;
-}
-.clearfix::before, .clearfix::after
-{
-	content: "";
-	display: table;
-}
-.clearfix::after
-{
-	clear: both;
-}
-.clearfix
-{
-	zoom: 1;
-}
-.float_left
-{
-	float: left;
-}
-.float_right
-{
-	float: right;
-}
-.trans_200
-{
-	-webkit-transition: all 200ms ease;
-	-moz-transition: all 200ms ease;
-	-ms-transition: all 200ms ease;
-	-o-transition: all 200ms ease;
-	transition: all 200ms ease;
-}
-.trans_300
-{
-	-webkit-transition: all 300ms ease;
-	-moz-transition: all 300ms ease;
-	-ms-transition: all 300ms ease;
-	-o-transition: all 300ms ease;
-	transition: all 300ms ease;
-}
-.trans_400
-{
-	-webkit-transition: all 400ms ease;
-	-moz-transition: all 400ms ease;
-	-ms-transition: all 400ms ease;
-	-o-transition: all 400ms ease;
-	transition: all 400ms ease;
-}
-.trans_500
-{
-	-webkit-transition: all 500ms ease;
-	-moz-transition: all 500ms ease;
-	-ms-transition: all 500ms ease;
-	-o-transition: all 500ms ease;
-	transition: all 500ms ease;
-}
-.fill_height
-{
-	height: 100%;
-}
-.super_container
-{
-	width: 100%;
-	overflow: hidden;
-}
-
-
 /* view form, order form, modify form */
 
 .memberView-container{
@@ -258,22 +46,17 @@ section
 
 
 /*login form*/
-/*(Modified from CSS made by 'Mutiullah Samim') */
-
-@import url('https://fonts.googleapis.com/css?family=Numans');
-@import url('https://fonts.googleapis.com/css?family=Annie+Use+Your+Telescope&display=swap');
-@import url('https://fonts.googleapis.com/css?family=Stylish&display=swap');
 
 .title_logo a{
 color: white;
 font-size : 24pt;
 font-weight: 700;
-font-family: 'Numans', sans-serif;
+font-family: 'Hanna', fantasy;
 }
 
 .title_logo span{
 color: #f5f5f5;	
-font-family: 'Numans', sans-serif;
+font-family: 'Hanna', fantasy;
 }
 
 .modal-content{
@@ -282,7 +65,7 @@ background-size: cover;
 background-repeat: no-repeat;	
 height: 100%;
 font-color: white;
-font-family: 'Numans', sans-serif;
+font-family: 'Hanna', fantasy;
 font-weight: bold;
 }
 
@@ -327,7 +110,7 @@ margin-right: 5px;
 font-color: #383849;
 background-color: #FFC312;
 width: 100px;
-font-family: 'Numans', sans-serif;
+font-family: 'Hanna', fantasy;
 font-weight: bold;
 }
 
@@ -336,7 +119,7 @@ font-color: #383849;
 background-color: #FFC312;
 width: 100px;
 font-size : 10pt;
-font-family: 'Numans', sans-serif;
+font-family: 'Hanna', fantasy;
 font-weight: bold;
 }
 
@@ -379,7 +162,7 @@ background-size: cover;
 background-repeat: no-repeat;	
 height: 100%;
 font-color: white;
-font-family: 'Numans', sans-serif;
+font-family: 'Hanna', fantasy;
 font-weight: bold;
 }
 

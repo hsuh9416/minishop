@@ -37,7 +37,7 @@
 		    </div>	 
 		    <div class="form-group col-3">
 		      <label for="review_repwd"><strong>재확인</strong></label>
-		     <input type="password" class="form-control" name="review_repwd" id="review_repwd" value="${reviewboardDTO.review_pwd}" placeholder="비밀번호 재확인" readonly>
+		     <input type="password" class="form-control" name="review_repwd" id="review_repwd" placeholder="비밀번호 재확인" >
 		    </div>
 		    			       
 	   </div>	   
@@ -56,9 +56,9 @@
 
 		
 
-<script type="text/javascript" src="/minishop/resources/ckeditor4/ckeditor.js"></script>
 <script type="text/javascript" src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script type="text/javascript" src="/minishop/resources/custom/js/board.review.js"></script>
+<script type="text/javascript" src="https://cdn.ckeditor.com/4.12.1/standard/ckeditor.js"></script>
 <script type="text/javascript" src="/minishop/resources/custom/js/ckeditor4.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){	

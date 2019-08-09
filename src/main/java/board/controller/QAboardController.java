@@ -40,6 +40,7 @@ public class QAboardController {
 		
 		ModelAndView mav = new ModelAndView();
 		if(productID!=null) mav.addObject("productID", productID);	
+			mav.addObject("location","board");
 			mav.addObject("display", "/board/qa/qaWriteForm.jsp");		
 			mav.setViewName("/main/home");
 			
@@ -66,7 +67,7 @@ public class QAboardController {
 		
 		ModelAndView mav = new ModelAndView();
 			mav.addObject("pg",pg);
-			mav.addObject("location","qaList");
+			mav.addObject("location","board");
 			mav.addObject("display", "/board/qa/qaList.jsp");
 			mav.setViewName("/main/home");
 			
@@ -127,7 +128,7 @@ public class QAboardController {
 		
 		ModelAndView mav = new ModelAndView();
 			mav.addObject("pg", pg);
-			mav.addObject("qaSearchList", qaSearchList);
+			mav.addObject("qalist", qaSearchList);
 			mav.addObject("searchOption", searchOption);
 			mav.addObject("keyword", keyword);
 			mav.addObject("boardPaging", boardPaging);
@@ -144,6 +145,7 @@ public class QAboardController {
 		
 		ModelAndView mav = new ModelAndView();
 			mav.addObject("pg", pg);
+			mav.addObject("location","board");
 			mav.addObject("qaBoardDTO", qaBoardDTO);
 			mav.addObject("display", "/board/qa/qaView.jsp");
 			mav.setViewName("/main/home");
@@ -172,6 +174,7 @@ public class QAboardController {
 		
 		ModelAndView mav = new ModelAndView();
 			mav.addObject("pg", pg);
+			mav.addObject("location","board");
 			mav.addObject("qaBoardDTO", qaBoardDTO);
 			mav.addObject("display", "/board/qa/qaModifyForm.jsp");
 			mav.setViewName("/main/home");

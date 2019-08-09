@@ -132,12 +132,22 @@ public class BoardDAOImpl implements BoardDAO {
 	public int reviewModify(Map<String, String> map) {
 		return sqlSession.insert("boardSQL.reviewModify",map);}	
 	
-	//7. 후기글 삭제하기
+	//7. 원글이 삭제되지 않은 경우 답글수 수정하기
 	@Override
-	public void reviewDelete(int review_seq) {
-		sqlSession.delete("boardSQL.reviewDelete", review_seq);}	
+	public void reviewDelete1(int review_seq) {
+		sqlSession.update("boardSQL.reviewDelete1", review_seq);}
+
+	//8. 해당글에 대한 답변이 존재할 때 원글 삭제여부 업데이트
+	@Override
+	public void reviewDelete2(int review_seq) {
+		sqlSession.update("boardSQL.reviewDelete2", review_seq);}	
 	
-	//8. 특정 후기글 답변 업로드
+	//9. 후기글 삭제하기	
+	@Override
+	public void reviewDelete3(int review_seq) {
+		sqlSession.delete("boardSQL.reviewDelete3", review_seq);}
+	
+	//10. 특정 후기글 답변 업로드
 	@Override
 	public void reviewReply(ReviewboardDTO reviewboardDTO, Map<String, String> map) {
 			sqlSession.update("boardSQL.reviewReply1",reviewboardDTO);

@@ -45,7 +45,8 @@ public class ReviewboardController {
 	public ModelAndView reviewWriteForm(@RequestParam(required=false) String productID) {
 		
 		ModelAndView mav = new ModelAndView();
-		if(productID!=null) mav.addObject("productID", productID);		
+		if(productID!=null) mav.addObject("productID", productID);	
+			mav.addObject("location","board");
 			mav.addObject("display", "/board/review/reviewWriteForm.jsp");		
 			mav.setViewName("/main/home");
 			
@@ -122,7 +123,7 @@ public class ReviewboardController {
 		
 		ModelAndView mav = new ModelAndView();
 			mav.addObject("pg",pg);
-			mav.addObject("location", "reviewList");
+			mav.addObject("location", "board");
 			mav.addObject("display", "/board/review/reviewList.jsp");
 			mav.setViewName("/main/home");
 			
@@ -185,7 +186,7 @@ public class ReviewboardController {
 		
 		ModelAndView mav = new ModelAndView();
 			mav.addObject("pg", pg);
-			mav.addObject("reviewSearchList", reviewSearchList);
+			mav.addObject("reviewList", reviewSearchList);
 			mav.addObject("searchOption", searchOption);
 			mav.addObject("keyword", keyword);
 			mav.addObject("boardPaging", boardPaging);
@@ -238,7 +239,7 @@ public class ReviewboardController {
 		ModelAndView mav = new ModelAndView();		
 			mav.addObject("pg", pg);
 			mav.addObject("reviewboardDTO", reviewboardDTO);
-			mav.addObject("location","reviewView");
+			mav.addObject("location","board");
 			mav.addObject("display", "/board/review/reviewView.jsp");
 			mav.setViewName("/main/home");
 			
@@ -254,6 +255,7 @@ public class ReviewboardController {
 		ModelAndView mav = new ModelAndView();
 			mav.addObject("pg", pg);
 			mav.addObject("reviewboardDTO", reviewboardDTO);
+			mav.addObject("location","board");
 			mav.addObject("display", "/board/review/reviewModifyForm.jsp");
 			mav.setViewName("/main/home");
 			
@@ -271,8 +273,13 @@ public class ReviewboardController {
 	//10.후기 글삭제 반영하기 
 	@RequestMapping(value="/reviewDelete.do",method= RequestMethod.GET)
 	public ModelAndView reviewDelete(@RequestParam int review_seq) {	
-		
-		boardDAO.reviewDelete(review_seq);
+		ReviewboardDTO reviewBoardDTO = boardDAO.getReviewBoard(review_seq+"");
+		if(!reviewBoardDTO.getReview_subject().contains("[원글이 삭제된 답글]")) {
+			boardDAO.reviewDelete1(review_seq);}
+		if(reviewBoardDTO.getReview_reply()!=0) {
+			boardDAO.reviewDelete2(review_seq);			
+		}
+			boardDAO.reviewDelete3(review_seq);
 		
 		ModelAndView mav = new ModelAndView();
 			mav.setViewName("/board/review/reviewDeleted");
@@ -288,6 +295,7 @@ public class ReviewboardController {
 			mav.addObject("review_pseq", review_pseq);
 			mav.addObject("productid", productid);		
 			mav.addObject("pg", pg);
+			mav.addObject("location","board");
 			mav.addObject("display", "/board/review/reviewReplyForm.jsp");
 			mav.setViewName("/main/home");
 			

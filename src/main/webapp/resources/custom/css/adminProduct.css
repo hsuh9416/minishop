@@ -247,3 +247,8 @@ textarea {
 	width: 20px;
 	height: 20px;
 }
+
+/* inventoryModify */
+#invMod{
+	padding-top:20px;
+}

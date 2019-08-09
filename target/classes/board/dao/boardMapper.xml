@@ -95,6 +95,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		update board_qa set qa_subject=#{qa_subject}
 							,qa_content=#{qa_content}
 							,productid=#{productid}
+							,qa_state=#{qa_state}
 							where qa_seq=#{qa_seq}														
  	</update>	 	
  	 			
@@ -167,13 +168,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</update> 	
 	
 	<!-- 후기 : 글 삭제 -->
- 	<delete id="reviewDelete" parameterType="Integer">
- 		begin
- 			update board_review set review_reply=review_reply-1 
- 			where review_seq=(select review_pseq from board where review_seq=#{review_seq});
- 			update board_review set review_subject='[원글이 삭제된 답글]'||review_subject where review_pseq=#{review_pseq};
- 			delete board_review where review_seq=#{review_seq};
- 		end;
+	<update id="reviewDelete1" parameterType="Integer">
+ 		update board_review set review_reply=review_reply-1 
+ 		where review_seq=(select review_pseq from board_review where review_seq=#{review_seq})	
+	</update>
+	<update id="reviewDelete2" parameterType="Integer">
+ 		update board_review set review_subject='[원글이 삭제된 답글]'||review_subject where review_pseq=#{review_seq}
+	</update>
+ 	<delete id="reviewDelete3" parameterType="Integer">
+ 		delete board_review where review_seq=#{review_seq}
  	</delete> 
  
    	<!-- 후기 : 답글 달기(START) -->

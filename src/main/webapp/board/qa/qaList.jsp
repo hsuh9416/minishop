@@ -3,17 +3,21 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-	<link rel="stylesheet" type="text/css" href="/minishop/resources/custom/css/userboard.css">
-
-	<div class="col-lg-8">
-	 	<div class="row" id="titleDiv">
-	 		<div class="col" align="center" style="padding-bottom: 20px;">
-	 			<h3>문의 게시판</h3>		
-	 		</div>
-		</div>
-		<input type="hidden" id="pg" value="${pg}">
-		<div class="table-responsive">
-			<table id="qaTable" class="table justify-content-center">
+	<!--CSS Additional LINK:START-->
+<link rel="stylesheet" type="text/css" href="/minishop/resources/custom/css/userboard.css">
+	<!--CSS Additional LINK:END-->
+	
+<div class="col-lg-8">
+	<div class="row" id="titleDiv">
+		<div class="col">
+			<h3>문의 게시판</h3>		
+	</div>
+</div>
+		<input type="hidden" id="pg" value="${pg}"/>
+		<input type="hidden" id="userName" value="${memberDTO.name}"/>
+		
+		<div class="form-row align-items-center">
+			<table id="qaTable" class="table">
 			  <thead class="thead-dark">
 			    <tr>
 					<th scope="col">#</th>
@@ -33,105 +37,39 @@
 			   </tbody> 	  
 			</table>
 		</div>		
-		<div class="container-fluid">
-				<nav aria-label="Page navigation example">
-				  <ul class="pagination justify-content-center" id="boardPagingDiv"></ul>
+		
+		<div class="form-row align-items-center subContent">
+			<div class="col">
+				<nav aria-label="Page navigation">
+					<ul class="pagination justify-content-center" id="boardPagingDiv"></ul>			
 				</nav>
+			</div>								
 		</div>		
-<div class="container-fluid">
-	<form id="qaSearch" name="qaSearch">
+	
+	<form id="qaSearch">
 		<div class="form-row justify-content-center">
-		   <span>
-			<input type="hidden" name="pg" id="pg" value="1">
-			</span>
-			<span style="margin-left:20px;">
-			<select name="searchOption" id="searchOption" class="form-control">
-				<option value="name">작성자</option>
-				<option value="user_id">아이디</option>
-		        <option value="qa_subject">제목</option>
-		    </select>
-		    </span>
-		    <span style="margin-left:20px;">
-		    <input type="text"  class="form-control" name="keyword" id="keyword" value="${keyword}" size="20">
-		    </span>
-		   <span style="margin-left:20px;">
-		    <input type="button" id="qaSearchBtn" class="btn btn-outline-dark" value="검색">
-		   </span>
+			<input type="hidden" name="pg" value="1">	
+			<div class="col-sm-2">
+				<select name="searchOption" id="searchOption" class="form-control">
+					<option value="name">작성자</option>
+					<option value="user_id">아이디</option>
+			        <option value="qa_subject">제목</option>
+			    </select>			
+			</div>
+			<div class="col-sm-4">
+		    	<input type="text"  class="form-control" name="keyword" id="keyword" value="${keyword}">			
+			</div>
+			<div class="col-2">
+			    <input type="button" id="qaSearchBtn" class="form-control btn btn-outline-dark" value="검색">		
+			</div>
+			<div class="col-2">
+			    <input type="button" id="goQaWrite" class="form-control btn btn-outline-dark" value="글쓰기">		
+			</div>		
 		</div>
   	</form>
-</div>  			
-	</div>
+			
+</div>
 
 <script type="text/javascript" src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
-<script type="text/javascript"  src="/minishop/resources/bootstrap4/js/bootstrap.bundle.min.js"></script>
-<script type="text/javascript" src="/minishop/resources/custom/js/board.qa.js"></script>
-<script type="text/javascript">
-$(document).ready(function(){
-	$.ajax({
-		type : 'post',
-		url : '/minishop/board/qa/getQaList.do',
-		data : 'pg='+$('#pg').val(),
-		dataType : 'json',
-		success : function(data){
-			
-			$('#qaTable tr:gt(0)').empty();					
-			$.each(data.qalist, function(index, items){
-				var state = '<i class="fas fa-lock"></i>';
-				var subject = '[비밀글로 작성된 문의글입니다]';
-				var isreplied ='<i class="far fa-square"></i>';
-				var productid ='[비공개]';
-				if (items.qa_state=='0'){//공개글
-					subject = items.qa_subject;
-					state = '<a><i class="fas fa-lock-open"></i></a>';
-					if(items.productid!=null){
-						productid ='['+items.productid+']';}	
-					else if(items.productid==null){productid = '[문의 상품 없음]';}
-				}
-				if(items.qa_reply=='1'){
-					isreplied ='<a><i class="far fa-check-square"></i></a>';
-				}
-			
-				$('<tr/>').append($('<th/>',{
-					scope : 'row',
-					align : 'center',
-					text : items.qa_seq
-				})).append($('<td/>',{
-					}).append($('<a/>',{
-						href : 'javascript:void(0)',
-						id : 'subjectA',
-						text : subject,
-						class : items.qa_seq+''
-				}))).append($('<td/>',{
-					align : 'center',
-					text : items.name,
-				})).append($('<td/>',{
-					align : 'center',
-					text : productid				
-				})).append($('<td/>',{
-					align : 'center',
-					text : items.qa_logtime					
-				})).append($('<td/>',{
-					align : 'center',
-					html : state			
-				})).append($('<td/>',{
-					align : 'center',
-					html : isreplied					
-				})).appendTo($('#qaTable tbody'));
-			});//each
-			
-			$('#boardPagingDiv').html(data.boardPaging.pagingHTML);
-			
-			$('#qaTable').on('click','#subjectA',function(){
-				if ($(this).parent().text()=='[비밀글로 작성된 문의글입니다]' && $(this).parent().next().text()!='${memberDTO.name}')
-				{alert('해당 게시물은 작성자와 관리자만 접근할 수 있습니다. 만약 작성자라면 로그인 후에 시도해주세요.');}
-				else{
-					var qa_seq = $(this).parent().prev().text();
-					window.location='/minishop/board/qa/qaView.do?qa_seq='+qa_seq+'&pg='+$('#pg').val();
-				}//else
-			});//제목 클릭시!
-		}//success
-	});//ajax
-});//onready
-
-
-</script>
+<script type="text/javascript" src="/minishop/resources/custom/js/qa/board.qa.js"></script>
+<script type="text/javascript" src="/minishop/resources/custom/js/qa/qaList.js"></script>

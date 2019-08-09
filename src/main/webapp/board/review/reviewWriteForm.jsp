@@ -53,9 +53,8 @@
 		</div>					
 		<div id="missing"></div>
  </div>
-
-		
-<script type="text/javascript" src="/minishop/resources/ckeditor4/ckeditor.js"></script>
+ 
+<script src="https://cdn.ckeditor.com/4.12.1/standard/ckeditor.js"></script>
 <script type="text/javascript" src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script type="text/javascript" src="/minishop/resources/bootstrap4/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript" src="/minishop/resources/custom/js/board.review.js"></script>

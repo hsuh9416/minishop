@@ -114,7 +114,7 @@
 
 
 <script type="text/javascript" src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
-<script type="text/javascript" src="/minishop/resources/ckeditor4/ckeditor.js"></script>
+<script type="text/javascript" src="https://cdn.ckeditor.com/4.12.1/standard/ckeditor.js"></script>
 <script type="text/javascript" src="/minishop/resources/custom/js/admin.product.js"></script>
 <script type="text/javascript">
 var content_detail='';//product_name_detail 저장할 경로

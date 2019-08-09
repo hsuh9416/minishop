@@ -39,9 +39,13 @@ public interface BoardDAO {
 	ReviewboardDTO getReviewBoard(String review_seq);
 	int hitUpdate(int review_seq);
 	int reviewModify(Map<String, String> map);
-	void reviewDelete(int review_seq);
+	void reviewDelete1(int review_seq);
+	void reviewDelete2(int review_seq);
+	void reviewDelete3(int review_seq);	
 	void reviewReply(ReviewboardDTO reviewboardDTO, Map<String, String> map);		
 //--------BOARD_REVIEW:END--------//
+
+
 
 
 

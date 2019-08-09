@@ -47,6 +47,10 @@ $('#reviewReturn').click(function(){
 	window.history.back();
 });
 
+$('#goReviewWrite').click(function(){
+	window.location='/minishop/board/review/reviewWriteForm.do';
+});
+
 //1.리뷰 작성
 $('#goReviewWrite').click(function(){
 	window.location='/minishop/board/review/reviewWriteForm.do';
@@ -102,7 +106,7 @@ $('#reviewSearchBtn').click(function(event,str){
 			success : function(data){
 				
 					$('#reviewTable tr:gt(0)').empty();
-					$.each(data.reviewSearchList, function(index, items){
+					$.each(data.reviewList, function(index, items){
 						$('<tr/>').append($('<th/>',{
 							scope : 'row',
 							align : 'center',
@@ -242,7 +246,7 @@ $('#replyWriteBtn').click(function(){
 					'review_content': CKEDITOR.instances.review_content.getData(),
 					'review_pwd':$('#review_pwd').val()},
 			success : function(){
-				alert('성공적으로 리뷰가 접수되었습니다! 리뷰 게시판으로 이동합니다.');
+				alert('답글이 성공적으로 작성 되었습니다! 리뷰 게시판으로 이동합니다.');
 				window.location='/minishop/board/review/reviewList.do';}
 			
 		});

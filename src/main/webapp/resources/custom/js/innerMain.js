@@ -1,26 +1,27 @@
 /**
  * 사용자 화면 js
  */
+
 $(document).ready(function(){
 	if(window.innerWidth < 992){
 		$('#menuDiv').hide();
-		$('#titleDiv').show();	
+		//$('#titleDiv').show();	
 	}
 	else if(window.innerWidth>991){
 		$('#menuDiv').show();	
-		$('#titleDiv').hide();		
+		//$('#titleDiv').hide();		
 	}			
-	
+
 });//ready
 
 $(window).on('resize', function(){
 	if(window.innerWidth < 992){
 			$('#menuDiv').hide();
-			$('#titleDiv').show();	
+			//$('#titleDiv').show();	
 	}
 	else if(window.innerWidth>991){
 		$('#menuDiv').show();	
-		$('#titleDiv').hide();
+		//$('#titleDiv').hide();
 	}
 });	
 
@@ -32,6 +33,10 @@ $(document).on('scroll', function(){
 	}
 	
 });	
+
+$("textarea.autosize").on('keydown keyup', function () {
+	  $(this).height(1).height( $(this).prop('scrollHeight')+12 );	
+	});
 
 $( '.top' ).click( function() {
 	$( 'html, body' ).animate( { scrollTop : 0 }, 400 );
