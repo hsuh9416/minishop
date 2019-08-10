@@ -37,7 +37,7 @@
 	<div class="form-row justify-content-center">
 		<div class="form-group col-md-10">
 			<label for="qa_content"><strong>글 내용</strong></label>
-			<textarea class="form-control autosize" id="qa_content" name="qa_content" placeholder="문의하실 글의 내용을 입력해주세요.">${qaBoardDTO.qa_content}</textarea>
+			<textarea class="form-control autosize" id="qa_content" placeholder="문의하실 글의 내용을 입력해주세요.">${qaBoardDTO.qa_content}</textarea>
 		</div>	    
 	</div>
 
@@ -45,7 +45,7 @@
 		<div class="form-group col-md-6"></div>	 
 		<div class="form-group col-3">
 		     <label for="qa_pwd"><strong>글 비밀번호</strong></label>
-		     <input type="password" class="form-control" name="qa_pwd" id="qa_pwd" placeholder="비밀번호 입력">
+		     <input type="password" class="form-control" id="qa_pwd" placeholder="비밀번호 입력">
 		     <input type="hidden" name="qa_check" id="qa_check" value="${qaBoardDTO.qa_pwd}">		
 		</div>			    
 		<div class="form-group col-2" id="changeSecret">
@@ -74,12 +74,11 @@
  </div>
 
 
-
+	<!--JavaScript Local LINK:START-->
 <script type="text/javascript" src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
-<script type="text/javascript"  src="/minishop/resources/bootstrap4/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript" src="/minishop/resources/custom/js/qa/board.qa.js"></script>
 <script type="text/javascript" src="/minishop/resources/custom/js/qa/qaModifyForm.js"></script>
-
+	<!--JavaScript Local LINK:END-->
 
 
 

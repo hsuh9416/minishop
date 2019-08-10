@@ -24,13 +24,6 @@ $(document).ready(function(){
 		}
 	});
 	
-	$('#productid').change(function(){
-		$('#imgDiv').empty();
-		if($("#productid option:selected").val()!=''){
-			var getImgOn='<img style="height:100%;width:90px;" src="/minishop/storage/showProduct.do?product_name_image='+$("#productid option:selected").val()+'">';
-			$('#imgDiv').html(getImgOn);
-		}
-	});
 	qa_state = $('#qa_state').val();
 });
 

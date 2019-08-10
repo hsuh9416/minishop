@@ -3,23 +3,24 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-	<!--CSS Additional LINK:START-->
+	<!--CSS Local LINK:START-->
 <link rel="stylesheet" type="text/css" href="/minishop/resources/custom/css/userboard.css">
-	<!--CSS Additional LINK:END-->
+	<!--CSS Local LINK:END-->
 	
 <div class="col-lg-8">
 	<div class="row" id="titleDiv">
 		<div class="col">
 			<h3>문의 게시판</h3>		
+		</div>
 	</div>
-</div>
-		<input type="hidden" id="pg" value="${pg}"/>
-		<input type="hidden" id="userName" value="${memberDTO.name}"/>
+	
+	<input type="hidden" id="pg" value="${pg}"/>
+	<input type="hidden" id="userName" value="${memberDTO.name}"/>
 		
-		<div class="form-row align-items-center">
-			<table id="qaTable" class="table">
-			  <thead class="thead-dark">
-			    <tr>
+	<div class="form-row align-items-center">
+		<table id="qaTable" class="table">
+			<thead class="thead-dark">
+				<tr>
 					<th scope="col">#</th>
 					<th scope="col">제목</th>
 					<th scope="col">작성자</th>
@@ -27,24 +28,24 @@
 					<th scope="col">작성일</th>
 					<th scope="col">구분</th>						
 					<th scope="col">답변</th>					
-			  </tr>
-			   </thead>  
-			   <tbody>
-			   	<tr>
-			   		<th scope="row"></th>
-			   		<td colspan="5"></td>			   		
-			   	</tr>
-			   </tbody> 	  
-			</table>
-		</div>		
+			  	</tr>
+			</thead>  
+			<tbody>
+				<tr>
+				   	<th scope="row"></th>
+				   	<td colspan="5"></td>			   		
+				</tr>
+			</tbody> 	  
+		</table>
+	</div>		
 		
-		<div class="form-row align-items-center subContent">
-			<div class="col">
-				<nav aria-label="Page navigation">
-					<ul class="pagination justify-content-center" id="boardPagingDiv"></ul>			
-				</nav>
-			</div>								
-		</div>		
+	<div class="form-row align-items-center subContent">
+		<div class="col">
+			<nav aria-label="Page navigation">
+				<ul class="pagination justify-content-center" id="boardPagingDiv"></ul>			
+			</nav>
+		</div>								
+	</div>		
 	
 	<form id="qaSearch">
 		<div class="form-row justify-content-center">
@@ -70,6 +71,8 @@
 			
 </div>
 
+	<!--JavaScript Local LINK:START-->
 <script type="text/javascript" src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script type="text/javascript" src="/minishop/resources/custom/js/qa/board.qa.js"></script>
 <script type="text/javascript" src="/minishop/resources/custom/js/qa/qaList.js"></script>
+	<!--JavaScript Local LINK:END-->

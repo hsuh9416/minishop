@@ -5,8 +5,6 @@
 <link rel="stylesheet" type="text/css" href="/minishop/resources/custom/css/userboard.css">
 	<!--CSS Local LINK:END-->	  
 
-
-
 <div class="col-lg-8">
 
 	<div class="form-row" id="titleDiv">
@@ -36,18 +34,18 @@
 	<div class="form-row justify-content-center">
 		<div class="form-group col-md-10">
 			<label for="qa_content"><strong>글 내용</strong></label>
-			<textarea class="form-control autosize" id="qa_content" name="qa_content" placeholder="문의하실 글의 내용을 입력해주세요."></textarea>
+			<textarea class="form-control autosize" id="qa_content" placeholder="문의하실 글의 내용을 입력해주세요."></textarea>
 		</div>	    
 	</div>
 	
 	<div class="form-row justify-content-center">
 		<div class="form-group col-md-3">
 			<label for="qa_pwd"><strong>글 비밀번호</strong></label>
-			<input type="password" class="form-control" name="qa_pwd" id="qa_pwd" placeholder="비밀번호 입력">
+			<input type="password" class="form-control" id="qa_pwd" placeholder="비밀번호 입력">
 		</div>	 
 		<div class="form-group col-md-3">
 			<label for="qa_repwd"><strong>재확인</strong></label>
-			<input type="password" class="form-control" name="qa_repwd" id="qa_repwd" placeholder="비밀번호 재확인">
+			<input type="password" class="form-control" id="qa_repwd" placeholder="비밀번호 재확인">
 		</div>			    
 		<div class="form-group col-2" id="makeSecret">
 			<button class="btn btn-outline-secondary"><i class="fas fa-lock-open"></i></button>

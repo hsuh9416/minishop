@@ -196,7 +196,8 @@ public class QAboardController {
 		boardDAO.qaDelete(qa_seq);
 		
 		ModelAndView mav = new ModelAndView();
-			mav.setViewName("/board/qa/qaDeleted");
+			mav.addObject("item", "qa");
+			mav.setViewName("/common/deleted");
 			
 		return mav;
 	}

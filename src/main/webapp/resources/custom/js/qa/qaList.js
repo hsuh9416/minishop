@@ -1,5 +1,5 @@
 //0. 전체, 검색 리스트 공통으로 사용되는 함수(호출한 data를 뷰에 뿌리기)
-function getList(data){	
+function getQaList(data){	
 	$('#qaTable tr:gt(0)').empty();					
 	$.each(data.qalist, function(index, items){
 		var state = '<i class="fas fa-lock"></i>';
@@ -65,7 +65,7 @@ $(document).ready(function(){
 		data : 'pg='+$('#pg').val(),
 		dataType : 'json',
 		success : function(data){
-			getList(data);
+			getQaList(data);
 		}
 	});
 });
@@ -84,7 +84,7 @@ $('#qaSearchBtn').click(function(event,str){
 				   'keyword':$('#keyword').val()},
 			dataType : 'json',
 			success : function(data){
-				getList(data);
+				getQaList(data);
 			}//success
 		});//에이작스	
 	}

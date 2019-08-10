@@ -163,7 +163,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		update board_review set review_subject=#{review_subject}
 								,review_content=#{review_content}
 								,productid=#{productid}
-								,review_pwd=#{review_pwd} 
 								where review_seq=#{review_seq}
 	</update> 	
 	

@@ -282,7 +282,8 @@ public class ReviewboardController {
 			boardDAO.reviewDelete3(review_seq);
 		
 		ModelAndView mav = new ModelAndView();
-			mav.setViewName("/board/review/reviewDeleted");
+			mav.addObject("item", "review");
+			mav.setViewName("/common/deleted");
 			
 		return mav;
 	}

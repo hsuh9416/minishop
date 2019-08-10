@@ -1,7 +1,7 @@
 //0.초기값 설정(공개글=0)
 var qa_state='0';
 
-//1.시작시에 리뷰 목록을 불러오기
+//1.시작시에 문의 목록을 불러오기
 $(document).ready(function(){
 	$.ajax({
 		type : 'get',
@@ -24,13 +24,6 @@ $(document).ready(function(){
 		var getImgOn='<img style="height:100%;width:90px;" src="/minishop/storage/showProduct.do?product_name_image='+$("#productid option:selected").val()+'">';
 		$('#imgDiv').html(getImgOn);}
 	
-	$('#productid').change(function(){
-		$('#imgDiv').empty();
-		if($("#productid option:selected").val()!=''){
-			var getImgOn='<img style="height:100%;width:90px;" src="/minishop/storage/showProduct.do?product_name_image='+$("#productid option:selected").val()+'">';
-			$('#imgDiv').html(getImgOn);
-		}
-	});
 });
 
 //2. 문의 작성 버튼을 클릭한 후의 이벤트

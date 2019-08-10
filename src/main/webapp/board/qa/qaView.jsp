@@ -16,10 +16,11 @@
 	
  	<form name="qaViewForm">
  	
-		<input type="hidden" id="pg" name="pg" value="${pg}"/>
-		<input type="hidden" id="qa_seq" name="qa_seq" value="${qaBoardDTO.qa_seq}"/>
-		<input type="hidden" id="qa_pseq" name="qa_pseq" value="${qaBoardDTO.qa_seq}"/>
-		<input type="hidden" id="qa_pwd" value="${qaBoardDTO.qa_pwd}"/>
+		<input type="hidden" id="pg" value="${pg}"/>
+		<input type="hidden" id="qa_seq" value="${qaBoardDTO.qa_seq}"/>
+		<input type="hidden" id="qa_pseq" value="${qaBoardDTO.qa_seq}"/>
+		<input type="hidden" id="qa_pwd" value="${qaBoardDTO.qa_pwd}"/>		
+		<input type="hidden" id="qa_reply" value="${qaBoardDTO.qa_reply}"/>
 		
 		<div class="form-row align-items-center">
 			<div class="col-2 subTitle"><font>글번호</font></div>		
