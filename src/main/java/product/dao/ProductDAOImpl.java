@@ -145,7 +145,7 @@ public class ProductDAOImpl implements ProductDAO {
 
 	//1. 상품 카탈로그별 검색어별 목록 호출(페이징X)
 	@Override
-	public List<ProductDTO> getUserProductList(String product_category_name,String order,String searchWord) {
+	public List<ProductDTO> getUserProductList(String product_category_name,String order,String searchOption, String searchWord) {
 		
 		Map<String,String> map = new HashMap<String,String>();
 			map.put("product_category_name", product_category_name);
@@ -164,6 +164,7 @@ public class ProductDAOImpl implements ProductDAO {
 			map.put("order1", "PRODUCT.PRODUCT_REGISTERDATE");
 			map.put("order2", "desc");			
 		}		
+			map.put("searchOption", searchOption);		
 			map.put("searchWord", searchWord);
 			
 		return sqlSession.selectList("productSQL.getUserProductList",map);

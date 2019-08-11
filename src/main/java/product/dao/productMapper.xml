@@ -160,8 +160,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<if test="product_category_name != 'ALL'"> 
 			and product_category.product_category_name=#{product_category_name}
 		</if>
-		<if test="searchWord !=''"> 
-			and PRODUCT.PRODUCTNAME like '%'||#{searchWord}||'%'
+		<if test="searchWord !=''"> and
+		 <choose>
+			<when test="searchOption eq 'PRODUCT.PRODUCTNAME'"> PRODUCT.PRODUCTNAME like '%'||#{searchWord}||'%'</when>
+		    <otherwise> PRODUCT_NAME.PRODUCT_NAME_TITLE like '%'||#{searchWord}||'%'</otherwise>			
+		 </choose>
 		</if>				
 		 <if test="order1 != null and order2 !=''"> ORDER BY
 		  <choose>

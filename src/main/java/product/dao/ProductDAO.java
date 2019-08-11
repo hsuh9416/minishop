@@ -33,7 +33,7 @@ public interface ProductDAO {
 	void productDelete(String product_name_no);
 //----------상품(관리자):END----------//	
 //----------상품(사용자):START----------//	
-	List<ProductDTO> getUserProductList(String product_category_name,String order,String searchWord);	
+	List<ProductDTO> getUserProductList(String product_category_name,String order,String searchOption,String searchWord);	
 	void product_hitUpdate(int product_name_no);		
 	int getLikeValue(Map<String, String> map);	
 	int addLike(Map<String, String> map);	

@@ -16,10 +16,10 @@ $(document).ready(function(){
 				text : items.productID
 			}).appendTo($('#productid'));
 			});
+			
 		}
 	});
-	
-	if($('input[name=productid]').val()!='') $('#productid').val($('input[name=productid]').val());	
+	$('#productid').val($('input[name=productid]').val());
 	if($('#productid option:selected').val()!=''){
 		var getImgOn='<img style="height:100%;width:90px;" src="/minishop/storage/showProduct.do?product_name_image='+$("#productid option:selected").val()+'">';
 		$('#imgDiv').html(getImgOn);}

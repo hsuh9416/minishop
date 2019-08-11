@@ -3,15 +3,16 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-	<!--Custom styles-->
-	<link rel="stylesheet" type="text/css" href="/minishop/resources/custom/css/userproduct.css">
-
+	<!--CSS Local LINK:START-->
+<link rel="stylesheet" type="text/css" href="/minishop/resources/custom/css/userproduct.css">
+	<!--CSS Local LINK:END-->
+	
 <div class="col-lg-8">
-		   		<div class="row" id="titleDiv">
-		 			<div class="col" align="center" style="padding-bottom: 20px;">
-		 				<h3>장바구니</h3>		
-		 			</div>
-				</div>
+	<div class="row" id="titleDiv">
+		<div class="col">
+			<h3>장바구니</h3>		
+		</div>
+	</div>
 				<div class="form-row align-items-center">
 					<div class="col-1">
 				        <input class="form-check-input" type="checkbox" id="checkAll" style="width:10px;height:10px;">

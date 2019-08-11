@@ -40,7 +40,7 @@ public class ProductController {
 	public ModelAndView categories(@RequestParam(required=false,defaultValue="ALL") String product_category_name, @RequestParam(required=false,defaultValue="new") String order) {
 		
 		ModelAndView mav = new ModelAndView();		
-			mav.addObject("location", "categories");
+			mav.addObject("location", "category");
 			mav.addObject("product_category_name", product_category_name);
 			mav.addObject("order",order);
 			mav.addObject("display", "/product/categories.jsp");
@@ -53,7 +53,7 @@ public class ProductController {
 	@RequestMapping(value="/getAllproduct.do", method = RequestMethod.GET)
 	public ModelAndView getAllproduct() {
 		
-		List<ProductDTO> productList = productDAO.getUserProductList("ALL","name","");
+		List<ProductDTO> productList = productDAO.getUserProductList("ALL","name","","");
 		
 		if(productList!=null) {
 			for(ProductDTO data: productList) {data.makeProductListHTML();}			
@@ -68,9 +68,10 @@ public class ProductController {
 
 	//3. 검색어 또는 카테고리로 검색한 목록 호출하기
 	@RequestMapping(value="/getUserProductList.do",method = RequestMethod.GET)
-	public ModelAndView getUserProductList(@RequestParam(required=false,defaultValue="ALL") String product_category_name,@RequestParam(required=false,defaultValue="new") String order,@RequestParam(required=false,defaultValue="") String searchWord) {
+	public ModelAndView getUserProductList(@RequestParam(required=false,defaultValue="ALL") String product_category_name,@RequestParam(required=false,defaultValue="new") String order,
+			String searchOption, @RequestParam(required=false,defaultValue="") String searchWord) {
 		
-		List<ProductDTO> productList = productDAO.getUserProductList(product_category_name,order,searchWord);
+		List<ProductDTO> productList = productDAO.getUserProductList(product_category_name,order,searchOption,searchWord);
 		
 		if(productList!=null) {
 			for(ProductDTO data: productList) {
@@ -79,6 +80,7 @@ public class ProductController {
 		ModelAndView mav = new ModelAndView();
 			mav.addObject("product_category_name", product_category_name);
 			mav.addObject("order",order);
+			mav.addObject("searchOption",searchOption);			
 			mav.addObject("searchWord",searchWord);
 			mav.addObject("productList", productList);		
 			mav.setViewName("jsonView");
@@ -88,10 +90,10 @@ public class ProductController {
 	
 	//4. 특별전으로 이동
 	@RequestMapping(value="/eventProductList.do",method = RequestMethod.GET)
-	public ModelAndView eventProductList(@RequestParam(required=false,defaultValue="new") String condition) {
+	public ModelAndView eventProductList(@RequestParam(required=false,defaultValue="newArrival") String condition) {
 		
 		ModelAndView mav = new ModelAndView();		
-			mav.addObject("location", "event");
+			mav.addObject("location", "category");
 			mav.addObject("condition", condition);
 			mav.addObject("display", "/product/eventProductList.jsp");
 			mav.setViewName("/main/home");
@@ -101,9 +103,10 @@ public class ProductController {
 
 	//5. 특별전 목록 호출
 	@RequestMapping(value="/getSpecialProductList.do",method = RequestMethod.GET)
-	public ModelAndView getSpecialProductList(@RequestParam(required=false,defaultValue="new") String condition) {
+	public ModelAndView getSpecialProductList(@RequestParam(required=false,defaultValue="newArrival") String condition, String searchOption,
+			@RequestParam(required=false,defaultValue="") String searchWord) {
 		
-		List<ProductDTO> productList = productDAO.getUserProductList("ALL","name","");
+		List<ProductDTO> productList = productDAO.getUserProductList("ALL","name",searchOption,searchWord);
 		
 		if(productList!=null) {
 			for(ProductDTO data: productList) {data.makeSpecialListHTML(condition);}			
@@ -111,6 +114,8 @@ public class ProductController {
 
 		ModelAndView mav = new ModelAndView();
 			mav.addObject("condition",condition);
+			mav.addObject("searchOption",searchOption);			
+			mav.addObject("searchWord",searchWord);
 			mav.addObject("productList", productList);		
 			mav.setViewName("jsonView");
 			
@@ -163,7 +168,7 @@ public class ProductController {
 		ModelAndView mav = new ModelAndView();
 			mav.addObject("productDTO", productDTO);
 			mav.addObject("SEQ",SEQ);		
-			mav.addObject("location","productView");
+			mav.addObject("location","category");
 			mav.addObject("display", "/product/productView.jsp");
 			mav.setViewName("/main/home");
 			

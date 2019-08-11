@@ -101,34 +101,15 @@
 			          <a href="javascript:history.back()" class="list-group-item">돌아가기</a>
 			     </div>					
 			</c:if>			
-			<c:if test="${location=='categories'}">
-		        <h4>Category : ${product_category_name}</h4>			
+			<c:if test="${location=='category'}">
+		        <h4>OUR PRODUCTS</h4>			
 			     <div class="list-group list-group-lg">
-			          <a href="/minishop/product/categories.do?product_category_name=ALL" class="list-group-item">ALL</a>			     
-			          <a href="/minishop/product/categories.do?product_category_name=MEN" class="list-group-item">Men's</a>
-			          <a href="/minishop/product/categories.do?product_category_name=WOMEN" class="list-group-item">Women's</a>			     
-			          <a href="/minishop/product/categories.do?product_category_name=ACCESSORIES" class="list-group-item">Accesories's</a>
-			          <a href="/minishop/product/eventProductList.do?condition=newArrival" class="list-group-item">특별전</a>
+			          <a href="/minishop/product/categories.do?product_category_name=ALL" class="list-group-item">ALL</a>	
+			          <a href="/minishop/product/eventProductList.do?condition=newArrival" class="list-group-item">SPECIAL</a>
+			          <a href="javascript:history.back()" class="list-group-item">돌아가기</a>
 			     </div>				
 			</c:if>	
-			<c:if test="${location=='productView'}">
-		        <h4>상품 정보</h4>			
-			     <div class="list-group list-group-lg">		     
-			          <a href="/minishop/product/categories.do?product_category_name=ALL" class="list-group-item">상품 카테고리</a>	
-			          <a href="/minishop/product/eventProductList.do?condition=newArrival" class="list-group-item">특별전</a>
-			          <a href="javascript:history.back()" class="list-group-item">돌아가기</a>
-			     </div>				
-			</c:if>				
-			<c:if test="${location=='event'}">
-		        <h2>특별전</h2>			
-			     <div class="list-group list-group-lg">
-			          <a href="/minishop/product/categories.do?product_category_name=ALL" class="list-group-item">상품 카테고리</a>			
-			          <a href="/minishop/product/eventProductList.do?condition=newArrival" class="list-group-item">신규 입점 상품</a>	
-			          <a href="/minishop/product/eventProductList.do?condition=sale" class="list-group-item">특별 가격 상품</a>
-			          <a href="/minishop/product/eventProductList.do?condition=popular" class="list-group-item">점내 인기 상품</a>					          			     
-			          <a href="javascript:history.back()" class="list-group-item">돌아가기</a>
-			     </div>					
-			</c:if>				
+									
 			<c:if test="${location=='inventory'}">
 		        <h2>입점상품관리</h2>			
 			     <div class="list-group list-group-lg">	     

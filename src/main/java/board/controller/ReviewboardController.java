@@ -42,10 +42,10 @@ public class ReviewboardController {
 	
 	//1. 후기 글쓰기 화면 이동
 	@RequestMapping(value="/reviewWriteForm.do",method = RequestMethod.GET)
-	public ModelAndView reviewWriteForm(@RequestParam(required=false) String productID) {
+	public ModelAndView reviewWriteForm(@RequestParam(required=false,defaultValue ="") String productID) {
 		
 		ModelAndView mav = new ModelAndView();
-		if(productID!=null) mav.addObject("productID", productID);	
+			mav.addObject("productID", productID);	
 			mav.addObject("location","board");
 			mav.addObject("display", "/board/review/reviewWriteForm.jsp");		
 			mav.setViewName("/main/home");

@@ -7,7 +7,6 @@
 	<header class="header trans_300">
 
 		<!-- Top Navigation : 최상단 고정 메뉴바 -->
-
 		<div class="top_nav">
 			<div class="container">
 				<div class="row">
@@ -42,8 +41,7 @@
 			</div>
 		</div>
 
-		<!-- Main Navigation : 유동 메뉴바-->
-
+		<!-- Main Navigation : 유동 메뉴바-->	
 		<div class="main_nav_container">
 			<div class="container">
 				<div class="row">
@@ -107,17 +105,24 @@
 				</li>
 				<li class="menu_item"><a href="/minishop/main/introduce.do">Kissin' Bugs</a></li>
 				<li class="menu_item"><a href="/minishop/main/home.do">메인</a></li>
-				<li class="menu_item"><a href="/minishop/product/categories.do">카테고리</a></li>
-				<li class="menu_item"><a href="#">이벤트</a></li>
+				<li class="menu_item has-children">
+					<a href="#">
+						OUR PRODUCTS
+						<i class="fa fa-angle-down"></i>						
+					</a>
+					<ul class="menu_selection">
+						<li><a href="/minishop/product/categories.do">ALL</a></li>
+						<li><a href="/minishop/product/eventProductList.do">SPECIAL</a></li>														
+					</ul>						
+				</li>
 				<li class="menu_item has-children">
 					<a href="#">
 						고객게시판
 						<i class="fa fa-angle-down"></i>
 					</a>
 					<ul class="menu_selection">
-							<li><a href="/minishop/board/qa/qaList.do">문의게시판</a></li>
-							<li><a href="/minishop/board/review/reviewList.do">후기게시판</a></li>														
-
+						<li><a href="/minishop/board/qa/qaList.do">문의게시판</a></li>
+						<li><a href="/minishop/board/review/reviewList.do">후기게시판</a></li>														
 					</ul>				
 				</li>
 				<li class="menu_item"><a href="/minishop/main/userContact.do">찾아오시는 길</a></li>

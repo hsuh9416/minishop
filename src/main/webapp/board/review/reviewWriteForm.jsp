@@ -15,7 +15,8 @@
 	
 	<input type="hidden" id="user_id" value="${memberDTO.id}">	
 	<input type="hidden" id="name" value="${memberDTO.name}">	
-	
+	<input type="hidden" name="productid" value="${productID}"/>
+		
 	<div class="form-row justify-content-center">
 		<div class="form-group col-md-4">
 			<label for="review_subject"><strong>제목</strong></label>

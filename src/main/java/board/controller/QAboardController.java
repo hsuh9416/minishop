@@ -36,10 +36,10 @@ public class QAboardController {
 	
 	//1. 문의 글쓰기 화면 이동
 	@RequestMapping(value="/qaWriteForm.do",method = RequestMethod.GET)
-	public ModelAndView qaWriteForm(@RequestParam(required=false) String productID) {
+	public ModelAndView qaWriteForm(@RequestParam(required=false,defaultValue="") String productID) {
 		
 		ModelAndView mav = new ModelAndView();
-		if(productID!=null) mav.addObject("productID", productID);	
+			mav.addObject("productID", productID);	
 			mav.addObject("location","board");
 			mav.addObject("display", "/board/qa/qaWriteForm.jsp");		
 			mav.setViewName("/main/home");

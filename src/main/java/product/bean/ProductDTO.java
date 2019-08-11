@@ -90,7 +90,7 @@ public class ProductDTO{
         long timeDiff = date.getTime() - product_registerdate.getTime();
         long timeDiffDays = timeDiff/(24 * 60 * 60 * 1000);
         
-        if(condition.equals("sale")) {
+        if(condition.equals("onSale")) {
         	if(unitcost<product_name_price) {
         			makeProductListHTML();}
         	else return;}
@@ -98,7 +98,7 @@ public class ProductDTO{
         	if(timeDiffDays>=0 && timeDiffDays<=14) {
         			makeProductListHTML();}
         	else return;}
-        else if(condition.equals("popular")) {
+        else if(condition.equals("mustHave")) {
         	if(product_salesMount>=300) {
         			makeProductListHTML();}
         	else return;}
