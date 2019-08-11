@@ -38,61 +38,6 @@ function toJson(form) {
 	return obj;
 }
 
-$('#qaWriteBtn').click(function(){
-	$('#missing').empty();
-	if($('#qa_subject').val()=='') $('#missing').append(notitleMsg).alert();
-	else if($('#qa_content').val()=='') $('#missing').append(noContentMsg).alert();
-	else if($('#qa_pwd').val()=='') $('#missing').append(noPwdMsg).alert();
-	else if($('#qa_pwd').val()!=$('#qa_repwd').val()) $('#missing').append(missMatchingPwdMsg).alert();
-	else{	
-		$.ajax({
-			type : 'post',
-			url : '/mallproject/board/qa/qaWrite.do',
-			data : {'qa_seq':$('#qa_seq').val(),
-					'qa_subject':$('#qa_subject').val(),
-					'user_id' : $('#user_id').val(),
-					'qa_content':$('#qa_content').val(),
-					'productid': $('#productid option:selected').val(),
-					'qa_pwd':$('#qa_pwd').val(),					
-					'qa_state':$('#qa_state').val()},
-			success : function(){
-				alert('성공적으로 문의가 접수되었습니다! 문의 게시판으로 이동합니다.');
-				window.location='/mallproject/board/qa/qaList.do';}
-			
-		});
-	}
-});
-
-$('#qaReset').click(function(){
-	window.location.reload();
-});
-
-$('#qaReturn').click(function(){
-	window.history.back();
-});
-
-$('#qaModifyBtn').click(function(){
-	$('#missingMod').empty();
-	if($('#qa_subject').val()=='') $('#missingMod').append(notitleMsg).alert();
-	else if($('#qa_content').val()=='') $('#missingMod').append(noContentMsg).alert();
-	else if($('#qa_pwd').val()=='') $('#missingMod').append(emptyPwdMsg).alert();
-	else if($('#qa_pwd').val()!=$('#qa_check').val()) $('#missingMod').append(missMatchingPwdMsg).alert();
-	else{	
-		$.ajax({
-			type : 'post',
-			url : '/mallproject/board/qa/qaModify.do',
-			data : {'qa_subject':$('#qa_subject').val(),
-					'qa_content':$('#qa_content').val(),
-					'productid': $('#productid option:selected').val(),
-					'qa_pwd':$('#qa_pwd').val(),					
-					'qa_state':$('#qa_state').val()},
-			success : function(){
-				alert('문의 게시글이 수정되었습니다.');
-				window.location='/mallproject/board/qa/qaView.do?qa_seq='+$('#qa_seq').val()+'&pg='+$('#pg').val();}
-		});
-	}
-});
-
 $('#productReturn').click(function(){
 	window.history.back();
 });

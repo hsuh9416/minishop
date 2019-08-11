@@ -45,26 +45,14 @@
 			          <a href="/minishop/admin/board/qaManage.do" class="list-group-item">일반문의 조회</a>
 			     </div>			
 			</c:if>			
-			<c:if test="${location=='writeForm'}">
-		        <h2>회원가입</h2>	
-			     <div class="list-group list-group-lg">	     
-			          <a href="/minishop/member/loginForm.do" class="list-group-item">로그인</a>			     
-			          <a href="javascript:history.back()" class="list-group-item">돌아가기</a>
-			     </div>			        	
-			</c:if>
-			<c:if test="${location=='loginForm'}">
-		        <h2>로그인</h2>	
-			          <a href="/minishop/member/writeForm.do" class="list-group-item">회원가입</a>			     	     
-			          <a href="javascript:history.back()" class="list-group-item">돌아가기</a>		        
-			</c:if>		
-			<c:if test="${location=='findForm'}">
-		        <h2>아이디/비밀번호<br>찾기</h2>
+			<c:if test="${location=='beforeLogin'}">
+		        <h2>WELCOME</h2>
 			     <div class="list-group list-group-lg">
 			          <a href="/minishop/member/writeForm.do" class="list-group-item">회원가입</a>			     
-			          <a href="/minishop/member/loginForm.do" class="list-group-item">로그인</a>			     
-			          <a href="javascript:history.back()" class="list-group-item">돌아가기</a>
+			          <a href="/minishop/member/loginForm.do" class="list-group-item">로그인</a>	
+			          <a href="/minishop/member/findForm.do" class="list-group-item">ID/PWD찾기</a>	
 			     </div>			
-			</c:if>
+			</c:if>				
 			<c:if test="${location=='board'}">
 		        <h2>고객 게시판</h2>			
 			     <div class="list-group list-group-lg">

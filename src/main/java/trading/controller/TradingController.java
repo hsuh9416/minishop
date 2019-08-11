@@ -181,7 +181,10 @@ public class TradingController {
 					index = shoppingCart.exists(number, shoppingCart.getCartList());
 					shoppingCart.getCartList().get(index).setCart_qty(cart_qty);
 					orderList.add(shoppingCart.getCartList().get(index));
-					orderList_JSON = shoppingCart.makeListToJsonElement(orderList);}}
+					orderList_JSON = shoppingCart.makeListToJsonElement(orderList);}
+				session.removeAttribute("cartList");
+				session.removeAttribute("shoppingCart");
+			}
 		
 		ModelAndView mav = new ModelAndView();
 			mav.addObject("orderList", orderList);		

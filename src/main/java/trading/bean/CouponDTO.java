@@ -14,8 +14,11 @@ public class CouponDTO {
 	private String grant_id;
 	private int coupon_no;
 	private Date coupon_duedate;
+	private String personal_code;
+	
 	private String coupon_name;
 	private int coupon_type;
 	private int discount_mount;
 	private Double discount_pecentage;
+	
 }

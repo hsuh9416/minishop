@@ -99,10 +99,10 @@ $('#findIdBtn').click(function(){
 			else{
 				alert('[조회결과]'+$('#findName').val()+'님의 아이디는 '+data+'입니다.');
 			}
-		}//success
-	});//ajax
-	}//else
-});//findId
+		}
+	});
+	}
+});
 
 $('#findPwdBtn').click(function(){
 	$('#findPwdResult').empty();
@@ -134,7 +134,7 @@ $('#findPwdBtn').click(function(){
 				alert('가입시에 인증하시 메일 주소로 임시번호가 발급되었습니다. 임시번호로 로그인하신 후 회원정보수정란에서 비밀번호를 변경해주세요.');
 				window.location='/minishop/member/loginForm.do';
 			}
-		}//success
-	});//ajax
-	}//else
-});//findPwd
+		}
+	});
+	}
+});

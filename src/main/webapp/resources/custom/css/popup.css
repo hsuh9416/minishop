@@ -1,0 +1,24 @@
+@charset "UTF-8";
+
+body{
+ background-color: #1e1e27;
+}
+h2.first{
+ color:white;
+}
+h2.second{
+ color:red;
+}
+
+a{
+font-size: 18pt;
+}
+a:link{color:#B5AEC4;}
+a:hover{color:white;}
+a:visited{color:#B5AEC4;}
+a:active {color:white;}
+p{color:red;}
+
+#sendQABtn{
+	height: 50px;
+}

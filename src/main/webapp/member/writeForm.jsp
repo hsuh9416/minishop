@@ -1,32 +1,34 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-	<link rel="stylesheet" type="text/css" href="/minishop/resources/custom/css/member.css">
-
-<div class="col-lg-8">       
-			   
+	<!--CSS Local LINK:START-->    
+<link rel="stylesheet" type="text/css" href="/minishop/resources/custom/css/member.css">
+	<!--CSS Local LINK:END-->	
+	    
+<div class="col-lg-8">
 	<div class="row" id="titleDiv">
-		<div class="col" align="center" style="padding-bottom: 20px;">
+		<div class="col">
 			<h3>회원 가입</h3>
-		</div>	
-	</div>
+		</div>
+	</div>  
+	
 	<form id="writeForm">	
 		<div class="form-row">	
-			<div class="form-group col-5">
+			<div class="form-group col-4">
 				<label for="name"><strong>이름</strong></label>
 				<input type="text" class="form-control" name="name" id="name" data-toggle="tooltip" data-placement="right" title="회원님의 이름을 입력하세요." placeholder="이름"/>
 			</div>
-			<div class="form-group col-5">
+			<div class="form-group col-4">
 				<label for="id"><strong>아이디</strong></label>
 				<input type="text" class="form-control" name="id" id="id" data-toggle="tooltip" data-placement="right" title="아이디를 입력하세요" placeholder="아이디" >
 			</div>					  		  	
 		</div>	
 		<div class="form-row">
-			<div class="form-group col-5">
+			<div class="form-group col-4">
 				<label for="pwd"><strong>비밀번호</strong></label>
 				<input type="password" class="form-control" name="pwd" id="pwd" data-toggle="tooltip" data-placement="bottom" title="비밀번호를 입력하세요." placeholder="비밀번호"/>
 			</div>
-			<div class="form-group col-5">
+			<div class="form-group col-4">
 				<label for="repwd"><strong>재입력</strong></label>
 				<input type="password" class="form-control" name="repwd" id="repwd" placeholder="비밀번호 재입력 " data-toggle="tooltip" data-placement="bottom" title="비밀번호와 일치해야 합니다."/>
 			</div>    
@@ -48,15 +50,15 @@
 						<option value="naver.com">naver.com</option>
 				</select>
 			</div>
-			<div class="form-group col-1">
+			<div class="form-group col-md-1">
 				<a id="goConfirm"><i class="fas fa-question">인증</i></a> 
 			</div>
 		</div>
 		<div id="confirmDiv" class="form-row">
-			<div class="form-group col-5"> 
+			<div class="form-group col-4"> 
 				<input type="text" class="form-control" id="confirmNum" name="confirmNum" placeholder="인증번호 입력"/>
 			</div>
-			<div class="form-group col-4"> 
+			<div class="form-group col-md-4"> 
 				<button class="btn btn-outline-info" id="getConfirm" name="getConfirm" type="button">인증받기</button> 
 				<button class="btn btn-outline-success" id="doConfirm" name="doConfirm" type="button">인증확인</button> 				      
 				</div>	    
@@ -71,11 +73,11 @@
 					<option value="019">019</option>
 				</select>
 			</div>	
-			<div class="form-group col-1">-</div>    
+			<span>-</span>  
 			<div class="form-group col-3">
 				<input type="text" class="form-control" id="tel2" name="tel2" value="${memberDTO.tel2}">
 			</div>
-			<div class="form-group col-1">-</div>      
+			<span>-</span>      
 			<div class="form-group col-3">
 				<input type="text" class="form-control" name="tel3" id="tel3" value="${memberDTO.tel3}">
 			</div>
@@ -92,21 +94,14 @@
 	</form>
 		<div class="form-row" style="padding-top: 20px;">
 			<div class="form-group col"  align="center">
-				<a href="/minishop/member/loginForm.do" style="padding-right: 20px;"><i class="fas fa-sign-in-alt">로그인하기</i></a>				     		     
-				<a href="javascript:history.back()" ><i class="fas fa-undo-alt">돌아가기</i></a>
+				<a class="button btn-outline-info" href="/minishop/member/loginForm.do" style="padding-right: 20px;"><i class="fas fa-sign-in-alt">로그인하기</i></a>				     		     
+				<a class="button btn-outline-info" href="javascript:history.back()" ><i class="fas fa-undo-alt">돌아가기</i></a>
 			</div>				
 		</div> 					
 </div>
 
-	<script type="text/javascript" src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
-	<script type="text/javascript" src="/minishop/resources/custom/js/member.join.js"></script>
-
-
-	
-
-
-
-
-
-
+	<!--JavaScript Local LINK:START-->
+<script type="text/javascript" src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script type="text/javascript" src="/minishop/resources/custom/js/member/member.join.js"></script>
+	<!--JavaScript Local LINK:END-->
 

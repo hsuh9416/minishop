@@ -4,12 +4,12 @@
 
 /* view form, order form, modify form */
 
-.memberView-container{
-	width: 100%;
-	background-repeat: no-repeat;
-	background-size: cover;
-	background-position: center center;
-	margin-top: 160px;
+*{
+	font-family: 'Hanna', fantasy;
+}
+
+.viewTitle{
+	text-align:right;	
 }
 
 #Space{
@@ -94,6 +94,11 @@ box-shadow: 0 0 0 0 !important;
 
 }
 
+.memberBtnDiv input{
+	width: 100%;
+	height: 40px;
+	
+}
 .remember{
 color: white;
 }
@@ -174,3 +179,15 @@ font-weight: bold;
   background-color:#ff0000 !important;
 }
 
+.card-header {
+    padding: .75rem 1.25rem;
+    margin-bottom: 0;
+    background-color: #212529;
+    color: white;
+}
+
+.btn-link {
+    font-weight: 400;
+    color: white;
+    text-decoration: none;
+}

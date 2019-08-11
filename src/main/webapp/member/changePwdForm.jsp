@@ -1,6 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
- <link rel="stylesheet" type="text/css" href="/minishop/resources/bootstrap4/css/bootstrap.min.css">    
+    
+   	<!--CSS Local LINK:START-->
+<link rel="stylesheet" type="text/css" href="/minishop/resources/bootstrap4/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="/minishop/resources/fontawesome5/css/all.css">
+<link rel="stylesheet" type="text/css" href="/minishop/resources/custom/css/member.css">
+<link rel="stylesheet" type="text/css" href="/minishop/resources/custom/css/popup.css">
+ 	<!--CSS Local LINK:END-->
+
  <div class="container">       
  	<div class="row" id="titleDiv">
  		<div class="col" align="center">

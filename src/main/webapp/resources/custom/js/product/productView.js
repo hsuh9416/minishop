@@ -33,7 +33,7 @@ $('#cart_qty').change(function (e){
 $('#cart_minus').click(function(e){
 	e.preventDefault();	
 	$('#totalCost').empty();
-	var num = $('#cart_qty').val();
+	var num = parseInt($('#cart_qty').val(),10);
 	num=num-1;	
 	if(num<1) {
 		alert('더이상 줄일수 없습니다.');
@@ -60,10 +60,11 @@ $('#cart_plus').click(function(e){
 
 //5. 장바구니에 담는 버튼 클릭시 이벤트
 $('#putCartBtn').click(function(){
-	if($('#cart_qty').val()>$('#stock').val()){
-		alert('재고 이상으로 담을 수 없습니다. [현재재고 :'+$('#stock').val()+'(개)]');
+	var num = parseInt($('#cart_qty').val(),10);	
+	if(num>stock){
+		alert('재고 이상으로 담을 수 없습니다. [현재재고 :'+stock+'(개)]');
 	}
-	else if($('#cart_qty').val()==0){
+	else if(num<1){
 		alert('최소 1개 이상 주문하셔야 합니다.');
 	}
 	else{

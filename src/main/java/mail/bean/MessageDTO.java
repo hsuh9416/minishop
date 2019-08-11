@@ -22,4 +22,6 @@ public class MessageDTO {
  private String content;
  @JsonFormat(pattern="yyyy.MM.dd")
  private Date sendDate;
+ 
+ private String code;
 }

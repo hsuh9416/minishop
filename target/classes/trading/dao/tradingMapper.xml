@@ -29,6 +29,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	UPDATE SHOPPINGCART set cartList_json=#{cartList_json} where MEMBERID=#{memberid}
 </update>
 
+<!-- 쿠폰 : 쿠폰 발급 -->
+<insert id="setCoupon" parameterType="coupon">
+	INSERT into BENEFIT_GRANT values(#{grant_id},#{coupon_no},#{coupon_duedate},#{personal_code})
+</insert>
+
+<!-- 주문 : 비밀번호 변경 -->
+<update id="setNewOrderPwd" parameterType="order">
+	UPDATE ORDERS set order_pwd=#{order_pwd} where order_id=#{order_no}
+</update>
+
 </mapper>
 
 

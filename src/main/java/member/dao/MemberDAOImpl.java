@@ -110,5 +110,12 @@ public class MemberDAOImpl implements MemberDAO {
 	}
 
 //----------QAMESSAGE:END----------//		
-	
+
+//----------QAMESSAGE:START----------//	
+	@Override
+	public void deleteMemberAdmin(Map<String, String> map) {
+		sqlSession.insert("memberSQL.deleteMemberAdmin",map);		
+	}	
+//----------QAMESSAGE:END----------//
+
 }

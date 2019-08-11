@@ -3,8 +3,9 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  
 
 
+	<!--CSS Local LINK:START-->    
 <link rel="stylesheet" type="text/css" href="/minishop/resources/custom/css/member.css">
-
+	<!--CSS Local LINK:END-->	
     
  <div class="memberView-container">
  	<div class="container">

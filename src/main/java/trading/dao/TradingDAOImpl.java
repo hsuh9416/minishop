@@ -57,8 +57,34 @@ public class TradingDAOImpl implements TradingDAO {
 		
 		if(existOne!=null) sqlSession.update("tradingSQL.updateCartList", shoppingCart);	
 		else sqlSession.insert("tradingSQL.insertCartList", shoppingCart);		
-	}	
-	
+	}
+
 //----------- 장바구니 : END ----------//	
+
+//----------- 쿠폰 : START ----------//
 	
+	//1.쿠폰 발급
+	@Override
+	public void setCoupon(CouponDTO couponDTO) {
+		sqlSession.insert("tradingSQL.setCoupon",couponDTO);
+	}		
+	
+//----------- 쿠폰 : END ----------//	
+
+//----------- 주문 : START ----------//
+	
+	//1.주문서 목록 호출
+	@Override
+	public List<OrderDTO> getOrderList(String id) {
+		return sqlSession.selectList("tradingSQL.getOrderList", id);
+	}		
+	//2.주문서의 새 비밀번호 발급
+	@Override
+	public void setNewOrderPwd(OrderDTO orderDTO) {
+		sqlSession.update("tradingSQL.setNewOrderPwd", orderDTO);
+	}
+
+		
+//----------- 쿠폰 : END ----------//	
+
 }

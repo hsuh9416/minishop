@@ -64,15 +64,16 @@ public class MailingImpl implements Mailing {
 	public MessageDTO sendWelcomeMail(MessageDTO messageDTO) {
 		messageDTO.setSender("[Kissin' Bugs]");		  
 		messageDTO.setSubject("[Kissin' Bugs]회원 가입하신 것을 환영합니다.");
-		String Discoutcode = UUID.randomUUID().toString(); 
+		String PersonalCode = UUID.randomUUID().toString(); 
 		String welcomeText = "안녕하세요, Kissin' Bugs에 회원이 되신 것을 환영합니다.\n"+
 				"현재 저희 샵에서는 신규가입 회원님께 [전품목 20% 할인 쿠폰]을 증정하는 이벤트를 진행하고 있습니다. \n"+
 				"일부 상품에 대하여 할인이 적용되지 않는 경우가 있으므로 이 점 양해 부탁드립니다.\n"+
 				"========================================\n"+
-				"증정되는 쿠폰의 코드 넘버는 ["+Discoutcode+"]입니다.\n"+
-				"========================================\n"+
+				"증정되는 쿠폰의 코드 넘버는 [9999]이면 PersonalCode는 ["+PersonalCode+"]입니다.\n"+
+				"========================================\n"+			
 				"신감각 편집샵 Kissin' Bugs와 함께 설레는 하루되시기 바랍니다.\n\n"+
 				"\t\t\t\t\t[Kissin' Bugs] 직원 일동 드림";		
+		messageDTO.setCode(PersonalCode);
 		messageDTO.setContent(welcomeText);		
 		return messageDTO;
 	}
@@ -91,7 +92,25 @@ public class MailingImpl implements Mailing {
 
 	@Override
 	public MessageDTO sendGoodbyeMail(MessageDTO messageDTO) {
-		// TODO Auto-generated method stub
+		messageDTO.setSender("[Kissin' Bugs]");		  
+		messageDTO.setSubject(messageDTO.getReceiver()+" 회원님의 회원 탈퇴 요청이 정상적으로 접수되었습니다.");
+		String goodByeText = "회원님의 탈퇴 요청이 정상적으로 접수되었습니다.\n"+
+				"탈퇴 요청을 한 시점부터 회원님의 계정은 비활성화 상태로 전환되오나, \n"+
+				"일정한 경우에 복구가 가능하도록 14일간 회원님의 정보는 유지됩니다.\n"+
+				"14일이  경과된 경우 기존의 회원님의 정보는 안전하게 삭제되며, 복구를 요청하실 수 없습니다.\n"+
+				"기존에 주문 완료가 된 상품에 대해서는 주문번호로 접속하여 접근하실 수 있으며,\n"+
+				"주문번호에 대한 비밀번호는 임시로 발급된 다음의 비밀번호를 공통적으로 적용합니다.\n"+					
+				"========================================\n"+
+				"회원님의 주문서에 대한 임시 비밀번호는 ["+messageDTO.getCode()+"]입니다.\n"+				
+				"========================================\n"+
+				"아직 정산되지 않은 주문완료 상품의 번호 목록을 첨부하였으므로 확인 바랍니다.\n"+	
+				"주문목록을 보관하고 계시되, 해당 목록을 유실하시거나 주문번호를 잊어 버리신 경우에\n"+					
+				"주문번호에 대한 조회는 저의 샵의 고객센터에 유선상으로 또는 메일로 직접 문의 주시기 바랍니다.\n\n"+
+				"탈퇴한 이후에도 고객님은 언제든 부담없는 가입이 가능하십니다.\n"+			
+				"Kissin' Bugs은 고객님의 재방문을 언제든 환영합니다.\n"+
+				"다시 뵙게될 날까지 고객님의 설레는 매일이 계속되길 진심으로 기원합니다.\n\n"+				
+				"\t\t\t\t\t[Kissin' Bugs] 직원 일동 드림";		
+		messageDTO.setContent(goodByeText);
 		return messageDTO;	
 	}
 

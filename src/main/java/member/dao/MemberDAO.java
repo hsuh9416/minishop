@@ -26,5 +26,8 @@ public interface MemberDAO {
 //----------MEMBER:END----------//
 //----------QAMESSAGE:START----------//		
 void memberQASend(MessageDTO messageDTO);
-//----------QAMESSAGE:END----------//	
+//----------QAMESSAGE:END----------//
+//----------MEMBER_DELETE:START----------//	
+void deleteMemberAdmin(Map<String, String> map);
+//----------MEMBER_DELETE:END----------//
 } 

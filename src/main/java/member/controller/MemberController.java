@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -29,6 +30,7 @@ import mail.bean.MessageDTO;
 import member.bean.MemberDTO;
 import member.dao.MemberDAO;
 import product.bean.ProductDTO;
+import trading.bean.CouponDTO;
 import trading.bean.OrderDTO;
 import trading.bean.ShoppingCart;
 import trading.dao.TradingDAO;
@@ -64,7 +66,7 @@ public class MemberController {
 	public ModelAndView loginForm(){
 		
 		ModelAndView mav = new ModelAndView();
-			mav.addObject("location", "loginForm");		
+			mav.addObject("location", "beforeLogin");		
 			mav.addObject("display", "/member/loginForm.jsp");
 			mav.addObject("menu", "/template/left.jsp");			
 			mav.setViewName("/main/home");
@@ -168,7 +170,7 @@ public class MemberController {
 	public ModelAndView writeForm(){
 		
 		ModelAndView mav = new ModelAndView();
-			mav.addObject("location", "writeForm");		
+			mav.addObject("location", "beforeLogin");		
 			mav.addObject("display", "/member/writeForm.jsp");
 			mav.addObject("menu", "/template/left.jsp");			
 			mav.setViewName("/main/home");
@@ -232,7 +234,13 @@ public class MemberController {
 				
 			AdminDTO adminDTO = adminDAO.getAdmin();
 				mailing.sendMail(adminDTO, messageDTO);
-			
+				
+				CouponDTO couponDTO = new CouponDTO();
+					couponDTO.setGrant_id(memberDTO.getId());
+					couponDTO.setCoupon_no(9999);
+					couponDTO.setPersonal_code(messageDTO.getCode());		
+					tradingDAO.setCoupon(couponDTO);
+				
 				return "success";}	
 		else return "fail";
 	}
@@ -242,7 +250,7 @@ public class MemberController {
 	public ModelAndView findForm() {
 		
 		ModelAndView mav = new ModelAndView();
-		  	mav.addObject("location", "memberfind");
+		  	mav.addObject("location", "beforeLogin");
 			mav.addObject("display", "/member/findForm.jsp");
 			mav.setViewName("/main/home");
 	
@@ -422,7 +430,7 @@ public class MemberController {
 		return mav;
 	}
 	
-	//20.개인문의 창 띄우기 : 모달창->차후 팝업창으로 변경할 것
+	//20.개인문의 창 띄우기
 	@RequestMapping(value="/personalQAForm.do",method = RequestMethod.GET)
 	public ModelAndView personalQAForm() {
 		ModelAndView mav = new ModelAndView();
@@ -449,7 +457,7 @@ public class MemberController {
 		memberDAO.memberQASend(messageDTO);	
 	}
 	
-	//22. 탈퇴 요청 띄우기 : 모달창->차후 전면 수정
+	//22. 탈퇴 요청 띄우기 
 	@RequestMapping(value="/memberDelete.do",method = RequestMethod.GET)
 	public ModelAndView memberDelete() {
 		ModelAndView mav = new ModelAndView();
@@ -458,29 +466,44 @@ public class MemberController {
 		return mav;
 	}	
 
-	//23. 탈퇴 처리 ->차후 전면 수정
+	//23. 탈퇴 요청 처리 
 	@RequestMapping(value="/delete.do",method=RequestMethod.POST)
 	@ResponseBody
-	public String delete(@RequestParam String pwd,HttpServletRequest request,HttpServletResponse response, HttpSession session){
+	public String delete(@RequestParam Map<String,String> map,HttpServletRequest request,HttpServletResponse response, HttpSession session){
 		
 		MemberDTO memberDTO  = (MemberDTO)session.getAttribute("memberDTO");
+		String pwd=map.get("deletePwd");
 		
-		if(memberDTO != null) {		String objectPwd = memberDTO.getPwd();
-			if(passwordEncoder.matches(pwd, objectPwd)) {
-				memberDAO.deleteMember(memberDTO.getId());}
-			else return "fail";}
-		
-		Cookie loginCookie = WebUtils.getCookie(request, "loginCookie");
-		if(loginCookie != null) {
-			loginCookie.setPath("/");
-			loginCookie.setMaxAge(0);
-			response.addCookie(loginCookie);
-			memberDAO.keepLogin(memberDTO.getId(),"NONE",new Date());
-		}
-			session.removeAttribute("memberDTO");
-			session.invalidate();
+		if(memberDTO != null) {		
+			String objectPwd = memberDTO.getPwd();
 			
-		return "success";		
+			if(passwordEncoder.matches(pwd, objectPwd)) {
+					memberDAO.deleteMember(memberDTO.getId());
+					
+					map.put("id",memberDTO.getId());
+					memberDAO.deleteMemberAdmin(map);
+				List<OrderDTO> orderList = tradingDAO.getOrderList(memberDTO.getId());
+				String orderPwd = UUID.randomUUID().toString(); 
+					if(orderList!=null) {
+						for(OrderDTO dto : orderList) {
+								dto.setOrder_id(orderPwd);
+								tradingDAO.setNewOrderPwd(dto);}}		
+					
+				MessageDTO messageDTO = new MessageDTO();
+					messageDTO.setCode(orderPwd);
+					messageDTO.setReceiver(memberDTO.getName()+"님");
+					messageDTO.setReceiveAddr(map.get("email"));
+					messageDTO = mailing.sendGoodbyeMail(messageDTO);
+				
+				AdminDTO adminDTO = adminDAO.getAdmin();
+					mailing.sendMail(adminDTO, messageDTO);
+		
+					
+				return "submitSuccess";
+			}
+			else return "pwdCheckFailed";}
+
+		return "fail";		
 	}	
 	
 }

@@ -15,11 +15,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		
 	<!-- 회원가입 -->
 	<insert id="write" parameterType="member">
-	begin
 		insert into member(SEQ,NAME,ID,PWD,EMAIL1,EMAIL2,TEL1,TEL2,TEL3,REGISTERDATE) 
-				values(member_seq.nextval,#{name},#{id},#{pwd},#{email1},#{email2},#{tel1},#{tel2},#{tel3},SYSDATE);	
-		insert into authorities(username,authority) values(#{id},'ROLE_USER');						
-	end;		
+				values(member_seq.nextval,#{name},#{id},#{pwd},#{email1},#{email2},#{tel1},#{tel2},#{tel3},SYSDATE)		
 	</insert>
 	
 	 <!-- 회원 정보수정 -->
@@ -75,6 +72,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- QAMESSAGE 회원 1 대 1 문의 사항 저장 -->
 	<insert id="memberQASend" parameterType="message">
 		insert into QAMESSAGE values(message_seq.nextval,#{sender},#{receiver},#{sendAddr},#{receiveAddr},#{subject},#{content},SYSDATE)
+	</insert>	
+
+	<!-- MEMBER_DELETE 탈퇴 요청한 회원 정보 저장 -->
+	<insert id="deleteMemberAdmin" parameterType="java.util.Map">
+		insert into MEMBER_DELETE values(#{id},#{dReason},#{etcDetail},SYSDATE)
 	</insert>	
 	
 </mapper>
