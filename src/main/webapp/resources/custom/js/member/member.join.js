@@ -1,7 +1,4 @@
-/**
- *  회원 가입 관련 자바스크립트
- */
-
+//0. 공통 변수 설정
 var checkNum = '';
 
 var noIdMsg = '<div class="alert alert-warning alert-dismissible fade show" role="alert">아이디를 입력해주세요'+
@@ -38,15 +35,17 @@ var notAppropriatePwd = '<div class="alert alert-warning alert-dismissible fade 
 '비밀번호는 영문자,숫자,특수문자을 각각 하나 이상 포함하여 8자리 이상 16자리 이하로 설정하셔야 합니다'+
 '<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+
 '<span aria-hidden="true">&times;</span></button></div>';
+//1. 아이디 유효성(5자리 이상)
 var checkID = /^.{5,}$/;	
-//아이디는 5자리 이상 필수
+//2. 비밀번호 유효성(하나 이상의 영문자, 하나 이상의 숫자, 하나 이상의 특수문자, 최소 8자 최대 16자)
 var reg = /^(?=.*[a-zA-Z])(?=.*[\~\․\!\@\#\$\%\^\&\*\(\)\_\-\+\=\[\]\|\\\;\:\\'\"\<\>\,\.\?\/])(?=.*[0-9]).{8,16}$/;
-//하나 이상의 영문자, 하나 이상의 숫자, 하나 이상의 특수문자, 최소 8자 최대 16자
+
+//3.최초 시작시 인증창 안 보이기
 $(document).ready(function(){
 	$('#confirmDiv').hide();
 });
 
-/*메일에서 셀렉트 박스 선택지 변경시*/
+//4. 메일에서 셀렉트 박스 선택지 변경시 이벤트
 $('#inputEmail').change(function() {
 	var email2 = $('#inputEmail option:selected').val();
 	$('#email2').val(email2);
@@ -55,7 +54,7 @@ $('#inputEmail').change(function() {
 });
 
 
-/*각 항목의 조건을 충족시키면 툴팁이 더이상 발생하지 않는다.*/
+//5. 미작성 등 tooltip 경고창 on/off
 $('#name').focusout(function(){
 	 if($('#name').val()!=''){ 
 		 $('#name').tooltip('disable');
@@ -114,6 +113,7 @@ $('#email2').change(function() {
 	 }
 });
 
+//6. 회원 가입 최종 승인 이벤트
 $('#writeBtn').click(function(){
 	$('#confirmDiv').hide();
 	$('#writeResult').empty();
@@ -168,11 +168,12 @@ $('#writeBtn').click(function(){
 						$('#writeResult').append(failMsg).alert();				
 					}
 				}				
-			});//에이작스
+			});
 		} 
-	});//제출
-	
-	$('#id').focusout(function(){
+	});
+
+//7. 아이디 중복 체크 이벤트
+$('#id').focusout(function(){
 		$('#writeResult').empty();
 		if($('#id').val()=='') $('#writeResult').append(noIdMsg).alert();
 		else if(checkID.test($('#id').val())==false){
@@ -191,10 +192,10 @@ $('#writeBtn').click(function(){
 						$('#checkId').val($('#id').val());
 					}
 				}
-			});//에이작스
-});//아이디 중복체크
+			});
+});
 	
-	//이메일 인증창 열기
+//8. 이메일 인증창 열기
 $('#goConfirm').click(function(){
 	$('#confirmDiv').hide();
 	if($('#email1').val()==''|| $('#email2').val()=='') {
@@ -205,6 +206,7 @@ $('#goConfirm').click(function(){
 	}
 });	
 
+//9. 이메일 인증하기 이벤트(인증 후 창닫침까지)
 $('#getConfirm').click(function(){		
 		var email = $('#email1').val()+'@'+$('#email2').val();
 
@@ -235,4 +237,3 @@ $('#doConfirm').click(function(){
 	}
 		$('#confirmDiv').hide();	
 });
-

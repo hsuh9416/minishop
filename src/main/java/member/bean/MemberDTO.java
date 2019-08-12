@@ -33,4 +33,5 @@ public class MemberDTO{
 	private String sessionId;
 	private Date sessionLimit;
 
+
 }

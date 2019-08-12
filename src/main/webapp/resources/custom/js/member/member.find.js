@@ -1,11 +1,10 @@
-/**
- * 아이디/비밀번호 조회 및 변경 관련 자바스크립트
- */
+//0. 공통 변수
 var notexistMsg = '<div class="alert alert-danger alert-dismissible fade show" role="alert">'
 +'<strong>[조회결과 없음]</strong>해당하는 정보가 존재하지 않습니다.'+
 '<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+
 '<span aria-hidden="true">&times;</span></button></div>';
-/*툴팁 설정*/
+
+//1. 경고창 on/off
 $('#findName').focusout(function(){
 	 if($('#findName').val()!=''){ 
 		 $('#findName').tooltip('disable');
@@ -14,6 +13,7 @@ $('#findName').focusout(function(){
 		 $('#findName').tooltip('enable');
 	 }
 });
+
 $('#findIdemail1').focusout(function(){
 	 if($('#findIdemail1').val()!=''){ 
 		 $('#findIdemail1').tooltip('disable');
@@ -39,6 +39,7 @@ $('#findPwdemail1').focusout(function(){
 		 $('#findPwdemail1').tooltip('enable');
 	 }
 });
+
 $('#findPwdemail2').focusout(function(){
 	 if($('#findPwdemail2').val()!=''){ 
 		 $('#findPwdemail2').tooltip('disable');
@@ -47,6 +48,7 @@ $('#findPwdemail2').focusout(function(){
 		 $('#findPwdemail2').tooltip('enable');
 	 }
 });
+
 $('#findID').focusout(function(){
 	 if($('#findID').val()!=''){ 
 		 $('#findID').tooltip('disable');
@@ -56,20 +58,15 @@ $('#findID').focusout(function(){
 	 }
 });
 
-/*메일에서 셀렉트 박스 선택지 변경시*/
+//2. 직접 입력 외 readonly 처리 
 $('#findIdInputEmail').change(function() {
 	var email2 = $('#findIdInputEmail option:selected').val();
 	$('#findIdemail2').val(email2);
 	if($('#findIdInputEmail option:selected').val()=='') $('#findIdemail2').attr('readonly',false);
 	else $('#findIdemail2').attr('readonly',true);
 });
-$('#findPwdInputEmail').change(function() {
-	var email2 = $('#findPwdInputEmail option:selected').val();
-	$('#findPwdemail2').val(email2);
-	if($('#findPwdInputEmail option:selected').val()=='') $('#findPwdemail2').attr('readonly',false);
-	else $('#findPwdemail2').attr('readonly',true);
-});
 
+//3. 아이디 검색 이벤트 수행
 $('#findIdBtn').click(function(){
 	$('#findIdResult').empty();
 	$('#findName').tooltip('disable');
@@ -104,6 +101,7 @@ $('#findIdBtn').click(function(){
 	}
 });
 
+//4. 비밀번호 재설정 이벤트 수행(비밀번호 재설정은 다시 로그인해서 회원 정보로 수정하도록 유도함)
 $('#findPwdBtn').click(function(){
 	$('#findPwdResult').empty();
 	$('#findID').tooltip('disable');

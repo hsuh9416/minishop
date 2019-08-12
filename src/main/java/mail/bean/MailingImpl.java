@@ -9,7 +9,6 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-
 import org.springframework.stereotype.Component;
 
 import admin.bean.AdminDTO;
@@ -150,6 +149,10 @@ public class MailingImpl implements Mailing {
 			
 			//메일 내용
 			message.setText(messageDTO.getContent());
+			
+			//파일 첨부 여부 및 처리(구현 중)
+			if(messageDTO.getMailData()!=null) {
+			}
 			
 			Transport.send(message);
 			

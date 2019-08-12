@@ -1,10 +1,12 @@
-/**
- * 회원 수정 관련 메소드
- */
+//1.시작시 셋팅
+$(document).ready(function(){
+	$('input[name=email1]').val($('#email1').val());	
+	$('input[name=email2]').val($('#email2').val());
+	$('input[name=tel1]').val($('#tel1').val());
+	$('#wrap').hide();
+});
 
-
-
-/*메일에서 셀렉트 박스 선택지 변경시*/
+//2. 이메일 창 이벤트
 $('#emailInput').change(function() {
 	var email2 = $('#emailInput option:selected').val();
 	$('#email2').val(email2);
@@ -12,7 +14,7 @@ $('#emailInput').change(function() {
 	else $('#email2').attr('readonly',true);
 });
 
-//이름과 비밀번호의 조건을 충족시키면 툴팁이 더이상 발생하지 않는다.
+//3. 미작성 등 경고창 on/off
 $('#name').focusout(function(){
 
 	 if($('#name').val()!=''){ 
@@ -22,6 +24,7 @@ $('#name').focusout(function(){
 		 $('#name').tooltip('enable');
 	 }
 });
+
 $('#repwd').focusout(function(){
 	$('#pwdDiv').empty();
 	 if($('#repwd').val()!=''){ 
@@ -46,14 +49,14 @@ $('#repwd').focusout(function(){
 	 }
 });
 
-//비밀번호 변경창 popup
+//4. 비밀번호 변경창 popup
 $('#pwdChangeBtn').click(function(){
 	 var pwdPop = window.open('/minishop/member/changePwdForm.do','비밀번호 변경','width=400,height=400,resizable=no');		
 });
 
 
+//5. 수정 반영 이벤트
 $('#modifyBtn').click(function(){
-	//alert('수정하기!');
 	 $('#name').tooltip('disable');
 	 $('#pwd').tooltip('disable');
 	 $('#repwd').tooltip('disable');	 
@@ -77,17 +80,18 @@ $('#modifyBtn').click(function(){
 				else if(data=='fail') {
 					alert('오류가 발생하여 수정에 실패하였습니다. 다시 한번 시도해주세요.');
 					window.location.reload();
-				}//else if
-			}//success			
-		});//ajax
-	}//else
-});//수정버튼	
+				}
+			}		
+		});
+	}
+});
 
+//6.리셋
 $('#resetBtn').click(function(){
 	window.location.reload();
-});//리셋
+});
 
-//이메일 재설정
+//7.이메일 재설정창 열기
 $('#changeEmailBtn').click(function(){
-	 var pwdPop = window.open('/minishop/member/changeEmailForm.do','이메일 변경','width=800,height=200,resizable=no');	
+	 var pwdPop = window.open('/minishop/member/changeEmailForm.do','이메일 변경','width=780,height=200,resizable=no');	
 });

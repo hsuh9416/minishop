@@ -1,3 +1,4 @@
+//1. 미작성 등 경고창 on/off
 $('#QAreturnAddr').focusout(function(){
 	 if($('#QAreturnAddr').val()!=''){ 
 		$('#QAreturnAddr').tooltip('disable');
@@ -16,7 +17,7 @@ $('#QAdetail').focusout(function(){
 	  }
 });
 
-
+//2. 1:1문의 접수 이벤트
 $('#sendQABtn').click(function(){
 		$('#QAreturnAddr').tooltip('disable');
 		$('#QAdetail').tooltip('disable');	

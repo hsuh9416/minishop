@@ -38,5 +38,5 @@
 </div>
 	<!--JavaScript Additional LINK:START-->
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=e210ac65c606d46bf6ac7db34452f668"></script>
-<script type="text/javascript" src="/minishop/resources/custom/js/map.kakao.js"></script>
+<script type="text/javascript" src="/minishop/resources/custom/js/general/map.kakao.js"></script>
 	<!--JavaScript Additional LINK:END-->

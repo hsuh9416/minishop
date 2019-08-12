@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
 <div class="col-lg-8">
 	<div class="row" id="titleDiv">
 		<div class="col" align="center" style="padding-bottom: 20px;">
@@ -28,7 +29,25 @@
 				<br>
 				상세 내용은 <font style="color:red;">아래</font>를 확인해주시기 바랍니다.
 			</h6>												
-			<div class="red_button shop_now_button"><a href="#">약관보기</a></div>
+			<div class="red_button shop_now_button"><a href="#policyPop" data-toggle="modal" data-target="#policyPop">약관보기</a></div>
 		</div>
 	</div>
+</div>
+
+<div class="modal fade" id="policyPop" tabindex="-1" role="dialog" aria-labelledby="policyTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header justify-content-center">
+        <h5 class="modal-title" id="policyTitle">보통거래약관</h5>
+      </div>
+      <div class="modal-body">
+        <textarea>
+         	텍스트 파일 불러오기
+        </textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-block btn-light" data-dismiss="modal">닫기</button>
+      </div>
+    </div>
+  </div>
 </div>

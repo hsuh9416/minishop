@@ -1,3 +1,4 @@
+//1. 미작성 등 경고창 on/off
 $('#dreturnAddr').focusout(function(){
 	 if($('#dreturnAddr').val()!=''){ 
 		$('#dreturnAddr').tooltip('disable');
@@ -7,7 +8,7 @@ $('#dreturnAddr').focusout(function(){
 		 }
 });
 
-
+//2. 탈퇴 요청 이벤트 수행
 $('#deleteBtn').click(function(){
 	$('#dreturnAddr').tooltip('disable');
 	if($('#dreturnAddr').val()==''){ 

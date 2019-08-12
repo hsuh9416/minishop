@@ -495,6 +495,12 @@ public class MemberController {
 					messageDTO.setReceiveAddr(map.get("email"));
 					messageDTO = mailing.sendGoodbyeMail(messageDTO);
 				
+				/*주문 목록 설정
+				FileMaker filemaker = new FileMaker();
+				File file = filemaker.makeOrderList(memberDTO.getName(),orderList);
+				*/
+				System.out.println("고객에게 주문 목록을 전송하기 바랍니다.");
+				
 				AdminDTO adminDTO = adminDAO.getAdmin();
 					mailing.sendMail(adminDTO, messageDTO);
 		

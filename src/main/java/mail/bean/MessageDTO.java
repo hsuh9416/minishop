@@ -1,5 +1,6 @@
 package mail.bean;
 
+import java.io.File;
 import java.util.Date;
 
 import org.springframework.stereotype.Component;
@@ -24,4 +25,6 @@ public class MessageDTO {
  private Date sendDate;
  
  private String code;
+ 
+ private File mailData;
 }

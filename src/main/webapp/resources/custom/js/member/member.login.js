@@ -1,6 +1,4 @@
-/**
- * 로그인용 js 모음
- */
+//0. 공통 변수
 var alertMsg = '<div class="alert alert-danger alert-dismissible fade show" role="alert">'+
 '<strong>로그인 실패!</strong> 아이디 또는 비밀번호가 일치하지 않습니다.<br> 다시 한번 확인 후 시도해주세요.'+
 '<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+
@@ -10,7 +8,8 @@ var invalidateMsg = '<div class="alert alert-danger alert-dismissible fade show"
 '<strong>탈퇴한 멤버</strong> 이미 탈퇴한 멤버 정보입니다.<br> 계정 복원 등의 문의 사항은 담당자에 연락주시기 바랍니다.'+
 '<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+
 '<span aria-hidden="true">&times;</span></button></div>'
-/*일반 로그인*/
+
+//1. 미작성 등 경고창 on/off
 $('#loginId').focusout(function(){
 	 if($('#loginId').val()!=''){ 
 		 $('#loginId').tooltip('disable');
@@ -19,6 +18,7 @@ $('#loginId').focusout(function(){
 		 $('#loginId').tooltip('enable');
 	 }
 });
+
 $('#loginPwd').focusout(function(){
 	 if($('#loginPwd').val()!=''){ 
 		 $('#loginPwd').tooltip('disable');
@@ -28,7 +28,7 @@ $('#loginPwd').focusout(function(){
 	 }
 });
 
-//일반 로그인시
+//2. 로그인 이벤트
  $('#loginBtn').click(function(){ 
 	 $('#loginResult').empty();
 	 $('#loginId').tooltip('disable');
@@ -75,15 +75,15 @@ $('#loginPwd').focusout(function(){
 					else if(data=='fail'){
 						$('#loginResult').append(alertMsg).alert();
 					}
-			 }//function
-		 });//ajax
+			 }
+		 });
 
-	 }//else
+	 }
 	 
- });//로그인 버튼
+ });
 
 
- //아이디/비밀번호 검색창 이동
+//3. 아이디/비밀번호 검색창 이동
  $('#findBtn').click(function(){
 		window.location.href='/minishop/member/findForm.do';	
 	}); 

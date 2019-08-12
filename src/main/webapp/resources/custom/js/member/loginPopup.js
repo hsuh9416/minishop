@@ -56,15 +56,13 @@ $('#mloginBtn').click(function(){
  					else if(data=='fail'){
  						$('#loginP').append('<strong>로그인 실패!</strong> 아이디 또는 비밀번호가 일치하지 않습니다. 다시 한번 확인 후 시도해주세요.');
  					}
- 			 }//function
- 		 });//ajax
-
- 	 }//else
+ 			 }
+ 		 });
+ 	 }
  	 
-});//팝업 로그인 버튼
+});
 
-
-//아이디/비밀번호 검색창 이동
+//3. 아이디/비밀번호 검색창 이동
 $('#popFindBtn').click(function(){
 		window.close();
 		window.opener.location.href='/minishop/member/findForm.do';	

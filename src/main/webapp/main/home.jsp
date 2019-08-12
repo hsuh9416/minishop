@@ -44,6 +44,6 @@
 <script type="text/javascript" src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 <script type="text/javascript" src="/minishop/resources/bootstrap4/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript" src="/minishop/resources/template/js/custom.js"></script> 
-<script type="text/javascript" src="/minishop/resources/custom/js/innerMain.js"></script>
+<script type="text/javascript" src="/minishop/resources/custom/js/main/innerMain.js"></script>
 	<!--JavaScript Global LINK:END-->
 </html>
