@@ -1,14 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-	<!--CSS Additional LINK:START-->
-	<!--CSS Additional LINK:END-->
-	<!-- Main Content:Start -->    
+	<!--CSS Local LINK:START--> 
+<link rel="stylesheet" type="text/css" href="/minishop/resources/custom/css/admin.css">
+	<!--CSS Local LINK:END-->
+	
 <div class="col-lg-8">
 	<div class="row" id="titleDiv">
-		<div class="col" align="center" style="padding-bottom: 20px;">
+		<div class="col">
 			<h3>관리자 정보 수정</h3>		
-	</div>
-	</div>	
+		</div>
+	</div>  
 		
 	<form id="adminModifyForm">	
 	   <div class="form-row align-items-center">	

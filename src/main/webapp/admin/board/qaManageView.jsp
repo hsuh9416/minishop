@@ -3,13 +3,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 		
-	<!--Custom styles-->
-	<link rel="stylesheet" href="/minishop/resources/custom/css/userboard.css">
+	<!--CSS Local LINK:START--> 
+<link rel="stylesheet" href="/minishop/resources/custom/css/userboard.css">
+	<!--CSS Local LINK:END-->
 	
-	<div class="col-lg-8">
-	
-		 <div class="row" id="titleDiv">
-		 	<div class="col" align="center" style="padding-bottom: 20px;">
+<div class="col-lg-8">
+	<div class="row" id="titleDiv">
+		<div class="col">
 				<h3>답변대기중인 문의글</h3>
 			</div>	
 		</div>
@@ -75,25 +75,9 @@
 		    </div>	
 		</div>			
 	</div>
-
+	
+	<!--JavaScript Local LINK:START-->
 <script type="text/javascript" src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
-<script type="text/javascript" src="/minishop/resources/custom/js/board.qa.js"></script>
-<script type="text/javascript">
-
-$('#adminWriteBtn').click(function(){
-	$.ajax({
-		type : 'post',
-		url : '/minishop/admin/board/qaManageWrite.do',
-		data : {'admin_pseq':$('#admin_pseq').val(),
-				'user_id':$('#user_id').val(),	
-				'admin_content' :$('#admin_content').val()},
-		success :function(){
-			alert('답변 작성을 완료하였습니다. 목록으로 돌아갑니다.');
-			window.location='/minishop/admin/board/qaManage.do?pg='+$('#pg').val();
-		}
-	});
-});
-$('#resetAns').click(function(){
-	window.location.reload();
-});
-</script>
+<script type="text/javascript" src="/minishop/resources/custom/js/qa/board.qa.js"></script>
+<script type="text/javascript" src="/minishop/resources/custom/js/admin/qaManageView.js"></script>
+	<!--JavaScript Local LINK:END-->

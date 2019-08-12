@@ -318,7 +318,7 @@ public class MemberController {
 	public ModelAndView memberModifyForm(){
 		
 		ModelAndView mav = new ModelAndView();
-			mav.addObject("location", "memberModify");
+			mav.addObject("location", "member");
 			mav.addObject("display", "/member/memberModifyForm.jsp");
 			mav.setViewName("/main/home");
 			
@@ -396,7 +396,7 @@ public class MemberController {
 	public ModelAndView memberView(){
 		
 		ModelAndView mav = new ModelAndView();
-			mav.addObject("location", "memberView");
+			mav.addObject("location", "member");
 			mav.addObject("display", "/member/memberView.jsp");
 			mav.setViewName("/main/home");
 			
@@ -445,7 +445,7 @@ public class MemberController {
 	public void memberQASend(@ModelAttribute MessageDTO messageDTO, HttpSession session) {
 		
 		AdminDTO adminDTO = adminDAO.getAdmin();
-		
+			
 			messageDTO.setReceiver(adminDTO.getAdmin_id());
 			messageDTO.setReceiveAddr(adminDTO.getAdmin_email_addr());
 		

@@ -1,15 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-	<!--CSS Additional LINK:START-->
-	<!--CSS Additional LINK:END-->
-	<!-- Main Content:Start -->
+	
+	<!--CSS Local LINK:START--> 
+<link rel="stylesheet" type="text/css" href="/minishop/resources/custom/css/admin.css">
+	<!--CSS Local LINK:END-->
+	
 <div class="col-lg-8">
 	<div class="row" id="titleDiv">
-		<div class="col" align="center" style="padding-bottom: 20px;">
+		<div class="col">
 			<h3>매출 현황</h3>		
 		</div>
-	</div>
+	</div>  
+	
 	<div class="form-row align-items-center">
 		<div class="col-2">#</div>
 		<div class="col-2" align="center">회원명</div>

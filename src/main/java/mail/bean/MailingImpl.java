@@ -78,8 +78,7 @@ public class MailingImpl implements Mailing {
 	}
 
 	@Override
-	public MessageDTO sendgeneralMail(MessageDTO messageDTO) {
-		// TODO Auto-generated method stub
+	public MessageDTO sendgeneralMail(MessageDTO messageDTO) {	  
 		return messageDTO;
 	}
 

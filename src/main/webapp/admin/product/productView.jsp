@@ -3,184 +3,167 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>    
 
-	<!--Custom styles-->
-	<link rel="stylesheet" href="/minishop/resources/custom/css/userproduct.css">
-	<div class="col-lg-8">
-		 <div class="row" id="titleDiv">
-		 	<div class="col" align="center" style="padding-bottom: 20px;">
-				<h3>[상품정보] ${productDTO.productName}</h3>
-			</div>	
+	<!--CSS Local LINK:START--> 
+<link rel="stylesheet" href="/minishop/resources/custom/css/userproduct.css">
+	<!--CSS Local LINK:END-->
+	
+<div class="col-lg-8">
+	<div class="row" id="titleDiv">
+		<div class="col">
+			<h3>[상품정보] ${productDTO.productName}</h3>
 		</div>
-    <input type="hidden" id="productID" value="${productDTO.productID}">
-    <input type="hidden" id="product_name_no" value="${productDTO.product_name_no}">   
+	</div>
+	
+    <input type="hidden" id="productID" value="${productDTO.productID}"/>
+    <input type="hidden" id="product_name_no" value="${productDTO.product_name_no}"/>   
+    <input type="hidden" id="product_onstore" value="${productDTO.product_onstore}"/>
 	<input type="hidden" id="pg" value="${pg}">	
-	
-	<div class="accordion" id="productInfo">
-	
-	  <!-- 상품 기본 정보:START -->	
-	  <div class="card">
-	    <div class="card-header" id="headingOne" align="center">
-	      <h2 class="mb-0">
-	        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#basicInfo" aria-expanded="true" aria-controls="basicInfo">
-	         	 상품 기본 정보
-	        </button>
-	      </h2>
-	    </div>
-	
-	    <div id="basicInfo" class="collapse show" data-parent="#productInfo">
-	      <div class="card-body">
-	        <div class="form-row justify-content-center">
-				<div class="form-group col-3">
-					<i id="iconSubject" class="far fa-file-alt">상품코드 #${productDTO.product_name_no}</i>
-				</div>	
-				<div class="form-group col-4">
-					<i id="iconSubject" class="fas fa-dolly-flatbed">등록코드 #${productDTO.productID}</i>
-				</div>	
-				<div class="form-group col-5">
-					<i id="iconSubject" class="fas fa-tag">이름 ${productDTO.productName}</i>
+	<input type="hidden" id="product_name_price" value="${productDTO.product_name_price}">	
+	<input type="hidden" id="unitcost" value="${productDTO.unitcost}">			
+
+	<div class="form-row">
+		<div class="form-group col" align="center">      	
+			<div class="accordion" id="productInfo">
+		
+				<div class="card">
+					<div class="card-header" id="headingOne" align="center">
+						<h2 class="mb-0">
+					        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#basicInfo" aria-expanded="true" aria-controls="basicInfo">
+					         	 상품 기본 정보
+					        </button>
+			      		</h2>
+			    	</div>
+			
+			    	<div id="basicInfo" class="collapse show" data-parent="#productInfo">
+			      		<div class="card-body">
+			      		
+							<div class="form-row align-items-center">
+								<div class="col-2 subTitle"><font>상품코드</font></div>		
+								<div class="col-3 subContent">${productDTO.product_name_no}</div>	
+								<div class="col-2 subTitle"><font>분류</font></div>	
+								<div class="col-5 subContent">${productDTO.product_category_name}</div>										
+							</div>	
+					
+							<div class="form-row align-items-center">
+								<div class="col-2 subTitle"><font>등록코드</font></div>		
+								<div class="col-3 subContent">${productDTO.productID}</div>	
+								<div class="col-2 subTitle"><font>책정가격</font></div>	
+								<div class="col-5 subContent"><fmt:formatNumber type="number" value="${productDTO.product_name_price}" pattern="#,###"/>(원)/(개)</div>										
+							</div>		
+					
+							<div class="form-row align-items-center">
+								<div class="col-2 subTitle"><font>이름</font></div>	
+								<div class="col-10 subContent" align="center">${productDTO.productName}</div>										
+							</div>				      
+			
+							<div class="form-row align-items-center">
+								<div class="col-2 subTitle"><font>상태</font></div>	
+								<div class="col-10 subContent" align="center">
+								 	<c:if test="${productDTO.product_onstore=='YES'}"><strong id="iconActive">[입점]</strong></c:if>
+									<c:if test="${productDTO.product_onstore=='NO'}"><strong id="iconInactive">[미입점]</strong></c:if>	
+								</div>										
+							</div>		      
+			    		</div>
+					</div>
 				</div>
-			</div>
-	        <div class="form-row justify-content-center">	
-				<div class="form-group col-3">
-					<i id="iconSubject" class="fas fa-list">분류 ${productDTO.product_category_name}</i>
+				
+				<div class="card">
+					<div class="card-header" id="headingTwo"  align="center">
+						<h2 class="mb-0">
+					        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+					          	상품 옵션 정보
+					        </button>
+			      		</h2>
+			    	</div>
+			    
+			    	<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#productInfo">
+			      		<div class="card-body">
+			      		
+							<div class="form-row align-items-center">
+								<div class="col-2 subTitle"><font>판매가격</font></div>		
+								<div class="col-4 subContent"><fmt:formatNumber type="number" value="${productDTO.unitcost}" pattern="#,###"/>(원)/(개)</div>	
+								<div class="col-2 subTitle"><font>누적판매량</font></div>								
+								<div class="col-4 subContent">
+									<i id="iconMinimum" class="fas fa-shopping-cart">${productDTO.product_salesMount}</i>
+								</div>									
+							</div>	
+							
+							<div class="form-row align-items-center">
+								<div class="col-2 subTitle"><font>조회수</font></div>		
+								<div class="col-4 subContent">
+									<i id="iconMinimum" class="fas fa-eye">${productDTO.product_hit}</i>
+								</div>	
+								<div class="col-2 subTitle"><font>관심도</font></div>		
+								<div class="col-4 subContent">
+									<i id="iconMinimum" class="fas fa-heart">${productDTO.product_like}</i>
+								</div>																
+							</div>					
+		
+							<div class="form-row align-items-center">
+								<div class="col-2 subTitle"><font>할인정책</font></div>		
+								<div class="col-10 subContent">
+									<c:if test="${productDTO.promotioncode=='1'}">
+										<i id="iconActive" class="fas fa-percent"><strong>[중복할인가능]</strong></i>
+									</c:if>
+									<c:if test="${productDTO.promotioncode=='0'}">
+										<i id="iconInactive" class="fas fa-percent"><strong>[중복할인불허]</strong></i>
+									</c:if>	
+								</div>																
+							</div>							      		
+		
+						</div>
+					</div>
+				</div>
+			  	  
+				<div class="card">
+			    	<div class="card-header" id="headingThree"  align="center">
+						<h2 class="mb-0">
+							<button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+			        			 상품 상세 정보
+			        		</button>
+			      		</h2>
+			    	</div>
+			    	
+			    	<div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#productInfo">
+			      		<div class="card-body">
+			      		
+							<div class="form-row align-items-center">
+								<div class="col-2 subTitle-white">등록 상품 제목</div>		
+								<div class="col-10 subContent">${productDTO.product_name_title}</div>				
+							</div>		        	
+							<hr class="sub-hr">
+							<div class="form-row align-items-center">
+								<div class="col-2 subTitle-white">등록 상품 이미지</div>		
+								<div class="col-10 subContent">
+									<img style="width:300px; height:300px;"src="/minishop/storage/showProduct.do?product_name_image=${productDTO.product_name_image}">
+								</div>				
+							</div>
+							<hr class="sub-hr">
+							<div class="form-row align-items-center">
+								<div class="col-2 subTitle-white">등록 상품 내용</div>		
+								<div class="col-10 subContent">
+									${productDTO.product_name_detail}
+								</div>				
+							</div>							        	
+			    		 </div>
+			    	</div>    	
 				</div>		
-				<div class="form-group col-4">
-					<i id="iconSubject" class="fas fa-won-sign">
-					 	정상가 <fmt:formatNumber type="number" value="${productDTO.product_name_price}" pattern="#,###"/>(원)/(개)
-					</i>
-				</div>						        				
-				<div class="form-group col-5">
-				 <c:if test="${productDTO.product_onstore=='YES'}">
-					<i id="iconActive" class="fas fa-dolly-flatbed">상태 <strong>[입점]</strong></i>
-				 </c:if>
-				 <c:if test="${productDTO.product_onstore=='NO'}">
-					<i id="iconInactive" class="fas fa-dolly-flatbed">상태 <strong>[미입점]</strong></i>
-				 </c:if>			
-				</div>
-	
-	      	</div>
-	      </div>
-	    </div>
-	  </div>
-	  <!-- 상품 기본 정보:END -->
-	  <!-- 상품 옵션 정보:START -->
-	  <div class="card">
-	    <div class="card-header" id="headingTwo"  align="center">
-	      <h2 class="mb-0">
-	        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-	          	상품 옵션 정보
-	        </button>
-	      </h2>
-	    </div>
-	    
-	    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#productInfo">
-	      <div class="card-body">
-	       <div class="form-row justify-content-center">
-				<div class="form-group col-3">
-					<i id="iconSubject"class="fas fa-won-sign">판매가
-					<strong id="pridceDiff"><fmt:formatNumber type="number" value="${productDTO.unitcost}" pattern="#,###"/>(원)/(개)</strong>
-					</i>
-				</div>	
-				<div class="form-group col-4">
-					<i id="iconSubject" class="fas fa-won-sign">원가대비
-					<strong><fmt:formatNumber type="number" value="${productDTO.product_name_price-productDTO.unitcost}" pattern="#,###"/>(원)/(개)</strong>
-					</i>
-				</div>					
-				<div class="form-group col-5">
-					<i id="iconGeneral" class="fas fa-shopping-cart">누적판매량 <strong>${productDTO.product_salesMount}</strong>(개)</i>
-				</div>	
-			</div>
-			<div class="form-row justify-content-center">	
-				<div class="form-group col-3">
-					<i id="iconMinimum" class="fas fa-eye">조회수<strong>${productDTO.product_hit}</strong></i>
-				</div>	
-				<div class="form-group col-4">
-					<i id="iconMinimum" class="fas fa-heart">관심도<strong>${productDTO.product_like}</strong></i>
-				</div>
-				<div class="form-group col-5">
-				 <c:if test="${productDTO.promotioncode=='1'}">
-					<i id="iconActive" class="fas fa-percent"><strong>[할인가능]</strong></i>
-				 </c:if>
-				 <c:if test="${productDTO.promotioncode=='0'}">
-					<i id="iconInactive" class="fas fa-percent"><strong>[할인제외]</strong></i>
-				 </c:if>	
-				</div>										
-			</div>
-	      </div>
-	    </div>
-	  </div>
-	  <!-- 상품 옵션 정보:END -->
-	  	  
-	  <div class="card">
-	    <div class="card-header" id="headingThree"  align="center">
-	      <h2 class="mb-0">
-	        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-	        	 상품 상세 정보
-	        </button>
-	      </h2>
-	    </div>
-	    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#productInfo">
-	      <div class="card-body">
-	        <div class="table">
-				<table id="productViewTable" class="table justify-content-center">
-					<thead class="thead-dark">
-					    <tr align="center">
-							<th scope="col">상품 등록 정보</th>		
-					   </tr>
-					 </thead>
-					 <tbody>
-					 	<tr align="center" class="table-dark"><td><strong>등록된 제목</strong></td></tr>
-					 	<tr align="center"><td><strong>${productDTO.product_name_title}</strong></td></tr>
-					 	<tr align="center" class="table-dark"><td><strong>등록된 이미지</strong></td></tr>
-					 	<tr align="center">
-					 		<td>
-					 		<img style="width:300px; height:300px;"src="/minishop/storage/showProduct.do?product_name_image=${productDTO.product_name_image}">
-					 		</td>
-					 	</tr>			 	
-					 	<tr align="center" class="table-dark"><td><strong>등록된 내용</strong></td></tr>	
-					 	<tr align="center"><td id="content"><strong>${productDTO.product_name_detail}</strong></td></tr>			 			 	
-					 </tbody>
-				</table> 	
-			</div>
-	     </div>
-	    </div>
-	  </div>
-	</div>	
-	<div class="form-group">
-			<div class="row">
-				<div class="col" align="center">      
-					<input type="button" id="productModifyBtn"class="btn btn-outline-dark" value="상품 수정">
-					<input type="button" id="productDelete" value="상품 삭제" class="btn btn-outline-dark">
-					<input type="button" id="productReturn" class="btn btn-outline-dark" value="뒤로가기">										    									
-				</div>
 			</div>	
-		</div>		
+	
+		</div>
+	</div>	
+		
+	<div class="form-row">
+		<div class="form-group col" align="center">      
+			<input type="button" id="productModifyBtn"class="btn btn-outline-dark" value="상품 수정">
+			<input type="button" id="productDelete" value="상품 삭제" class="btn btn-outline-dark">
+			<input type="button" id="productReturn" class="btn btn-outline-dark" value="뒤로가기">										    									
+		</div>
+	</div>	
+	
 </div>	
-<!-- col-lg-8 -->
+	<!--JavaScript Local LINK:START-->	
 <script type="text/javascript" src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
-<script type="text/javascript" src="/minishop/resources/custom/js/admin.product.js"></script>
-<script type="text/javascript">
-$('#productModifyBtn').click(function(){
-	window.location='/minishop/admin/product/productModifyForm.do?product_name_no='+$('#product_name_no').val();
-});
-$('#productDelete').click(function(){
-	if(${productDTO.product_onstore=='YES'}) alert('현재 매장에 등록되어 있는 상품은 삭제하실 수 없습니다. 등록 해제를 하신 후 재시도해주세요.');
-	else {
-		var result =confirm('해당 상품을 정말로 삭제하시겠습니까? 삭제시에는 재고관리 목록에서도 제거됩니다.');
-		if(result){
-			window.location='/minishop/admin/product/productDelete.do?product_name_no='+$('#product_name_no').val();					
-		}
-
-	}
-});
-
-$(document).ready(function(){
-if(${productDTO.product_name_price > productDTO.unitcost}) {
-	$('#pridceDiff').attr('color','red');
-}
-else if(${productDTO.product_name_price < productDTO.unitcost}) {
-	$('#pridceDiff').attr('color','blue');
-}else $('#pridceDiff').attr('color','black');
-
-});
-</script>
+<script type="text/javascript" src="/minishop/resources/custom/js/admin/admin.product.js"></script>
+<script type="text/javascript" src="/minishop/resources/custom/js/admin/productView.js"></script>
+	<!--JavaScript Local LINK:END-->

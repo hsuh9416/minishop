@@ -10,15 +10,48 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  	
 	<!-- 공통 : 전체 총글수 -->
 	<select id="getTotalA" parameterType="java.util.Map" resultType="Integer">
-  		select count(*) from ${tableName} 
+  		select count(*) 
+  		<if test="tableName !=''"> from
+		 <choose>
+			<when test="tableName eq 'PRODUCT'"> PRODUCT</when>
+		    <otherwise> PRODUCT_NAME </otherwise>			
+		 </choose>
+		</if>
  	</select>
  	
  	<!-- 공통 : 검색 총글수 -->
  	<select id="getTotalSearchA" parameterType="java.util.Map" resultType="Integer">
- 		select count(*) from ${tableName}
- 		inner join ${joinName}
-		on ${tableName}.product_name_no = ${joinName}.product_name_no			 
- 		where ${searchTable}.${searchOption} like '%'||#{keyword}||'%'
+ 		select count(*) 
+ 		<if test="tableName !=''"> from
+		 	<choose>
+				<when test="tableName eq 'PRODUCT'"> PRODUCT</when>
+		    	<otherwise> PRODUCT_NAME </otherwise>			
+		 	</choose>
+		</if>
+ 		<if test="joinName !=''"> 
+		 	<choose>
+				<when test="joinName eq 'PRODUCT'"> 
+					left join PRODUCT
+					on PRODUCT.product_name_no = PRODUCT_NAME.product_name_no	
+				</when>
+		    	<otherwise></otherwise>			
+		 	</choose>
+		</if>		
+ 		<if test="keyword !=''"> where
+		 	<choose>
+				<when test="searchOption eq 'productName'"> 
+					PRODUCT.PRODUCTNAME like '%'||#{keyword}||'%'
+				</when>
+				<when test="searchOption eq 'productid'"> 
+					PRODUCT.PRODUCTID like '%'||#{keyword}||'%'
+				</when>
+				<when test="searchOption eq 'product_name_no'"> 
+					PRODUCT.PRODUCT_NAME_NO like '%'||#{keyword}||'%'
+				</when>								
+		    	<otherwise></otherwise>			
+		 	</choose>
+		</if>		
+				 
  	</select> 	
  	
 	<!-- 재고 : 전체 목록 가져오기 -->
@@ -36,10 +69,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  	<select id="inventorySearch" parameterType="java.util.Map" resultType="product">
 		 		select * from 
 				(select rownum rn, tt.* from 
-				(select ${tableName}.*,${joinName}.product_name_instockdate from ${tableName},${joinName}
-				where ${tableName}.product_name_no=${joinName}.product_name_no 
-				and ${searchTable}.${searchOption} like '%'||#{keyword}||'%'
-				order by ${tableName}.product_name_no desc) tt) 
+				(select PRODUCT.*,PRODUCT_NAME.product_name_instockdate from PRODUCT,PRODUCT_NAME
+				where PRODUCT.product_name_no=PRODUCT_NAME.product_name_no 
+				<if test="keyword !=''"> and
+				 	<choose>
+						<when test="searchOption eq 'productName'"> 
+							PRODUCT.PRODUCTNAME like '%'||#{keyword}||'%'
+						</when>
+						<when test="searchOption eq 'productid'"> 
+							PRODUCT.PRODUCTID like '%'||#{keyword}||'%'
+						</when>
+						<when test="searchOption eq 'product_name_no'"> 
+							PRODUCT.PRODUCT_NAME_NO like '%'||#{keyword}||'%'
+						</when>								
+				    	<otherwise></otherwise>			
+				 	</choose>
+				</if>	
+				order by PRODUCT.PRODUCT_NAME_NO desc) tt) 
 				where (rn between #{startNum} and #{endNum})
  	</select>
  
@@ -51,7 +97,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   	<!-- 재고 : 재고 업데이트 반영 -->
  	<update id="inventoryUpdate" parameterType="java.util.Map">
  	begin
- 		update product set stock=#{stock},unitcost=#{unitcost},ordernum=ordernum+1 where productid=#{productID};
+ 		<if test="ordernum !=''">
+			<choose>
+				<when test="ordernum eq '1'"> 
+					update product set stock=#{stock},unitcost=#{unitcost},ordernum=ordernum+1 where productid=#{productID};
+				</when>
+				<otherwise>
+		 			update product set stock=#{stock},unitcost=#{unitcost} where productid=#{productID};		
+				</otherwise>			
+			</choose>
+		</if>	
+
  		update product_name set product_name_instockdate=sysdate where product_name_no=#{product_name_no};
  	end;	
  	</update>	
@@ -64,7 +120,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  	 							#{promotioncode},
  	 							#{productName},
  	 							#{product_name_no},
- 	 							sysdate)
+ 	 							sysdate,
+ 	 							0)
  	</insert>
  	
  	<!-- 재고 : 재고 수정 -->
@@ -102,8 +159,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				on product.product_name_no = product_name.product_name_no
                 inner join product_category
                 on product_name.product_category_no=product_category.product_category				
-				where ${searchTable}.${searchOption} like '%'||#{keyword}||'%'
-				order by product.product_name_no desc) tt) 
+				<if test="keyword !=''"> where
+				 	<choose>
+						<when test="searchOption eq 'productName'"> 
+							PRODUCT.PRODUCTNAME like '%'||#{keyword}||'%'
+						</when>
+						<when test="searchOption eq 'productid'"> 
+							PRODUCT.PRODUCTID like '%'||#{keyword}||'%'
+						</when>
+						<when test="searchOption eq 'product_name_no'"> 
+							PRODUCT.PRODUCT_NAME_NO like '%'||#{keyword}||'%'
+						</when>								
+				    	<otherwise></otherwise>			
+				 	</choose>
+				</if>
+				order by product_name.product_name_no desc) tt) 
 				where (rn between #{startNum} and #{endNum})
  	</select>	
  	

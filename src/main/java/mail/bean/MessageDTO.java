@@ -17,7 +17,7 @@ public class MessageDTO {
  private String type;
  private String sender;
  private String sendAddr;
- private String receiver; 
+ private String receiver;
  private String receiveAddr;
  private String subject;
  private String content;

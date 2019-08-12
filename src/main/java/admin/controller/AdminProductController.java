@@ -45,7 +45,7 @@ public class AdminProductController {
 		
 		ModelAndView mav = new ModelAndView();
 			mav.addObject("pg",pg);
-			mav.addObject("location", "inventory");
+			mav.addObject("location", "productAdmin");
 			mav.addObject("display", "/admin/product/inventoryManage.jsp");
 			mav.setViewName("/main/home");
 			
@@ -90,16 +90,14 @@ public class AdminProductController {
 		int startNum = endNum-2;
 		int totalA=0;
 		
-			keyword = keyword.toUpperCase();
+			if(searchOption.equals("productid")) keyword = keyword.toUpperCase();
 		
 		Map<String,String> map = new HashMap<String,String>();
 			map.put("startNum", startNum+"");
 			map.put("endNum", endNum+"");
 			map.put("searchOption",searchOption);
 			map.put("keyword", keyword);
-			map.put("tableName", "product");
-			map.put("joinName", "product_name");	
-			map.put("searchTable", "product");	
+			map.put("tableName", "PRODUCT");
 			totalA = productDAO.getTotalSearchA(map);	
 			
 			productPaging.setCurrentPage(page);
@@ -109,10 +107,9 @@ public class AdminProductController {
 			productPaging.makeSearchPagingHTML();				
 		
 		List<ProductDTO> inventorySearchList = productDAO.inventorySearch(map);
-		
 		ModelAndView mav = new ModelAndView();		
 			mav.addObject("pg", pg);
-			mav.addObject("inventorySearchList", inventorySearchList);
+			mav.addObject("inventoryList", inventorySearchList);
 			mav.addObject("searchOption", searchOption);
 			mav.addObject("keyword", keyword);
 			mav.addObject("productPaging", productPaging);
@@ -130,7 +127,7 @@ public class AdminProductController {
 		ModelAndView mav = new ModelAndView();
 			mav.addObject("pg", pg);
 			mav.addObject("productDTO", productDTO);	
-			mav.addObject("location", "inventory");
+			mav.addObject("location", "productAdmin");
 			mav.setViewName("/admin/product/inventoryModify");
 			
 		return mav;
@@ -140,7 +137,7 @@ public class AdminProductController {
 	@RequestMapping(value="/doModify.do",method= RequestMethod.POST)
 	@ResponseBody
 	public void doModify(@RequestParam Map<String,String> map){
-		
+		System.out.println(map.get("ordernum"));
 		productDAO.inventoryUpdate(map);
 	}	
 
@@ -154,7 +151,7 @@ public class AdminProductController {
 		
 		ModelAndView mav = new ModelAndView();
 			mav.addObject("pg",pg);
-			mav.addObject("location", "adminProduct");		
+			mav.addObject("location", "productAdmin");		
 			mav.addObject("display", "/admin/product/productManage.jsp");
 			mav.setViewName("/main/home");
 			
@@ -199,16 +196,15 @@ public class AdminProductController {
 		int startNum = endNum-2;
 		int totalA = 0;
 		
-			keyword = keyword.toUpperCase();
+		if(searchOption.equals("productid")) keyword = keyword.toUpperCase();
 		
 		Map<String,String> map = new HashMap<String,String>();
 			map.put("startNum", startNum+"");
 			map.put("endNum", endNum+"");
 			map.put("searchOption",searchOption);
 			map.put("keyword", keyword);
-			map.put("tableName", "product_name");
-			map.put("joinName", "product");			
-			map.put("searchTable", "product");	
+			map.put("tableName", "PRODUCT_NAME");
+			map.put("joinName", "PRODUCT");				
 			totalA = productDAO.getTotalSearchA(map);	
 		
 			productPaging.setCurrentPage(page);
@@ -221,7 +217,7 @@ public class AdminProductController {
 		
 		ModelAndView mav = new ModelAndView();
 			mav.addObject("pg", pg);
-			mav.addObject("productSearchList", productSearchList);
+			mav.addObject("productList", productSearchList);
 			mav.addObject("searchOption", searchOption);
 			mav.addObject("keyword", keyword);
 			mav.addObject("productPaging", productPaging);
@@ -239,7 +235,7 @@ public class AdminProductController {
 		ModelAndView mav = new ModelAndView();
 			mav.addObject("productDTO",productDTO);
 			mav.addObject("pg", pg);
-			mav.addObject("location", "adminProduct");
+			mav.addObject("location", "productAdmin");
 			mav.addObject("display", "/admin/product/productView.jsp");
 			mav.setViewName("/main/home");
 			
@@ -251,7 +247,7 @@ public class AdminProductController {
 	public ModelAndView productUpload() {
 		
 		ModelAndView mav = new ModelAndView();	
-			mav.addObject("location", "adminProduct");	
+			mav.addObject("location", "productAdmin");	
 			mav.addObject("display", "/admin/product/productUpload.jsp");
 			mav.setViewName("/main/home");
 			
@@ -317,6 +313,7 @@ public class AdminProductController {
 	//7. 상품 등록하기
 	@RequestMapping(value="/doUpload.do",method=RequestMethod.POST)
 	public ModelAndView doUpload(@ModelAttribute ProductDTO productDTO, @RequestParam MultipartFile product_image, String date, HttpServletRequest request){
+		
 		
 		boolean result;
 		Date product_name_instockdate;
@@ -388,7 +385,7 @@ public class AdminProductController {
 	     
 				try {FileCopyUtils.copy(product_image.getInputStream(), new FileOutputStream(newFile));} 
 				catch (IOException e) {e.printStackTrace();}	     
-
+				System.out.println(productDTO);
 				//(6) DB upload
 				try {
 					done1 = productDAO.productUpload(productDTO);
@@ -417,7 +414,7 @@ public class AdminProductController {
 		ProductDTO productDTO = productDAO.getProductInfo(product_name_no);
 		
 		ModelAndView mav = new ModelAndView();	
-			mav.addObject("location", "adminProduct");	
+			mav.addObject("location", "productAdmin");	
 			mav.addObject("productDTO", productDTO);	
 			mav.addObject("display", "/admin/product/productModifyForm.jsp");
 			mav.setViewName("/main/home");
@@ -427,7 +424,7 @@ public class AdminProductController {
 	
 	//9. 상품 수정하기
 	@RequestMapping(value="/productModify.do",method=RequestMethod.POST)
-	public ModelAndView productModify(@ModelAttribute ProductDTO productDTO, @RequestParam MultipartFile product_image, String date, HttpServletRequest request){
+	public ModelAndView productModify(@ModelAttribute ProductDTO productDTO, @RequestParam MultipartFile product_image_new, String date, HttpServletRequest request){
 		
 		boolean result;
 		Date product_name_instockdate = null;
@@ -462,8 +459,8 @@ public class AdminProductController {
 			productDTO.setProductID(productDTO.getProductID()+productDTO.getProduct_name_no());
 		
 			//(4) 이미지 양식 검증(검증 이후 파일 이름을 반환)
-			if(!product_image.isEmpty()) {
-				originalfileName = product_image.getOriginalFilename();
+			if(!product_image_new.isEmpty()) {
+				originalfileName = product_image_new.getOriginalFilename();
 
 
 				
@@ -487,14 +484,14 @@ public class AdminProductController {
 	        	uploadPath = request.getSession().getServletContext().getRealPath("/")+"storage\\onstore\\"+uploadfileName;
 	        	
 		        try {
-		        	product_image.transferTo(new File(uploadPath));}
+		        	product_image_new.transferTo(new File(uploadPath));}
 		        catch (IllegalStateException | IOException e) {e.printStackTrace();}
 	        
 		        //(6)workspace상에 업로드
 		        filePath = "D:\\lib\\workspace\\minishop\\src\\main\\webapp\\storage\\onstore\\";
 		        
 	     File newFile = new File(filePath,uploadfileName);
-				try {FileCopyUtils.copy(product_image.getInputStream(), new FileOutputStream(newFile));} 
+				try {FileCopyUtils.copy(product_image_new.getInputStream(), new FileOutputStream(newFile));} 
 				catch (IOException e) {e.printStackTrace();}	  
 		}
 	

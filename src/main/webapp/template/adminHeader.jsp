@@ -98,8 +98,8 @@
 						<i class="fa fa-angle-down"></i>					
 					</a>
 					<ul class="menu_selection">
-							<li><a href="/minishop/admin/shop/adminManage.do"><i class="fas fa-store-alt"></i>상점정보</a></li>
-							<li><a href="/minishop/admin/shop/salesInfo.do"><i class="fas fa-won-sign"></i>매출현황</a></li>														
+						<li><a href="/minishop/admin/shop/adminManage.do"><i class="fas fa-store-alt"></i>상점정보</a></li>
+						<li><a href="/minishop/admin/shop/salesInfo.do"><i class="fas fa-won-sign"></i>매출현황</a></li>														
 					</ul>							
 				</li>								
 				<li class="menu_item has-children">
@@ -108,8 +108,8 @@
 						<i class="fa fa-angle-down"></i>					
 					</a>
 					<ul class="menu_selection">
-							<li><a href="/minishop/admin/product/inventoryManage.do"><i class="fas fa-dolly-flatbed" aria-hidden="true"></i>입점재고관리</a></li>
-							<li><a href="/minishop/admin/product/productManage.do"><i class="fa fa-address-card" aria-hidden="true"></i>등록상품관리</a></li>														
+						<li><a href="/minishop/admin/product/inventoryManage.do"><i class="fas fa-dolly-flatbed" aria-hidden="true"></i>입점재고관리</a></li>
+						<li><a href="/minishop/admin/product/productManage.do"><i class="fa fa-address-card" aria-hidden="true"></i>등록상품관리</a></li>														
 					</ul>				
 				</li>
 				<li class="menu_item has-children">

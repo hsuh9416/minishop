@@ -125,8 +125,10 @@
 			<div class="col-2 memberBtnDiv">
 				<input type="button" value="다시작성" class="btn btn-outline-dark" id="resetBtn">  				    									
 			</div>
+			<div class="col-2 memberBtnDiv">
+				<input type="button" value="돌아가기" class="btn btn-outline-dark" id="returnBtn">  				    									
+			</div>			
 		</div>	
-		
  	</form>		
  		
 </div>

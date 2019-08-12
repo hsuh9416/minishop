@@ -136,7 +136,7 @@ public class ProductDAOImpl implements ProductDAO {
 	//3. 상품(및 재고) 삭제
 	@Override
 	public void productDelete(String product_name_no) {
-		sqlSession.delete("imageboardSQL.productDelete",product_name_no);
+		sqlSession.delete("productSQL.productDelete",product_name_no);
 	}	
 	
 //-------------상품(관리자):END-------------//	

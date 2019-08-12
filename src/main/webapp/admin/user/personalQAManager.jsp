@@ -1,9 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-	<!--CSS Additional LINK:START-->
-	<!--CSS Additional LINK:END-->
-	<!-- Main Content:Start -->
+	<!--CSS Local LINK:START-->
+	
+	<!--CSS Local LINK:END-->
 <div class="col-lg-8">
 	<div class="row" id="titleDiv">
 		<div class="col" align="center" style="padding-bottom: 20px;">
@@ -34,6 +34,5 @@
 		</div>
 	</div>
 </div>
-	<!-- Main Content:Start -->
-	<!--JavaScript Additional LINK:START-->
-	<!--JavaScript Additional LINK:END-->
+	<!--JavaScript Local LINK:START-->
+	<!--JavaScript Local LINK:END-->

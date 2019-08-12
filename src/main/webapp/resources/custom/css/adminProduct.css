@@ -29,7 +29,7 @@
 	cursor: pointer;
 }
 
-/* review form, qa form, fnq form */
+
 .productForm-container{
 	width: 100%;
 	background-repeat: no-repeat;
@@ -248,7 +248,3 @@ textarea {
 	height: 20px;
 }
 
-/* inventoryModify */
-#invMod{
-	padding-top:20px;
-}

@@ -75,17 +75,10 @@
 			     </div>			        
 			</c:if>
 	
-			<c:if test="${location=='memberView'}">
-		        <h2>회원 정보</h2>			
+			<c:if test="${location=='member'}">
+		        <h2>MY ACCOUNT</h2>			
 			     <div class="list-group list-group-lg">
-			          <a href="/minishop/member/memberOrderlist.do" class="list-group-item">주문 현황</a>			     
-			          <a href="/minishop/board/review/reviewWriteForm.do" class="list-group-item">리뷰 작성</a>			     
-			          <a href="/minishop/board/qa/qaWriteForm.do" class="list-group-item">문의 작성</a>
-			     </div>					
-			</c:if>	
-				<c:if test="${location=='memberModify'}">
-		        <h2>회원 정보<br>수정</h2>			
-			     <div class="list-group list-group-lg">	     
+			          <a href="/minishop/member/memberOrderlist.do" class="list-group-item">My Info</a>			     
 			          <a href="javascript:history.back()" class="list-group-item">돌아가기</a>
 			     </div>					
 			</c:if>			
@@ -97,24 +90,17 @@
 			          <a href="javascript:history.back()" class="list-group-item">돌아가기</a>
 			     </div>				
 			</c:if>	
-									
-			<c:if test="${location=='inventory'}">
-		        <h2>입점상품관리</h2>			
-			     <div class="list-group list-group-lg">	     
-			          <a href="/minishop/admin/product/productManage.do" class="list-group-item">등록상품관리</a>
-			          <a href="/minishop/admin/product/productUpload.do" class="list-group-item">상품등록</a>				          				     
-			          <a href="javascript:history.back()" class="list-group-item">돌아가기</a>
+
+			<c:if test="${location=='productAdmin'}">
+		        <h2>상품관리</h2>			
+			     <div class="list-group list-group-lg">
+			     	<a href="/minishop/admin/product/inventoryManage.do" class="list-group-item">입점재고목록</a>	     
+			        <a href="/minishop/admin/product/productManage.do" class="list-group-item">등록상품목록</a>
+			        <a href="/minishop/admin/product/productUpload.do" class="list-group-item">상품등록</a>				          				     
+			        <a href="javascript:history.back()" class="list-group-item">돌아가기</a>
 			     </div>					
 			</c:if>	
-
-			<c:if test="${location=='adminProduct'}">
-		        <h2>등록상품관리</h2>			
-			     <div class="list-group list-group-lg">	     
-			          <a href="/minishop/admin/product/inventoryManage.do" class="list-group-item">입점상품관리</a>
-			          <a href="/minishop/admin/product/productUpload.do" class="list-group-item">상품등록</a>		          				          				     
-			          <a href="javascript:history.back()" class="list-group-item">돌아가기</a>
-			     </div>					
-			</c:if>				
+															
 			<c:if test="${location=='adminOrderManage'}">
 		        <h2>고객주문관리</h2>			
 			     <div class="list-group list-group-lg">	     		          				          				     

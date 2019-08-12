@@ -47,7 +47,7 @@ public class HomeController {
 	@RequestMapping(value = "/error/unauthorized.do", method = RequestMethod.GET)
 	public ModelAndView unauthorized() {
 		ModelAndView mav = new ModelAndView();		
-		mav.setViewName("/error/unauthorized");		
+		mav.setViewName("/common/unauthorized");		
 		return mav;
 	}	
 }

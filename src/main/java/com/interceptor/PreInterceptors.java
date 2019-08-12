@@ -87,7 +87,7 @@ public class PreInterceptors extends HandlerInterceptorAdapter{
 				OrderDTO orderDTO = (OrderDTO) session.getAttribute("orderDTO");
 				if(orderDTO!=null) return true;}
 			logger.info("올바르지 않은 접근입니다.");	
-			response.sendRedirect(request.getContextPath()+"/error/noLogin.jsp");//경고 페이지 이동
+			response.sendRedirect(request.getContextPath()+"/common/noLogin.jsp");//경고 페이지 이동
 			return false;
 			}		
 		}
@@ -99,7 +99,7 @@ public class PreInterceptors extends HandlerInterceptorAdapter{
 		if(adminDTO == null && uri.contains("/admin/")) {//관리자가 아닌데 또는 관리자 로그인 없이 관리자페이지에 접근하는 경우
 			logger.info("요청한 주소명: "+request.getRequestURI());
 			logger.info("관리자계정만 접근 가능합니다.");
-			response.sendRedirect(request.getContextPath()+"/error/inaccessible.jsp");//경고 페이지 이동
+			response.sendRedirect(request.getContextPath()+"/common/inaccessible.jsp");//경고 페이지 이동
 			return false;			
 		}
 		else if(adminDTO != null && !uri.contains("/admin/")&&!uri.contains("/storage/")) {//관리자계정이 개설된 상태에서 관리자 메뉴 이외로 접근할 경우 제지

@@ -3,18 +3,18 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-
-	<!--Custom styles-->
-	<link rel="stylesheet" href="/minishop/resources/custom/css/userproduct.css">
+	<!--CSS Local LINK:START--> 
+<link rel="stylesheet" href="/minishop/resources/custom/css/userproduct.css">
+	<!--CSS Local LINK:END-->
 	
 <div class="col-lg-8">
-	<input type="hidden" id="pg" value="${pg}"/>
-		 <div class="row" id="titleDiv">
-		 	<div class="col" align="center" style="padding-bottom: 20px;">
-				<h3>고객주문관리</h3>
-			</div>	
+	<div class="row" id="titleDiv">
+		<div class="col">
+		<h3>고객주문관리</h3>
 		</div>
-		<input type="hidden" id="pg" value="${pg}">
+	</div>  
+	
+	<input type="hidden" id="pg" value="${pg}">
 		<div class="table-responsive">
 			<table id="productTable" class="table justify-content-center">
 			  <thead class="thead-dark">
@@ -69,13 +69,8 @@
 </div>
 
 
-
+	<!--JavaScript Local LINK:START-->
 <script type="text/javascript" src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script type="text/javascript" src="/minishop/resources/custom/js/admin.order.js"></script>
-<script type="text/javascript">
-$(document).ready(function(){
-
-});//onready
-
-
-</script>
+<script type="text/javascript"></script>
+	<!--JavaScript Local LINK:END-->

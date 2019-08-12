@@ -51,14 +51,14 @@
 		<div class="form-row justify-content-center">
 			<input type="hidden" name="pg" value="1">	
 			<div class="col-sm-2">
-				<select name="searchOption" id="searchOption" class="form-control">
+				<select id="searchOption" class="form-control">
 					<option value="name">작성자</option>
 					<option value="user_id">아이디</option>
 			        <option value="qa_subject">제목</option>
 			    </select>			
 			</div>
 			<div class="col-sm-4">
-		    	<input type="text"  class="form-control" name="keyword" id="keyword" value="${keyword}">			
+		    	<input type="text"  class="form-control" id="keyword" value="${keyword}">			
 			</div>
 			<div class="col-2">
 			    <input type="button" id="qaSearchBtn" class="form-control btn btn-outline-dark" value="검색">		

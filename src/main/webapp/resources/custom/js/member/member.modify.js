@@ -95,3 +95,8 @@ $('#resetBtn').click(function(){
 $('#changeEmailBtn').click(function(){
 	 var pwdPop = window.open('/minishop/member/changeEmailForm.do','이메일 변경','width=780,height=200,resizable=no');	
 });
+
+//8.돌아가기 버튼
+$('#returnBtn').click(function(){
+	window.history.back();
+});
