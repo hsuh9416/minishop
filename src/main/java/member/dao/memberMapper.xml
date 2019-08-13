@@ -76,7 +76,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<!-- MEMBER_DELETE 탈퇴 요청한 회원 정보 저장 -->
 	<insert id="deleteMemberAdmin" parameterType="java.util.Map">
-		insert into MEMBER_DELETE values(#{id},#{dReason},#{etcDetail},SYSDATE)
+		insert into MEMBER_DELETE values(#{id},#{email},#{dReason},#{etcDetail},SYSDATE)
 	</insert>	
 	
 </mapper>

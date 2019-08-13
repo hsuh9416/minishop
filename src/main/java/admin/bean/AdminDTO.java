@@ -14,4 +14,5 @@ public class AdminDTO {
 	private String admin_email_addr;
 	private String admin_email_pwd;
 	private String admin_shop_tel;
+	
 }

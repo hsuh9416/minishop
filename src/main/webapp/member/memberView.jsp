@@ -72,12 +72,16 @@
 		<div class="col-2 memberBtnDiv">
 			<input type="button" id="memberModify" class="btn btn-outline-dark" value="정보수정"/>		
 		</div>
-		<div class="col-2 memberBtnDiv">
-			<input type="button" id="memberDelete" data-toggle="modal" class="btn btn-outline-dark" value="탈퇴신청"/>		
-		</div>
-		<div class="col-2 memberBtnDiv">
-			<input type="button" id="personalQA" data-toggle="modal"  class="btn btn-outline-dark" value="1:1문의"/>			
-		</div>
+		<c:if test="${memberDTO.state==1 || memberDTO.state==2}">
+			<div class="col-2 memberBtnDiv">
+				<input type="button" id="memberDelete" data-toggle="modal" class="btn btn-outline-dark" value="탈퇴신청"/>		
+			</div>	
+			<div class="col-2 memberBtnDiv">
+				<input type="button" id="personalQA" data-toggle="modal"  class="btn btn-outline-dark" value="1:1문의"/>			
+			</div>		
+		</c:if>
+		
+
 
 	</div>			
 </div>

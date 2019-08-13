@@ -5,23 +5,19 @@
 $(document).ready(function(){
 	if(window.innerWidth < 992){
 		$('#menuDiv').hide();
-		//$('#titleDiv').show();	
 	}
 	else if(window.innerWidth>991){
-		$('#menuDiv').show();	
-		//$('#titleDiv').hide();		
+		$('#menuDiv').show();		
 	}			
 
-});//ready
+});
 
 $(window).on('resize', function(){
 	if(window.innerWidth < 992){
 			$('#menuDiv').hide();
-			//$('#titleDiv').show();	
 	}
 	else if(window.innerWidth>991){
 		$('#menuDiv').show();	
-		//$('#titleDiv').hide();
 	}
 });	
 
@@ -48,22 +44,15 @@ $('#goLogin').click(function(){
 });
 
 $('#goLogout').click(function(){
-	 $.ajax({
-		 type : 'get',
-		 url : '/minishop/member/logout.do',
-		 success : function(){	
-				alert('로그아웃 하셨습니다');
-				window.location='/minishop/main/home.do';
-			}
-	 });
+	window.location='/minishop/member/logout.do';
 });
 
 $('#goSignUp').click(function(){
-	window.location='/minishop/member/writeForm.do'
+	window.location='/minishop/member/writeForm.do';
 });
 
 $('#mgoLogin').click(function(){
-	window.location='/minishop/member/loginForm.do'
+	window.location='/minishop/member/loginForm.do';
 });
 
 $('#mgoLogout').click(function(){
@@ -79,7 +68,7 @@ $('#mgoLogout').click(function(){
 });
 
 $('#mgoSignUp').click(function(){
-	window.location='/minishop/member/writeForm.do'
+	window.location='/minishop/member/writeForm.do';
 });
 
 $('#goCart').click(function(){

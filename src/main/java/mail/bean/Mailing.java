@@ -1,5 +1,7 @@
 package mail.bean;
 
+import org.springframework.mail.javamail.JavaMailSender;
+
 import admin.bean.AdminDTO;
 /*
  * MailingImpl의 인터페이스
@@ -12,6 +14,8 @@ public interface Mailing {
 	public MessageDTO sendgeneralMail(MessageDTO messageDTO);
 	public MessageDTO sendOrderMail(MessageDTO messageDTO);
 	public MessageDTO sendGoodbyeMail(MessageDTO messageDTO);
-	public void sendMail(AdminDTO adminDTO,MessageDTO messageDTO);
 	public MessageDTO sendResetPwdMail(MessageDTO messageDTO, String resetPwd);
+	public JavaMailSender getJavaMailSenger(AdminDTO adminDTO);
+	public void sendMail(AdminDTO adminDTO,MessageDTO messageDTO);
+	public void sendMailwithFile(AdminDTO adminDTO,MessageDTO messageDTO);
 }

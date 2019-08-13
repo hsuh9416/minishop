@@ -66,6 +66,13 @@ $('#findIdInputEmail').change(function() {
 	else $('#findIdemail2').attr('readonly',true);
 });
 
+$('#findPwdInputEmail').change(function() {
+	var email2 = $('#findPwdInputEmail option:selected').val();
+	$('#findPwdemail2').val(email2);
+	if($('#findPwdInputEmail option:selected').val()=='') $('#findPwdemail2').attr('readonly',false);
+	else $('#findPwdemail2').attr('readonly',true);
+});
+
 //3. 아이디 검색 이벤트 수행
 $('#findIdBtn').click(function(){
 	$('#findIdResult').empty();

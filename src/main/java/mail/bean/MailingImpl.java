@@ -3,12 +3,14 @@ package mail.bean;
 import java.util.Properties;
 import java.util.UUID;
 
-import javax.mail.Message;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
+import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 
 import admin.bean.AdminDTO;
@@ -91,7 +93,7 @@ public class MailingImpl implements Mailing {
 	@Override
 	public MessageDTO sendGoodbyeMail(MessageDTO messageDTO) {
 		messageDTO.setSender("[Kissin' Bugs]");		  
-		messageDTO.setSubject(messageDTO.getReceiver()+" 회원님의 회원 탈퇴 요청이 정상적으로 접수되었습니다.");
+		messageDTO.setSubject(messageDTO.getReceiver()+"의 회원 탈퇴 요청이 정상적으로 접수되었습니다.");
 		String goodByeText = "회원님의 탈퇴 요청이 정상적으로 접수되었습니다.\n"+
 				"탈퇴 요청을 한 시점부터 회원님의 계정은 비활성화 상태로 전환되오나, \n"+
 				"일정한 경우에 복구가 가능하도록 14일간 회원님의 정보는 유지됩니다.\n"+
@@ -111,56 +113,7 @@ public class MailingImpl implements Mailing {
 		messageDTO.setContent(goodByeText);
 		return messageDTO;	
 	}
-
-	@Override
-	public void sendMail(AdminDTO adminDTO, MessageDTO messageDTO) {
-		String[] email = adminDTO.getAdmin_email_addr().split("@");
-		
-		Properties props;
-	    @SuppressWarnings("unused")
-		String host = "smtp@"+email[1];
-		String user= adminDTO.getAdmin_email_addr();
-		String password = adminDTO.getAdmin_email_pwd();
-		
-		props = new Properties();
-		props.put("mail.smtp.host", "smtp."+email[1]);
-		props.put("mail.smtp.port", 465);//메일별로 상이함
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.ssl.enable", "true");
-		props.put("mail.smtp.ssl.trust", "smtp."+email[1]);
-		
-		Session session = Session.getDefaultInstance(props, new javax.mail.Authenticator() {
-			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication(user, password);
-				
-			}
-		});
-		try {
-			MimeMessage message = new MimeMessage(session);
-			//수신시 발신자 표시
-			message.setFrom(new InternetAddress(user,messageDTO.getSender()));
-			
-			//수신자 메일 주소
-			message.addRecipient(Message.RecipientType.TO, new InternetAddress(messageDTO.getReceiveAddr()));
-			
-			//메일 제목
-			message.setSubject(messageDTO.getSubject());
-			
-			//메일 내용
-			message.setText(messageDTO.getContent());
-			
-			//파일 첨부 여부 및 처리(구현 중)
-			if(messageDTO.getMailData()!=null) {
-			}
-			
-			Transport.send(message);
-			
-		}catch (Exception e) {
-			e.printStackTrace();
-		}
 	
-	}
-
 	//비번 재설정 메일 전송
 	@Override
 	public MessageDTO sendResetPwdMail(MessageDTO messageDTO, String resetPwd) {
@@ -176,6 +129,76 @@ public class MailingImpl implements Mailing {
 		messageDTO.setContent(confirmText);
 		
 		return messageDTO;
+	}
+	
+	//일반 메일 보내기
+	@Override
+	public void sendMail(AdminDTO adminDTO, MessageDTO messageDTO) {
+		
+		JavaMailSender emailSender = getJavaMailSenger(adminDTO);
+		
+		if(emailSender!=null) {
+		SimpleMailMessage message = new SimpleMailMessage();
+			message.setTo(messageDTO.getReceiveAddr());
+			message.setSubject(messageDTO.getSubject());
+			message.setText(messageDTO.getContent());
+			emailSender.send(message);}
+		else {
+			System.out.println("[오류 발생]관리자 이메일 계정을 업데이트해주세요!");
+		}
+				
+	}
+
+	//파일 첨부 보내기
+	@Override
+	public void sendMailwithFile(AdminDTO adminDTO, MessageDTO messageDTO) {
+		
+		JavaMailSender emailSender = getJavaMailSenger(adminDTO);
+		
+		if(emailSender!=null) {
+
+		MimeMessage message = emailSender.createMimeMessage();
+		
+		try {
+		MimeMessageHelper helper = new MimeMessageHelper(message,true);
+				helper.setSubject(messageDTO.getSubject());
+				helper.setText(messageDTO.getContent());
+				
+			FileSystemResource file = new FileSystemResource(messageDTO.getMailData());	
+				helper.addAttachment(messageDTO.getMailData().getName(), file);	
+				helper.setTo(messageDTO.getReceiveAddr());
+				
+				emailSender.send(message);} 
+		catch (MessagingException e) {e.printStackTrace();}}
+		else {
+			System.out.println("[오류 발생]관리자 이메일 계정을 업데이트해주세요!");
+		}
+	}
+
+	@Override
+	public JavaMailSender getJavaMailSenger(AdminDTO adminDTO) {
+		
+		String user= adminDTO.getAdmin_email_addr();
+		String password = adminDTO.getAdmin_email_pwd();
+		String[] email = adminDTO.getAdmin_email_addr().split("@");
+		JavaMailSenderImpl mailSender;
+
+		if(email[1].equals("gmail.com")) {
+			mailSender = new JavaMailSenderImpl();
+			mailSender.setHost("smtp.gmail.com");
+			mailSender.setPort(587);
+			mailSender.setUsername(user);
+			mailSender.setPassword(password);
+			mailSender.setDefaultEncoding("UTF-8");
+			
+			Properties props = mailSender.getJavaMailProperties();
+		    	props.put("mail.transport.protocol", "smtp");
+		    	props.put("mail.smtp.auth", "true");
+		    	props.put("mail.smtp.starttls.enable", "true");
+		    	props.put("mail.debug", "true");}
+		else mailSender = null;
+					
+		return mailSender;
 	}
 
 

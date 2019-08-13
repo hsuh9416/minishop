@@ -1,5 +1,6 @@
 package member.controller;
 
+import java.io.File;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -31,6 +32,7 @@ import member.bean.MemberDTO;
 import member.dao.MemberDAO;
 import product.bean.ProductDTO;
 import trading.bean.CouponDTO;
+import trading.bean.FileMaker;
 import trading.bean.OrderDTO;
 import trading.bean.ShoppingCart;
 import trading.dao.TradingDAO;
@@ -136,8 +138,8 @@ public class MemberController {
 
 	//4. 로그아웃하기
 	@RequestMapping(value="/logout.do",method=RequestMethod.GET)
-	@ResponseBody
-	public void logout(HttpServletRequest request,HttpServletResponse response, HttpSession session){
+
+	public ModelAndView logout(HttpServletRequest request,HttpServletResponse response, HttpSession session){
 		
 		String cartList_json;
 		
@@ -163,6 +165,9 @@ public class MemberController {
 						loginCookie.setMaxAge(0);
 						response.addCookie(loginCookie);
 						memberDAO.keepLogin(memberDTO.getId(),"NONE",new Date());}}
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("/common/returnHome");
+		return mav;
 	}	
 
 	//5. 회원가입 화면 이동
@@ -486,7 +491,7 @@ public class MemberController {
 				String orderPwd = UUID.randomUUID().toString(); 
 					if(orderList!=null) {
 						for(OrderDTO dto : orderList) {
-								dto.setOrder_id(orderPwd);
+								dto.setOrder_pwd(orderPwd);
 								tradingDAO.setNewOrderPwd(dto);}}		
 					
 				MessageDTO messageDTO = new MessageDTO();
@@ -495,14 +500,15 @@ public class MemberController {
 					messageDTO.setReceiveAddr(map.get("email"));
 					messageDTO = mailing.sendGoodbyeMail(messageDTO);
 				
-				/*주문 목록 설정
+	
 				FileMaker filemaker = new FileMaker();
+				
 				File file = filemaker.makeOrderList(memberDTO.getName(),orderList);
-				*/
-				System.out.println("고객에게 주문 목록을 전송하기 바랍니다.");
+				
+				messageDTO.setMailData(file);
 				
 				AdminDTO adminDTO = adminDAO.getAdmin();
-					mailing.sendMail(adminDTO, messageDTO);
+					mailing.sendMailwithFile(adminDTO, messageDTO);
 		
 					
 				return "submitSuccess";

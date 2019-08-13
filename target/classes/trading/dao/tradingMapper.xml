@@ -36,7 +36,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <!-- 주문 : 비밀번호 변경 -->
 <update id="setNewOrderPwd" parameterType="order">
-	UPDATE ORDERS set order_pwd=#{order_pwd} where order_id=#{order_no}
+	UPDATE ORDERS set order_pwd=#{order_pwd} where order_no=#{order_no}
 </update>
 
 </mapper>

@@ -64,4 +64,5 @@
 <script type="text/javascript" src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script type="text/javascript"  src="/minishop/resources/bootstrap4/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript" src="/minishop/resources/custom/js/member/member.view.js"></script>
+<script type="text/javascript" src="/minishop/resources/custom/js/member/memberDelete.js"></script>
   	<!--JavaScript Local LINK:END-->
