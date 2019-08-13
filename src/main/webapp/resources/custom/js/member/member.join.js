@@ -123,6 +123,7 @@ $('#writeBtn').click(function(){
 	$('#repwd').tooltip('disable');
 	$('#email1').tooltip('disable');	
 	$('#email2').tooltip('disable');
+	var policyCheck = $('#policyCheck').is(':checked');
 		if($('#name').val()==''){
 			 $('#name').tooltip('enable');
 			 $('#name').tooltip('show');
@@ -152,6 +153,8 @@ $('#writeBtn').click(function(){
 		}else if($('#checkEmail').val()!= $('#email1').val()+'@'+$('#email2').val()){
 			 $('#writeResult').append(noConfirmMsg).alert();	
 			 $('#confirmDiv').show();	
+		}else if(!policyCheck){
+			 alert('저희 샵의 거래 약관에 동의해 주세요');
 		}else{
 			$.ajax({
 				type: 'post',

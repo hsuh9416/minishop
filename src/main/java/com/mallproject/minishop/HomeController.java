@@ -50,4 +50,14 @@ public class HomeController {
 		mav.setViewName("/common/unauthorized");		
 		return mav;
 	}	
+	
+	//5. 거래약관 팝업창으로 이동
+	@RequestMapping(value="/main/viewPolicy.do",method = RequestMethod.GET)
+	public ModelAndView viewPolicy() {
+		
+		ModelAndView mav = new ModelAndView();		
+			mav.setViewName("/main/viewPolicy");
+		
+		return mav;
+	}	
 }

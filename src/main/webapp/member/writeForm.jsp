@@ -81,6 +81,14 @@
 			<div class="form-group col-3">
 				<input type="text" class="form-control" name="tel3" id="tel3" value="${memberDTO.tel3}">
 			</div>
+		</div>		
+		<div class="form-row">
+			<div class="form-group col-8">
+				<input type="checkbox" id="policyCheck" value="1">Kissin'Bus의 가입 약관에 동의 합니다.
+			</div>
+			<div class="form-group col-4">
+				<input type="button" class="btn btn-danger" id="policyPop" value="약관 확인"/>
+			</div>
 		</div>						    
 		<div class="form-row">
 			<div class="form-group col" align="center">          	

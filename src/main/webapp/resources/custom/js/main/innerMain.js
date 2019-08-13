@@ -75,4 +75,10 @@ $('#goCart').click(function(){
 	window.location='/minishop/trading/userCart.do';
 });
 
+$('#policyPop').click(function(){
+	var policyPop = window.open('/minishop/main/viewPolicy.do','shopPolicy','width=570,height=570,resizable=no');
+});
 
+$('#closeBtn').click(function(){
+	window.close();
+});
