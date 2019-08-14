@@ -28,26 +28,12 @@ public class AdminController {
 		return mav;
 	}	
 	
-	//2. 관리자 계정 로그아웃(수정 예정: 마감 메소드 진행시켜야 함)
+	//2. 관리자 계정 로그아웃
 	@RequestMapping(value="/adminLogout.do",method=RequestMethod.GET)
 	public ModelAndView adminLogout(HttpServletRequest request,HttpServletResponse response, HttpSession session){
-		session.removeAttribute("adminDTO");//관리자 계정은 로그아웃시에 무조건적으로 제거되어야 하며 자동 로그인도 불허한다.
-		/*MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");//회원으로서의 관리자 세션 마감 처리
-		if(memberDTO != null) {
-			session.removeAttribute("memberDTO");
-			session.invalidate();
-			Cookie loginCookie = WebUtils.getCookie(request, "loginCookie");
-			if(loginCookie != null) {
-				loginCookie.setPath("/");
-				loginCookie.setMaxAge(0);
-				response.addCookie(loginCookie);
-				MemberDAO memberDAO = new MemberDAOImpl();
-				memberDAO.keepLogin(memberDTO.getId(),"NONE",new Date());
-			}
-		} 관리자의 회원 계정은 회원 계정에서 로그아웃 시킨다.*/
+		session.removeAttribute("adminDTO");
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("display", "/template/body.jsp");
-		mav.setViewName("/main/home");
+		mav.setViewName("/common/logoutAdmin");
 		return mav;	
 	}			
 }

@@ -1,15 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-	<!--CSS Additional LINK:START-->
-	<!--CSS Additional LINK:END-->
-	<!-- Main Content:Start -->
+	<!--CSS Local LINK:START-->
+	<!--CSS Local LINK:END-->
+	
 <div class="col-lg-8">
 	<div class="row" id="titleDiv">
-		<div class="col" align="center" style="padding-bottom: 20px;">
-			<h3>회원 관리</h3>		
+		<div class="col">
+			<h3>가입 회원 목록</h3>		
 		</div>
 	</div>
+	
 	<div class="form-row align-items-center">
 		<div class="col-2">#</div>
 		<div class="col-2" align="center">회원명</div>
@@ -34,6 +35,7 @@
 		</div>
 	</div>
 </div>
-	<!-- Main Content:Start -->
-	<!--JavaScript Additional LINK:START-->
-	<!--JavaScript Additional LINK:END-->
+	<!--JavaScript Local LINK:START-->
+<script type="text/javascript" src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script type="text/javascript" src="/minishop/resources/custom/js/admin/userManage.js"></script>	
+	<!--JavaScript Local LINK:END-->

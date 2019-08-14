@@ -24,8 +24,8 @@
 										<i class="fa fa-angle-down"></i>
 									</a>
 									<ul class="account_selection">
-											<li><a id="goAdminLogout" href="#"><i class="fa fa-sign-out-alt" aria-hidden="true"></i>Sign Out</a></li>
-											<li><a id="goAdminManage" href="/minishop/admin/shop/adminManage.do"><i class="fa fa-address-card" aria-hidden="true"></i>내 정보</a></li>																					
+											<li><a id="goAdminLogout" href="/minishop/admin/adminLogout.do"><i class="fa fa-sign-out-alt" aria-hidden="true"></i>Sign Out</a></li>
+											<li><a id="goAdminManage" href="/minishop/admin/shop/adminManage.do"><i class="fa fa-address-card" aria-hidden="true"></i>Admin Info</a></li>																					
 									</ul>
 								</li>
 							</ul>
