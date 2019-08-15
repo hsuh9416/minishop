@@ -106,9 +106,7 @@ public class MemberController {
 				if(memberDTO.getState()==3) return "invalidate";
 				else {
 						session.setAttribute("memberDTO", memberDTO);
-					if(memberDTO.getState()==0) {
-						AdminDTO adminDTO = adminDAO.getAdmin();
-							session.setAttribute("adminDTO", adminDTO);						
+					if(memberDTO.getState()==0) {					
 						return  "adminLogin";}
 						
 						Cookie loginCookie = new Cookie("loginCookie",sessionId);				
@@ -204,7 +202,7 @@ public class MemberController {
 		MessageDTO messageDTO = new MessageDTO();
 		MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
 		
-		if(memberDTO!=null) {//null이 아니면 가입이 아닌 이메일 변경
+		if(memberDTO!=null) {
 			messageDTO.setReceiver(memberDTO.getName()+" 회원님");}
 		
 		else {messageDTO.setReceiver("예비 회원님");}
@@ -518,4 +516,18 @@ public class MemberController {
 		return "fail";		
 	}	
 	
+	//24. 관리자계정 접속(접속 후 관리자 화면으로 이동)
+	@RequestMapping(value="/adminLogin.do",method = RequestMethod.GET)
+	public ModelAndView adminLogin(HttpSession session) {
+		
+		AdminDTO adminDTO = adminDAO.getAdmin();
+			session.setAttribute("adminDTO", adminDTO);	
+		
+		ModelAndView mav = new ModelAndView();
+			mav.addObject("location", "adminHome");
+			mav.addObject("display", "/admin/shop/adminManage.jsp");//초기화면은 임시로 관리자 정보 화면
+			mav.setViewName("/main/home");
+		
+	return mav;
+	}	
 }

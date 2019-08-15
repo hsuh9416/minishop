@@ -10,6 +10,7 @@ import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Repository;
 
 import trading.bean.CouponDTO;
+import trading.bean.EventDTO;
 import trading.bean.OrderDTO;
 import trading.bean.ShoppingCart;
 /*
@@ -84,7 +85,30 @@ public class TradingDAOImpl implements TradingDAO {
 		sqlSession.update("tradingSQL.setNewOrderPwd", orderDTO);
 	}
 
-		
-//----------- 쿠폰 : END ----------//	
 
+
+		
+//----------- 주문 : END ----------//	
+
+//----------- 이벤트 : START ----------//	
+
+	//1. 배너리스트 불러오기
+	@Override
+	public List<EventDTO> getBannerList() {
+		return sqlSession.selectList("tradingSQL.getBannerList");
+	}
+	
+	//2. 특정 배너 정보 불러오기
+	@Override
+	public EventDTO getSelectedBanner(String event_no) {
+		return sqlSession.selectOne("tradingSQL.getSelectedBanner",event_no);
+	}
+
+	//3. 배너 수정하기
+	@Override
+	public int bannerModify(EventDTO eventDTO) {
+		return sqlSession.update("tradingSQL.bannerModify", eventDTO);
+	}	
+	
+//----------- 이벤트 : END ----------//	
 }

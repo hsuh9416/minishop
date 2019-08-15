@@ -334,7 +334,7 @@ public class AdminProductController {
 		SimpleDateFormat targetDate = new SimpleDateFormat("yyyy-mm-dd");
 			if(date==null||date.equals("")) {
 				Date today = new Date();
-				productDTO.setProduct_name_instockdate(today);
+				product_name_instockdate = today;
 			}
 			else {
 				try {
@@ -447,7 +447,7 @@ public class AdminProductController {
 		SimpleDateFormat targetDate = new SimpleDateFormat("yyyy-mm-dd");
 			if(date==null||date.equals("")) {
 				Date today = new Date();
-					productDTO.setProduct_name_instockdate(today);}
+					product_name_instockdate = today;}
 			else {
 				try {
 					product_name_instockdate = targetDate.parse(date);}

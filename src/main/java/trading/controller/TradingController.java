@@ -16,7 +16,9 @@ import com.google.gson.JsonElement;
 
 import product.bean.ProductDTO;
 import product.dao.ProductDAO;
+import trading.bean.EventDTO;
 import trading.bean.ShoppingCart;
+import trading.dao.TradingDAO;
 /*
  * 사용자 거래 관련 활동을 제어하는 클래스
  */
@@ -26,6 +28,9 @@ public class TradingController {
 	@Autowired 
 	ProductDAO productDAO;
 
+	@Autowired
+	TradingDAO tradingDAO;
+	
 	//1. 장바구니 화면 이동
 	@RequestMapping(value = "/userCart.do", method = RequestMethod.GET)
 	public ModelAndView userCart(HttpSession session){
@@ -195,5 +200,21 @@ public class TradingController {
 		return mav;
 	}
 
+	//6. 배너 호출하기
+	@RequestMapping(value="/getBannerList.do",method = RequestMethod.GET)
+	public ModelAndView getBannerList() {
+		
+		List<EventDTO> bannerList = tradingDAO.getBannerList();
+	
+		if(bannerList!=null) {
+			for(EventDTO data: bannerList) {
+				data.settingBanner();}}
+
+		ModelAndView mav = new ModelAndView();
+			mav.addObject("bannerList", bannerList);		
+			mav.setViewName("jsonView");
+			
+		return mav;
+	}
 }
 

@@ -17,8 +17,8 @@
 			<table id="productTable" class="table justify-content-center">
 			  <thead class="thead-dark">
 			    <tr>
-					<th scope="col">#</th>			    
-					<th scope="col">상품이미지</th>	
+					<th scope="col" >#</th>			    
+					<th scope="col" >상품이미지</th>	
 					<th scope="col">등록코드</th>
 					<th scope="col">상품분류</th>					
 					<th scope="col">상품명</th>	

@@ -8,25 +8,7 @@
             <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
             <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
 		</ol>
-		<div class="carousel-inner" role="listbox">
-			<div class="carousel-item active" >
-				<a href="/minishop/main/introduce.do">
-					<img class="d-block img-fluid" style="width:900px;height:350px;"
-	              		src="/minishop/resources/image/background/title_slide1.jpg" alt="First slide">
-				</a>
-			</div>
-			<div class="carousel-item">
-					<a href="/minishop/product/eventProductList.do?condition=new">
-						<img class="d-block img-fluid" style="width:900px;height:350px;"
-		              		src="/minishop/resources/image/background/title_slide2.jpg" alt="Second slide">
-					</a>
-			</div>
-			<div class="carousel-item">
-					<a href="/minishop/member/writeForm.do">
-						<img class="d-block img-fluid" style="width:900px;height:350px;"
-		              		src="/minishop/resources/image/background/title_slide3.jpg" alt="Third slide">
-					</a>
-			</div>
+		<div class="carousel-inner" id="bannerDiv" role="listbox">
 		</div>
 		<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
 			<span class="carousel-control-prev-icon" aria-hidden="true"></span>

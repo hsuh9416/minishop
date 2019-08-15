@@ -42,13 +42,14 @@ $('#mloginBtn').click(function(){
 
  					}
  					else if(data=='adminLogin'){
- 						var result = confirm('관리자 로그인을 하시겠습니까?');
- 						if(result){alert('로그인하셨습니다. 관리자 화면으로 이동합니다.');
- 							window.close();
- 							window.opener.location.href='/minishop/admin/adminHome.do';}
- 						else {
- 							window.opener.location.href='/minishop/admin/adminLogout.do';
- 						}
+ 						var result = confirm('관리자 계정으로 접속하셨습니다. 관리자 화면으로 이동 하시겠습니까?');
+ 							if(result){
+ 	 							window.close();
+ 								window.opener.location.href='/minishop/member/adminLogin.do';}
+ 							else {				
+ 								window.close();
+ 								window.opener.location.href='/minishop/member/memberView.do';
+ 							}
  					}
  					else if(data=='invalidate'){
  						$('#loginP').append('<strong>탈퇴한 멤버</strong> 이미 탈퇴한 멤버 정보입니다. 계정 복원 등의 문의 사항은 담당자에 연락주시기 바랍니다.');

@@ -39,6 +39,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	UPDATE ORDERS set order_pwd=#{order_pwd} where order_no=#{order_no}
 </update>
 
+<!-- 이벤트 : 배너리스트 호출 -->
+<select id="getBannerList" resultType="event">
+	SELECT * from EVENT
+</select>
+
+<!-- 이벤트 : 특정 배너 정보 호출 -->
+<select id="getSelectedBanner" parameterType="String" resultType="event">
+	SELECT * from EVENT where EVENT_NO=#{event_no}
+</select>
+
+<!-- 이벤트 : 특정 배너 정보 수정 -->
+<update id="bannerModify" parameterType="event">
+	UPDATE EVENT set EVENT_NAME=#{event_name},EVENT_IMAGE=#{event_image},EVENT_URL=#{event_url},
+	EVENT_STARTDATE=#{event_startdate},EVENT_ENDDATE=#{event_enddate} where EVENT_NO=#{event_no}
+</update>
+
 </mapper>
 
 

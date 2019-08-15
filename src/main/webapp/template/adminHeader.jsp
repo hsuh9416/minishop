@@ -50,7 +50,7 @@
 									<a href="/minishop/admin/adminHome.do">메인</a>
 								</li>
 								<li class="nav-item">
-									<a href="/minishop/admin/shop/adminManage.do">상점관리</a>
+									<a href="/minishop/admin/shop/eventManage.do">상점관리</a>
 								</li>								
 								<li class="nav-item">
 							        <a href="/minishop/admin/product/inventoryManage.do">상품관리</a>														
@@ -98,8 +98,8 @@
 						<i class="fa fa-angle-down"></i>					
 					</a>
 					<ul class="menu_selection">
-						<li><a href="/minishop/admin/shop/adminManage.do"><i class="fas fa-store-alt"></i>상점정보</a></li>
-						<li><a href="/minishop/admin/shop/salesInfo.do"><i class="fas fa-won-sign"></i>매출현황</a></li>														
+						<li><a href="/minishop/admin/shop/eventManage.do">이벤트관리</a></li>		
+						<li><a href="/minishop/admin/shop/salesInfo.do">매출현황</a></li>						
 					</ul>							
 				</li>								
 				<li class="menu_item has-children">
@@ -108,8 +108,8 @@
 						<i class="fa fa-angle-down"></i>					
 					</a>
 					<ul class="menu_selection">
-						<li><a href="/minishop/admin/product/inventoryManage.do"><i class="fas fa-dolly-flatbed" aria-hidden="true"></i>입점재고관리</a></li>
-						<li><a href="/minishop/admin/product/productManage.do"><i class="fa fa-address-card" aria-hidden="true"></i>등록상품관리</a></li>														
+						<li><a href="/minishop/admin/product/inventoryManage.do">입점재고관리</a></li>
+						<li><a href="/minishop/admin/product/productManage.do">등록상품관리</a></li>														
 					</ul>				
 				</li>
 				<li class="menu_item has-children">
@@ -118,8 +118,8 @@
 						<i class="fa fa-angle-down"></i>					
 					</a>
 					<ul class="menu_selection">
-							<li><a href="/minishop/admin/user/userManage.do"><i class="fas fa-users"></i>고객정보관리</a></li>
-							<li><a href="/minishop/admin/user/personalQAManage.do"><i class="fas fa-user-secret"></i>1:1문의관리</a></li>														
+							<li><a href="/minishop/admin/user/userManage.do">고객정보관리</a></li>
+							<li><a href="/minishop/admin/user/personalQAManage.do">1:1문의관리</a></li>														
 					</ul>						
 				</li>
 				<li class="menu_item">

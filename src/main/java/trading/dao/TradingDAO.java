@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import trading.bean.CouponDTO;
+import trading.bean.EventDTO;
 import trading.bean.OrderDTO;
 import trading.bean.ShoppingCart;
 /*
@@ -24,6 +25,11 @@ public interface TradingDAO {
 //--------주문 : START--------//	
 	List<OrderDTO> getOrderList(String id);	
 	void setNewOrderPwd(OrderDTO orderDTO);
-//--------주문 : END--------//		
+//--------주문 : END--------//	
+//--------이벤트 : START--------//	
+	List<EventDTO> getBannerList();
+	EventDTO getSelectedBanner(String event_no);
+	int bannerModify(EventDTO eventDTO);
+//--------이벤트 : END--------//	
 
 }
