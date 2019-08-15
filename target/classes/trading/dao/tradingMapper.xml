@@ -29,7 +29,45 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	UPDATE SHOPPINGCART set cartList_json=#{cartList_json} where MEMBERID=#{memberid}
 </update>
 
-<!-- 쿠폰 : 쿠폰 발급 -->
+<!-- 쿠폰 : 등록된 쿠폰 목록 가져오기 -->
+<select id="getCouponBook" resultType="coupon">
+	select * from COUPON_BOOK
+</select>
+
+<!-- 쿠폰 : 쿠폰 목록에 쿠폰 등록하기 -->
+<insert id="makeCoupon" parameterType="coupon">
+	insert into COUPON_BOOK values(coupon_seq.nextVal,
+									#{coupon_name},
+									#{coupon_type},
+									#{discount_mount},
+									#{coupon_target})
+</insert>
+
+<!-- 쿠폰 : 쿠폰 목록의 쿠폰 수정하기 -->
+<update id="modifyCoupon" parameterType="coupon">
+	UPDATE COUPON_BOOK set COUPON_NAME=#{coupon_name},
+						   COUPON_TYPE=#{coupon_type},
+						   DISCOUNT_MOUNT=#{discount_mount},
+						   COUPON_TARGET=#{coupon_target}
+						   where COUPON_NO = #{coupon_no}
+</update>
+
+<!-- 쿠폰 : 특정 번호로 발행된 쿠폰 목록 호출하기 -->
+<select id="getSelectedCoupon" parameterType="String" resultType="coupon">
+	select * from COUPON_BOOK where COUPON_NO = #{coupon_no}
+</select>
+
+<!-- 쿠폰 : 특정 번호로 지급된 쿠폰 목록 호출하기 -->
+<select id="getGivenCoupon" parameterType="String" resultType="coupon">
+	select * from BENEFIT_GRANT where COUPON_NO = #{coupon_no}
+</select>
+
+<!-- 쿠폰 : 쿠폰 목록의 쿠폰 삭제하기 -->
+<delete id="deleteCoupon" parameterType="String">
+	DELETE COUPON_BOOK where COUPON_NO = #{coupon_no}
+</delete>
+
+<!-- 쿠폰 : 쿠폰 지급 -->
 <insert id="setCoupon" parameterType="coupon">
 	INSERT into BENEFIT_GRANT values(#{grant_id},#{coupon_no},#{coupon_duedate},#{personal_code})
 </insert>

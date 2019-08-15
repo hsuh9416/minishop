@@ -15,6 +15,10 @@ $(document).ready(function(){
 		alert('수정이 완료되었습니다. 반영된 사항은 사용자 메인 화면에서 확인바랍니다.');
 		window.location='/minishop/admin/shop/eventManage.do';
 	}
+	else if(stateCode=='issued'){
+		alert('발행이 완료되었습니다. 쿠폰의 지급은 회원 관리란에서 수행하여 주시기 바랍니다.');
+		window.location='/minishop/admin/shop/eventManage.do';
+	}
 	else if(stateCode=='fail'){
 		alert('수정이 실패하였습니다. 다시 한번 시도바랍니다.');
 		window.history.back();

@@ -1,0 +1,279 @@
+@charset "UTF-8";
+
+@import url(//fonts.googleapis.com/earlyaccess/hanna.css);
+
+input #warning{
+	color: red;
+	font-size: 18px;
+	font-weight: bold;
+}
+
+div .subTitle{
+	background-color : #343A40;
+	padding: 5px 0;
+	text-align: center;}
+
+h5 .subTitle-white {
+	padding: 5px 0;
+	text-align: center;
+	text-decoration: solid 1px black;
+	text-underline-position: under;
+	}
+		
+div .subContent{
+	padding: 5px;
+	text-align: center;
+	font-size: 18px;
+	}	
+	
+.subTitle font{color: white;}	
+
+.card-header {
+    padding: .75rem 1.25rem;
+    margin-bottom: 0;
+    background-color: #212529;
+    color: white;
+}
+
+hr .sub-line{
+	border: solid 1px;
+	color: darkgrey;
+	width: 80%;
+}	
+
+hr .dime-line{
+	border: solid 1px;
+	color: lightgrey;
+	width: 100%;	
+}
+
+#subjectA:link {color: black; text-decoration: none;}
+#subjectA:visited {color: black; text-decoration: none;}
+#subjectA:hover {color: green; text-decoration: underline; font-weight: bold;}
+#subjectA:active {color: black; text-decoration: none;}
+
+#paging{
+	color: black;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+#currentPaging{
+	color: red;
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+	
+textarea {
+	width: 100%;
+	margin-left: auto; 
+	margin-right: auto;
+	text-align : center;
+
+}
+
+#product_content{
+	color : black;		
+}
+#inventoryTable{
+	text-align : center;
+	width: 90%;
+	margin-left: auto; 
+	margin-right: auto;
+}
+
+#productTable{
+	text-align : center;
+	width: 90%;
+	margin-left: auto; 
+	margin-right: auto;
+}
+
+#adminAns{
+	cursor: pointer;
+	color: white;
+	text-decoration: none; 
+	font-weight: bold;
+}
+
+#btnDiv{
+	width: 85%;
+	margin-right: 150px;	
+}
+
+.margin_down{
+	position:absolute;
+	margin-bottom: 300px;
+}
+
+#deleteA:link{
+	width : 50px;
+	height : 50px;
+	color : blue;
+}
+#deleteA:visited{
+	width : 50px;
+	height : 50px;
+	color : blue;
+}
+#deleteA:hover{
+	width : 50px;
+	height : 50px;
+	color : orange;
+}
+#deleteA:active{
+	width : 50px;
+	height : 50px;
+	color : red;
+}
+
+#eventType{
+	text-align: center;
+}
+#imageA{
+	cursor : pointer;
+}
+#reloadIcon:link{
+	width: 50px;
+	height: 50px;	
+	color: black;
+}
+#reloadIcon:visited{
+	width: 50px;
+	height: 50px;			
+	color: black;
+}
+#reloadIcon:hover{
+	width: 50px;
+	height: 50px;	
+	color: orange;
+}
+#reloadIcon:active{
+	width: 50px;
+	height: 50px;	
+	margin-right: 10px;	
+	color: green;
+}
+
+#modifyForm-container{
+	width: 80%;
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center center;
+	margin-top: 160px;
+	float : center;
+}
+
+#iconMinimum{
+	color: #0080c0;
+	font-weight: bold;	
+}
+
+#iconGeneral{
+	width: 150px;
+	height: 50px;
+	color: #3e3e3e;
+	font-weight: bold;
+}
+#iconTitle{
+	text-align: center;
+	width: 160px;
+	height:50px;
+	color: #3e3e3e;
+	font-weight: bold;
+}
+
+#iconSubject{
+	color: #3e3e3e;
+	font-weight: bold;	
+	font-sise: 12px;
+}
+#iconActive{
+	color: #007900;	
+	font-weight: bold;
+}
+#iconInactive{
+	color: darkgrey;
+	font-weight: bold;	
+}
+#upanddown{
+	margin-left:5px;	
+	margin-top:35px;
+}
+
+.list-group li{
+  margin-top:20px;
+  border : 0 none;
+}
+.list-group a{
+  margin-top:-10px;
+  color: black;
+}
+
+.list-group-item a{
+  border : 0 none;	
+}
+
+#searchBtn{
+	cursor : pointer;
+}
+#searchBtn :link :visited{
+	color: black;
+}
+
+#searchBtn :hover{
+	color: orange;
+}
+#searchBtn :active{
+	color: green;
+}
+
+#userProductTable img{
+	margin-top :20px;
+	width: 350px;
+	height: 400px;
+}
+#userProductTable th{
+	font-size: 20px;
+}
+
+.original_price{
+	color: darkgrey;
+	font-size: 15px;
+	text-decoration: line-through;
+}
+.product_price{
+	color: red;
+	font-weight: bold;
+	font-size: 25px;
+}
+.total_price{
+	color: black;
+	font-weight: bold;
+	font-size: 25px;
+}
+#cart_qty{
+	font-size: 15px;
+	width: 50px;
+	text-align: center;
+}
+#putCartBtn{
+	width: 200px;
+	height: 50px;	
+}
+#product_like :link :visited :hover :active btn{
+	border : 0 none;
+	width: 100px;
+	height: 60px;
+	padding-left: 20px;	
+}
+
+#product_like i{
+	color: red;
+}
+
+#checkAll {
+	width: 20px;
+	height: 20px;
+}

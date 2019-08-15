@@ -30,8 +30,11 @@ public class OrderDTO {
  private String order_product_total;
  
 //PAYMENT : 특정 주문서 관련 결제 방법/결제일
- private int payment_method;
+ private int payment_method;//0.현금 1.카드 2.쿠폰 3.포인트 4.무료제공
  private Date payment_date;
+ private int payment_coupon;
+ private int payment_point;
+ private int payment_cash;
  
 
 }

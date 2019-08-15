@@ -20,6 +20,12 @@ public interface TradingDAO {
 	void storeCartList(ShoppingCart shoppingCart);
 //--------장바구니 : END--------//
 //--------쿠폰 : START--------//	
+	List<CouponDTO> getCouponBook();
+	int makeCoupon(CouponDTO couponDTO);
+	int modifyCoupon(CouponDTO couponDTO);
+	CouponDTO getSelectedCoupon(String coupon_no);	
+	List<CouponDTO> getGivenCoupon(String coupon_no);
+	int deleteCoupon(String coupon_no);
 	void setCoupon(CouponDTO couponDTO);
 //--------쿠폰 : END--------//	
 //--------주문 : START--------//	

@@ -2,6 +2,24 @@ $(document).ready(function(){
 	if($('#event_no').val()!=''||$('#event_no').val()!=null){
 		$('#bannerNum').trigger('change','trigger');	
 	}
+	$.ajax({
+		type: 'get',
+		url : '/minishop/admin/shop/getEventList.do',
+		dataType: 'json',
+		success: function(data){
+			$('#bannerDiv').empty();
+			$('#couponDiv').empty();
+			
+			$.each(data.bannerList,function(index,items){
+				$('#bannerDiv').append(items.event_banner);
+			});
+			
+			$.each(data.couponBook,function(index,items){
+				$('#couponDiv').append(items.couponBookHTML);
+			});
+		}
+	});
+	
 });
 
 $('#bannerNum').on('change',function(){
@@ -20,10 +38,7 @@ $('#bannerNum').on('change',function(){
 			$('#event_no').val($('#bannerNum :selected').val());
 		}
 	});
-});
-
-$('#resetForm').click(function(){
-	window.location='/minishop/admin/shop/eventManage.do?event_no='+$('#event_no').val();
+	
 });
 
 $('#changeBannerBtn').click(function(){
@@ -39,4 +54,102 @@ $('#changeBannerBtn').click(function(){
 	else{
 		$('#bannerManage').submit();
 	}
+});
+
+
+$('input[name=selectionBtn]').on('change',function(){
+	var state = $('input[name=selectionBtn]:checked').val();
+	if(state=='new') {
+		$('#coupon_no').prop('readonly',true);
+		$('#searchCoupon').prop('disabled',true);
+	}
+	else {
+		$('#coupon_no').prop('readonly',false);
+		$('#searchCoupon').prop('disabled',false);		
+	}
+});
+
+$('#searchCoupon').click(function(){
+	if($('#coupon_no').val()=='') alert('쿠폰의 발행 번호를 입력하세요');
+	else
+		$.ajax({
+			type: 'get',
+			url: '/minishop/admin/shop/getSelectedCoupon.do',
+			data: 'coupon_no='+$('#coupon_no').val(),
+			dataType: 'json',
+			success: function(data){
+			if(data.coupon==null) alert('쿠폰 발행 번호를 다시 확인하세요[상단 목록 참조]');
+			else{
+				$('input[name=coupon_no]').val(data.coupon.coupon_no);
+				$('input[name=coupon_name]').val(data.coupon.coupon_name);
+				$('#target').val(data.coupon.coupon_target);
+				$('#type').val(data.coupon.coupon_type);
+				$('input[name=discount_mount]').val(data.coupon.discount_mount);	
+				$('#deleteCoupon').prop('disabled',false);
+			}
+			}
+		});
+});
+
+$('#issueCoupon').click(function(){
+	var mount = 0;
+	if($('input[name=discount_mount]').val()!=''){
+		var mount = parseInt($('input[name=discount_mount]').val(),10);
+	}
+	if($('input[name=coupon_name]').val()==''||$('input[name=coupon_target] :selected').val()==''||
+			$('input[name=coupon_type] :selected').val()=='')alert('쿠폰 발행을 위한 모든 사항을 입력하세요.');
+	else if(mount<0){
+		alert('0이상의 숫자만 입력되야 합니다.');}
+	else{
+		$('input[name=coupon_no]').val(0);
+		if($('input[name=discount_mount]').val()=='') $('input[name=discount_mount]').val(0);
+		$('#couponManage').submit();
+	}
+});
+
+$('#modifyCoupon').click(function(){
+	var mount = 0;
+	if($('input[name=discount_mount]').val()!=''){
+		var mount = parseInt($('input[name=discount_mount]').val(),10);
+	}	
+	if($('input[name=coupon_name]').val()==''||$('input[name=coupon_target] :selected').val()==''||
+			$('input[name=coupon_type] :selected').val()=='')	alert('쿠폰 발행을 위한 모든 사항을 입력하세요.');
+	else if(mount<0){
+		alert('0이상의 숫자만 입력되야 합니다.');}
+	else{
+		if($('input[name=discount_mount]').val()=='') $('input[name=discount_mount]').val(mount);
+		$.ajax({
+			type: 'post',
+			url : '/minishop/admin/shop/modifyCoupon.do',
+			data : $('#couponManage').serialize(),
+			dataType: 'text',
+			success: function(data){
+				if(data=='success') {
+					alert('성공적으로 수정되었습니다.');
+					window.location.reload();
+				}
+				else alert('수정이 실패하였습니다. 다시 한번 시도해주세요.');
+			}
+		});
+	}
+});
+
+
+$('#deleteCoupon').click(function(){
+	$.ajax({
+		type: 'post',
+		url : '/minishop/admin/shop/deleteCoupon.do',
+		data : 'coupon_no='+$('input[name=coupon_no]').val(),
+		dataType: 'text',
+		success: function(data){
+			if(data=='cannotDelete') {
+				alert('회수 되지 않은 쿠폰이 존재하여 삭제가 불가능합니다. 사용자로부터 회수 후 삭제 바랍니다.');
+				
+			}else if(data=='success'){
+				alert('성공적으로 삭제되었습니다.');
+				window.location.reload();			
+			}
+			else alert('수정이 실패하였습니다. 다시 한번 시도해주세요.');
+		}
+	});
 });

@@ -64,11 +64,50 @@ public class TradingDAOImpl implements TradingDAO {
 
 //----------- 쿠폰 : START ----------//
 	
-	//1.쿠폰 발급
+	
+	
+	
+	//1.발행된 쿠폰북 가져오기
+	@Override
+	public List<CouponDTO> getCouponBook() {
+		return sqlSession.selectList("tradingSQL.getCouponBook");
+	}
+
+	//2.쿠폰북에 새 쿠폰 발행
+	@Override
+	public int makeCoupon(CouponDTO couponDTO) {
+		return sqlSession.insert("tradingSQL.makeCoupon",couponDTO);		
+	}
+	
+	//3.쿠폰북의 쿠폰 수정
+	@Override
+	public int modifyCoupon(CouponDTO couponDTO) {
+		return sqlSession.update("tradingSQL.modifyCoupon",couponDTO);	
+	}
+	
+	//4.쿠폰 번호로 발행된 쿠폰 조회
+	@Override
+	public CouponDTO getSelectedCoupon(String coupon_no) {
+		return sqlSession.selectOne("tradingSQL.getSelectedCoupon",coupon_no);
+	}
+	
+	//5.쿠폰 번호로 지급된 쿠폰 리스트 조회
+	@Override
+	public List<CouponDTO> getGivenCoupon(String coupon_no) {
+		return sqlSession.selectList("tradingSQL.getGivenCoupon",coupon_no);
+	}
+	
+	//6.쿠폰북에서 발행 쿠폰 삭제
+	@Override
+	public int deleteCoupon(String coupon_no) {
+		return sqlSession.delete("tradingSQL.deleteCoupon",coupon_no);	
+	}
+	
+	//5.대상에 쿠폰 지급
 	@Override
 	public void setCoupon(CouponDTO couponDTO) {
 		sqlSession.insert("tradingSQL.setCoupon",couponDTO);
-	}		
+	}	
 	
 //----------- 쿠폰 : END ----------//	
 

@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -16,9 +17,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import trading.bean.CouponDTO;
 import trading.bean.EventDTO;
 import trading.dao.TradingDAO;
 /*
@@ -91,7 +94,7 @@ public class AdminShopController {
 	return mav;
 	}
 	
-	//96. 배너  수정하기
+	//6. 배너  수정하기
 	@RequestMapping(value="/bannerModify.do",method=RequestMethod.POST)
 	public ModelAndView bannerModify(@ModelAttribute EventDTO eventDTO, @RequestParam MultipartFile event_image_new, String start_date, String end_date, HttpServletRequest request){
 		
@@ -173,4 +176,84 @@ public class AdminShopController {
 		mav.setViewName("/admin/shop/stateCode");
 		return mav;
 	}	
+	//7.이벤트 현황 목록 호출하기
+	@RequestMapping(value="/getEventList.do",method=RequestMethod.GET)
+	public ModelAndView getEventList() {
+		
+		List<EventDTO> bannerList = tradingDAO.getBannerList();
+		List<CouponDTO> couponBook = tradingDAO.getCouponBook();
+		
+		for(EventDTO data : bannerList) {
+			data.callBannerList();
+		}
+		for(CouponDTO data : couponBook) {
+			data.callCouponBook();
+		}
+		
+		ModelAndView mav = new ModelAndView();
+			mav.addObject("bannerList",bannerList);		
+			mav.addObject("couponBook",couponBook);
+			mav.setViewName("jsonView");
+			
+		return mav;
+	}
+	
+	//7.이벤트 현황 목록 호출하기
+	@RequestMapping(value="/getSelectedCoupon.do",method=RequestMethod.GET)
+	@ResponseBody
+	public ModelAndView getSelectedCoupon(@RequestParam String coupon_no) {
+		
+		CouponDTO couponDTO = tradingDAO.getSelectedCoupon(coupon_no);
+		
+
+		ModelAndView mav = new ModelAndView();	
+			mav.addObject("coupon",couponDTO);
+			mav.setViewName("jsonView");
+			
+		return mav;
+	}	
+	
+	//7.쿠폰 발행하기
+	@RequestMapping(value="/makeCoupon.do",method=RequestMethod.POST)
+	public ModelAndView makeCoupon(@ModelAttribute CouponDTO couponDTO) {
+		
+		int result = tradingDAO.makeCoupon(couponDTO);
+		String state="fail";
+		
+		if(result==1) state="issued";
+		
+		ModelAndView mav = new ModelAndView();
+			mav.addObject("stateCode", state);
+			mav.setViewName("/admin/shop/stateCode");
+			
+		return mav;
+	}	
+	
+	//8.쿠폰 수정하기
+	@RequestMapping(value="/modifyCoupon.do",method=RequestMethod.POST)
+	@ResponseBody
+	public String modifyCoupon(@ModelAttribute CouponDTO couponDTO) {
+		
+		int result = tradingDAO.modifyCoupon(couponDTO);
+		
+		if(result==1) return "success";
+		else return "fail";
+	}		
+	
+	//9.쿠폰 삭제하기
+	@RequestMapping(value="/deleteCoupon.do",method=RequestMethod.POST)
+	@ResponseBody
+	public String modifyCoupon(@RequestParam String coupon_no) {
+	
+		List<CouponDTO> existingCoupon = tradingDAO.getGivenCoupon(coupon_no);
+		if(existingCoupon!=null&&existingCoupon.size()>0) return "cannotDelete";
+		else {
+			int result = tradingDAO.deleteCoupon(coupon_no);	
+			if(result==1) return "success";
+			else return "fail";
+		}
+
+		
+
+	}			
 }
