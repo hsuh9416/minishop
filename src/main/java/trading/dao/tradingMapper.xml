@@ -11,7 +11,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <!-- 공통 : 특정 회원 쿠폰 정보 호출-->
 <select id="getCouponList"  parameterType="String" resultType="coupon">
-	SELECT * from BENEFIT_GRANT where GRANT_ID=#{id}
+	SELECT * from BENEFIT_GRANT
+	inner join COUPON_BOOK
+	on BENEFIT_GRANT.coupon_no = COUPON_BOOK.coupon_no
+	where GRANT_ID=#{id}
 </select>
 
 <!-- 장바구니 : 특정 회원 장바구니 정보 호출-->

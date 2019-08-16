@@ -2,6 +2,7 @@ package member.dao;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
@@ -96,7 +97,13 @@ public class MemberDAOImpl implements MemberDAO {
 	//11. 회원 정보 호출
 	@Override
 	public MemberDTO getUser(String id) {
-		return sqlSession.selectOne("memberSQL.getMember",id);//재반환
+		return sqlSession.selectOne("memberSQL.getMember",id);
+	}
+	
+	//12.회원 전체 정보 호출
+	@Override
+	public List<MemberDTO> getMemberList() {
+		return sqlSession.selectList("memberSQL.getMemberList");
 	}
 
 //----------MEMBER:END----------//

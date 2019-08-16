@@ -1,6 +1,7 @@
 package member.dao;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import mail.bean.MessageDTO;
@@ -23,6 +24,7 @@ public interface MemberDAO {
 	MemberDTO findLostId(Map<String, String> map);
 	void setNewPwd(MemberDTO memberDTO);
 	MemberDTO getUser(String id);
+	List<MemberDTO> getMemberList();
 //----------MEMBER:END----------//
 //----------QAMESSAGE:START----------//		
 void memberQASend(MessageDTO messageDTO);
@@ -30,4 +32,6 @@ void memberQASend(MessageDTO messageDTO);
 //----------MEMBER_DELETE:START----------//	
 void deleteMemberAdmin(Map<String, String> map);
 //----------MEMBER_DELETE:END----------//
+
+
 } 

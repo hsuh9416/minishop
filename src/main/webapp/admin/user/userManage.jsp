@@ -12,12 +12,13 @@
 	</div>
 	
 	<div class="form-row align-items-center">
-		<div class="col-2">#</div>
+		<div class="col-1">#</div>
 		<div class="col-2" align="center">회원명</div>
-		<div class="col-2" align="center">회원아이디</div>					
-		<div class="col-2" align="center">회원등급</div>
+		<div class="col-2" align="center">아이디</div>					
+		<div class="col-1" align="center">등급</div>
 		<div class="col-2" align="center">가입일자</div>
-		<div class="col-2" align="center">회원상태</div>															
+		<div class="col-2" align="center">상태</div>	
+		<div class="col-2" align="center"></div>																	
 	</div>
 	<hr width="100%" color="darkgray" noshade/>
 		<!-- MEMBERLIST:START -->
@@ -28,10 +29,10 @@
 		<div class="col-2"></div>
 		<div class="col-6"></div>
 		<div class="col-2">
-			<input type="button" class="btn btn-outline-primary" value="계속 쇼핑하기" id="goCategory">	
+			<input type="button" class="btn btn-outline-primary" value="전체 혜택 지급" id="giveBenefitAll">	
 		</div>
 		<div class="col-2">
-			<input type="button" class="btn btn-outline-info" value="주문하기" id="choiceOrder">	
+			<input type="button" class="btn btn-outline-info" value="전체 공지 발송" id="giveNoticeAll">	
 		</div>
 	</div>
 </div>

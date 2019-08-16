@@ -5,6 +5,8 @@ import java.util.Date;
 
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.Data;
 /*
  * DB COUPON_BOOK 관련 요소 관리 클래스
@@ -14,7 +16,7 @@ import lombok.Data;
 public class CouponDTO {
 	private int coupon_no;//쿠폰번호
 	private String coupon_name;//쿠폰이름
-	
+	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date coupon_duedate;//유효일자(유효일자가 null이면 무기한으로 간주함)
 	private String grant_id;//받은 대상(회원만 조회가능)
 	private String personal_code;//식별코드

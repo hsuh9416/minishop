@@ -4,6 +4,8 @@ import java.util.Date;
 
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.Data;
 /*
  * 주문관련 DB 요소 관리 클래스
@@ -16,13 +18,13 @@ public class OrderDTO {
  private String order_id;
  private int order_total;
  private int order_state;
+ @JsonFormat(pattern="yyyy-MM-dd")
  private Date order_date;
  private String order_address;
  private String order_email;
  private String order_tel;
  private String order_pwd;
  private String order_name;
- 
  //ORDERED_PRODUCT : 특정 주문서 상세 내역
  private int order_product_no;
  private String order_productid;
@@ -31,6 +33,7 @@ public class OrderDTO {
  
 //PAYMENT : 특정 주문서 관련 결제 방법/결제일
  private int payment_method;//0.현금 1.카드 2.쿠폰 3.포인트 4.무료제공
+ @JsonFormat(pattern="yyyy-MM-dd")
  private Date payment_date;
  private int payment_coupon;
  private int payment_point;
