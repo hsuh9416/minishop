@@ -141,3 +141,15 @@ $(document).ready(function(){
 		}
 	});
 });
+
+$('#benefitGivingBtn').click(function(){
+	var benefitGivePop = window.open('/minishop/admin/user/benefitGivingForm.do?target='+$('#memberID').val(),'회원 혜택 관리','width=565,height=435,resizable=no');
+});
+
+$('#infoSendingBtn').click(function(){
+	var infoWritePop = window.open('/minishop/admin/user/infoWriteForm.do?target='+$('#memberID').val(),'회원 공지 발신','width=565,height=435,resizable=no');
+});
+
+$('#closeBtn').click(function(){
+	window.close();
+});

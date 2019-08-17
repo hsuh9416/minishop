@@ -80,11 +80,6 @@ public class MailingImpl implements Mailing {
 	}
 
 	@Override
-	public MessageDTO sendgeneralMail(MessageDTO messageDTO) {	  
-		return messageDTO;
-	}
-
-	@Override
 	public MessageDTO sendOrderMail(MessageDTO messageDTO) {
 		// TODO Auto-generated method stub
 		return messageDTO;
@@ -162,7 +157,7 @@ public class MailingImpl implements Mailing {
 		try {
 		MimeMessageHelper helper = new MimeMessageHelper(message,true);
 				helper.setSubject(messageDTO.getSubject());
-				helper.setText(messageDTO.getContent());
+				helper.setText(messageDTO.getContent(),messageDTO.getContainHTML());
 				
 			FileSystemResource file = new FileSystemResource(messageDTO.getMailData());	
 				helper.addAttachment(messageDTO.getMailData().getName(), file);	

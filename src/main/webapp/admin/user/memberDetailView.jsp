@@ -137,9 +137,10 @@
 				
 		<div class="row">
 			<div class="col" align="right">          	
-				<button type="button" id="resetBtn" class="btn btn-outline-primary">포인트지급</button>
-				<button type="button" id="resetBtn" class="btn btn-outline-info">쿠폰지급</button>		
-				<button type="button" id="memberDeleteBtn" class="btn btn-outline-danger" disabled>계정삭제</button>			
+				<button type="button" id="benefitGivingBtn" class="btn btn-outline-primary">혜택지급</button>
+				<button type="button" id="infoSendingBtn" class="btn btn-outline-info">메일발신</button>		
+				<button type="button" id="memberDeleteBtn" class="btn btn-outline-danger" disabled>계정삭제</button>
+				<button type="button" id="closeBtn" class="btn btn-outline-secondary">닫기</button>							
 			</div>
 		</div>			
 	</div>	
@@ -148,5 +149,5 @@
 	<!--JavaScript Local LINK:START-->
 <script type="text/javascript" src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script type="text/javascript" src="/minishop/resources/bootstrap4/js/bootstrap.bundle.min.js"></script>
-<script type="text/javascript" src="/minishop/resources/custom/js/admin/memberDetailView.js"></script>
+<script type="text/javascript" src="/minishop/resources/custom/js/adminUser/memberDetailView.js"></script>
 	<!--JavaScript Local LINK:END-->

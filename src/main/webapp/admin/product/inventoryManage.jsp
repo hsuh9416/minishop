@@ -76,6 +76,6 @@
 
 	<!--JavaScript Local LINK:START-->
 <script type="text/javascript" src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
-<script type="text/javascript" src="/minishop/resources/custom/js/admin/admin.product.js"></script>
-<script type="text/javascript" src="/minishop/resources/custom/js/admin/inventoryManage.js"></script>
+<script type="text/javascript" src="/minishop/resources/custom/js/adminProduct/admin.product.js"></script>
+<script type="text/javascript" src="/minishop/resources/custom/js/adminProduct/inventoryManage.js"></script>
 	<!--JavaScript Local LINK:END-->

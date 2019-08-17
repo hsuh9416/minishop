@@ -26,17 +26,16 @@
 		<!-- MEMBERLIST:END -->		
 	<hr width="100%" color="darkgray" noshade/>	
 	<div class="form-row align-items-center">
-		<div class="col-2"></div>
 		<div class="col-6"></div>
-		<div class="col-2">
+		<div class="col-3">
 			<input type="button" class="btn btn-outline-primary" value="전체 혜택 지급" id="giveBenefitAll">	
 		</div>
-		<div class="col-2">
+		<div class="col-3">
 			<input type="button" class="btn btn-outline-info" value="전체 공지 발송" id="giveNoticeAll">	
 		</div>
 	</div>
 </div>
 	<!--JavaScript Local LINK:START-->
 <script type="text/javascript" src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
-<script type="text/javascript" src="/minishop/resources/custom/js/admin/userManage.js"></script>	
+<script type="text/javascript" src="/minishop/resources/custom/js/adminUser/userManage.js"></script>	
 	<!--JavaScript Local LINK:END-->

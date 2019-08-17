@@ -55,9 +55,9 @@ $(document).ready(function(){
 });
 
 $('#giveBenefitAll').click(function(){
-	var benefitGivePop = window.open('/minishop/admin/user/benefitGivingForm.do?','전체 혜택 지급','width=565,height=435,resizable=no');
+	var benefitGivePop = window.open('/minishop/admin/user/benefitGivingForm.do?target=all','회원 혜택 관리','width=565,height=435,resizable=no');
 });
 
 $('#giveNoticeAll').click(function(){
-	var infoWritePop = window.open('/minishop/admin/user/infoWriteForm.do?','전체 공지 메일 발송','width=565,height=435,resizable=no');
+	var infoWritePop = window.open('/minishop/admin/user/infoWriteForm.do?target=all','회원 공지 발신','width=565,height=435,resizable=no');
 });

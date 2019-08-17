@@ -31,3 +31,8 @@ p{color:red;}
 	margin-top: 10px;
 	padding-top: 5px;
 }
+
+.form-group{
+	margin: 5px;
+	padding: 5px;
+}

@@ -23,6 +23,7 @@ public class MessageDTO {
  private String content;
  @JsonFormat(pattern="yyyy.MM.dd")
  private Date sendDate;
+ private Boolean containHTML=false;
  
  private String code;
  

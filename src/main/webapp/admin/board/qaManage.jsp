@@ -48,5 +48,5 @@
 	<!--JavaScript Local LINK:START-->
 <script type="text/javascript" src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script type="text/javascript" src="/minishop/resources/custom/js/qa/board.qa.js"></script>
-<script type="text/javascript" src="/minishop/resources/custom/js/admin/qaManage.js"></script>
+<script type="text/javascript" src="/minishop/resources/custom/js/adminBoard/qaManage.js"></script>
 	<!--JavaScript Local LINK:END-->

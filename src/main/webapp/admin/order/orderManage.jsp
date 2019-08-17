@@ -68,6 +68,6 @@
 
 	<!--JavaScript Local LINK:START-->
 <script type="text/javascript" src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
-<script type="text/javascript" src="/minishop/resources/custom/js/admin.order.js"></script>
+<script type="text/javascript" src="/minishop/resources/custom/js/adminOrder/orderManage.js"></script>
 <script type="text/javascript"></script>
 	<!--JavaScript Local LINK:END-->
