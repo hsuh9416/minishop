@@ -59,10 +59,6 @@
         <url-rule>
             <url disable="true">/login.do</url>
         </url-rule>
-        <!-- url disable이 false인 설정은 기본이기 때문에 불필요하다. 아래와 같은 불필요한 설정은 하지 않는다.-->       
-        <url-rule>
-            <url disable="false">/disableUrl2.do</url>
-        </url-rule>
         <!-- url disable이 true이면 지정한 url 내의 모든 파라메터가 필터링 되지 않기 때문에 <params> 로 선언한 설정은 적용되지 않는다.
                아래와 같은 불필요한 설정은 하지 않는다. -->
         <url-rule>

@@ -12,6 +12,7 @@ function searchId(target){
 				$('#inform_target').prop('readonly',false);					
 				$('#searchTarget').prop('disabled',false);	
 				$('#inform_target').empty();
+				$('input[name=id]').val('');
 				$('#target').val('');
 				$('#inform_target').focus();
 			}
@@ -65,6 +66,9 @@ $('#searchTarget').click(function(){
 		searchId($('#inform_target').val());
 	}
 });
+$('input[name=id]').focusout(function(){
+	searchId($('input[name=id]').val());
+});
 
 $('#resetBtn').click(function(){
 	window.location.reload();
@@ -88,6 +92,10 @@ $('#putInformMail').click(function(){
 			success : function(data){
 				if(data=='success'){
 					alert('메일 발신이 성공적으로 이루어졌습니다.');
+					window.close();
+				}
+				else if(data=='adminExcept'){
+					alert('관리자는 전송 대상이 아닙니다. (구)관리자 계정인 경우에는 담당자에 직접 문의 바랍니다');
 					window.close();
 				}
 				else{

@@ -111,7 +111,7 @@ public class AdminShopController {
 	    String[] images;
 	    		
 			//(1) 받아온 글자를 date 형식으로 치환
-		SimpleDateFormat targetDate = new SimpleDateFormat("yyyy-mm-dd");
+		SimpleDateFormat targetDate = new SimpleDateFormat("yyyy-MM-dd");
 		try {
 			if(start_date==null||start_date.equals("")) {
 				Date today = new Date();

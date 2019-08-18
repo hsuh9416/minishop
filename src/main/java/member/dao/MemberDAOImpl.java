@@ -105,7 +105,13 @@ public class MemberDAOImpl implements MemberDAO {
 	public List<MemberDTO> getMemberList() {
 		return sqlSession.selectList("memberSQL.getMemberList");
 	}
-
+	//13. 회원 포인트 지급
+	@Override
+	public void setPoint(String id,String pointQty) {
+		Map<String,String> map = new HashMap<String,String>();
+		map.put("id", id);	map.put("pointQty", pointQty);
+		sqlSession.update("memberSQL.setPoint", map);	
+	}
 //----------MEMBER:END----------//
 	
 //----------QAMESSAGE:START----------//	

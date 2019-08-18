@@ -46,6 +46,22 @@ public class MailingImpl implements Mailing {
 	        }   
 		return getKey;
 	}	  
+	
+	@Override
+	public MessageDTO sendBenefitGrantMail(MessageDTO messageDTO, String benefitInfo) {
+		messageDTO.setSender("[Kissin' Bugs]");
+		String benefitStatement = "<br><h5>"+messageDTO.getReceiver()+"고객님께 지급되는 혜택은 다음과 같습니다.</h5>"+
+								"<hr style='width:80%;'>"+
+								"<p><strong style='color:blue;'>"+benefitInfo+"</strong></p>"+
+								"<hr style='width:80%;'>"+
+								"<p>저희 Kissin' Bugs는 "+messageDTO.getReceiver()+" 님의 편의와 만족을 위하여 최선을 다하고 있습니다.</p>"+
+								"<p>이번 혜택을 통해 "+messageDTO.getReceiver()+" 님의 더욱 설레는 하루가 되길 바라며 앞으로도 지속적인 관심 부탁드립니다.</p>"+
+								"<p>&emsp; &emsp; &emsp;[Kissin' Bugs] 직원 일동 드림</p>";
+		benefitStatement=messageDTO.getContent()+benefitStatement;
+		messageDTO.setContent(benefitStatement);
+		return messageDTO;
+	}
+	
 	@Override
 	public MessageDTO sendConfirmMail(MessageDTO messageDTO,String checkNum) {
 		messageDTO.setSender("[Kissin' Bugs]");
@@ -144,7 +160,7 @@ public class MailingImpl implements Mailing {
 				
 	}
 
-	//파일 첨부 보내기
+	//파일 첨부/html 형식이 추가된 메일 보내기
 	@Override
 	public void sendMailwithFile(AdminDTO adminDTO, MessageDTO messageDTO) {
 		
@@ -158,11 +174,12 @@ public class MailingImpl implements Mailing {
 		MimeMessageHelper helper = new MimeMessageHelper(message,true);
 				helper.setSubject(messageDTO.getSubject());
 				helper.setText(messageDTO.getContent(),messageDTO.getContainHTML());
+			if(messageDTO.getMailData()!=null) {
+				FileSystemResource file = new FileSystemResource(messageDTO.getMailData());	
+				helper.addAttachment(messageDTO.getMailData().getName(), file);	}
 				
-			FileSystemResource file = new FileSystemResource(messageDTO.getMailData());	
-				helper.addAttachment(messageDTO.getMailData().getName(), file);	
-				helper.setTo(messageDTO.getReceiveAddr());
-				
+				helper.setTo(messageDTO.getReceiveAddr());				
+			
 				emailSender.send(message);} 
 		catch (MessagingException e) {e.printStackTrace();}}
 		else {

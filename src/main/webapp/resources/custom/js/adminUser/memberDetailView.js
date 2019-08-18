@@ -16,8 +16,17 @@ $(document).ready(function(){
 			
 			$('#id').text(memberDTO.id); 
 			$('#name').text(memberDTO.name);
-			if(memberDTO.state=='0') $('#rank').text('관리자').attr('color','black');
+			if(memberDTO.state=='0') {
+				$('#rank').text('관리자').attr('color','black');
+				$('#benefitGivingBtn').prop('disabled',true);
+				$('#infoSendingBtn').prop('disabled',true);				
+			}
 			else if(memberDTO.state=='2') $('#rank').text('특별').attr('color','blue');
+			else if(memberDTO.state=='3'){
+				$('#benefitGivingBtn').prop('disabled',true);
+				$('#infoSendingBtn').prop('disabled',true);					
+				$('#memberDeleteBtn').prop('disabled',false);
+			}
 			else $('#rank').text('일반').attr('color','green');
 			$('#email').text(memberDTO.email1+'@'+memberDTO.email2);
 			if(memberDTO.tel1!=null&&memberDTO.tel2!=null&&memberDTO.tel3!=null){

@@ -1,8 +1,13 @@
 package admin.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +21,7 @@ import mail.bean.Mailing;
 import mail.bean.MessageDTO;
 import member.bean.MemberDTO;
 import member.dao.MemberDAO;
+import trading.bean.CouponDTO;
 import trading.dao.TradingDAO;
 /*
  * 관리자: 회원 관리를 제어하는 클래스
@@ -95,7 +101,149 @@ public class AdminUserController {
 		return mav;
 	}
 
-	//6.전체 공지 메일 팝업창 이동
+	//6. 쿠폰 유효성 체크
+	@RequestMapping(value="checkCouponState.do",method=RequestMethod.POST)
+	@ResponseBody
+	public String checkCouponState(@RequestParam Map<String,String> map) {
+		
+		CouponDTO couponDTO = tradingDAO.getSelectedCoupon(map.get("coupon_no"));
+		
+		if((map.get("selectTarget").equals("person")&&couponDTO.getCoupon_target()==0)||
+		   (map.get("selectTarget").equals("all")&&couponDTO.getCoupon_target()==1)) 
+		{
+			return "typeMissMatching";
+		}
+		else {
+			List<CouponDTO> couponList = tradingDAO.getGivenCoupon(map.get("coupon_no"));
+			if(map.get("selectTarget").equals("all")) {
+				if(couponList==null||couponList.size()==0) return "available";
+				else return "preIssued";
+			}
+			else {
+				for(CouponDTO coupon : couponList) {
+					if(coupon.getGrant_id().equals(map.get("id"))) return "preIssued";
+				}
+			}
+		}
+		return "available";
+	}
+	
+	//7.회원 쿠폰 발급
+	@RequestMapping(value="/issueCoupon.do",method=RequestMethod.POST)
+	@ResponseBody
+	public String issueCoupon(@RequestParam Map<String,String> map) {	
+		
+		String personalCode = "";
+		String benefitInfo = "[쿠폰번호] "+map.get("coupon_no")+" [지급번호] "+personalCode+"(자세한 사항은 개인 계정 정보를 참조하시기 바랍니다)";
+		String subject = "[특별쿠폰발급] "+map.get("subject");
+		
+		MessageDTO messageDTO = new MessageDTO();
+		String content = StringEscapeUtils.unescapeHtml4(map.get("content"));	
+			messageDTO.setSubject(subject);
+			messageDTO.setContainHTML(true);
+		AdminDTO adminDTO = adminDAO.getAdmin();	
+		CouponDTO couponDTO = tradingDAO.getSelectedCoupon(map.get("coupon_no"));
+		
+		SimpleDateFormat targetDate = new SimpleDateFormat("yyyy-MM-dd");
+		String dueDateString ="9999-12-31";
+			if(map.get("coupon_duedate")!=null&&!map.get("coupon_duedate").equals("")&&!map.get("coupon_duedate").equals("permanent")) {
+				dueDateString = map.get("coupon_duedate");}			
+			try {
+				Date dueDate = targetDate.parse(dueDateString);
+				if(dueDate.before(new Date())) return "dueDateError";
+				else couponDTO.setCoupon_duedate(dueDate);}
+			catch (ParseException e) {return "fail";}
+				
+		if(map.get("selectTarget").equals("all")) {			
+			List<MemberDTO> memberList = memberDAO.getMemberList();
+			for(MemberDTO dto : memberList) {
+				if(dto.getState()==0) continue;
+				couponDTO.setGrant_id(dto.getId());
+				personalCode = UUID.randomUUID().toString();
+				couponDTO.setPersonal_code(personalCode);
+				benefitInfo = "[쿠폰번호] "+map.get("coupon_no")+" [지급번호] "+personalCode+"(자세한 사항은 개인 계정 정보를 참조하시기 바랍니다)";
+				
+				tradingDAO.setCoupon(couponDTO);
+					
+				messageDTO.setContent(content);	
+				messageDTO.setReceiver(dto.getName());
+				messageDTO.setReceiveAddr(dto.getEmail1()+"@"+dto.getEmail2());
+				messageDTO =mailing.sendBenefitGrantMail(messageDTO, benefitInfo);
+				
+				mailing.sendMailwithFile(adminDTO, messageDTO);
+			}
+			
+			return "success";
+		}
+		else {
+			MemberDTO memberDTO = memberDAO.getUser(map.get("id"));
+			if(memberDTO.getState()==0) return "adminExcept";	
+				couponDTO.setGrant_id(memberDTO.getId());
+				personalCode = UUID.randomUUID().toString();
+				couponDTO.setPersonal_code(personalCode);
+				benefitInfo = "[쿠폰번호] "+map.get("coupon_no")+" [지급번호] "+personalCode+"(자세한 사항은 개인 계정 정보를 참조하시기 바랍니다)";		
+				
+				tradingDAO.setCoupon(couponDTO);
+				
+				messageDTO.setContent(content);	
+				messageDTO.setReceiver(memberDTO.getName());
+				messageDTO.setReceiveAddr(memberDTO.getEmail1()+"@"+memberDTO.getEmail2());
+				messageDTO =mailing.sendBenefitGrantMail(messageDTO, benefitInfo);
+				
+				mailing.sendMailwithFile(adminDTO, messageDTO);
+				
+				return "success";
+		}
+		
+	}
+	
+	//8.회원 포인트 지급
+	@RequestMapping(value="/grantPoint.do",method=RequestMethod.POST)
+	@ResponseBody
+	public String grantPoint(@RequestParam Map<String,String> map) {	
+		//System.out.println(map);
+		String benefitInfo = "[지급포인트] 총"+map.get("pointQty")+"(점)";
+		String subject = "[특별포인트지급] "+map.get("subject");
+		
+		MessageDTO messageDTO = new MessageDTO();
+		String content = StringEscapeUtils.unescapeHtml4(map.get("content"));	
+			messageDTO.setSubject(subject);
+			messageDTO.setContainHTML(true);			
+		AdminDTO adminDTO = adminDAO.getAdmin();	
+		
+		if(map.get("selectTarget").equals("all")) {
+			
+			List<MemberDTO> memberList = memberDAO.getMemberList();
+			for(MemberDTO dto : memberList) {
+				if(dto.getState()==0) continue;
+				memberDAO.setPoint(dto.getId(),map.get("pointQty"));
+				messageDTO.setContent(content);	
+				messageDTO.setReceiver(dto.getName());
+				messageDTO.setReceiveAddr(dto.getEmail1()+"@"+dto.getEmail2());
+				messageDTO =mailing.sendBenefitGrantMail(messageDTO, benefitInfo);
+				
+				mailing.sendMailwithFile(adminDTO, messageDTO);
+			}
+			
+			return "success";
+		}
+		else {
+			MemberDTO memberDTO = memberDAO.getUser(map.get("id"));
+			if(memberDTO.getState()==0) return "adminExcept";
+				memberDAO.setPoint(memberDTO.getId(),map.get("pointQty"));
+				messageDTO.setContent(content);	
+				messageDTO.setReceiver(memberDTO.getName());
+				messageDTO.setReceiveAddr(memberDTO.getEmail1()+"@"+memberDTO.getEmail2());
+				messageDTO =mailing.sendBenefitGrantMail(messageDTO, benefitInfo);
+				
+				mailing.sendMailwithFile(adminDTO, messageDTO);
+				
+				return "success";
+		}
+		
+	}
+	
+	//9.전체 공지 메일 팝업창 이동
 	@RequestMapping(value="/infoWriteForm.do",method=RequestMethod.GET)
 	public ModelAndView infoWriteForm(@RequestParam(required = false,defaultValue = "all") String target) {
 				
@@ -106,7 +254,7 @@ public class AdminUserController {
 		return mav;
 	}
 
-	//6.회원 메일 발송
+	//10.회원 메일 발송
 	@RequestMapping(value="/infoWrite.do",method=RequestMethod.POST)
 	@ResponseBody
 	public String infoWrite(@RequestParam Map<String,String> map) {	
@@ -114,38 +262,44 @@ public class AdminUserController {
 		String subject = map.get("subject");
 		MessageDTO messageDTO = new MessageDTO();
 			messageDTO.setSender("[Kissin' Bugs]");	
-			messageDTO.setContent(map.get("content"));	
+		String content = StringEscapeUtils.unescapeHtml4(map.get("content"));	
+			messageDTO.setContent(content);	
+			messageDTO.setContainHTML(true);			
 		AdminDTO adminDTO = adminDAO.getAdmin();	
-		System.out.println(messageDTO.getContent());
+		
 		if(map.get("selectTarget").equals("all")) {
 			subject = "[전체 알림 메일입니다] "+subject;
 			messageDTO.setSubject(subject);	
-			messageDTO.setContainHTML(true);
 			
 			List<MemberDTO> memberList = memberDAO.getMemberList();
 			for(MemberDTO dto : memberList) {
+				if(dto.getState()==0) continue;
 				messageDTO.setReceiver(dto.getName());
 				messageDTO.setReceiveAddr(dto.getEmail1()+"@"+dto.getEmail2());
 				
-				mailing.sendMail(adminDTO, messageDTO);
+				mailing.sendMailwithFile(adminDTO, messageDTO);
 			}
 			
 			return "success";
 		}
 		else {
 			MemberDTO memberDTO = memberDAO.getUser(map.get("id"));
+			if(memberDTO.getState()==0) return "adminExcept";
 			subject = "["+memberDTO.getName()+" 회원님] "+subject;	
 				messageDTO.setSubject(subject);	
+				messageDTO.setReceiver(memberDTO.getName());
 				messageDTO.setReceiveAddr(memberDTO.getEmail1()+"@"+memberDTO.getEmail2());
 				
-				mailing.sendMail(adminDTO, messageDTO);
+				mailing.sendMailwithFile(adminDTO, messageDTO);
 				
 				return "success";
 		}
 		
 	}
 	
-	//22. 1:1문의 목록으로 이동
+	
+	
+	//11. 1:1문의 목록으로 이동
 	@RequestMapping(value="/personalQAManager.do",method= RequestMethod.GET)	
 	public ModelAndView personalQAManager() {
 		

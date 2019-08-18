@@ -9,6 +9,7 @@ import admin.bean.AdminDTO;
 public interface Mailing {
 	public String checkNum();
 	public String getKey(int length);
+	public MessageDTO sendBenefitGrantMail(MessageDTO messageDTO,String benefitInfo);
 	public MessageDTO sendConfirmMail(MessageDTO messageDTO,String checkNum);
 	public MessageDTO sendWelcomeMail(MessageDTO messageDTO);
 	public MessageDTO sendOrderMail(MessageDTO messageDTO);

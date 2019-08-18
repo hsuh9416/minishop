@@ -26,11 +26,8 @@
 		<!-- MEMBERLIST:END -->		
 	<hr width="100%" color="darkgray" noshade/>	
 	<div class="form-row align-items-center">
-		<div class="col-6"></div>
-		<div class="col-3">
+		<div class="form-group col" align="right"> 
 			<input type="button" class="btn btn-outline-primary" value="전체 혜택 지급" id="giveBenefitAll">	
-		</div>
-		<div class="col-3">
 			<input type="button" class="btn btn-outline-info" value="전체 공지 발송" id="giveNoticeAll">	
 		</div>
 	</div>

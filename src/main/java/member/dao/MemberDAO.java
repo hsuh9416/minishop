@@ -25,6 +25,7 @@ public interface MemberDAO {
 	void setNewPwd(MemberDTO memberDTO);
 	MemberDTO getUser(String id);
 	List<MemberDTO> getMemberList();
+	void setPoint(String id,String pointQty);
 //----------MEMBER:END----------//
 //----------QAMESSAGE:START----------//		
 void memberQASend(MessageDTO messageDTO);
@@ -32,6 +33,7 @@ void memberQASend(MessageDTO messageDTO);
 //----------MEMBER_DELETE:START----------//	
 void deleteMemberAdmin(Map<String, String> map);
 //----------MEMBER_DELETE:END----------//
+
 
 
 } 

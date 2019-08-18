@@ -20,8 +20,8 @@
 			<input type="hidden" name="id"/>
 			<input type="hidden" name="content"/>
 			<div class="form-row">	
-				<label for="selectInform">[대상]</label>
-				<div class="form-group col-4" id="selectInform">
+				<label for="selectTarget">[대상]</label>
+				<div class="form-group col-4">
 					<div class="custom-control custom-radio custom-control-inline">
 						<input type="radio" id="global" name="selectTarget" class="custom-control-input" value="all" checked>
 						<label class="custom-control-label" for="global">전체</label>
@@ -51,23 +51,18 @@
 			</div>
 			<div class="form-row justify-content-center">
 				<div class="form-group col-10" >
-					<label for="content" ><strong>메일 알림 내용</strong></label>
+					<label for="product_name_detail" ><strong>메일 알림 내용</strong></label>
 					<textarea class="form-control" id="product_name_detail"></textarea>					
 				</div>			
 			</div>	
 			<div class="form-row justify-content-center">
 				<div class="form-group col-8" id="checkInform"></div>		
 			</div>		
-			<div class="form-row">
-				<div class="form-group col-4"></div>	
-				<div class="form-group col-3">
+			<div class="form-row justify-content-center">
+				<div class="form-group col" align="right"> 
 					<input type="button" class="btn btn-outline-secondary" id="resetBtn" value="다시작성"/>				
-				</div>			
-				<div class="form-group col-3">
 					<input type="button" class="btn btn-outline-info" id="putInformMail" value="메일발송"/>					
-				</div>	
-				<div class="form-group col-2">
-					<button type="button" id="closeBtn" class="btn btn-outline-secondary">닫기</button>
+					<button type="button" id="closeBtn" class="btn btn-outline-dark">닫기</button>
 				</div>						
 			</div>
 		</form>				
