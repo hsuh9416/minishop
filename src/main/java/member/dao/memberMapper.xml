@@ -79,9 +79,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		update MEMBER set point=point+#{pointQty} where id=#{id}
 	</update>
 	
+	<!-- 회원 정보 최종 삭제 -->
+	<delete id="deleteUserInfo" parameterType="String">
+		delete MEMBER where id=#{id}
+	</delete>
+	
+	<!-- 회원 정보 복구 -->
+	<update id="makeUserRestored" parameterType="String">
+		update MEMBER set state=1 where id=#{id}
+	</update>
+	
 	<!-- QAMESSAGE 회원 1 대 1 문의 사항 저장 -->
 	<insert id="memberQASend" parameterType="message">
-		insert into QAMESSAGE values(message_seq.nextval,#{sender},#{receiver},#{sendAddr},#{receiveAddr},#{subject},#{content},SYSDATE)
+		insert into QAMESSAGE values(message_seq.nextval,#{sender},#{sendAddr},#{subject},#{content},SYSDATE)
 	</insert>	
 
 	<!-- MEMBER_DELETE 탈퇴 요청한 회원 정보 저장 -->
@@ -89,6 +99,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		insert into MEMBER_DELETE values(#{id},#{email},#{dReason},#{etcDetail},SYSDATE)
 	</insert>	
 	
+	<!-- MEMBER_DELETE 탈퇴 사유 불러오기 -->
+	<select id="getDeleteRequest" parameterType="String" resultType="member">
+		select * from MEMBER_DELETE where id=#{id}
+	</select>
+	<!-- MEMBER_DELETE 회원 복구로 인한 탈퇴 사유 삭제 -->
+	<delete id="deleteRequest" parameterType="String">
+		delete MEMBER_DELETE where id=#{id}
+	</delete>
 </mapper>
 
 

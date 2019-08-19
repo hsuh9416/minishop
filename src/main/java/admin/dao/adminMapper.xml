@@ -7,4 +7,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <select id="getAdmin" resultType="admin">
 	select * from ADMIN where admin_id='Administrator'
 </select>
+<!-- 2. 1:1 문의 목록 호출 -->
+<select id="getPersonalQAList" resultType="message">
+	select * from QAMESSAGE
+</select>
+<!-- 3. 1:1 문의 개별 호출-->
+<select id="getPersonalQA" parameterType="String" resultType="message">
+	select * from QAMESSAGE where seq=#{seq}
+</select>
+<!-- 3. 1:1 문의 삭제-->
+<delete id="deleteQA" parameterType="String">
+	delete QAMESSAGE where seq=#{seq}
+</delete>
 </mapper>

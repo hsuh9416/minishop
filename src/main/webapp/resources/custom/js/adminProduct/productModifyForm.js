@@ -1,6 +1,3 @@
-//0.공통 변수 설정
-var content_detail=$('input[name=product_name_detail]').val();
-
 //1. 최초 시작시에 셋팅
 $(function(){
 	var unitcost = $('#unitcost').val();
@@ -30,7 +27,7 @@ $(function(){
 //2. 수정 버튼 이벤트
 $('#productModifyBtn').click(function(event){
 
-		$('input[name=product_name_detail]').val(content_detail);
+		$('input[name=product_name_detail]').val(CKEDITOR.instances.editor_admin.getData());
 
 		if($('input[name=productName]').val()=='') {
 			alert('이름이 입력되지 않았습니다.');
@@ -41,7 +38,7 @@ $('#productModifyBtn').click(function(event){
 		else if($('input[name=product_name_titleinput]').val()=='')	{
 			alert('상품 소개 제목이 입력되지 않았습니다.');
 			$('input[name=product_name_title]').focus();}
-		else if(content_detail=='')	{
+		else if(CKEDITOR.instances.editor_admin.getData()=='')	{
 			alert('상품 소개 내용이 입력되지 않았습니다.');	
 			$('#product_name_detail').focus();}
 		else{

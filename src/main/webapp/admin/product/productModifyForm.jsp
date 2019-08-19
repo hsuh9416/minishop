@@ -68,8 +68,8 @@
 	   </div>	
 	   <div class="form-row">
 		    <div class="form-group col-10">
-		    	<label for="product_name_detail"><strong>상품 페이지 내용</strong></label>
-		      <textarea id="product_name_detail">${productDTO.product_name_detail}</textarea>
+		    	<label for="editor_admin"><strong>상품 페이지 내용</strong></label>
+		      <textarea id="editor_admin">${productDTO.product_name_detail}</textarea>
 		    </div>
 		    <input type="hidden" name="product_name_detail" value="${productDTO.product_name_detail}"/>
 	   </div>	   

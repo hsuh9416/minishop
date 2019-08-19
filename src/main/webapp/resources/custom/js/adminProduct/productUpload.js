@@ -1,5 +1,3 @@
-//0.초기화
-var content_detail='';
 
 //1. 최초 시작시에 입점시 입력 정보란을 숨김
 $(function(){
@@ -19,7 +17,7 @@ $(function(){
 //2. 업로드 이벤트
 $('#productUploadBtn').click(function(event){
 	
-		$('input[name=product_name_detail]').val(content_detail);
+		$('input[name=product_name_detail]').val(CKEDITOR.instances.editor_admin.getData());
 		
 		if($('#productName').val()=='') {
 			alert('이름이 입력되지 않았습니다.');
@@ -33,7 +31,7 @@ $('#productUploadBtn').click(function(event){
 		else if($('#product_name_title').val()=='')	{
 			alert('상품 소개 제목이 입력되지 않았습니다.');
 			$('#product_name_title').focus();}
-		else if(content_detail=='')	{
+		else if(CKEDITOR.instances.editor_admin.getData()=='')	{
 			alert('상품 소개 내용이 입력되지 않았습니다.');	
 			$('#product_name_detail').focus();}
 		else{

@@ -33,5 +33,10 @@ public class MemberDTO{
 	private String sessionId;
 	private Date sessionLimit;
 
-
+	//MEMBER_DELETE DB 열 순서(id 제외)
+	private String delete_mail;
+	private int delete_reason;
+	private String reason_etc;
+	@JsonFormat(pattern="yyyy.MM.dd")
+	private Date delete_date;
 }

@@ -48,16 +48,16 @@ $(document).ready(function(){
 			});
 			$('input[name=memberDetailBtn]').on('click',function(){
 				var targetId = $(this).parent().prev().prev().prev().prev().text();
-				var viewPop = window.open('/minishop/admin/user/memberDetailView.do?id='+targetId,'회원조회','width=565,height=435,resizable=no');
+				var viewPop = window.open('/minishop/admin/user/memberDetailView.do?id='+targetId,'회원조회','width=820,height=530,resizable=no');
 			});
 		}
 	});
 });
 
 $('#giveBenefitAll').click(function(){
-	var benefitGivePop = window.open('/minishop/admin/user/benefitGivingForm.do?target=all','회원 혜택 관리','width=565,height=435,resizable=no');
+	var benefitGivePop = window.open('/minishop/admin/user/benefitGivingForm.do?target=all','회원 혜택 관리','width=565,height=530,resizable=no');
 });
 
 $('#giveNoticeAll').click(function(){
-	var infoWritePop = window.open('/minishop/admin/user/infoWriteForm.do?target=all','회원 공지 발신','width=565,height=435,resizable=no');
+	var infoWritePop = window.open('/minishop/admin/user/infoWriteForm.do?target=all','회원 공지 발신','width=565,height=530,resizable=no');
 });

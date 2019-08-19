@@ -94,13 +94,22 @@
 			<c:if test="${location=='productAdmin'}">
 		        <h2>상품관리</h2>			
 			     <div class="list-group list-group-lg">
-			     	<a href="/minishop/admin/product/inventoryManage.do" class="list-group-item">입점재고목록</a>	     
-			        <a href="/minishop/admin/product/productManage.do" class="list-group-item">등록상품목록</a>
+			     	<a href="/minishop/admin/product/inventoryManage.do" class="list-group-item">입점재고관리</a>	     
+			        <a href="/minishop/admin/product/productManage.do" class="list-group-item">등록상품관리</a>
 			        <a href="/minishop/admin/product/productUpload.do" class="list-group-item">상품등록</a>				          				     
 			        <a href="javascript:history.back()" class="list-group-item">돌아가기</a>
 			     </div>					
 			</c:if>	
-															
+	
+			<c:if test="${location=='userAdmin'}">
+		        <h2>고객관리</h2>			
+			     <div class="list-group list-group-lg">
+			     	<a href="/minishop/admin/user/userManage.do" class="list-group-item">고객정보관리</a>	     
+			        <a href="/minishop/admin/user/personalQAManager.do" class="list-group-item">1:1문의관리</a>			          				     
+			        <a href="javascript:history.back()" class="list-group-item">돌아가기</a>
+			     </div>					
+			</c:if>	
+																		
 			<c:if test="${location=='adminOrderManage'}">
 		        <h2>고객주문관리</h2>			
 			     <div class="list-group list-group-lg">	     		          				          				     

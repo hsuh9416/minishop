@@ -1,4 +1,3 @@
-var content_detail='';
 function searchId(target){
 	$.ajax({
 		type: 'get',
@@ -199,11 +198,11 @@ $('#couponIssue').click(function(){
 	}
 	if($('input[name=selectTarget]:checked').val()=='person' && $('input[name=id]').val()=='') alert('쿠폰을 지급할 대상을 지정하세요');
 	else if($('#coupon_no').val()!=$('input[name=coupon_no]').val()) alert('지급대상 쿠폰의 유효성을 체크하세요');	
-	else if($('#subject').val()==''||content_detail=='') alert('발신 메일의 제목과 내용을 입력하셔야 합니다.');
+	else if($('#subject').val()==''||CKEDITOR.instances.editor_admin.getData()=='') alert('발신 메일의 제목과 내용을 입력하셔야 합니다.');
 	else if($('input[name=coupon_duedate]:checked').val()=='periodic'&& $('input[name=coupon_duedate]').val()=='') alert('쿠폰의 유효기간을 설정하세요');
 	else{
 		
-		$('input[name=content]').val(content_detail);
+		$('input[name=content]').val(CKEDITOR.instances.editor_admin.getData());
 		$.ajax({
 			type: 'post',
 			url : '/minishop/admin/user/issueCoupon.do',
@@ -223,9 +222,13 @@ $('#couponIssue').click(function(){
 					window.close();					
 				}
 				else if(data=='adminExcept'){
-					alert('관리자는 지급 대상이 아닙니다. (구)관리자 계정인 경우에는 담당자에 직접 문의 바랍니다');
+					alert('관리자는 지급 대상이 아닙니다. (구)관리자 계정인 경우에는 담당자 계정을 먼저 수정해 주세요.');
 					window.close();
-				}				
+				}	
+				else if(data=='invalidUserExcept'){
+					alert('삭제요청중인 회원은 지급대상이 아닙니다. 계정 복구의 경우에는 회원 정보에서 먼저 수정해 주세요');
+					window.close();
+				}					
 				else{
 					alert('쿠폰 발급 또는 메일 전송에 실패하였습니다. 다시 시도해주세요.');
 					window.location.reload();
@@ -241,10 +244,10 @@ $('#pointGrant').click(function(){
 		var pointNum = parseInt($('input[name=pointQty]').val(),10);
 		
 		if($('input[name=selectTarget]:checked').val()=='person' && $('input[name=id]').val()=='') alert('포인트를 지급할 대상을 지정하세요');
-		else if($('#subject').val()==''||content_detail=='') alert('발신 메일의 제목과 내용을 입력하셔야 합니다.');
+		else if($('#subject').val()==''||CKEDITOR.instances.editor_admin.getData()=='') alert('발신 메일의 제목과 내용을 입력하셔야 합니다.');
 		else if(pointNum<0) alert('포인트는 0점 이상 정수로만 입력 가능합니다.');
 		else{
-			$('input[name=content]').val(content_detail);
+			$('input[name=content]').val(CKEDITOR.instances.editor_admin.getData());
 			$.ajax({
 				type: 'post',
 				url : '/minishop/admin/user/grantPoint.do',
@@ -260,9 +263,13 @@ $('#pointGrant').click(function(){
 						window.close();
 					}
 					else if(data=='adminExcept'){
-						alert('관리자는 지급 대상이 아닙니다. (구)관리자 계정인 경우에는 담당자에 직접 문의 바랍니다');
+						alert('관리자는 지급 대상이 아닙니다. (구)관리자 계정인 경우에는 담당자 계정을 먼저 수정해 주세요.');
 						window.close();
-					}					
+					}	
+					else if(data=='invalidUserExcept'){
+						alert('삭제요청중인 회원은 지급대상이 아닙니다. 계정 복구의 경우에는 회원 정보에서 먼저 수정해 주세요');
+						window.close();
+					}							
 					else{
 						alert('포인트 지급 또는 메일 전송에 실패하였습니다. 다시 시도해주세요.');
 						window.location.reload();

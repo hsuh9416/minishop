@@ -141,7 +141,26 @@ public class MailingImpl implements Mailing {
 		
 		return messageDTO;
 	}
-	
+	@Override
+	public MessageDTO sendRestoreMail(MessageDTO messageDTO, String resetPwd) {
+		messageDTO.setSender("[Kissin' Bugs]");
+		messageDTO.setSubject("[Kissin' Bugs]회원 계정 복구 완료 안내 메일입니다.");
+		String confirmText = "안녕하세요, Kissin' Bugs입니다.\n"+
+							"요청에 따라 "+messageDTO.getReceiver()+" 님의 회원 계정이 정상적으로 복구되었습니다. \n"+
+							"복구 시의 모든 계정은 일반 회원 등급으로 일시 분류됩니다. 일정 기간 경과 후에도 회원님의 계정이 특별 회원 등급으로\n"+
+							"복구 되지 않은 경우에는 담당자에게 문의 바랍니다.\n"+
+							"저희 사이트는 사내 규정에 따라  복구시에 비밀번호의 임시번호를 발급합니다.\n"+
+							"해당 메일 내에 있는 임시번호로 로그인 바랍니다.\n"+
+							"========================================\n"+
+							"임시 비밀번호는 ["+resetPwd+"]입니다.\n"+
+							"========================================\n"+	
+							"*주> 비밀번호 변경을 원하시는 경우에는 임시번호로 우선 로그인하신 후, 회원정보 수정란에서 새로운 비밀번호로 변경하시기 바랍니다.\n"+
+							"Kissin' Bugs은 고객님의 재방문을 환영합니다.\n"+
+							"저희샵과 함께하는 고객님의 설레는 매일이 계속되길 진심으로 기원합니다.\n\n"+				
+							"\t\t\t\t\t[Kissin' Bugs] 직원 일동 드림";
+		messageDTO.setContent(confirmText);		
+		return messageDTO;
+	}
 	//일반 메일 보내기
 	@Override
 	public void sendMail(AdminDTO adminDTO, MessageDTO messageDTO) {

@@ -75,6 +75,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	INSERT into BENEFIT_GRANT values(#{grant_id},#{coupon_no},#{coupon_duedate},#{personal_code})
 </insert>
 
+<!-- 쿠폰: 해당 회원 지급 쿠폰 삭제하기(사유:쿠폰 사용) -->
+<delete id="usedUserBenefit" parameterType="String">
+	update BENEFIT_GRANT set personal_code=null where coupon_no = #{coupon_no} and grant_id=#{id} 
+</delete>
+
+<!-- 쿠폰: 해당 회원 지급 쿠폰 삭제하기(사유:계정삭제) -->
+<delete id="deleteUserBenefit" parameterType="String">
+	delete BENEFIT_GRANT where grant_id=#{id}
+</delete>
+
 <!-- 주문 : 비밀번호 변경 -->
 <update id="setNewOrderPwd" parameterType="order">
 	UPDATE ORDERS set order_pwd=#{order_pwd} where order_no=#{order_no}

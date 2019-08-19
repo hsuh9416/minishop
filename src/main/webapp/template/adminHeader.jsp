@@ -119,7 +119,7 @@
 					</a>
 					<ul class="menu_selection">
 							<li><a href="/minishop/admin/user/userManage.do">고객정보관리</a></li>
-							<li><a href="/minishop/admin/user/personalQAManage.do">1:1문의관리</a></li>														
+							<li><a href="/minishop/admin/user/personalQAManager.do">1:1문의관리</a></li>														
 					</ul>						
 				</li>
 				<li class="menu_item">

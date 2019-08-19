@@ -1,4 +1,6 @@
-    CKEDITOR.replace( 'product_name_detail', {
+var content_detail='';
+
+	CKEDITOR.replace( 'editor_admin', {
         width:'100%',
         height:'300px',
         filebrowserImageUploadUrl: '/minishop/admin/product/productImgUpload.do', 
@@ -17,11 +19,11 @@
         }
     });
     
-    CKEDITOR.instances.product_name_detail.on('change', function() { 
-    	content_detail = CKEDITOR.instances.product_name_detail.getData();
+    CKEDITOR.instances.editor_admin.on('change', function() { 
+    	content_detail = CKEDITOR.instances.editor_admin.getData();
     });
     
-    CKEDITOR.instances.product_name_detail.on('instanceReady', function() { 
-    	content_detail = CKEDITOR.instances.product_name_detail.getData();
+    CKEDITOR.instances.editor_admin.on('instanceReady', function() { 
+    	content_detail = CKEDITOR.instances.editor_admin.getData();
     });
      

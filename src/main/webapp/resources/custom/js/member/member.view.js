@@ -7,10 +7,18 @@ $(document).ready(function(){
 		success : function(data){
 			var coupon = data.map.couponList;
 			if(coupon=='') $('#goCoupon').text('사용할 수 있는 쿠폰이 존재하지 않습니다');
-			else $('#goCoupon').text(coupon.length+'개');		
+			else {
+				var couponNum = 0;
+				$.each(coupon,function(index,items){
+					if (items.personal_code!=null && items.personal_code!='') couponNum++; 
+				});
+				$('#goCoupon').text(couponNum+'개');		
+			}
 			var order = data.map.orderList;
 			if(order=='') $('#orderlistPg').text('주문하신 내역이 없습니다');
-			else $('#orderlistPg').text(order.length+'건');		
+			else {
+				$('#orderlistPg').text(order.length+'건');
+			}
 		}				
 	});
 	

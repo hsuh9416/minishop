@@ -19,68 +19,64 @@
 
 	<input type="hidden" id="memberID" value="${id}"/>
 	<div class="card card-body">	
-		<div class="form-row justify-content-center">	
-			<div class="form-group col-2" align="center">
-				<label for="id"><strong>회원아이디</strong></label>
+		<div class="form-row ">	
+			<div class="col-2" align="center">
+				<label for="id" style="text-decoration:underline;text-underline-position:under"><strong>회원아이디</strong></label>
 			</div>	
-			<div class="form-group col-2" align="center">
+			<div class="col-2" align="center">
 				<font id="id"></font>
 			</div>				  
-			<div class="form-group col-2" align="center">
-				<label for="name"><strong>회원명</strong></label>
+			<div class="col-2" align="center">
+				<label for="name" style="text-decoration:underline;text-underline-position:under"><strong>회원명</strong></label>
 		  	</div>	
-			<div class="form-group col-2">
+			<div class="col-2">
 				<font id="name"></font>
 			</div>				  			  	
-			<div class="form-group col-2" align="center">
-				<label for="rank"><strong>회원등급</strong></label>
+			<div class="col-2" align="center">
+				<label for="rank" style="text-decoration:underline;text-underline-position:under"><strong>회원등급</strong></label>
 		  	</div>	
-			<div class="form-group col-2" align="center">
+			<div class="col-2" align="center">
 				<font id="rank"></font>
 			</div>					  				  	
 		</div>		
 			
-		<div class="form-row justify-content-center">	
-			<div class="form-group col-2" align="center">
-				<label for="email"><strong>회원이메일</strong></label>
+		<div class="form-row ">	
+			<div class="col-2" align="center">
+				<label for="email" style="text-decoration:underline;text-underline-position:under"><strong>회원이메일</strong></label>
 			</div>	
-			<div class="form-group col-4" align="center">
+			<div class="col-4" align="center">
 				<font id="email"></font>
 			</div>
-			<div class="form-group col-2" align="center">
-				<label for="tel"><strong>회원연락처</strong></label>
+			<div class="col-2" align="center">
+				<label for="tel" style="text-decoration:underline;text-underline-position:under"><strong>회원연락처</strong></label>
 			</div>	
-			<div class="form-group col-4" align="center">
+			<div class="col-4" align="center">
 				<font id="tel"></font>
 			</div>								  	
 		</div>	
 		<div class="form-row justify-content-center">	
-			<div class="form-group col-2" align="center">
-				<label for="address1"><strong>회원주소</strong></label>
+			<div class="col-2" align="center">
+				<label for="address1" style="text-decoration:underline;text-underline-position:under"><strong>회원주소</strong></label>
 			</div>	
-			<div class="form-group col-10">
-				<font id="address1"></font>
-			</div>
+			<div class="col-10" id="address1"></div>
 		</div>			
 		<div class="form-row justify-content-center">	
-			<div class="form-group col-2">
+			<div class="col-2">
 				<label for="address2"><strong></strong></label>
 			</div>	
-			<div class="form-group col-10">
-				<font id="address2"></font>
-			</div>
+			<div class="col-10" id="address2"></div>
 		</div>
-		<div class="form-row justify-content-center">	
-			<div class="form-group col-2" align="center">
-				<label for="point"><strong>포인트</strong></label>
+		<div class="form-row">	
+			<div class="col-2" align="center">
+				<label for="point" style="text-decoration:underline;text-underline-position:under"><strong>포인트</strong></label>
 			</div>	
-			<div class="form-group col-4" align="center">
+			<div class="col-4" align="center">
 				<font id="point"></font>
 			</div>
-			<div class="form-group col-2" align="center">
-				<label for="registerDate"><strong>가입일자</strong></label>
+			<div class="col-2" align="center">
+				<label for="registerDate" style="text-decoration:underline;text-underline-position:under"><strong>가입일자</strong></label>
 			</div>	
-			<div class="form-group col-4" align="center">
+			<div class="col-4" align="center">
 				<font id="registerDate"></font>
 			</div>				
 		</div>
@@ -98,11 +94,11 @@
 							<div id="userOrder" class="collapse" aria-labelledby="orderDiv" data-parent="#userTrading">
 								<div class="card-body">
 									<div class="form-row justify-content-center">
-										<div class="col-2" align="center">#</div>
-										<div class="col-2" align="center">주문번호</div>
-										<div class="col-3" align="center">거래일자</div>
-										<div class="col-3" align="center">거래금액</div>
-										<div class="col-2" align="center">거래상태</div>																																		
+										<div class="col-2" align="center" style="text-decoration:underline;text-underline-position:under">#</div>
+										<div class="col-2" align="center" style="text-decoration:underline;text-underline-position:under">주문번호</div>
+										<div class="col-3" align="center" style="text-decoration:underline;text-underline-position:under">거래일자</div>
+										<div class="col-3" align="center" style="text-decoration:underline;text-underline-position:under">거래금액</div>
+										<div class="col-2" align="center" style="text-decoration:underline;text-underline-position:under">거래상태</div>																																		
 									</div>
 									<form id="orderForm"></form>
 								</div>
@@ -119,11 +115,11 @@
 							<div id="userCoupon" class="collapse" aria-labelledby="couponDiv" data-parent="#userTrading">
 								<div class="card-body">
 									<div class="form-row justify-content-center">
-										<div class="col-2" align="center">발행번호</div>
-										<div class="col-2" align="center">쿠폰이름</div>
-										<div class="col-2" align="center">쿠폰분류</div>
-										<div class="col-3" align="center">할인액(률)</div>
-										<div class="col-3" align="center">유효기간</div>																																		
+										<div class="col-2" align="center" style="text-decoration:underline;text-underline-position:under">#</div>
+										<div class="col-3" align="center" style="text-decoration:underline;text-underline-position:under">이름</div>
+										<div class="col-1" align="center" style="text-decoration:underline;text-underline-position:under">분류</div>
+										<div class="col-3" align="center" style="text-decoration:underline;text-underline-position:under">할인액(률)</div>
+										<div class="col-3" align="center" style="text-decoration:underline;text-underline-position:under">유효기간</div>																																		
 									</div>
 									<form id="couponForm"></form>
 								</div>					
@@ -133,10 +129,40 @@
 				</div>			
 			</div>
 		</div>
-
-				
+		<form id="requestedDelete">
+			<h5 class="deleteTitle" align="center" style="color:red;text-align:center;text-decoration:underline;text-underline-position:under">
+				[탈퇴 및 계정 삭제 요청을 한 회원입니다]
+			</h5>
+			<div class="form-row justify-content-center">
+				<div class="form-group col-3" style="text-decoration:underline;text-underline-position:under">
+					<strong>회신메일</strong>
+				</div>
+				<div class="form-group col-8" id="dReturnAddr"></div>
+			</div>					
+			<div class="form-row justify-content-center">
+				<div class="form-group col-3" style="text-decoration:underline;text-underline-position:under">
+					<strong>탈퇴사유</strong>
+				</div>
+				<div class="form-group col-8" id="dReason"></div>				
+			</div>
+			<div class="form-row justify-content-center">
+				<div class="form-group col-10" align="center" style="text-decoration:underline;text-underline-position:under">
+					<strong>상세사유</strong>
+				</div>
+			</div>
+			<div class="form-row justify-content-center">
+				<div class="form-group col-10" id="dDetail" align="center"></div>
+			</div>							
+			<div class="form-row justify-content-center">
+				<div class="form-group col-3" style="text-decoration:underline;text-underline-position:under">
+					<strong>탈퇴요청일</strong>
+				</div>
+				<div class="form-group col-8" id="requestDate"></div>
+			</div>			
+		</form>		
 		<div class="row">
 			<div class="col" align="right">          	
+				<button type="button" id="memberRestoreBtn" class="btn btn-outline-success" disabled>계정복구</button>
 				<button type="button" id="benefitGivingBtn" class="btn btn-outline-primary">혜택지급</button>
 				<button type="button" id="infoSendingBtn" class="btn btn-outline-info">메일발신</button>		
 				<button type="button" id="memberDeleteBtn" class="btn btn-outline-danger" disabled>계정삭제</button>

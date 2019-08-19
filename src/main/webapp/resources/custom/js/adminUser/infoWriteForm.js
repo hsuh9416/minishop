@@ -1,5 +1,3 @@
-var content_detail='';
-
 function searchId(target){
 	$.ajax({
 		type: 'get',
@@ -80,9 +78,9 @@ $('#closeBtn').click(function(){
 
 $('#putInformMail').click(function(){
 	if($('input[name=selectTarget]:checked').val()=='person' && $('input[name=id]').val()=='') alert('송신할 대상을 지정하세요');
-	else if($('input[name=subject]').val()==''||content_detail=='') alert('메일의 제목 또는 내용을 전부 입력하세요');
+	else if($('input[name=subject]').val()==''||CKEDITOR.instances.editor_admin.getData()=='') alert('메일의 제목 또는 내용을 전부 입력하세요');
 	else {
-		$('input[name=content]').val(content_detail);
+		$('input[name=content]').val(CKEDITOR.instances.editor_admin.getData());
 
 		$.ajax({
 			type: 'post',

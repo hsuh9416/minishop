@@ -1,5 +1,11 @@
 @charset "UTF-8";
 
+@import url(//fonts.googleapis.com/earlyaccess/hanna.css);
+
+*{
+	font-family: 'Hanna', fantasy;
+}
+
 body{
  background-color: #1e1e27;
 }
@@ -10,6 +16,17 @@ h2.second{
  color:red;
 }
 
+
+.deleteTitle{
+	color:red;
+	font-weight:bold;
+	text-align:center;
+	text-decoration:underline;
+	text-underline-position:under;
+}
+.subTitle font{
+	color:white;
+}	
 
 a{
 font-size: 18pt;

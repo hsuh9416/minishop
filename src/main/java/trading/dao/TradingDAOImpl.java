@@ -108,6 +108,11 @@ public class TradingDAOImpl implements TradingDAO {
 	public void setCoupon(CouponDTO couponDTO) {
 		sqlSession.insert("tradingSQL.setCoupon",couponDTO);
 	}	
+	//6.계정삭제 회원의 쿠폰 삭제
+	@Override
+	public void deleteUserBenefit(String id) {
+		sqlSession.delete("tradingSQL.deleteUserBenefit",id);
+	}
 	
 //----------- 쿠폰 : END ----------//	
 

@@ -26,13 +26,20 @@ public interface MemberDAO {
 	MemberDTO getUser(String id);
 	List<MemberDTO> getMemberList();
 	void setPoint(String id,String pointQty);
+	int deleteUserInfo(String id);
+	int makeUserRestored(String id);
 //----------MEMBER:END----------//
 //----------QAMESSAGE:START----------//		
-void memberQASend(MessageDTO messageDTO);
+	void memberQASend(MessageDTO messageDTO);
 //----------QAMESSAGE:END----------//
 //----------MEMBER_DELETE:START----------//	
-void deleteMemberAdmin(Map<String, String> map);
+	void deleteMemberAdmin(Map<String, String> map);
+	MemberDTO getDeleteRequest(String id);
+	void deleteRequest(String id);
 //----------MEMBER_DELETE:END----------//
+	
+
+	
 
 
 

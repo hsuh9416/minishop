@@ -446,12 +446,7 @@ public class MemberController {
 	@RequestMapping(value="/memberQASend",method = RequestMethod.POST)
 	@ResponseBody
 	public void memberQASend(@ModelAttribute MessageDTO messageDTO, HttpSession session) {
-		
-		AdminDTO adminDTO = adminDAO.getAdmin();
-			
-			messageDTO.setReceiver(adminDTO.getAdmin_id());
-			messageDTO.setReceiveAddr(adminDTO.getAdmin_email_addr());
-		
+				
 		MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
 		if(memberDTO == null) {OrderDTO orderDTO = (OrderDTO) session.getAttribute("orderDTO");
 			messageDTO.setSender(orderDTO.getOrder_name());}

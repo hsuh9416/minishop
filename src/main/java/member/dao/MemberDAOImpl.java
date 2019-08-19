@@ -112,6 +112,16 @@ public class MemberDAOImpl implements MemberDAO {
 		map.put("id", id);	map.put("pointQty", pointQty);
 		sqlSession.update("memberSQL.setPoint", map);	
 	}
+	//14. 회원정보 최종 삭제
+	@Override
+	public int deleteUserInfo(String id) {
+		return sqlSession.delete("memberSQL.deleteUserInfo",id);
+	}
+	//15. 회원정보 복구
+	@Override
+	public int makeUserRestored(String id) {
+		return sqlSession.update("memberSQL.makeUserRestored", id);	
+	}
 //----------MEMBER:END----------//
 	
 //----------QAMESSAGE:START----------//	
@@ -124,11 +134,19 @@ public class MemberDAOImpl implements MemberDAO {
 
 //----------QAMESSAGE:END----------//		
 
-//----------QAMESSAGE:START----------//	
+//----------MEMBER_DELETE:START----------//	
 	@Override
 	public void deleteMemberAdmin(Map<String, String> map) {
 		sqlSession.insert("memberSQL.deleteMemberAdmin",map);		
 	}	
-//----------QAMESSAGE:END----------//
+	@Override
+	public MemberDTO getDeleteRequest(String id) {
+		return sqlSession.selectOne("memberSQL.getDeleteRequest",id);
+	}
+	@Override
+	public void deleteRequest(String id) {
+		sqlSession.delete("memberSQL.deleteRequest",id);	
+	}
+//----------MEMBER_DELETE:END----------//
 
 }

@@ -117,8 +117,8 @@
 		</div>			
 		<div class="form-row justify-content-center">
 			<div class="col-10" >
-				<label for="product_name_detail"><strong>메일 알림 내용</strong></label>
-				<textarea class="form-control" id="product_name_detail"></textarea>						
+				<label for="editor_admin"><strong>메일 알림 내용</strong></label>
+				<textarea class="form-control" id="editor_admin"></textarea>						
 			</div>			
 		</div>		
 		<div class="form-row">

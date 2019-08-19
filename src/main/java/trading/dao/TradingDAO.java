@@ -27,6 +27,7 @@ public interface TradingDAO {
 	List<CouponDTO> getGivenCoupon(String coupon_no);
 	int deleteCoupon(String coupon_no);
 	void setCoupon(CouponDTO couponDTO);
+	void deleteUserBenefit(String id);
 //--------쿠폰 : END--------//	
 //--------주문 : START--------//	
 	List<OrderDTO> getOrderList(String id);	
@@ -37,5 +38,6 @@ public interface TradingDAO {
 	EventDTO getSelectedBanner(String event_no);
 	int bannerModify(EventDTO eventDTO);
 //--------이벤트 : END--------//	
+	
 
 }

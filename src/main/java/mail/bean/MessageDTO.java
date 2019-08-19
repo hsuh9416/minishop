@@ -14,6 +14,7 @@ import lombok.Data;
 @Component
 @Data
 public class MessageDTO {
+ private int seq;
  private String type;
  private String sender;
  private String sendAddr;
@@ -22,7 +23,7 @@ public class MessageDTO {
  private String subject;
  private String content;
  @JsonFormat(pattern="yyyy.MM.dd")
- private Date sendDate;
+ private Date senddate;
  private Boolean containHTML=false;
  
  private String code;

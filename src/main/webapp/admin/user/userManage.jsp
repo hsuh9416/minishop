@@ -7,7 +7,7 @@
 <div class="col-lg-8">
 	<div class="row" id="titleDiv">
 		<div class="col">
-			<h3>가입 회원 목록</h3>		
+			<h3>고객정보관리</h3>		
 		</div>
 	</div>
 	
