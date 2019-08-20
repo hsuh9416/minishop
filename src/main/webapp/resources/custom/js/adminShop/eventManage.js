@@ -1,3 +1,5 @@
+var deliveryList =null;
+
 $(document).ready(function(){
 	if($('#event_no').val()!=''||$('#event_no').val()!=null){
 		$('#bannerNum').trigger('change','trigger');	
@@ -17,6 +19,30 @@ $(document).ready(function(){
 			$.each(data.couponBook,function(index,items){
 				$('#couponDiv').append(items.couponBookHTML);
 			});
+			
+			deliveryList= data.deliveryList;		
+			
+			$.each(deliveryList,function(index,items){
+
+				$('<div>',{
+					class: 'form-row justify-content-center'
+				}).append($('<div>',{
+					class: 'form-group col-2'
+				})).append($('<div>',{
+					class: 'form-group col-1',
+					text: items.delivery_code
+				})).append($('<div>',{
+					class: 'form-group col-3',
+					text: items.delivery_type
+				})).append($('<div>',{
+					class: 'form-group col-3',
+					text: items.delivery_fee
+				})).append($('<div>',{
+					class: 'form-group col-3'
+				})).appendTo($('#deliveryDiv'));
+				
+			});
+			
 		}
 	});
 	
@@ -152,4 +178,26 @@ $('#deleteCoupon').click(function(){
 			else alert('수정이 실패하였습니다. 다시 한번 시도해주세요.');
 		}
 	});
+});
+
+$('input[name=delivery_code]').on('change',function(){
+	alert($('input[name=delivery_code]:selected').val());
+	$.each(deliveryList,function(index,items){
+		alert(items.delivery_code);
+		if($('input[name=delivery_code]:selected').val()==items.delivery_code){
+			$('input[name=delivery_fee]').val(items.delivery_fee);
+		}		
+	});
+	
+});
+$('#deliveryModify').click(function(){
+	if($('input[name=delivery_code]:selected').val()=='') alert('변경하실 배송분류를 선택해주세요');
+	else if($('input[name=delivery_fee]').val()=='') alert('배송료를 입력해주세요');
+	else{
+		var deliveryFee = parseInt($('input[name=delivery_fee]').val(),10);	
+		if($('input[name=delivery_code]:selected').val()=='1'&&(delevieryFee<5000)) alert('일반 배송료는 최소 5,000원 이상으로 설정해주세요.');
+		else if($('input[name=delivery_code]:selected').val()=='2'&&(delevieryFee<10000)) alert('특별 배송료는 최소 10,000원 이상으로 설정해주세요.');
+		else $('#deliveryFeeManage').submit();
+	}
+ 
 });

@@ -26,9 +26,12 @@ public class AfterInterceptors extends HandlerInterceptorAdapter {
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
 		ModelAndView modelAndView) throws Exception {
 	//START 0.공통
+		String uri = request.getRequestURI();
+		if(uri.contains("/storage/")||uri.contains("/main/")) return;//storage,maint상에서는 반응하지 않음	
+		else if(uri.contains("/getBannerList.do")||uri.contains("/getUserProductList.do")) return;//배너와 상품 목록을 불러오는 과정에서도 반응하지 않음
 		HttpSession session = request.getSession();	
 		GuestDTO guestDTO = (GuestDTO) session.getAttribute("guestDTO");//임시계정 확인
-		//logger.info("계정 확인 :"+guestDTO);
+
 	//END 0.공통			
 		
 	//START 1.로그인 상태 여부 확인:하나라도 접속해 있으면 해당 안됨+접속했으면 임시계정은 삭제되어야 함.

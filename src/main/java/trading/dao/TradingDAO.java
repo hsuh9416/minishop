@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import trading.bean.CouponDTO;
+import trading.bean.DeliveryDTO;
 import trading.bean.EventDTO;
 import trading.bean.OrderDTO;
 import trading.bean.ShoppingCart;
@@ -28,6 +29,7 @@ public interface TradingDAO {
 	int deleteCoupon(String coupon_no);
 	void setCoupon(CouponDTO couponDTO);
 	void deleteUserBenefit(String id);
+	List<CouponDTO> getAvailableUserCoupon(String id);	
 //--------쿠폰 : END--------//	
 //--------주문 : START--------//	
 	List<OrderDTO> getOrderList(String id);	
@@ -38,6 +40,8 @@ public interface TradingDAO {
 	EventDTO getSelectedBanner(String event_no);
 	int bannerModify(EventDTO eventDTO);
 //--------이벤트 : END--------//	
-	
-
+//--------배송료 : START--------//	
+	List<DeliveryDTO> getDeliveryPolicy();
+	int modifyDeliveryPolicy(DeliveryDTO deliveryDTO);
+//--------배송료 : END--------//
 }

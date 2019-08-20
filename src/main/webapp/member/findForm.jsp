@@ -29,17 +29,17 @@
 						<div class="form-row">	
 							<div class="form-group col-md-4">
 								<label for="name"><strong>이름</strong></label>
-								<input type="text" class="form-control" name="findName" id="findName" data-toggle="tooltip" data-placement="right" title="조회하실 회원명을 입력해 주세요." placeholder="조회대상 회원명 입력"/>
+								<input type="text" class="form-control-plaintext inline-form" name="findName" id="findName" data-toggle="tooltip" data-placement="right" title="조회하실 회원명을 입력해 주세요." placeholder="조회대상 회원명 입력"/>
 							</div>
 							<div class="form-group col-md-7">
 						  	  <label for="email"><strong>이메일 주소</strong></label>	
 							  <div class="form-row" id="email">
 							    <div class="form-group col-md-3">
-							      <input type="text" class="form-control" id="findIdemail1" name="findIdemail1" placeholder="이메일 " data-toggle="tooltip" data-placement="bottom" title="이메일을 전부 입력하세요."/>
+							      <input type="text" class="form-control-plaintext inline-form" id="findIdemail1" name="findIdemail1" placeholder="이메일 " data-toggle="tooltip" data-placement="bottom" title="이메일을 전부 입력하세요."/>
 							    </div>
 								<span>@</span>  
 							    <div class="form-group col-md-4">
-							      	<input type="text" class="form-control" name="findIdemail2" id="findIdemail2" data-toggle="tooltip" data-placement="bottom" title="이메일을 전부 입력하세요."/>
+							      	<input type="text" class="form-control-plaintext inline-form" name="findIdemail2" id="findIdemail2" data-toggle="tooltip" data-placement="bottom" title="이메일을 전부 입력하세요."/>
 							    </div>
 							    <div class="form-group col-md-4">
 							      <select id="findIdInputEmail" class="form-control">
@@ -81,17 +81,17 @@
 						<div class="form-row">	
 							<div class="form-group col-md-4">
 								<label for="findID"><strong>아이디</strong></label>
-								<input type="text" class="form-control" name="findID" id="findID" data-toggle="tooltip" data-placement="right" title="조회하실 아이디를 입력해 주세요." placeholder="조회대상 아이디 입력"/>
+								<input type="text" class="form-control-plaintext inline-form" name="findID" id="findID" data-toggle="tooltip" data-placement="right" title="조회하실 아이디를 입력해 주세요." placeholder="조회대상 아이디 입력"/>
 							</div>
 							<div class="form-group col-md-7">
 						  	  <label for="email"><strong>이메일 주소</strong></label>	
 							  <div class="form-row" id="email">
 							    <div class="form-group col-md-3">
-							      <input type="text" class="form-control" id="findPwdemail1" name="findPwdemail1" placeholder="이메일 " data-toggle="tooltip" data-placement="bottom" title="이메일을 전부 입력하세요."/>
+							      <input type="text" class="form-control-plaintext inline-form" id="findPwdemail1" name="findPwdemail1" placeholder="이메일 " data-toggle="tooltip" data-placement="bottom" title="이메일을 전부 입력하세요."/>
 							    </div>
 								<span>@</span>  
 							    <div class="form-group col-md-4">
-							      	<input type="text" class="form-control" name="findPwdemail2" id="findPwdemail2" data-toggle="tooltip" data-placement="bottom" title="이메일을 전부 입력하세요."/>
+							      	<input type="text" class="form-control-plaintext inline-form" name="findPwdemail2" id="findPwdemail2" data-toggle="tooltip" data-placement="bottom" title="이메일을 전부 입력하세요."/>
 							    </div>
 							    <div class="form-group col-md-4">
 							      <select id="findPwdInputEmail" class="form-control">

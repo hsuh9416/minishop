@@ -14,7 +14,8 @@
 			<h3>장바구니</h3>		
 		</div>
 	</div>
-
+	<input type="hidden" id="guestID" value="${guestDTO.guest_id}"/>
+	<input type="hidden" id="memberID" value="${memberDTO.id}"/>
 	<div class="form-row align-items-center">
 		<div class="col-1">
 			<input class="form-check-input" type="checkbox" id="checkAll" style="width:10px;height:10px;">
@@ -40,18 +41,14 @@
 	<hr width="100%" color="darkgray" noshade/>
 	
 	<div class="form-row align-items-center">
-		<div class="col" align="right" id="totalDiv"></div>
+		<div class="form-group col-4" align="center">총 합계</div>
+		<div class="form-group col-8" align="right" id="totalDiv"></div>
 	</div>		
 	
 	<div class="form-row align-items-center">
-		<div class="col-2">
+		<div class="form-group col" align="right">
 			<input type="button" class="btn btn-outline-secondary" value="삭제하기" id="choiceDelete">	
-		</div>
-		<div class="col-6"></div>
-		<div class="col-2">
 			<input type="button" class="btn btn-outline-primary" value="계속 쇼핑하기" id="goCategory">	
-		</div>
-		<div class="col-2">
 			<input type="button" class="btn btn-outline-info" value="주문하기" id="choiceOrder">	
 		</div>
 	</div>

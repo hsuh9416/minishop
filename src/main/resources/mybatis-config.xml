@@ -7,7 +7,8 @@
 		<typeAlias type="admin.bean.AdminDTO" alias="admin"/>
 		<typeAlias type="admin.bean.AdminboardDTO" alias="adminBoard"/>		
 		<typeAlias type="trading.bean.ShoppingCart" alias="cart"/>
-		<typeAlias type="trading.bean.CouponDTO" alias="coupon"/>		
+		<typeAlias type="trading.bean.CouponDTO" alias="coupon"/>
+		<typeAlias type="trading.bean.DeliveryDTO" alias="delivery"/>				
 		<typeAlias type="trading.bean.EventDTO" alias="event"/>			
 		<typeAlias type="member.bean.MemberDTO" alias="member" />						
 		<typeAlias type="mail.bean.MessageDTO" alias="message" />

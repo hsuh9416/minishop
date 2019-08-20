@@ -59,7 +59,7 @@
 			</div>		
 			<div class="form-row justify-content-center">
 				<div class="form-group col-4">[사용 가능한 포인트]</div>
-				<div class="form-group col-8">${memberDTO.point} 점</div>	
+				<div class="form-group col-8"><fmt:formatNumber value="${memberDTO.point}" pattern="#,###"/> 점</div>	
 			</div>		
 			<div class="form-row justify-content-center">
 				<div class="form-group col-4">[가입하신 날짜 ]</div>

@@ -85,6 +85,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	delete BENEFIT_GRANT where grant_id=#{id}
 </delete>
 
+<!-- 쿠폰: 해당 회원 결제시 사용 가능 쿠폰 호출하기 -->
+<select id="getAvailableUserCoupon" parameterType="String" resultType="coupon">
+	SELECT * from BENEFIT_GRANT 
+	inner join COUPON_BOOK
+	on BENEFIT_GRANT.COUPON_NO = COUPON_BOOK.COUPON_NO
+	where grant_id=#{id} and BENEFIT_GRANT.PERSONAL_CODE is not null
+</select>
+
 <!-- 주문 : 비밀번호 변경 -->
 <update id="setNewOrderPwd" parameterType="order">
 	UPDATE ORDERS set order_pwd=#{order_pwd} where order_no=#{order_no}
@@ -106,6 +114,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	EVENT_STARTDATE=#{event_startdate},EVENT_ENDDATE=#{event_enddate} where EVENT_NO=#{event_no}
 </update>
 
+<!-- 배송료: 배송료 정책 호출 -->
+<select id="getDeliveryPolicy" resultType="delivery">
+	select * from DELIVERY
+</select>
+
+<update id="modifyDeliveryPolicy"  parameterType="delivery">
+	UPDATE DELIVERY set DELIVERY_FEE=${delivery_fee} where DELIVERY_CODE=#{delivery_code}
+</update>
 </mapper>
 
 

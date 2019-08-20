@@ -19,18 +19,13 @@ div .subContent{
 	
 .subTitle font{color: white;}	
 
+
 .card-header {
     padding: .75rem 1.25rem;
     margin-bottom: 0;
     background-color: #212529;
     color: white;
 }
-
-hr sub-hr{
-	border: solid 1px;
-	color: darkgrey;
-	width: 80%;
-}	
 
 #subjectA:link {color: black; text-decoration: none;}
 #subjectA:visited {color: black; text-decoration: none;}

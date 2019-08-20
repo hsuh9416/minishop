@@ -68,35 +68,48 @@ $('#putCartBtn').click(function(){
 		alert('최소 1개 이상 주문하셔야 합니다.');
 	}
 	else{
-		var buyNow = confirm('바로 구입하시겠습니까?');
-		if(buyNow){
-			var product_name_no = new Array();
-			product_name_no[0] = $('#product_name_no').val();
-			$('input[name=product_name_no]').val(product_name_no);
-			$('input[name=cart_qty]').val($('#cart_qty').val());	
-			$('#buyNowForm').submit();
-			}//if
-		else{
-			$.ajax({
-				type: 'post',
-				url : '/minishop/trading/addCart.do',
-				data: {'product_name_no':$('#product_name_no').val(),
-						'cart_qty':$('#cart_qty').val()},
-				success: function(){
-					var seeCart = confirm('현재 품목을 장바구니에 담았습니다. 장바구니를 확인하러 가시겠습니까?');
-					if(seeCart){
-						window.location='/minishop/trading/userCart.do';
-					}//if
-					else{
-						alert('쇼핑목록으로 돌아갑니다.');
-						window.location='/minishop/product/categories.do?product_category_name=ALL';}//else
+		if($('#memberID').val()==''||$('#guestID').val()!='') {
+			 var goSignUp = confirm('회원가입 시에는 더욱 풍부한 혜택을 얻으실 수 있습니다. 회원 가입하시겠습니까?');
+				if(goSignUp) {
+					alert('회원 가입 화면으로 이동합니다');
+					window.location='/minishop/member/writeForm.do';}
+				else preOrderEvent();
+		}
+		else preOrderEvent();
+	}
+});
+
+function preOrderEvent(){
+	
+	var buyNow = confirm('바로 구입하시겠습니까?');
+	
+	if(buyNow){
+		var product_name_no = new Array();
+		product_name_no[0] = $('#product_name_no').val();
+		$('input[name=product_name_no]').val(product_name_no);
+		$('input[name=cart_qty]').val($('#cart_qty').val());	
+		$('#buyNowForm').submit();
+	}
+	
+	else{
+		$.ajax({
+			type: 'post',
+			url : '/minishop/trading/addCart.do',
+			data: {'product_name_no':$('#product_name_no').val(),
+					'cart_qty':$('#cart_qty').val()},
+			success: function(){
+				var seeCart = confirm('현재 품목을 장바구니에 담았습니다. 장바구니를 확인하러 가시겠습니까?');
+				if(seeCart){
+					window.location='/minishop/trading/userCart.do';
+				}//if
+				else{
+					alert('쇼핑목록으로 돌아갑니다.');
+					window.location='/minishop/product/categories.do?product_category_name=ALL';}//else
 				}
 
 			});
 		}
-
-	}
-});
+}
 
 $('#writeQABtn').click(function(){
 	window.location='/minishop/board/qa/qaWriteForm.do?productID='+$('#productID').val();

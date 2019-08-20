@@ -155,12 +155,28 @@ $('#goCategory').click(function(){
 $('#choiceOrder').click(function(){
 	if($('.check:checked').length==0) alert("항목을 선택해주세요");
 	else{
-		var product_name_no = new Array();
-		$(".check:checked").each(function(index, items) { 
-			product_name_no[index] = $(this).val(); 
-		});
-
-		$('input[name=product_name_no]').val(product_name_no);	
-		$('#cartOrderForm').submit();
+		if($('#memberID').val()==''||$('#guestID').val()!='') {
+			var signUp = confirm('회원가입 시에는 더욱 풍부한 혜택을 얻으실 수 있습니다. 회원 가입하시겠습니까');
+			if(signUp) {
+				alert('회원 가입 화면으로 이동합니다');
+				window.location='/minishop/member/writeForm.do';
+			}
+			else goOrderForm();
+		} 
+		else goOrderForm();
 	}
 });
+
+function goOrderForm(){
+	
+	alert('주문 화면으로 이동합니다');
+	
+	var product_name_no = new Array();
+	
+	$(".check:checked").each(function(index, items) { 
+		product_name_no[index] = $(this).val();  
+	});
+
+	$('input[name=product_name_no]').val(product_name_no);	
+	$('#cartOrderForm').submit();
+}

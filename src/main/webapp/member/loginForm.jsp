@@ -28,11 +28,11 @@
 								<div class="form-row">	
 									<div class="form-group col-md-5">
 										<label for="name"><strong>아이디</strong></label>
-										<input type="text" class="form-control" name="loginId" id="loginId" data-toggle="tooltip" data-placement="right" title="회원 아이디 또는 주문번호를 입력하세요." placeholder="아이디/주문번호 입력"/>
+										<input type="text" class="form-control-plaintext inline-form" name="loginId" id="loginId" data-toggle="tooltip" data-placement="right" title="회원 아이디 또는 주문번호를 입력하세요." placeholder="아이디/주문번호 입력"/>
 									</div>
 									<div class="form-group col-md-5">
 										 <label for="id"><strong>비밀번호</strong></label>
-										 <input type="password" class="form-control" name="loginPwd" id="loginPwd" data-toggle="tooltip" data-placement="right" title="비밀번호를 입력하세요." placeholder="비밀번호 입력"/>
+										 <input type="password" class="form-control-plaintext inline-form" name="loginPwd" id="loginPwd" data-toggle="tooltip" data-placement="right" title="비밀번호를 입력하세요." placeholder="비밀번호 입력"/>
 									</div>					  		  	
 								</div>	
 								
@@ -66,11 +66,11 @@
 							<div class="form-row">	
 								<div class="form-group col-md-5">
 									<label for="name"><strong>주문번호</strong></label>
-									<input type="text" class="form-control" name="orderId" id="orderId" data-toggle="tooltip" data-placement="right" title="회원 아이디 또는 주문번호를 입력하세요." placeholder="아이디/주문번호 입력"/>
+									<input type="text" class="form-control-plaintext inline-form" name="orderId" id="orderId" data-toggle="tooltip" data-placement="right" title="회원 아이디 또는 주문번호를 입력하세요." placeholder="아이디/주문번호 입력"/>
 								</div>
 								<div class="form-group col-md-5">
 									<label for="id"><strong>비밀번호</strong></label>
-									<input type="password" class="form-control" name="orderPwd" id="orderPwd" data-toggle="tooltip" data-placement="right" title="비밀번호를 입력하세요." placeholder="비밀번호 입력" >
+									<input type="password" class="form-control-plaintext inline-form" name="orderPwd" id="orderPwd" data-toggle="tooltip" data-placement="right" title="비밀번호를 입력하세요." placeholder="비밀번호 입력" >
 								</div>					  		  	
 							</div> 
 							<div class="form-row">

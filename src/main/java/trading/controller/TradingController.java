@@ -14,8 +14,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.JsonElement;
 
+import member.bean.MemberDTO;
 import product.bean.ProductDTO;
 import product.dao.ProductDAO;
+import trading.bean.CouponDTO;
+import trading.bean.DeliveryDTO;
 import trading.bean.EventDTO;
 import trading.bean.ShoppingCart;
 import trading.dao.TradingDAO;
@@ -184,23 +187,46 @@ public class TradingController {
 				shoppingCart = (ShoppingCart) session.getAttribute("shoppingCart");	
 			for(int number : product_name_no) {
 					index = shoppingCart.exists(number, shoppingCart.getCartList());
-					shoppingCart.getCartList().get(index).setCart_qty(cart_qty);
+					//shoppingCart.getCartList().get(index).setCart_qty(cart_qty);
 					orderList.add(shoppingCart.getCartList().get(index));
 					orderList_JSON = shoppingCart.makeListToJsonElement(orderList);}
-				session.removeAttribute("cartList");
-				session.removeAttribute("shoppingCart");
+				//session.removeAttribute("cartList");
+				//session.removeAttribute("shoppingCart");
 			}
 		
-		ModelAndView mav = new ModelAndView();
-			mav.addObject("orderList", orderList);		
-			mav.addObject("orderList_JSON", orderList_JSON);
+			session.setAttribute("orderList_JSON", orderList_JSON);
+		
+		ModelAndView mav = new ModelAndView();	
 			mav.addObject("display", "/trading/orderForm.jsp");	
 			mav.setViewName("/main/home");
 			
 		return mav;
 	}
+	
+	//7. 상품 주문 내역, 회원 기존 정보 호출하기
+	@RequestMapping(value="/getPreOrderInfo.do",method = RequestMethod.GET)
+	@ResponseBody
+	public ModelAndView getPreOrderInfo(HttpSession session) {
+		
+		JsonElement orderList_JSON = (JsonElement)session.getAttribute("orderList_JSON");
+		List<ProductDTO> orderList = new ShoppingCart().makeJsonToList(orderList_JSON.toString());
+		List<DeliveryDTO> deliveryDTO = tradingDAO.getDeliveryPolicy();
+		MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
 
-	//6. 배너 호출하기
+		ModelAndView mav = new ModelAndView();
+			mav.addObject("orderList", orderList);
+			mav.addObject("deliveryDTO", deliveryDTO);
+			if(memberDTO!=null) {
+				List<CouponDTO> couponList = tradingDAO.getAvailableUserCoupon(memberDTO.getId());
+				mav.addObject("couponList", couponList);
+			}
+			mav.addObject("memberDTO", memberDTO);	
+			
+			mav.setViewName("jsonView");
+		return mav;
+	}
+		
+	//1333. 배너 호출하기
 	@RequestMapping(value="/getBannerList.do",method = RequestMethod.GET)
 	public ModelAndView getBannerList() {
 		

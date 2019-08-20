@@ -10,6 +10,7 @@ import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Repository;
 
 import trading.bean.CouponDTO;
+import trading.bean.DeliveryDTO;
 import trading.bean.EventDTO;
 import trading.bean.OrderDTO;
 import trading.bean.ShoppingCart;
@@ -108,10 +109,17 @@ public class TradingDAOImpl implements TradingDAO {
 	public void setCoupon(CouponDTO couponDTO) {
 		sqlSession.insert("tradingSQL.setCoupon",couponDTO);
 	}	
+	
 	//6.계정삭제 회원의 쿠폰 삭제
 	@Override
 	public void deleteUserBenefit(String id) {
 		sqlSession.delete("tradingSQL.deleteUserBenefit",id);
+	}
+	
+	//7.결제 회원 쿠폰 호출
+	@Override
+	public List<CouponDTO> getAvailableUserCoupon(String id) {
+		return sqlSession.selectList("tradingSQL.getAvailableUserCoupon",id);
 	}
 	
 //----------- 쿠폰 : END ----------//	
@@ -155,4 +163,17 @@ public class TradingDAOImpl implements TradingDAO {
 	}	
 	
 //----------- 이벤트 : END ----------//	
+	
+//----------- 배송료 : END ----------//
+	@Override
+	public List<DeliveryDTO> getDeliveryPolicy() {
+		return sqlSession.selectList("tradingSQL.getDeliveryPolicy");
+	}
+	
+	@Override
+	public int modifyDeliveryPolicy(DeliveryDTO deliveryDTO) {
+		return sqlSession.update("tradingSQL.modifyDeliveryPolicy", deliveryDTO);
+	}
+//----------- 배송료 : END ----------//
+	
 }

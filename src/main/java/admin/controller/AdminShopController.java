@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import trading.bean.CouponDTO;
+import trading.bean.DeliveryDTO;
 import trading.bean.EventDTO;
 import trading.dao.TradingDAO;
 /*
@@ -182,7 +183,7 @@ public class AdminShopController {
 		
 		List<EventDTO> bannerList = tradingDAO.getBannerList();
 		List<CouponDTO> couponBook = tradingDAO.getCouponBook();
-		
+		List<DeliveryDTO> deliveryList = tradingDAO.getDeliveryPolicy();
 		for(EventDTO data : bannerList) {
 			data.callBannerList();
 		}
@@ -193,6 +194,7 @@ public class AdminShopController {
 		ModelAndView mav = new ModelAndView();
 			mav.addObject("bannerList",bannerList);		
 			mav.addObject("couponBook",couponBook);
+			mav.addObject("deliveryList",deliveryList);
 			mav.setViewName("jsonView");
 			
 		return mav;
@@ -252,8 +254,21 @@ public class AdminShopController {
 			if(result==1) return "success";
 			else return "fail";
 		}
-
+	}
+	
+	//10. 배송료 변경하기
+	@RequestMapping(value="/modifyDeliveryFee.do",method=RequestMethod.POST)
+	public ModelAndView modifyDeliveryFee(@ModelAttribute DeliveryDTO deliveryDTO) {
 		
-
-	}			
+		int result = tradingDAO.modifyDeliveryPolicy(deliveryDTO);
+		String state="fail";
+		
+		if(result==1) state="success";
+		
+		ModelAndView mav = new ModelAndView();
+			mav.addObject("stateCode", state);
+			mav.setViewName("/admin/shop/stateCode");
+			
+		return mav;
+	}	
 }

@@ -26,18 +26,18 @@
 			</div>	  
 			<div class="form-group col-md-3">
 				<label for="name"><strong>이름</strong></label>
-		    	<input type="text" class="form-control" name="name" id="name" value="${memberDTO.name}" data-toggle="tooltip" data-placement="right" title="회원님의 이름을 입력하세요.">
+		    	<input type="text" class="form-control-plaintext inline-form" name="name" id="name" value="${memberDTO.name}" data-toggle="tooltip" data-placement="right" title="회원님의 이름을 입력하세요.">
 		  	</div>	
 		</div>	
 
 		<div class="form-row">
 			<div class="form-group col-md-3">
 				<label for="pwd"><strong>비밀번호</strong></label>
-				<input type="password" class="form-control" name="pwd" id="pwd" value="${memberDTO.pwd}" data-toggle="tooltip" data-placement="right" title="비밀번호를 입력하세요." readonly>
+				<input type="password" class="form-control-plaintext inline-form" name="pwd" id="pwd" value="${memberDTO.pwd}" data-toggle="tooltip" data-placement="right" title="비밀번호를 입력하세요." readonly>
 		    </div>
 		    <div class="form-group col-md-3">
 				<label for="repwd"><strong>재입력</strong></label>
-				<input type="password" class="form-control" name="repwd" id="repwd" placeholder="비밀번호 재입력 " data-toggle="tooltip" data-placement="right" title="비밀번호가 일치하지 않습니다.">
+				<input type="password" class="form-control-plaintext inline-form" name="repwd" id="repwd" placeholder="비밀번호 재입력 " data-toggle="tooltip" data-placement="right" title="비밀번호가 일치하지 않습니다.">
 		    </div>
 			<div class="form-group col-md-3" style="padding-top:30px;">
 				<input type="button" class="btn btn-outline-info" value="비밀번호 변경" id="pwdChangeBtn"/>
@@ -48,14 +48,14 @@
 		<label for="email"><strong>이메일 주소</strong></label>	
 		<div class="form-row" id="email">
 		    <div class="form-group col-md-2">
-				<input type="text" class="form-control" name="email1" readonly>
+				<input type="text" class="form-control-plaintext inline-form" name="email1" readonly>
 		    </div>
 			<span>@</span>  
 		    <div class="form-group col-md-3">
-				<input type="text" class="form-control" name="email2" readonly>
+				<input type="text" class="form-control-plaintext inline-form" name="email2" readonly>
 		    </div>
 		    <div class="form-group col-md-3">
-				<select id="emailInput" name="email2" class="form-control" disabled>
+				<select id="emailInput" name="email2" class="form-control-plaintext inline-form" disabled>
 					<option value="">직접 입력</option>   
 					<option value="gmail.com">gmail.com</option>
 					<option value="hanmail.net">hanmail.net</option>
@@ -70,7 +70,7 @@
 		<label for="tel"><strong>연락처</strong></label>	
 		<div class="form-row" >
 			<div class="form-group col-md-2">
-				<select name="tel1" class="form-control">
+				<select name="tel1" class="form-control-plaintext inline-form">
 					<option value="010">010</option>
 					<option value="011">011</option>
 					<option value="019">019</option>
@@ -78,18 +78,18 @@
 	    	</div>	    
 			<span>-</span>  
 		    <div class="form-group col-md-2">
-				<input type="text" class="form-control" name="tel2" value="${memberDTO.tel2}">
+				<input type="text" class="form-control-plaintext inline-form" name="tel2" value="${memberDTO.tel2}">
 		    </div>
 	    	<span>-</span>     
 		    <div class="form-group col-md-2">
-		      	<input type="text" class="form-control" name="tel3" value="${memberDTO.tel3}">
+		      	<input type="text" class="form-control-plaintext inline-form" name="tel3" value="${memberDTO.tel3}">
 		    </div>
 		</div>
   
 		<label for="address1"><strong>우편 번호</strong></label>	
  	 	<div class="form-row" id="address1">
 		    <div class="form-group col-md-3">
-				<input type="text" readonly class="form-control" name="zipcode" id="zipcode" value="${memberDTO.zipcode }"> 
+				<input type="text" readonly class="form-control-plaintext inline-form" name="zipcode" id="zipcode" value="${memberDTO.zipcode }"> 
 		    </div>
 		    <div class="form-group col-md-3">
 				<input type="button" class="btn btn-outline-dark" value="우편번호검색" id="checkPost" onclick="sample3_execDaumPostcode()">
@@ -99,10 +99,10 @@
 		<label for="address2"><strong>상세 주소</strong></label>	
 		<div class="form-row" id="address2">
 		    <div class="form-group col-6">
-		    	<input type="text" readonly class="form-control" name="addr1" id="addr1" value="${memberDTO.addr1 }">
+		    	<input type="text" readonly class="form-control-plaintext inline-form" name="addr1" id="addr1" value="${memberDTO.addr1 }">
 		    </div>
 		   	<div class="form-group col-4">
-		    	<input type="text" readonly class="form-control" name="extra" id="extra" value="">
+		    	<input type="text" readonly class="form-control-plaintext inline-form" name="extra" id="extra" value="">
 			</div>
 		</div>	
   	
@@ -112,7 +112,7 @@
   	 
 		<div class="form-row" id="address2">
 			<div class="form-group col-10">
-				<input type="text" class="form-control" name="addr2" id="addr2" value="${memberDTO.addr2}">
+				<input type="text" class="form-control-plaintext inline-form" name="addr2" id="addr2" value="${memberDTO.addr2}">
 		    </div>
 		</div>	 	
 

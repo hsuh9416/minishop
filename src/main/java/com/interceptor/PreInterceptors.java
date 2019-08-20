@@ -40,7 +40,9 @@ public class PreInterceptors extends HandlerInterceptorAdapter{
 		HttpSession session = request.getSession();	
 		String[] addr = request.getRequestURI().split("\\.");
 		MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");//현재 로그인 여부부터 확인
-		//END 0.공통
+		if(uri.contains("/storage/")||uri.contains("/main/")) return true;//storage,main 누구나 접근 가능함
+		else if(uri.contains("/getBannerList.do")||uri.contains("/getUserProductList.do")) return true;//배너와 상품 목록을 불러오는 과정에도 유효성 검사 배제
+		//END 0.공통/
 		
 		//START 1. 자동 로그인 확인
 		Cookie loginCookie = WebUtils.getCookie(request, "loginCookie");

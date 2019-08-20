@@ -22,7 +22,8 @@
 	<input type="hidden" id="stock" value="${productDTO.stock}"/>	
 	<input type="hidden" id="userName" value="${memberDTO.name}"/>
 	<input type="hidden" id="orderName" value="${orderDTO.order_name}"/>
-
+	<input type="hidden" id="memberID" value="${memberDTO.id}"/>
+	<input type="hidden" id="guestID" value="${guestDTO.guest_id}"/>
 					
 	<form id="buyNowForm" method="post" action="/minishop/trading/orderForm.do">
 		<input type="hidden" name="product_name_no" value=""/>
@@ -33,18 +34,18 @@
 		<table id="userProductTable" class="table justify-content-center">
 			<thead class="thead">
 				<tr align="center">
-					<th scope="col" colspan="2" >${productDTO.product_name_title}</th>
+					<th scope="col" colspan="4" >${productDTO.product_name_title}</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr>
-					<td rowspan="5">
+					<td rowspan="6" >
 			   			<img src="/minishop/storage/showProduct.do?product_name_image=${productDTO.product_name_image}">
 			   		</td>
-			   		<td><h2>${productDTO.productName}</h2></td>
+			   		<td colspan="2"><h2>${productDTO.productName}</h2></td>
 			   	</tr>
 			   	<tr>
-			   		<td>
+			   		<td colspan="2">
 			   			<c:if test="${productDTO.product_salesMount>=300}">
 			   				<span>#인기 상품</span>&emsp;
 						</c:if>
@@ -60,7 +61,7 @@
 			   		</td>			   	
 			   	</tr>		
 			   	<tr>
-				   	<td>
+				   	<td colspan="2">
 				   	<c:if test="${productDTO.product_name_price<=productDTO.unitcost}">
 						<div class="product_price">NowOn Price&emsp;<fmt:formatNumber type="number" value="${productDTO.unitcost}" pattern="#,###"/>원</div>
 					</c:if>
@@ -71,19 +72,20 @@
 			   		</td>		   	
 			   	</tr>	
 				<tr>
-			   		<td align="center">
-			   				<h4 style="padding-right:180px;">수량</h4>
-			   			  	<div class="btn-group mr-2" role="group" aria-label="Second group">
-							    <button type="button" id="cart_minus" class="btn btn-light"><i class="fa fa-minus" aria-hidden="true"></i></button>
-							    <input type="number" class="form-control-plaintext" id="cart_qty" value="1">
-							    <button type="button" id="cart_plus" class="btn btn-light"><i class="fa fa-plus" aria-hidden="true"></i></button>
-  							</div>
-  							<span class="total_price">합계&emsp;<font id="totalCost"><fmt:formatNumber type="number" value="${productDTO.unitcost}" pattern="#,###"/></font>원</span>
-  							
-					</td>
+			   		<td align="right"><h4>수량</h4></td>
+			   		<td align="right">
+						<div class="btn-group mr-2" role="group" aria-label="Second group">
+						 	<button type="button" id="cart_minus" class="btn btn-light"><i class="fa fa-minus" aria-hidden="true"></i></button>
+							<input type="number" class="form-control-plaintext" id="cart_qty" value="1">
+							<button type="button" id="cart_plus" class="btn btn-light"><i class="fa fa-plus" aria-hidden="true"></i></button>
+  						</div>		   		
+			   		</td>					
 				</tr>
 				<tr>
-					<td>
+					<td colspan="2"><div align="right" class="total_price">합계&emsp;<font id="totalCost"><fmt:formatNumber type="number" value="${productDTO.unitcost}" pattern="#,###"/></font>원</div></td>
+				</tr>			
+				<tr>
+					<td colspan="2">
 						<div align="center">
 							<button type="button" id="putCartBtn" class="btn btn-outline-danger btn-lg">add to cart</button>
 							<c:if test="${SEQ==0}">
@@ -97,12 +99,12 @@
 			   		</td>
 			   	</tr>
 			   	<tr align="center">
-				   	<td colspan="2">
+				   	<td colspan="4">
 				   		<h2>상세정보</h2>
 				   	</td>
 			   	</tr>
 			   	<tr align="center">
-				   	<td colspan="2">
+				   	<td colspan="4">
 				   		${productDTO.product_name_detail}
 				   	</td>
 			   	</tr>
