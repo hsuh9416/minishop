@@ -64,10 +64,6 @@ $('#modifyBtn').click(function(){
 		$('#name').tooltip('enable');
 		$('#name').tooltip('show');
 		$('#name').focus();	
-	}else if($('#repwd').val()==''|| $('#checkPwd').val()!=$('#repwd').val()){
-		$('#repwd').tooltip('enable');
-		$('#repwd').tooltip('show');	
-		$('#repwd').focus();
 	}else{
 		$.ajax({
 			type: 'post',
@@ -77,6 +73,7 @@ $('#modifyBtn').click(function(){
 			success : function(data){
 				if(data=='success') {alert('성공적으로 수정되었습니다.');
 					window.location='/minishop/member/memberView.do';}
+				else if(data=='unMatchedPwd') alert('비밀번호가 일치하지 않습니다. 다시 한번 시도해주세요');
 				else if(data=='fail') {
 					alert('오류가 발생하여 수정에 실패하였습니다. 다시 한번 시도해주세요.');
 					window.location.reload();

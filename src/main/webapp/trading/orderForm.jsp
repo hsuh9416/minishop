@@ -1,23 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 	<!--CSS Local STYLE:START-->
-<style>
-hr.sub-hr{
-	border-top: double 3px;
-	color: darkgray;
-	width: 100%;
-}
-
-hr .sub-secondary-hr{
-	border: 1px solid;
-	color: lightgray;
-	width: 100%;
-}
-
-.padding-right{
-	padding-right: 15px;
-}
-</style>	
+<link rel="stylesheet" href="/minishop/resources/custom/css/orderForm.css">
 		<!--CSS Local STYLE:END-->   
 		 
 <div class="col-lg-8">
@@ -30,7 +14,7 @@ hr .sub-secondary-hr{
 	<hr class="sub-hr" noshade/>
 	<div class="form-row align-items-center">
 		<div class="col" align="center">
-	 		<h5 style="text-decoration:underline;text-undeline-position: under;">주문 목록</h5>		
+	 		<h5 style="text-decoration:underline; text-undeline-position: under;">주문 목록</h5>		
 	 	</div>	
 	</div>
 	<hr  class="sub-secondary-hr" noshade/>
@@ -74,6 +58,69 @@ hr .sub-secondary-hr{
 	
 	<div class="form-row align-items-center">
 		<div class="col" align="center">
+		 	<h5 style="text-decoration:underline;text-undeline-position: under;">주문자 기본정보</h5>		
+		 </div>	
+	</div>	
+		
+	<hr  class="sub-secondary-hr" noshade/>		
+		
+	<div class="form-row align-items-center">
+		<div class="form-group col-3" align="center">
+			<label for="delivery" style="padding-right:20px; padding-top:-5px;"><strong>배송지 선택</strong></label>			
+		</div>
+		<div class="form-group col-2" align="center">
+			<input class="form-check-input" type="radio" name="pesonalInfo" id="originalP" value="originalP" checked>
+			<label class="form-check-label" for="originalP">기존</label>
+		</div>
+		<div class="form-group col-2"align="center">
+			<input class="form-check-input" type="radio" name="pesonalInfo" id="newP" value="newP">
+			<label class="form-check-label" for="newP">신규</label>
+		</div>
+	</div>		
+		
+	<div class="form-row align-items-center">
+		<div class="form-group col-3" align="center">
+			<label for="address1" style="padding-right:20px; padding-top:-5px;"><strong>주문자명</strong></label> 
+		</div>
+		<div class="form-group col-3">
+			<input type="text" class="form-control-plaintext inline-form" id="order_name" value="" placeholder="주문하신 분의 이름 입력"> 
+		</div>
+		<div class="form-group col-3" align="center">
+			<label for="address1" style="padding-right:20px; padding-top:-5px;"><strong>수령자명</strong></label> 
+		</div>
+		<div class="form-group col-3">
+			<input type="text" class="form-control-plaintext inline-form" id="order_receiver" value="" placeholder="받으실 분의 이름 입력"> 
+		</div>
+	</div>		
+
+	<div class="form-row align-items-center">
+		<div class="form-group col-3" align="center">
+			<label for="order_tel" style="padding-right:20px; padding-top:-5px;"><strong>주문자 연락처</strong></label> 
+		</div>		    
+		<div class="form-group col-3" align="center">
+			<input type="text" class="form-control-plaintext inline-form" id="order_tel" value="" placeholder="숫자로만 입력">
+		</div>
+		<div class="form-group col-3" align="center">
+			<label for="order_email" style="padding-right:20px; padding-top:-5px;"><strong>주문자 이메일</strong></label> 
+		</div>
+		<div class="form-group col-3">
+			<input type="email" class="form-control-plaintext inline-form" id="order_email" value="" placeholder="order@naver.com"> 
+		</div>
+	</div>
+	<br><br>
+	<div class="form-row align-items-center">
+		<div class="form-group col" align="center">
+			<h5 style="color:red;font-weight:bold">[주의 바랍니다]</h5>
+			<p>주문자님께서는 자신의 메일과 연락번호를 정확하게 확인 바랍니다.</p>
+			<p>주문시의 연락처가 올바르지 않았거나 주문확인서가 정확하게 전달되지 않은 경우에는 고객센터에 직접 문의하시기 바랍니다.</p>
+		</div>	    
+	</div>	
+			
+	<hr class="sub-hr" noshade/>
+	
+	
+	<div class="form-row align-items-center">
+		<div class="col" align="center">
 	 		<h5 style="text-decoration:underline;text-undeline-position: under;">배송지</h5>		
 	 	</div>	
 	</div>
@@ -102,7 +149,7 @@ hr .sub-secondary-hr{
 			    	<label for="address1" style="padding-right:20px; padding-top:-5px;"><strong>우편 번호</strong></label> 
 			    </div>
 			    <div class="form-group col-3">
-					<input type="text" readonly class="form-control-plaintext" style="border-bottom:1px solid;" name="zipcode" id="zipcode" value=""> 
+					<input type="text" readonly class="form-control-plaintext inline-form" name="zipcode" id="zipcode" value=""> 
 			    </div>
 				<div class="form-group col-1"></div>			    
 			    <div class="form-group col-3" align="center">
@@ -116,10 +163,10 @@ hr .sub-secondary-hr{
 			    	<label for="address2" style="padding-right:20px; padding-top:-5px;"><strong>상세 주소</strong></label>	 
 			    </div>
 			    <div class="form-group col-4">
-					<input type="text" readonly class="form-control-plaintext" style="border-bottom:1px solid;" name="addr1" id="addr1" value=""> 
+					<input type="text" readonly class="form-control-plaintext inline-form" name="addr1" id="addr1" value=""> 
 			    </div>
 				<div class="form-group col-3">
-					<input type="text" readonly class="form-control-plaintext" style="border-bottom:1px solid;" name="extra" id="extra" value="">		
+					<input type="text" readonly class="form-control-plaintext inline-form" name="extra" id="extra" value="">		
 				</div>
 				<div class="form-group col-2"></div>			    
 			</div>
@@ -127,7 +174,7 @@ hr .sub-secondary-hr{
   			<div class="form-row" id="address2b">
 				<div class="form-group col-3"></div>			
 				<div class="form-group col-7">
-					<input type="text" class="form-control-plaintext" style="border-bottom:1px solid;" name="addr2" id="addr2" value="">
+					<input type="text" class="form-control-plaintext inline-form" name="addr2" id="addr2" value="">
 			    </div>
 				<div class="form-group col-2"></div>			    
 			</div>			
@@ -183,7 +230,7 @@ hr .sub-secondary-hr{
 			<label style="padding-right:20px; padding-top:-5px;"><strong>포인트</strong></label>			
 		</div>
 		<div class="form-group col-3" align="center">			
-			<input type="number" class="form-control-plaintext" style="border-bottom:1px solid;" id="point" value=""/> 		
+			<input type="number" class="form-control-plaintext inline-form" id="point" value=""/> 		
 		</div>
 		<div class="form-group col-1" align="center">(점)</div>
 		<div class="form-group col-1"></div>		
@@ -208,7 +255,7 @@ hr .sub-secondary-hr{
 			<label style="padding-right:20px; padding-top:-5px;"><strong>총 할인액</strong></label>			
 		</div>
 		<div class="form-group col-6" id="couponWarningDiv"></div>				
-		<div class="form-group col-3" align="center" id="discoutTotal"></div>			
+		<div class="form-group col-3" align="center" id="discountTotal"></div>			
 	</div>
 	
 	<hr class="sub-hr" noshade/>
@@ -234,15 +281,15 @@ hr .sub-secondary-hr{
 			<label for="payment" style="padding-right:20px; padding-top:-5px;"><strong>결제수단 선택</strong></label>		
 		</div>
 		<div class="form-group col-3" align="center">
-			<input class="form-check-input" type="radio" name="payment" id="card" value="card" checked>
+			<input class="form-check-input" type="radio" name="payment" id="card" value="1" checked>
 			<label class="form-check-label" for="card">카드결제</label>
 		</div>
 		<div class="form-group col-3" align="center">
-			<input class="form-check-input" type="radio" name="payment" id="bank" value="bank">
+			<input class="form-check-input" type="radio" name="payment" id="bank" value="2">
 			<label class="form-check-l3abel" for="bank">무통장결제</label>
 		</div>
 		<div class="form-group col-3" align="center">
-			<input class="form-check-input" type="radio" name="payment" id="etc" value="etc" disabled>
+			<input class="form-check-input" type="radio" name="payment" id="etc" value="3" disabled>
 			<label class="form-check-label" for="etc">기타</label>
 		</div>		
 	</div>
@@ -250,11 +297,21 @@ hr .sub-secondary-hr{
 	<hr  class="sub-secondary-hr" noshade/>	
 	
 	<div class="form-row align-items-center" id="cardDiv">
-		<div class="col" align="center">카드가 빠밤</div>
+		<div class="col" align="center">
+			<h5 style="color:red;font-weight:bold;">[이 쇼핑몰은 상용이 아니므로 결제 API가 도입되지 않았습니다]</h5><br>
+			<p>*진행을 위해서 아래 부분을 체크해주세요.</p><br>
+			<input class="form-check-input" type="checkbox" id="cardPaid" value="1">
+			<label class="form-check-label" for="cardPaid">[카드결제]를 선택하였습니다</label>
+		</div>
 	</div>		
 
 	<div class="form-row align-items-center" id="bankDiv">
-		<div class="col" align="center">계좌가 빠밤</div>	
+		<div class="col" align="center">
+			<h5 style="color:red;font-weight:bold;">[이 쇼핑몰은 상용이 아니므로 결제 API가 도입되지 않았습니다]</h5><br>
+			<p>*진행을 위해서 아래 부분을 체크해주세요.</p><br>
+			<input class="form-check-input" type="checkbox" id="bankPaid" value="1">
+			<label class="form-check-label" for="bankPaid">[무통장결제]를 선택하였습니다</label>
+		</div>
 	</div>	
 
 	<div class="form-row align-items-center" id="etcDiv">

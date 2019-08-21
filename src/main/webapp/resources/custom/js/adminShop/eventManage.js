@@ -180,16 +180,12 @@ $('#deleteCoupon').click(function(){
 	});
 });
 
-$('input[name=delivery_code]').on('change',function(){
-	alert($('input[name=delivery_code]:selected').val());
+$('#delivery_type').on('change',function(){
 	$.each(deliveryList,function(index,items){
-		alert(items.delivery_code);
-		if($('input[name=delivery_code]:selected').val()==items.delivery_code){
-			$('input[name=delivery_fee]').val(items.delivery_fee);
-		}		
+		if($('#delivery_type').val()==items.delivery_code) $('input[name=delivery_fee]').val(items.delivery_fee);
 	});
-	
 });
+
 $('#deliveryModify').click(function(){
 	if($('input[name=delivery_code]:selected').val()=='') alert('변경하실 배송분류를 선택해주세요');
 	else if($('input[name=delivery_fee]').val()=='') alert('배송료를 입력해주세요');

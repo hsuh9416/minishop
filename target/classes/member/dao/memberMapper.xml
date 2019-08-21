@@ -78,7 +78,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<update id="setPoint" parameterType="java.util.Map">
 		update MEMBER set point=point+#{pointQty} where id=#{id}
 	</update>
-	
+
+	<!-- 회원 포인트 차감 -->
+	<update id="reducePoint" parameterType="java.util.Map">
+		update MEMBER set point=point-#{pointQty} where id=#{id}
+	</update>
+		
 	<!-- 회원 정보 최종 삭제 -->
 	<delete id="deleteUserInfo" parameterType="String">
 		delete MEMBER where id=#{id}

@@ -112,12 +112,20 @@ public class MemberDAOImpl implements MemberDAO {
 		map.put("id", id);	map.put("pointQty", pointQty);
 		sqlSession.update("memberSQL.setPoint", map);	
 	}
-	//14. 회원정보 최종 삭제
+	//14. 회원 포인트 차감
+	@Override
+	public void reducePoint(String id, String pointQty) {
+		Map<String,String> map = new HashMap<String,String>();
+		map.put("id", id);	map.put("pointQty", pointQty);
+		sqlSession.update("memberSQL.reducePoint", map);		
+	}
+	
+	//15. 회원정보 최종 삭제
 	@Override
 	public int deleteUserInfo(String id) {
 		return sqlSession.delete("memberSQL.deleteUserInfo",id);
 	}
-	//15. 회원정보 복구
+	//16. 회원정보 복구
 	@Override
 	public int makeUserRestored(String id) {
 		return sqlSession.update("memberSQL.makeUserRestored", id);	

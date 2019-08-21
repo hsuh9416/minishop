@@ -26,6 +26,7 @@ public interface MemberDAO {
 	MemberDTO getUser(String id);
 	List<MemberDTO> getMemberList();
 	void setPoint(String id,String pointQty);
+	void reducePoint(String id,String pointQty);
 	int deleteUserInfo(String id);
 	int makeUserRestored(String id);
 //----------MEMBER:END----------//

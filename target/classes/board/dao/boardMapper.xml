@@ -9,7 +9,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  	</select>
  	
  	<!-- 일반 : 검색 총글수 -->
- 	<select id="getTotalSearchA" parameterType="java.util.Map" resultType="int">
+ 	<select id="getTotalSearchA" parameterType="java.util.Map" resultType="Integer">
  		select count(*) from ${tableName}
  		inner join member 
 		on ${tableName}.user_id = member.id			 

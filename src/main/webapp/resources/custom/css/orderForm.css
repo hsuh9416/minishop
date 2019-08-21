@@ -1,0 +1,23 @@
+@charset "UTF-8";
+
+@import url(//fonts.googleapis.com/earlyaccess/hanna.css);
+
+*{
+	font-family: 'Hanna', fantasy;
+}
+
+hr.sub-hr{
+	border-top: double 3px;
+	color: darkgray;
+	width: 100%;
+}
+
+hr .sub-secondary-hr{
+	border: 1px solid;
+	color: lightgray;
+	width: 100%;
+}
+
+.padding-right{
+	padding-right: 15px;
+}

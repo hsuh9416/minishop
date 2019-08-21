@@ -14,6 +14,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 
 import admin.bean.AdminDTO;
+import trading.bean.OrderDTO;
 /*
  * 관리자가 사용자에게 전송하는 메일 관련 메소드를 관리하는 클래스
  */
@@ -86,7 +87,7 @@ public class MailingImpl implements Mailing {
 				"현재 저희 샵에서는 신규가입 회원님께 [전품목 20% 할인 쿠폰]을 증정하는 이벤트를 진행하고 있습니다. \n"+
 				"일부 상품에 대하여 할인이 적용되지 않는 경우가 있으므로 이 점 양해 부탁드립니다.\n"+
 				"========================================\n"+
-				"증정되는 쿠폰의 코드 넘버는 [9999]이면 PersonalCode는 ["+PersonalCode+"]입니다.\n"+
+				"증정되는 쿠폰의 코드 넘버는 [9999]이며 PersonalCode는 ["+PersonalCode+"]입니다.\n"+
 				"========================================\n"+			
 				"신감각 편집샵 Kissin' Bugs와 함께 설레는 하루되시기 바랍니다.\n\n"+
 				"\t\t\t\t\t[Kissin' Bugs] 직원 일동 드림";		
@@ -94,17 +95,110 @@ public class MailingImpl implements Mailing {
 		messageDTO.setContent(welcomeText);		
 		return messageDTO;
 	}
+	@Override
+	public MessageDTO sendOrderMail(MessageDTO messageDTO, OrderDTO orderDTO) {
+			messageDTO.setSender("[Kissin' Bugs]");		  
+			messageDTO.setSubject(orderDTO.getOrder_name()+" 님의 주문서가 정상적으로 접수되었습니다.");	
+		String context = "안녕하세요, 감각적인 쇼핑몰 Kissin' Bugs 입니다.\n"+
+						orderDTO.getOrder_name()+"님의 주문이 정상적으로 접수되었으며, 최종 입금 확인과 동시에 배송준비에 착수합니다.\n"+
+						 "이 메일은 "+orderDTO.getOrder_name()+" 님의 주문 접수를 확인하도록 하는 목적으로 발송된 것입니다.\n"+
+						 "주문서의 상세 내역은 아래 기재된 주문서의 아이디와 비밀번호로 저희 몰에 로그인하시어 조회하실 수 있습니다.\n"+
+						 "주문서를 분실하시거나 비밀번호를 잊어 버리신 경우에는 저희 고객센터에 직접 문의바랍니다.\n"+
+						 "========================================\n"+
+						 " 금번 주문하신 주문서의 주문번호 :  ["+orderDTO.getOrder_no()+"]\n"+
+						 " 금번 주문하신 주문서의 주문서 아이디:  ["+orderDTO.getOrder_id()+"]\n"+
+						 " 금번 주문하신 주문서의 주문서 비밀번호 :  ["+orderDTO.getOrder_pwd()+"]\n"+					 
+						 "========================================\n"+						 
+						 "갑작스런 재고 부족 등의 상황에 관하여는 별도의 메일 및 연락을 드리오니 해당 경우에는 양해 부탁드립니다.\n"+
+						 "저희 Kissin'Bugs와 거래해주신 것에 감사드리며, 앞으로도 많은 관심 부탁드립니다.\n"+
+						 "저희 Kissin'Bugs와 함께 고객님의 설레는 매일이 계속되길 바랍니다.\n\n"+				
+						 "\t\t\t\t\t[Kissin' Bugs] 드림";	
+			messageDTO.setContent(context);
+			
+		return messageDTO;
+	}
+	@Override
+	public MessageDTO sendDeliveryInfoMail(MessageDTO messageDTO, OrderDTO orderDTO) {
+		messageDTO.setSender("[Kissin' Bugs]");		  
+		messageDTO.setSubject(orderDTO.getOrder_name()+" 님께서 주문하신 물품이 발송되었습니다.");
+		String context = "안녕하세요, 감각적인 쇼핑몰 Kissin' Bugs 입니다.\n"+
+				orderDTO.getOrder_name()+"님께서 주문하신 상품이 발송되었으므로 공지합니다. 자세한 정보는 아래와 같습니다.\n"+
+				 		"========================================\n"+
+				 		" 금번 주문하신 주문서의 주문번호 :  ["+orderDTO.getOrder_no()+"]\n"+
+				 		" 금번 주문하신 주문서의 주문서에 대한 송장번호:  ["+orderDTO.getOrder_deliverynum()+"]\n"+
+				 		" 금번 주문하신 주문서의 주문서에 대한 추가 정보:  ["+orderDTO.getOrder_statement()+"]\n"+	
+				 		"========================================\n"+	
+						"배송진행 상환 등은 추가 정보에 포함된 배송사가 제공하는 배송조회 시스템을 이용하기 바랍니다.\n"+					 		
+						"배송 전까지 추가적인 사항에 대한 공지는 신속하게 전달해 드리며 추가적인 고객 문의는 언제든지 환영합니다.\n"+					 		
+						"Kissin' Bugs은 고객만족을 위하여 항상 최선을 다하려고 노력하고 있습니다.\n\n"+
+						"\t\t\t\t\t[Kissin' Bugs] 직원 일동 드림";	
+			messageDTO.setContent(context);	 		
+		return messageDTO;
+	}	
+	@Override
+	public MessageDTO sendDeliveryConfirmMail(MessageDTO messageDTO, OrderDTO orderDTO) {
+		messageDTO.setSender("[Kissin' Bugs]");		  
+		messageDTO.setSubject(orderDTO.getOrder_name()+" 님께서 주문하신 상품에 대한 수취확인 메일입니다.");	
+		String context = "안녕하세요, 감각적인 쇼핑몰 Kissin' Bugs 입니다.\n"+
+						orderDTO.getOrder_name()+"님께서 주문하신 상품에 대한 발송이 완료되었습니다.\n"+
+						"\n"+
+				 		"========================================\n"+
+				 		" 금번 주문하신 주문서의 주문번호 :  ["+orderDTO.getOrder_no()+"]\n"+
+				 		" 금번 주문하신 주문서의 주문서에 대한 송장번호:  ["+orderDTO.getOrder_deliverynum()+"]\n"+
+				 		" 금번 주문하신 주문서의 주문서에 대한 배송 완료 일자:  ["+orderDTO.getOrder_logtime()+"]\n"+	
+				 		" 금번 주문하신 주문서의 주문서에 대한 추가 정보:  ["+orderDTO.getOrder_statement()+"]\n"+	
+				 		"========================================\n"+	
+						"Kissin'Bugs의 내부규정상 수취확인을 한 이후에 포인트 등의 혜택이 지급됩니다.\n"+					 		
+						"Kissin'Bugs의 상품과 함께 설레는 하루 되시길 바라며 앞으로도 많은 관심 부탁드립니다.\n"+					 		
+						"Kissin' Bugs은 고객만족을 위하여 항상 최선을 다하려고 노력하고 있습니다.\n\n"+
+						"\t\t\t\t\t[Kissin' Bugs] 직원 일동 드림";	
+			messageDTO.setContent(context);	 		
+		return messageDTO;
+	}
 
 	@Override
-	public MessageDTO sendOrderMail(MessageDTO messageDTO) {
-		// TODO Auto-generated method stub
+	public MessageDTO sendRefundInfoMail(MessageDTO messageDTO, OrderDTO orderDTO) {
+		messageDTO.setSender("[Kissin' Bugs]");		  
+		messageDTO.setSubject(orderDTO.getOrder_name()+" 님의 환불요청이 접수되었습니다.");	
+		String context = "안녕하세요, 감각적인 쇼핑몰 Kissin' Bugs 입니다.\n"+
+				orderDTO.getOrder_name()+"님의 환불 요청의 건이 정상적으로 접수되었으며, 설정해주신 계좌와 환불 주문서의 정보를 공지합니다.\n"+
+				 		"========================================\n"+
+				 		" 금번 주문하신 주문서의 주문번호 :  ["+orderDTO.getOrder_no()+"]\n"+
+				 		" 금번 주문하신 주문서의 주문서에 대한 환불 계좌:  ["+orderDTO.getOrder_refundaccount()+"]\n"+
+				 		" 금번 주문하신 주문서의 주문서에 대한 환불 예상액:  ["+orderDTO.getPayment_amount()+"]\n"+
+				 		" 금번 주문하신 주문서의 주문서에 대한 환불 접수 일자:  ["+orderDTO.getOrder_logtime()+"]\n"+	
+				 		" 금번 주문하신 주문서의 주문서에 대한 추가 정보:  ["+orderDTO.getOrder_statement()+"]\n"+	
+				 		"========================================\n"+	
+						"Kissin'Bugs의 내부규정 및 절차상 환불요청으로부터 일정 시간이 소요됩을 알립니다.\n"+					 		
+						"환불의 건이 완료되는 고객님께 확인 메일을 발송하오니 양해부탁드립니다.\n"+					 		
+						"Kissin' Bugs은 고객만족을 위하여 항상 최선을 다하려고 노력하고 있습니다.\n\n"+
+						"\t\t\t\t\t[Kissin' Bugs] 직원 일동 드림";	
+			messageDTO.setContent(context);	 		
+		return messageDTO;
+	}
+	@Override
+	public MessageDTO sendRefundCompleteMail(MessageDTO messageDTO, OrderDTO orderDTO) {
+		messageDTO.setSender("[Kissin' Bugs]");		  
+		messageDTO.setSubject(orderDTO.getOrder_name()+" 님의 주문에 대한 환불이 완료되었습니다.");
+		String context = "안녕하세요, 감각적인 쇼핑몰 Kissin' Bugs 입니다.\n"+
+				orderDTO.getOrder_name()+"님의 환불 요청의 건이 정상적으로 접수되었으며, 설정해주신 계좌와 환불 주문서의 정보를 공지합니다.\n"+
+				 		"========================================\n"+
+				 		" 금번 주문하신 주문서의 주문번호 :  ["+orderDTO.getOrder_no()+"]\n"+
+				 		" 금번 주문하신 주문서의 주문서에 대한 환불 계좌:  ["+orderDTO.getOrder_refundaccount()+"]\n"+
+				 		" 금번 주문하신 주문서의 주문서에 대한 최종 환불액:  ["+orderDTO.getPayment_amount()+"]\n"+	
+				 		" 금번 주문하신 주문서의 주문서에 대한 환불 일자:  ["+orderDTO.getOrder_logtime()+"]\n"+	
+				 		"========================================\n"+	
+						"확인된 금액은 Kissin'Bugs의 내부규정에 따라 지급하는 최종 금액이므로 양해부탁드립니다.\n"+					 		
+						"Kissin' Bugs은 고객만족을 위하여 항상 최선을 다하려고 노력하고 있습니다.\n\n"+
+						"\t\t\t\t\t[Kissin' Bugs] 직원 일동 드림";	
+			messageDTO.setContent(context);	 	
 		return messageDTO;
 	}
 
 	@Override
 	public MessageDTO sendGoodbyeMail(MessageDTO messageDTO) {
-		messageDTO.setSender("[Kissin' Bugs]");		  
-		messageDTO.setSubject(messageDTO.getReceiver()+"의 회원 탈퇴 요청이 정상적으로 접수되었습니다.");
+			messageDTO.setSender("[Kissin' Bugs]");		  
+			messageDTO.setSubject(messageDTO.getReceiver()+"의 회원 탈퇴 요청이 정상적으로 접수되었습니다.");
 		String goodByeText = "회원님의 탈퇴 요청이 정상적으로 접수되었습니다.\n"+
 				"탈퇴 요청을 한 시점부터 회원님의 계정은 비활성화 상태로 전환되오나, \n"+
 				"일정한 경우에 복구가 가능하도록 14일간 회원님의 정보는 유지됩니다.\n"+
@@ -121,15 +215,16 @@ public class MailingImpl implements Mailing {
 				"Kissin' Bugs은 고객님의 재방문을 언제든 환영합니다.\n"+
 				"다시 뵙게될 날까지 고객님의 설레는 매일이 계속되길 진심으로 기원합니다.\n\n"+				
 				"\t\t\t\t\t[Kissin' Bugs] 직원 일동 드림";		
-		messageDTO.setContent(goodByeText);
+			messageDTO.setContent(goodByeText);
+			
 		return messageDTO;	
 	}
 	
 	//비번 재설정 메일 전송
 	@Override
 	public MessageDTO sendResetPwdMail(MessageDTO messageDTO, String resetPwd) {
-		messageDTO.setSender("[Kissin' Bugs]");
-		messageDTO.setSubject("[Kissin' Bugs]비밀번호 재설정!");
+			messageDTO.setSender("[Kissin' Bugs]");
+			messageDTO.setSubject("[Kissin' Bugs]비밀번호 재설정!");
 		String confirmText = "안녕하세요, Kissin' Bugs입니다.\n"+
 							" 저희 사이트는 사내 규정에 따라  비밀번호 조회시 임시번호를 발급합니다.\n"+
 							"해당 메일 내에 있는 임시번호로 로그인 바랍니다.\n"+
@@ -137,14 +232,14 @@ public class MailingImpl implements Mailing {
 							"임시 비밀번호는 ["+resetPwd+"]입니다.\n"+
 							"========================================\n"+
 							"*주> 비밀번호 변경을 원하시는 경우에는 임시번호로 우선 로그인하신 후, 회원정보 수정란에서 새로운 비밀번호로 변경하시기 바랍니다.";		
-		messageDTO.setContent(confirmText);
+			messageDTO.setContent(confirmText);
 		
 		return messageDTO;
 	}
 	@Override
 	public MessageDTO sendRestoreMail(MessageDTO messageDTO, String resetPwd) {
-		messageDTO.setSender("[Kissin' Bugs]");
-		messageDTO.setSubject("[Kissin' Bugs]회원 계정 복구 완료 안내 메일입니다.");
+			messageDTO.setSender("[Kissin' Bugs]");
+			messageDTO.setSubject("[Kissin' Bugs]회원 계정 복구 완료 안내 메일입니다.");
 		String confirmText = "안녕하세요, Kissin' Bugs입니다.\n"+
 							"요청에 따라 "+messageDTO.getReceiver()+" 님의 회원 계정이 정상적으로 복구되었습니다. \n"+
 							"복구 시의 모든 계정은 일반 회원 등급으로 일시 분류됩니다. 일정 기간 경과 후에도 회원님의 계정이 특별 회원 등급으로\n"+
@@ -158,7 +253,8 @@ public class MailingImpl implements Mailing {
 							"Kissin' Bugs은 고객님의 재방문을 환영합니다.\n"+
 							"저희샵과 함께하는 고객님의 설레는 매일이 계속되길 진심으로 기원합니다.\n\n"+				
 							"\t\t\t\t\t[Kissin' Bugs] 직원 일동 드림";
-		messageDTO.setContent(confirmText);		
+			messageDTO.setContent(confirmText);	
+			
 		return messageDTO;
 	}
 	//일반 메일 보내기

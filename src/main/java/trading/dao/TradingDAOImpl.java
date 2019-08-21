@@ -38,7 +38,11 @@ public class TradingDAOImpl implements TradingDAO {
 			
 		return map;
 	}
-	
+	//2. 주문 번호 얻기
+	@Override
+	public int getOrderNum() {
+		return sqlSession.selectOne("tradingSQL.getOrderNum");
+	}
 //----------- 공통 : END ----------//
 		
 //----------- 장바구니 : START ----------//
@@ -109,14 +113,18 @@ public class TradingDAOImpl implements TradingDAO {
 	public void setCoupon(CouponDTO couponDTO) {
 		sqlSession.insert("tradingSQL.setCoupon",couponDTO);
 	}	
-	
-	//6.계정삭제 회원의 쿠폰 삭제
+	//6. 사용된 쿠폰 삭제
+	@Override
+	public void usedUserBenefit(Map<String,String> map) {
+		sqlSession.delete("tradingSQL.usedUserBenefit",map);
+	}
+	//7.계정삭제 회원의 쿠폰 삭제
 	@Override
 	public void deleteUserBenefit(String id) {
 		sqlSession.delete("tradingSQL.deleteUserBenefit",id);
 	}
 	
-	//7.결제 회원 쿠폰 호출
+	//8.결제 회원 쿠폰 호출
 	@Override
 	public List<CouponDTO> getAvailableUserCoupon(String id) {
 		return sqlSession.selectList("tradingSQL.getAvailableUserCoupon",id);
@@ -137,9 +145,17 @@ public class TradingDAOImpl implements TradingDAO {
 		sqlSession.update("tradingSQL.setNewOrderPwd", orderDTO);
 	}
 
+	//3.주문서 업로드
+	@Override
+	public int putOrder(OrderDTO orderDTO) {
+		return sqlSession.insert("tradingSQL.putOrder", orderDTO);
+	}
 
-
-		
+	//4. 결제 업로드
+	@Override
+	public void setPayment(OrderDTO orderDTO) {
+		sqlSession.insert("tradingSQL.setPayment", orderDTO);
+	}
 //----------- 주문 : END ----------//	
 
 //----------- 이벤트 : START ----------//	
@@ -173,6 +189,11 @@ public class TradingDAOImpl implements TradingDAO {
 	@Override
 	public int modifyDeliveryPolicy(DeliveryDTO deliveryDTO) {
 		return sqlSession.update("tradingSQL.modifyDeliveryPolicy", deliveryDTO);
+	}
+	
+	@Override
+	public int verifyAdditionalFee(String zipcode) {
+		return sqlSession.selectOne("tradingSQL.verifyAdditionalFee", zipcode);
 	}
 //----------- 배송료 : END ----------//
 	

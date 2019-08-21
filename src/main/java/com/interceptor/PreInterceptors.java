@@ -15,10 +15,11 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import org.springframework.web.util.WebUtils;
 
 import admin.bean.AdminDTO;
+import member.bean.GuestDTO;
 import member.bean.MemberDTO;
 import member.dao.MemberDAO;
 import product.bean.ProductDTO;
-import trading.bean.OrderDTO;
+import trading.bean.JsonTransitioner;
 import trading.bean.ShoppingCart;
 import trading.dao.TradingDAO;
 /*
@@ -31,6 +32,8 @@ public class PreInterceptors extends HandlerInterceptorAdapter{
 	private MemberDAO memberDAO;
 	@Autowired
 	private TradingDAO tradingDAO;
+	@Autowired
+	JsonTransitioner jsonTrans;
 	
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
@@ -59,7 +62,7 @@ public class PreInterceptors extends HandlerInterceptorAdapter{
 				if(shoppingCart!=null) {
 					
 					String json = shoppingCart.getCartList_json();
-					List<ProductDTO> cartList = shoppingCart.makeJsonToList(json);
+					List<ProductDTO> cartList = jsonTrans.makeJsonToList(json);
 					if(cartList!=null) {
 						session.setAttribute("cartList", cartList);
 						shoppingCart.setCartList(cartList);
@@ -80,14 +83,16 @@ public class PreInterceptors extends HandlerInterceptorAdapter{
 				uri.contains("Modify")||//일체의 수정 제어
 				uri.contains("Write")||//일체의 작성 제어
 				uri.contains("Reply")||//답글 제어
-				uri.contains("logout")//로그아웃 제어
+				uri.contains("logout")||//로그아웃 제어
+				uri.contains("/trading/orderView")//주문내역 확인
 				) {
 			logger.info("요청한 주소명: "+request.getRequestURI());
 			logger.info("로그인 여부를 체크합니다.");			
 		if(memberDTO == null) {		
-			if(uri.contains("Orderlist")) {//해당 경우에 한해서 추가 체크
-				OrderDTO orderDTO = (OrderDTO) session.getAttribute("orderDTO");
-				if(orderDTO!=null) return true;}
+			GuestDTO guestDTO = (GuestDTO)session.getAttribute("guestDTO");
+			if((uri.contains("/trading/orderView")||
+				uri.contains("/qa/")||
+				uri.contains("/review/")) && guestDTO!=null) return true;
 			logger.info("올바르지 않은 접근입니다.");	
 			response.sendRedirect(request.getContextPath()+"/common/noLogin.jsp");//경고 페이지 이동
 			return false;

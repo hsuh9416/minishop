@@ -5,8 +5,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
-
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,11 +26,13 @@ import admin.bean.AdminDTO;
 import admin.dao.AdminDAO;
 import mail.bean.Mailing;
 import mail.bean.MessageDTO;
+import member.bean.GuestDTO;
 import member.bean.MemberDTO;
 import member.dao.MemberDAO;
 import product.bean.ProductDTO;
 import trading.bean.CouponDTO;
 import trading.bean.FileMaker;
+import trading.bean.JsonTransitioner;
 import trading.bean.OrderDTO;
 import trading.bean.ShoppingCart;
 import trading.dao.TradingDAO;
@@ -52,7 +52,8 @@ public class MemberController {
 	private AdminDAO adminDAO;
 	@Autowired
 	private PasswordEncoder passwordEncoder;
-	
+	@Autowired
+	JsonTransitioner jsonTrans;	
 	//1. 로그인 팝업창으로 이동
 	@RequestMapping(value="/loginPopup.do",method = RequestMethod.GET)
 	public ModelAndView loginPopup() {
@@ -97,7 +98,14 @@ public class MemberController {
 			OrderDTO orderDTO = memberDAO.orderCheck(id,pwd);
 			if(orderDTO==null) return "fail";
 			else {
-				session.setAttribute("orderDTO", orderDTO);
+				GuestDTO guestDTO = new GuestDTO();
+					guestDTO.setGuest_id(orderDTO.getOrder_id());
+					guestDTO.setGuest_pwd(orderDTO.getOrder_pwd());
+					guestDTO.setGuest_name(orderDTO.getOrder_name());
+					guestDTO.setGuest_address(orderDTO.getOrder_address());
+					guestDTO.setGuest_tel(orderDTO.getOrder_tel());
+					guestDTO.setOrder_no(orderDTO.getOrder_id());
+					session.setAttribute("guestDTO", guestDTO);
 				return "guestLogin";}}
 		
 			//(2) 비밀번호 일치 확인
@@ -123,7 +131,7 @@ public class MemberController {
 
 					if(shoppingCart!=null) {
 							json = shoppingCart.getCartList_json();
-							cartList = shoppingCart.makeJsonToList(json);
+							cartList = jsonTrans.makeJsonToList(json);
 							if(cartList!=null) {
 								session.setAttribute("cartList", cartList);
 								shoppingCart.setCartList(cartList);}
@@ -149,7 +157,7 @@ public class MemberController {
 			if(shoppingCart!=null) {
 				List<ProductDTO> cartList = shoppingCart.getCartList();
 				if(cartList!=null) {
-						cartList_json = shoppingCart.makeListToJson(cartList);
+						cartList_json = jsonTrans.makeListToJson(cartList);
 						shoppingCart.setCartList_json(cartList_json);
 						shoppingCart.setMemberid(memberDTO.getId());
 						tradingDAO.storeCartList(shoppingCart);}}
@@ -163,8 +171,16 @@ public class MemberController {
 						loginCookie.setMaxAge(0);
 						response.addCookie(loginCookie);
 						memberDAO.keepLogin(memberDTO.getId(),"NONE",new Date());}}
+		else {
+			Object guestDTO = session.getAttribute("guestDTO");
+			if(guestDTO!=null) {
+				session.removeAttribute("guestDTO");
+				session.invalidate();
+			}
+		}
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("/common/returnHome");
+			mav.setViewName("/common/returnHome");
+			
 		return mav;
 	}	
 
@@ -384,8 +400,10 @@ public class MemberController {
 	//16. 회원 정보수정 반영하기(비밀번호 변경제외)
 	@RequestMapping(value="/memberModify.do",method=RequestMethod.POST)
 	@ResponseBody
-	public String modify(@ModelAttribute MemberDTO memberDTO,HttpSession session) {
+	public String modify(@ModelAttribute MemberDTO memberDTO,@RequestParam String repwd, HttpSession session) {
 		
+		boolean pwdMatching = passwordEncoder.matches(repwd, memberDTO.getPwd());
+		if(!pwdMatching) return "unMatchedPwd";
 		int result = memberDAO.modify(memberDTO);
 		if(result==0) return "fail";
 		else {
@@ -481,10 +499,10 @@ public class MemberController {
 					map.put("id",memberDTO.getId());
 					memberDAO.deleteMemberAdmin(map);
 				List<OrderDTO> orderList = tradingDAO.getOrderList(memberDTO.getId());
-				String orderPwd = UUID.randomUUID().toString(); 
+				String orderPwd = mailing.getKey(8); 
 					if(orderList!=null) {
 						for(OrderDTO dto : orderList) {
-								dto.setOrder_pwd(orderPwd);
+								dto.setOrder_pwd(passwordEncoder.encode(orderPwd));
 								tradingDAO.setNewOrderPwd(dto);}}		
 					
 				MessageDTO messageDTO = new MessageDTO();

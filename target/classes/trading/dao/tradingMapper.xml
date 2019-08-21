@@ -9,6 +9,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	SELECT * from ORDERS where ORDER_ID=#{id}
 </select>
 
+<!-- 공통 : 특정 주문 번호 부여-->
+<select id="getOrderNum"  resultType="Integer">
+	select order_seq.nextVal from dual
+</select>
+
 <!-- 공통 : 특정 회원 쿠폰 정보 호출-->
 <select id="getCouponList"  parameterType="String" resultType="coupon">
 	SELECT * from BENEFIT_GRANT
@@ -98,6 +103,30 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	UPDATE ORDERS set order_pwd=#{order_pwd} where order_no=#{order_no}
 </update>
 
+<!-- 주문: 주문서 업로드 -->
+<insert id="putOrder" parameterType="order">
+	INSERT INTO ORDERS values(#{order_no},
+							  #{order_id},
+							  #{order_total},
+							  #{order_state},
+							  #{order_date},
+							  #{order_address},
+							  #{order_email},
+							  #{order_tel},
+							  #{order_pwd},
+							  #{order_name},
+							  #{orderlist_json},
+							  #{order_receiver})
+</insert>
+
+<!-- 주문: 결제 업로드 -->
+<insert id="setPayment" parameterType="order">
+	INSERT INTO PAYMENT values(#{payment_amount},
+							   #{order_no},
+							   #{payment_method},
+							   #{payment_date})
+</insert>
+
 <!-- 이벤트 : 배너리스트 호출 -->
 <select id="getBannerList" resultType="event">
 	SELECT * from EVENT
@@ -119,9 +148,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	select * from DELIVERY
 </select>
 
+<!-- 배송료: 배송료 변경 -->
 <update id="modifyDeliveryPolicy"  parameterType="delivery">
 	UPDATE DELIVERY set DELIVERY_FEE=${delivery_fee} where DELIVERY_CODE=#{delivery_code}
 </update>
+
+<!-- 배송료: 도서상간지역 판정 -->
+<select id="verifyAdditionalFee" parameterType="String" resultType="Integer">
+	select count(*) from delivery_additional where zipcode=#{zipcode}
+</select>
+
 </mapper>
 
 

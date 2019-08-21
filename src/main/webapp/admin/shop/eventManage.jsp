@@ -238,8 +238,8 @@
 							    	<div class="form-row">
 							    		<div class="form-group col-2"></div>
 										<div class="form-group col-3" style="padding-top:5px;">	
-											<label for="delivery_code">분류</label>
-											<select id="type" name="delivery_code" class="form-control-plaintext inline-form">
+											<label for="delivery_type">분류</label>
+											<select id="delivery_type" name="delivery_code" class="form-control-plaintext inline-form">
 												<option value="" selected>선택</option>	
 												<option value="1">일반</option>	
 												<option value="2">특별</option>																																		
