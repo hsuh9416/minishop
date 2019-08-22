@@ -21,3 +21,24 @@ hr .sub-secondary-hr{
 .padding-right{
 	padding-right: 15px;
 }
+
+a .productViewA{
+	color: black;
+}
+
+.productViewA:visited{
+	color: black;
+}
+.productViewA:active{
+	color: green;
+}
+.productViewA:hover{
+	color: blue;
+}
+
+.orderBtn{
+	width: 50px;
+	height: 30px;
+	font-size: 12px;
+	padding: 5px 0;
+}

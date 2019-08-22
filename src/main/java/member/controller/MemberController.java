@@ -434,8 +434,24 @@ public class MemberController {
 			
 		return mav;
 	}	
+
+	//19. 회원 주문 목록 호출
+	@RequestMapping(value="/getOrderList.do",method = RequestMethod.GET)
+	public ModelAndView getOrderList(HttpSession session) {
+		MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
 	
-	//19. 회원 관리 정보 호출하기
+		List<OrderDTO> orderList = tradingDAO.getOrderList(memberDTO.getId());
+		for(OrderDTO data: orderList) {
+			List<ProductDTO> productList = jsonTrans.makeJsonToList(data.getOrderlist_json());
+			data.setOrderList(productList);
+		}
+		ModelAndView mav = new ModelAndView();
+			mav.addObject("orderList", orderList);
+			mav.setViewName("jsonView");
+		return mav;
+	}
+	
+	//20. 회원 관리 정보 호출하기
 	@RequestMapping(value="/getUserInfo.do",method=RequestMethod.GET)
 	@ResponseBody
 	public ModelAndView getUserInfo(HttpSession session) {
@@ -451,7 +467,7 @@ public class MemberController {
 		return mav;
 	}
 	
-	//20.개인문의 창 띄우기
+	//21.개인문의 창 띄우기
 	@RequestMapping(value="/personalQAForm.do",method = RequestMethod.GET)
 	public ModelAndView personalQAForm() {
 		ModelAndView mav = new ModelAndView();
@@ -460,7 +476,7 @@ public class MemberController {
 		return mav;
 	}
 	
-	//21. 개인문의 보내기(DB 저장)
+	//22. 개인문의 보내기(DB 저장)
 	@RequestMapping(value="/memberQASend",method = RequestMethod.POST)
 	@ResponseBody
 	public void memberQASend(@ModelAttribute MessageDTO messageDTO, HttpSession session) {
@@ -473,7 +489,7 @@ public class MemberController {
 		memberDAO.memberQASend(messageDTO);	
 	}
 	
-	//22. 탈퇴 요청 띄우기 
+	//23. 탈퇴 요청 띄우기 
 	@RequestMapping(value="/memberDelete.do",method = RequestMethod.GET)
 	public ModelAndView memberDelete() {
 		ModelAndView mav = new ModelAndView();
@@ -482,7 +498,7 @@ public class MemberController {
 		return mav;
 	}	
 
-	//23. 탈퇴 요청 처리 
+	//24. 탈퇴 요청 처리 
 	@RequestMapping(value="/delete.do",method=RequestMethod.POST)
 	@ResponseBody
 	public String delete(@RequestParam Map<String,String> map,HttpServletRequest request,HttpServletResponse response, HttpSession session){
@@ -529,7 +545,7 @@ public class MemberController {
 		return "fail";		
 	}	
 	
-	//24. 관리자계정 접속(접속 후 관리자 화면으로 이동)
+	//25. 관리자계정 접속(접속 후 관리자 화면으로 이동)
 	@RequestMapping(value="/adminLogin.do",method = RequestMethod.GET)
 	public ModelAndView adminLogin(HttpSession session) {
 		

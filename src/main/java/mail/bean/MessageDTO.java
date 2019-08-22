@@ -1,11 +1,7 @@
 package mail.bean;
 
 import java.io.File;
-import java.util.Date;
-
 import org.springframework.stereotype.Component;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Data;
 /*
@@ -15,15 +11,12 @@ import lombok.Data;
 @Data
 public class MessageDTO {
  private int seq;
- private String type;
  private String sender;
  private String sendAddr;
  private String receiver;
  private String receiveAddr;
  private String subject;
  private String content;
- @JsonFormat(pattern="yyyy.MM.dd")
- private Date senddate;
  private Boolean containHTML=false;
  
  private String code;

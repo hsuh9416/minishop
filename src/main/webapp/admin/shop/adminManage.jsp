@@ -47,15 +47,13 @@
 				<div class="form-group col-8">${adminDTO.admin_shop_tel}</div>
 			</div>	
 			<div class="form-row justify-content-center">
-				<div class="form-group col-4">[개설일자]</div>
-				<div class="form-group col-8">2016년 1월 1일</div>
-			</div>
+				<div class="form-group col-4">[개설계좌]</div>
+				<div class="form-group col-8">${adminDTO.admin_account}</div>
+			</div>				
 			<div class="form-row justify-content-center">
-				<div class="form-group col-8"></div>
-				<div class="form-group col-md-4">
-					<input type="button" id="changeAdminInfo" class="btn btn-outline-dark" value="정보 변경"/>	
-				</div>
-			</div>																
+				<div class="form-group col-4">[개설일자]</div>
+				<div class="form-group col-8">${adminDTO.admin_opendate}</div>
+			</div>															
 		</div>				
 	</div>	
 </div>			

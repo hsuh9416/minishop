@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -195,7 +197,7 @@ public class TradingController {
 	
 	//6. 상품 주문서 화면 이동
 	@RequestMapping(value="orderForm.do",method=RequestMethod.POST)
-	public ModelAndView orderForm(HttpSession session,@RequestParam int[] product_name_no,@RequestParam(required = false) int cart_qty) {
+	public ModelAndView orderForm(HttpSession session,@RequestParam int[] product_name_no,@RequestParam(required = false) int cart_qty,@RequestParam String directOrder) {
 		
 		int index;
 		int qty;	
@@ -223,6 +225,7 @@ public class TradingController {
 			session.setAttribute("orderList_JSON", orderList_JSON);
 		
 		ModelAndView mav = new ModelAndView();	
+			mav.addObject("directOrder", directOrder);
 			mav.addObject("display", "/trading/orderForm.jsp");	
 			mav.setViewName("/main/home");
 			
@@ -262,20 +265,19 @@ public class TradingController {
 	//8. 최종 주문서 제출
 	@RequestMapping(value="/putOrderForm.do",method = RequestMethod.POST)
 	@ResponseBody
-	public String putOrderForm(@ModelAttribute OrderDTO orderDTO, @RequestParam(required = false) String point,@RequestParam(required = false) String coupon_amount, @RequestParam(required = false) String coupon_option, HttpSession session) {	
+	public String putOrderForm(@ModelAttribute OrderDTO orderDTO, @RequestParam(required = false) String point,@RequestParam(required = false) String coupon_amount, @RequestParam(required = false) String coupon_option,@RequestParam(required = false,defaultValue = "true") String directOrder, HttpSession session) {	
 
 		
 		String order_pwd = "회원비밀번호와 동일함";
 		
 		MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
-		
+		AdminDTO adminDTO = adminDAO.getAdmin();
 		JsonElement orderList_JSON = (JsonElement)session.getAttribute("orderList_JSON");	
 		List<ProductDTO> orderList = jsonTrans.makeJsonToList(orderList_JSON.toString());
 			orderDTO.setOrderlist_json(jsonTrans.makeListToJson(orderList));
 			
 		ShoppingCart shoppingCart = (ShoppingCart) session.getAttribute("shoppingCart");
-		
-		if(shoppingCart!=null) {
+		if(directOrder.equals("false")&&shoppingCart!=null&&shoppingCart.getCartList().size()>0) {
 			for(ProductDTO orderedItem : orderList) {
 				int index = shoppingCart.exists(orderedItem.getProduct_name_no(), shoppingCart.getCartList());
 					shoppingCart.getCartList().remove(index);
@@ -294,7 +296,7 @@ public class TradingController {
 			
 				orderDTO.setOrder_id(memberDTO.getId());
 				orderDTO.setOrder_pwd(memberDTO.getPwd());
-				if(point!=null&&!point.equals("0")) {
+				if(point!=null&&!point.equals("0")&&!point.equals("")) {
 					memberDAO.reducePoint(memberDTO.getId(), point);
 
 					OrderDTO pointPay = new OrderDTO();
@@ -302,31 +304,42 @@ public class TradingController {
 						pointPay.setPayment_amount(Integer.parseInt(point));
 						pointPay.setPayment_method(PaymentMethod.POINT.ordinal());
 						pointPay.setPayment_date(today);
-						
+						pointPay.setPayment_state("사용 포인트 : ["+point+"] 점");
 						tradingDAO.setPayment(pointPay);
 				}
-				if (!coupon_amount.equals("0")) {
-					String[] primarySplit= coupon_option.split("[");
-					String[] secoundarySplit = primarySplit[1].split("]");
-					System.out.println(secoundarySplit[1]);
-					String coupon_no = secoundarySplit[1];
+				if (!coupon_amount.equals("")) {
+					String[] primarySplit= coupon_option.split("\\]");
+					String[] secoundarySplit = primarySplit[0].split("\\[");
+					
+					String coupon_no= secoundarySplit[1];
 					
 					Map<String,String> map = new HashMap<String,String>();
+						map.put("personal_code", "");
 						map.put("coupon_no", coupon_no);
 						map.put("id", memberDTO.getId());
-						tradingDAO.usedUserBenefit(map);
+						tradingDAO.modifyUserBenefit(map);
 					
 					OrderDTO couponPay = new OrderDTO();
 						couponPay.setOrder_no(order_no);
 						couponPay.setPayment_amount(Integer.parseInt(coupon_amount));
 						couponPay.setPayment_method(PaymentMethod.COUPON.ordinal());
-						couponPay.setPayment_date(today);	
+						couponPay.setPayment_date(today);
+						couponPay.setPayment_state("사용 쿠폰번호: ["+coupon_no+"]");
 						
 						tradingDAO.setPayment(couponPay);
 
 				}
 				
-				if(orderDTO.getPayment_method()==PaymentMethod.CARD.ordinal()||orderDTO.getPayment_method()==PaymentMethod.NOPAID.ordinal()) {
+				if(orderDTO.getPayment_method()==PaymentMethod.CARD.ordinal()) {
+					orderDTO.setPayment_state("카드 결제");
+					orderDTO.setPayment_date(today);
+				}
+				else if(orderDTO.getPayment_method()==PaymentMethod.NOPAID.ordinal()) {
+					orderDTO.setPayment_state("전액 포인트 등 결제");
+					orderDTO.setPayment_date(today);
+				}
+				else if(orderDTO.getPayment_method()==PaymentMethod.BANK.ordinal()) {
+					orderDTO.setPayment_state("입금 은행 계좌 : ["+adminDTO.getAdmin_account()+"] ");
 					orderDTO.setPayment_date(today);
 				}
 					tradingDAO.setPayment(orderDTO);
@@ -339,7 +352,14 @@ public class TradingController {
 			
 				orderDTO.setOrder_id(order_id);
 				orderDTO.setOrder_pwd(passwordEncoder.encode(order_pwd));
-			if(orderDTO.getPayment_method()==1) orderDTO.setPayment_date(today);
+			if(orderDTO.getPayment_method()==PaymentMethod.CARD.ordinal()) {
+				orderDTO.setPayment_state("카드 결제");
+				orderDTO.setPayment_date(today);
+			}
+			else if(orderDTO.getPayment_method()==PaymentMethod.BANK.ordinal()) {
+				orderDTO.setPayment_state("입금 은행 계좌 : ["+adminDTO.getAdmin_account()+"] ");
+				orderDTO.setPayment_date(today);
+			}
 			
 			tradingDAO.setPayment(orderDTO);
 			
@@ -367,7 +387,7 @@ public class TradingController {
 				MessageDTO messageDTO = new MessageDTO();
 					messageDTO = mailing.sendOrderMail(messageDTO,orderDTO);
 					
-					AdminDTO adminDTO = adminDAO.getAdmin();
+					
 					
 					mailing.sendMail(adminDTO, messageDTO);
 					
@@ -389,6 +409,57 @@ public class TradingController {
 			mav.setViewName("/main/home");
 		
 		return mav;
+	}
+
+	//10. 주문 명세 호출 이동
+	@RequestMapping(value="/getOrderInfo.do",method = RequestMethod.GET)
+	@ResponseBody
+	public ModelAndView getOrderInfo(@RequestParam String order_no) {
+		 OrderDTO orderDTO = tradingDAO.getOrderInfo(order_no);
+		ModelAndView mav = new ModelAndView();
+			mav.addObject("orderDTO", orderDTO);
+			mav.addObject("display", "/trading/orderView.jsp");
+			mav.setViewName("/main/home");
+		
+		return mav;
+	}
+
+	//11. 주문 취소 요청 
+	@RequestMapping(value="/cancelOrder",method= RequestMethod.GET)
+	@ResponseBody
+	public String cancelOrder(@RequestParam String order_no,HttpSession session) {
+		MemberDTO memberDTO = (MemberDTO)session.getAttribute("memberDTO");
+		GuestDTO guestDTO = (GuestDTO)session.getAttribute("guestDTO");
+		if(memberDTO==null&&guestDTO==null) return "nonVerifiedAttempt";
+	
+		OrderDTO orderDTO = tradingDAO.getOrderInfo(order_no);
+		
+		if( (memberDTO!=null&&orderDTO.getOrder_id().equals(memberDTO.getId())) || 
+			(guestDTO!=null&&orderDTO.getOrder_id().equals(guestDTO.getGuest_id())) ){
+			orderDTO.setOrder_state(8);
+			orderDTO.setOrder_statement("[주문취소(일자:"+new SimpleDateFormat("yyyy.MM.dd").format(new Date())+")]");
+			tradingDAO.modifyOrderAdmin(orderDTO);
+		}
+		else return "nonVerifiedAttempt";
+		
+		if(memberDTO!=null) {
+			List<OrderDTO> paymentList = tradingDAO.getPaymentInfo(order_no);
+			for(OrderDTO payment: paymentList) {
+				if(payment.getPayment_method()==4&&payment.getPayment_amount()!=0) memberDAO.setPoint(memberDTO.getId(), payment.getPayment_amount()+"");
+				else if(payment.getPayment_method()==5) {
+					String[] primarySplit = payment.getPayment_state().split("\\[");
+					String[] secondarySplit = primarySplit[1].split("\\]");
+					String coupon_no = secondarySplit[0];
+					Map<String,String> map = new HashMap<String,String>();
+						map.put("personal_code", UUID.randomUUID().toString());
+						map.put("coupon_no", coupon_no);
+						map.put("id", memberDTO.getId());
+						tradingDAO.modifyUserBenefit(map);
+					
+				}
+			}
+		}
+		return "fail";
 	}
 	
 	//1333. 배너 호출하기

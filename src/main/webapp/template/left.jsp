@@ -78,7 +78,9 @@
 			<c:if test="${location=='member'}">
 		        <h2>MY ACCOUNT</h2>			
 			     <div class="list-group list-group-lg">
-			          <a href="/minishop/member/memberView.do" class="list-group-item">My Info</a>			     
+			          <a href="/minishop/member/memberView.do" class="list-group-item">My Info</a>
+			          <a href="/minishop/member/memberOrderlist.do" class="list-group-item">내 주문 현황</a>
+			          <a href="/minishop/member/memberCouponlist.do" class="list-group-item">내 쿠폰 현황</a>			     
 			          <a href="javascript:history.back()" class="list-group-item">돌아가기</a>
 			     </div>					
 			</c:if>			

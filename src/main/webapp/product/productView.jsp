@@ -26,6 +26,7 @@
 	<input type="hidden" id="guestID" value="${guestDTO.guest_id}"/>
 					
 	<form id="buyNowForm" method="post" action="/minishop/trading/orderForm.do">
+		<input type="hidden" name="directOrder" value="true"/>
 		<input type="hidden" name="product_name_no" value=""/>
 		<input type="hidden" name="cart_qty" value="1"/>
 	</form>

@@ -2,7 +2,7 @@
 
 	<!--CSS Local STYLE:START-->
 <link rel="stylesheet" href="/minishop/resources/custom/css/orderForm.css">
-		<!--CSS Local STYLE:END-->   
+	<!--CSS Local STYLE:END-->   
 		 
 <div class="col-lg-8">
 
@@ -11,6 +11,7 @@
 	 		<h3>상품 주문서</h3>		
 	 	</div>
 	</div>
+	<input type="hidden" id="directOrder" value="${directOrder}"/>
 	<hr class="sub-hr" noshade/>
 	<div class="form-row align-items-center">
 		<div class="col" align="center">
@@ -244,7 +245,7 @@
 		</div>	
 		<div class="form-group col-5" align="center">			
 			<select id="coupon_no" class="form-control-plaintext"  style="border-bottom:1px solid;" >
-				<option value="0">[지급 쿠폰 선택]</option>   
+				<option value="">[지급 쿠폰 선택]</option>   
 			</select>				
 		</div>			
 		<div class="form-group col-4" id="couponDiv"></div>	

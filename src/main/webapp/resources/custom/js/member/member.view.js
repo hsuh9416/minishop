@@ -15,9 +15,14 @@ $(document).ready(function(){
 				$('#goCoupon').text(couponNum+'개');		
 			}
 			var order = data.map.orderList;
-			if(order=='') $('#orderlistPg').text('주문하신 내역이 없습니다');
+			if(order==''|| order==null) $('#orderlistPg').text('주문하신 내역이 없습니다');
 			else {
-				$('#orderlistPg').text(order.length+'건');
+				var orderNum = 0;
+				$.each(order,function(index,items){
+					if (items.order_state!=5 && items.order_state!=6 && items.order_state!=7 && items.order_state!=8) orderNum++; 
+				});		
+				if(orderNum==0) $('#orderlistPg').text('거래중인 내역이 없습니다');
+				else $('#orderlistPg').text(orderNum+'건');
 			}
 		}				
 	});

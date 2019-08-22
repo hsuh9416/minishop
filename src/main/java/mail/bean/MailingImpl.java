@@ -97,6 +97,8 @@ public class MailingImpl implements Mailing {
 	}
 	@Override
 	public MessageDTO sendOrderMail(MessageDTO messageDTO, OrderDTO orderDTO) {
+			messageDTO.setReceiver(orderDTO.getOrder_name()+" 고객님");
+			messageDTO.setReceiveAddr(orderDTO.getOrder_email());
 			messageDTO.setSender("[Kissin' Bugs]");		  
 			messageDTO.setSubject(orderDTO.getOrder_name()+" 님의 주문서가 정상적으로 접수되었습니다.");	
 		String context = "안녕하세요, 감각적인 쇼핑몰 Kissin' Bugs 입니다.\n"+
@@ -119,6 +121,8 @@ public class MailingImpl implements Mailing {
 	}
 	@Override
 	public MessageDTO sendDeliveryInfoMail(MessageDTO messageDTO, OrderDTO orderDTO) {
+		messageDTO.setReceiver(orderDTO.getOrder_name()+" 고객님");
+		messageDTO.setReceiveAddr(orderDTO.getOrder_email());
 		messageDTO.setSender("[Kissin' Bugs]");		  
 		messageDTO.setSubject(orderDTO.getOrder_name()+" 님께서 주문하신 물품이 발송되었습니다.");
 		String context = "안녕하세요, 감각적인 쇼핑몰 Kissin' Bugs 입니다.\n"+
@@ -137,6 +141,8 @@ public class MailingImpl implements Mailing {
 	}	
 	@Override
 	public MessageDTO sendDeliveryConfirmMail(MessageDTO messageDTO, OrderDTO orderDTO) {
+		messageDTO.setReceiver(orderDTO.getOrder_name()+" 고객님");
+		messageDTO.setReceiveAddr(orderDTO.getOrder_email());
 		messageDTO.setSender("[Kissin' Bugs]");		  
 		messageDTO.setSubject(orderDTO.getOrder_name()+" 님께서 주문하신 상품에 대한 수취확인 메일입니다.");	
 		String context = "안녕하세요, 감각적인 쇼핑몰 Kissin' Bugs 입니다.\n"+
@@ -158,6 +164,8 @@ public class MailingImpl implements Mailing {
 
 	@Override
 	public MessageDTO sendRefundInfoMail(MessageDTO messageDTO, OrderDTO orderDTO) {
+		messageDTO.setReceiver(orderDTO.getOrder_name()+" 고객님");
+		messageDTO.setReceiveAddr(orderDTO.getOrder_email());
 		messageDTO.setSender("[Kissin' Bugs]");		  
 		messageDTO.setSubject(orderDTO.getOrder_name()+" 님의 환불요청이 접수되었습니다.");	
 		String context = "안녕하세요, 감각적인 쇼핑몰 Kissin' Bugs 입니다.\n"+
@@ -178,6 +186,8 @@ public class MailingImpl implements Mailing {
 	}
 	@Override
 	public MessageDTO sendRefundCompleteMail(MessageDTO messageDTO, OrderDTO orderDTO) {
+		messageDTO.setReceiver(orderDTO.getOrder_name()+" 고객님");
+		messageDTO.setReceiveAddr(orderDTO.getOrder_email());
 		messageDTO.setSender("[Kissin' Bugs]");		  
 		messageDTO.setSubject(orderDTO.getOrder_name()+" 님의 주문에 대한 환불이 완료되었습니다.");
 		String context = "안녕하세요, 감각적인 쇼핑몰 Kissin' Bugs 입니다.\n"+
@@ -261,7 +271,7 @@ public class MailingImpl implements Mailing {
 	@Override
 	public void sendMail(AdminDTO adminDTO, MessageDTO messageDTO) {
 		
-		JavaMailSender emailSender = getJavaMailSenger(adminDTO);
+		JavaMailSender emailSender = getJavaMailSender(adminDTO);
 		
 		if(emailSender!=null) {
 		SimpleMailMessage message = new SimpleMailMessage();
@@ -279,7 +289,7 @@ public class MailingImpl implements Mailing {
 	@Override
 	public void sendMailwithFile(AdminDTO adminDTO, MessageDTO messageDTO) {
 		
-		JavaMailSender emailSender = getJavaMailSenger(adminDTO);
+		JavaMailSender emailSender = getJavaMailSender(adminDTO);
 		
 		if(emailSender!=null) {
 
@@ -303,7 +313,7 @@ public class MailingImpl implements Mailing {
 	}
 
 	@Override
-	public JavaMailSender getJavaMailSenger(AdminDTO adminDTO) {
+	public JavaMailSender getJavaMailSender(AdminDTO adminDTO) {
 		
 		String user= adminDTO.getAdmin_email_addr();
 		String password = adminDTO.getAdmin_email_pwd();

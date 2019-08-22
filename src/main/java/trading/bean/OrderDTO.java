@@ -42,5 +42,6 @@ public class OrderDTO {
  @JsonFormat(pattern="yyyy-MM-dd")
  private Date payment_date;
  private int payment_amount;
+ private String payment_state;
  
 }

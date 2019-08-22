@@ -46,18 +46,8 @@ public class AdminShopController {
 			
 		return mav;
 	}	
-
-	//2. 관리자 정보 수정 화면 이동
-	@RequestMapping(value="/adminManageForm.do",method = RequestMethod.GET)
-	public ModelAndView adminManageForm() {
-		
-		ModelAndView mav = new ModelAndView();
-			mav.setViewName("/admin/shop/adminManageForm");
-			
-		return mav;
-	}	
 	
-	//3. 매출 정보 화면 이동
+	//2. 매출 정보 화면 이동
 	@RequestMapping(value="/salesInfo.do",method = RequestMethod.GET)
 	public ModelAndView salesInfo() {
 		
@@ -69,7 +59,7 @@ public class AdminShopController {
 		return mav;
 	}	
 	
-	//4.이벤트 관리 화면 이동
+	//3.이벤트 관리 화면 이동
 	@RequestMapping(value="/eventManage.do",method = RequestMethod.GET)
 	public ModelAndView eventManage(@RequestParam(required = false) String event_no) {
 		
@@ -82,7 +72,7 @@ public class AdminShopController {
 		return mav;
 	}		
 	
-	//5. 배너 호출
+	//4. 배너 호출
 	@RequestMapping(value="/getSelectedBanner.do",method=RequestMethod.GET)
 	public ModelAndView getSelectedBanner(String event_no) {
 		
@@ -95,7 +85,7 @@ public class AdminShopController {
 	return mav;
 	}
 	
-	//6. 배너  수정하기
+	//5. 배너  수정하기
 	@RequestMapping(value="/bannerModify.do",method=RequestMethod.POST)
 	public ModelAndView bannerModify(@ModelAttribute EventDTO eventDTO, @RequestParam MultipartFile event_image_new, String start_date, String end_date, HttpServletRequest request){
 		
@@ -177,7 +167,8 @@ public class AdminShopController {
 		mav.setViewName("/admin/shop/stateCode");
 		return mav;
 	}	
-	//7.이벤트 현황 목록 호출하기
+	
+	//6.이벤트 현황 목록 호출하기
 	@RequestMapping(value="/getEventList.do",method=RequestMethod.GET)
 	public ModelAndView getEventList() {
 		
@@ -215,7 +206,7 @@ public class AdminShopController {
 		return mav;
 	}	
 	
-	//7.쿠폰 발행하기
+	//8.쿠폰 발행하기
 	@RequestMapping(value="/makeCoupon.do",method=RequestMethod.POST)
 	public ModelAndView makeCoupon(@ModelAttribute CouponDTO couponDTO) {
 		
@@ -231,7 +222,7 @@ public class AdminShopController {
 		return mav;
 	}	
 	
-	//8.쿠폰 수정하기
+	//9.쿠폰 수정하기
 	@RequestMapping(value="/modifyCoupon.do",method=RequestMethod.POST)
 	@ResponseBody
 	public String modifyCoupon(@ModelAttribute CouponDTO couponDTO) {
@@ -242,7 +233,7 @@ public class AdminShopController {
 		else return "fail";
 	}		
 	
-	//9.쿠폰 삭제하기
+	//10.쿠폰 삭제하기
 	@RequestMapping(value="/deleteCoupon.do",method=RequestMethod.POST)
 	@ResponseBody
 	public String modifyCoupon(@RequestParam String coupon_no) {
@@ -256,7 +247,7 @@ public class AdminShopController {
 		}
 	}
 	
-	//10. 배송료 변경하기
+	//11. 배송료 변경하기
 	@RequestMapping(value="/modifyDeliveryFee.do",method=RequestMethod.POST)
 	public ModelAndView modifyDeliveryFee(@ModelAttribute DeliveryDTO deliveryDTO) {
 		

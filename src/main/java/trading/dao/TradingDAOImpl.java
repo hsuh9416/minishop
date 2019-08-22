@@ -115,8 +115,8 @@ public class TradingDAOImpl implements TradingDAO {
 	}	
 	//6. 사용된 쿠폰 삭제
 	@Override
-	public void usedUserBenefit(Map<String,String> map) {
-		sqlSession.delete("tradingSQL.usedUserBenefit",map);
+	public void modifyUserBenefit(Map<String,String> map) {
+		sqlSession.update("tradingSQL.modifyUserBenefit",map);
 	}
 	//7.계정삭제 회원의 쿠폰 삭제
 	@Override
@@ -133,6 +133,11 @@ public class TradingDAOImpl implements TradingDAO {
 //----------- 쿠폰 : END ----------//	
 
 //----------- 주문 : START ----------//
+	
+	@Override
+	public List<OrderDTO> getUserOrderList() {
+		return sqlSession.selectList("tradingSQL.getUserOrderList");
+	}
 	
 	//1.주문서 목록 호출
 	@Override
@@ -155,6 +160,22 @@ public class TradingDAOImpl implements TradingDAO {
 	@Override
 	public void setPayment(OrderDTO orderDTO) {
 		sqlSession.insert("tradingSQL.setPayment", orderDTO);
+	}
+	//5.특정 주문서 호출
+	@Override
+	public OrderDTO getOrderInfo(String order_no) {
+		return sqlSession.selectOne("tradingSQL.getOrderInfo",order_no);
+	}
+	//6. 특정 주문서의 지급결제 정보 호출
+	@Override
+	public List<OrderDTO> getPaymentInfo(String order_no) {
+		return sqlSession.selectList("tradingSQL.getPaymentInfo",order_no);
+	}
+	
+	// 주문서 상태 업데이트(주문취소, 환불 공통)
+	@Override
+	public void modifyOrderAdmin(OrderDTO orderDTO) {
+		sqlSession.update("tradingSQL.modifyOrderAdmin",orderDTO);
 	}
 //----------- 주문 : END ----------//	
 

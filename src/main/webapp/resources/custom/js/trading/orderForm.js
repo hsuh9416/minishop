@@ -5,9 +5,9 @@ var discountableSubTotal = 0;
 
 //0-1 변동 항목
 var deliveryFee = 0;
-var discountableFinalTotal = 0;
 var additionalCost = false;
 var isSubmitted = false;
+var subTotal =0;
 var finalTotal = 0;
 
 //0-2 호출전까지는 null인 항목
@@ -37,10 +37,10 @@ function setDeliveryFee(){
 
 //1-3. 할인 적용 후 최종 지급액 표시
 function setDiscount(){
-	var point = 0;
+	var point = 0; var coupon = 0;
 	if($('#point').val()!='') point = parseInt($('#point').val(),10);
-	var coupon = parseInt($('#coupon_no').val(),10);
-	var subTotal = point+coupon;
+	if($('#coupon_no').val()!='') coupon = parseInt($('#coupon_no').val(),10);
+	subTotal = point+coupon;
 	if(subTotal>discountableSubTotal){
 		if(coupon<=discountableSubTotal){
 			$('#point').val(discountableSubTotal-coupon);
@@ -88,11 +88,8 @@ function checkAddtionalFee(){
 			if(data=='exist') additionalCost = true;
 			else additionalCost = false;	
 			setDeliveryFee();
-			discountableFinalTotal=discountableSubTotal+deliveryFee;
-			$('#discoutableTotal').text('총 '+formatNumber(discountableFinalTotal)+' 원').css('color','darkgreen');	
 			
 			setDiscount();	
-			
 		}	
 	});
 }
@@ -157,9 +154,8 @@ $(document).ready(function(){
 			$('#productTotalDiv').text('총 '+formatNumber(cartTotal)+' 원');
 			$('#deliveryFeeDiv').text('총 '+formatNumber(deliveryFee)+' 원');
 			$('#subTotalDiv').text('총 '+formatNumber(cartTotal+deliveryFee)+' 원');
-			discountableFinalTotal=discountableSubTotal+deliveryFee;
-			$('#discoutableTotal').text('총 '+formatNumber(discountableFinalTotal)+' 원').css('color','darkgreen');			
-			if(discountableFinalTotal==0){
+			$('#discoutableTotal').text('총 '+formatNumber(discountableSubTotal)+' 원').css('color','darkgreen');			
+			if(discountableSubTotal==0){
 				$('input[name=useBenefit][value=no]').prop('checked',true);
 				$('input[name=useBenefit][value=yes]').prop('disabled',true);
 				$('#point').val(0);
@@ -281,8 +277,6 @@ $('input[name=delivery]').on('change',function(){
 	checkAddtionalFee();
 	setDeliveryFee();
 	setDiscount();
-	discountableFinalTotal = discountableSubTotal+deliveryFee;
-	$('#discoutableTotal').text('총 '+formatNumber(discountableFinalTotal)+' 원').css('color','darkgreen');
 });
 
 
@@ -306,8 +300,6 @@ $('input[name=useBenefit]').on('change',function(){
 	}
 	setDeliveryFee();
 	setDiscount();
-	discountableFinalTotal = discountableSubTotal+deliveryFee;
-	$('#discoutableTotal').text('총 '+formatNumber(discountableFinalTotal)+' 원').css('color','darkgreen');
 	
 });
 
@@ -344,15 +336,11 @@ $('#point').focusout(function(){
 $('#coupon_no').on('change',function(){
 	if($('#coupon_no option:selected').text().includes('[배송][변동]')){
 		deliveryFee = 0;
-		discountableFinalTotal = discountableSubTotal;
 		$('#deliveryFeeDiv').text('총 '+formatNumber(deliveryFee)+' 원');
-		$('#subTotalDiv').text('총 '+formatNumber(cartTotal+deliveryFee)+' 원');	
-		$('#discoutableTotal').text('총 '+formatNumber(discountableFinalTotal)+' 원').css('color','darkgreen');	
+		$('#subTotalDiv').text('총 '+formatNumber(cartTotal+deliveryFee)+' 원');		
 	}
 	else{
-		setDeliveryFee();
-		discountableFinalTotal = discountableSubTotal+deliveryFee;
-		$('#discoutableTotal').text('총 '+formatNumber(discountableFinalTotal)+' 원').css('color','darkgreen');			
+		setDeliveryFee();	
 	}
 	 setDiscount();
 });
@@ -390,7 +378,6 @@ $('#choiceOrder').click(function(){
 	else if($('input[name=payment]:checked').val()=='2'&&!$('#bankPaid').is(':checked')) alert('무통장결제란을 완성해주세요');	
 	else{
 		isSubmitted = true;	
-		alert('마음의 준비중!');
 		$.ajax({
 			type: 'post',
 			url : '/minishop/trading/putOrderForm.do',
@@ -403,7 +390,8 @@ $('#choiceOrder').click(function(){
 					'coupon_amount':$('#coupon_no option:selected').val(),					
 					'coupon_option':$('#coupon_no option:selected').text(),
 					'order_total': cartTotal+deliveryFee,
-					'payment_amount': finalTotal,						
+					'payment_amount': finalTotal,	
+					'directOrder':$('#directOrder').val(),
 					'payment_method':$('input[name=payment]:checked').val()					
 			},
 			dataType : 'text',
@@ -413,7 +401,6 @@ $('#choiceOrder').click(function(){
 				}
 				else {
 					isSubmitted = true;	
-					if(isSubmitted) $(window).off('beforeunload');
 					alert('주문이 성공적으로 접수되었습니다.주문서 확인 화면으로 이동합니다');
 					window.location='/minishop/trading/orderView.do?order_no='+data;
 				}
@@ -431,5 +418,8 @@ $('#returnBtn').click(function(){
 
 //13. 화면 전환 이벤트
 $(window).on('beforeunload',function(){
-	return '페이지 이동시 기존의 주문 내역서 양식이 제거됩니다. 정말 이동하시겠습니까?';
+	if(!isSumitted){
+		return '페이지 이동시 기존의 주문 내역서 양식이 제거됩니다. 정말 이동하시겠습니까?';		
+	}
+	else $(window).off('beforeunload');
 });

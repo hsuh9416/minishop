@@ -80,10 +80,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	INSERT into BENEFIT_GRANT values(#{grant_id},#{coupon_no},#{coupon_duedate},#{personal_code})
 </insert>
 
-<!-- 쿠폰: 해당 회원 지급 쿠폰 삭제하기(사유:쿠폰 사용) -->
-<delete id="usedUserBenefit" parameterType="String">
-	update BENEFIT_GRANT set personal_code=null where coupon_no = #{coupon_no} and grant_id=#{id} 
-</delete>
+<!-- 쿠폰: 해당 회원 지급 쿠폰 수정하기(사유:쿠폰 사용) -->
+<update id="modifyUserBenefit" parameterType="java.util.Map">
+	update BENEFIT_GRANT set
+ 		<if test="personal_code ==''"> 
+ 			personal_code=null
+		</if>
+ 		<if test="personal_code !=''"> 
+ 			personal_code=#{personal_code}
+		</if>
+		where coupon_no = #{coupon_no} and grant_id=#{id} 
+</update>
 
 <!-- 쿠폰: 해당 회원 지급 쿠폰 삭제하기(사유:계정삭제) -->
 <delete id="deleteUserBenefit" parameterType="String">
@@ -98,6 +105,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	where grant_id=#{id} and BENEFIT_GRANT.PERSONAL_CODE is not null
 </select>
 
+<!-- 주문 : (관리자) 주문 목록 가져오기 -->
+<select id="getUserOrderList" resultType="order">
+	SELECT * from ORDERS
+</select>
 <!-- 주문 : 비밀번호 변경 -->
 <update id="setNewOrderPwd" parameterType="order">
 	UPDATE ORDERS set order_pwd=#{order_pwd} where order_no=#{order_no}
@@ -116,7 +127,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 							  #{order_pwd},
 							  #{order_name},
 							  #{orderlist_json},
-							  #{order_receiver})
+							  #{order_receiver},
+							  null,
+							  null,
+							  '[주문접수]',
+							  SYSDATE)
 </insert>
 
 <!-- 주문: 결제 업로드 -->
@@ -124,8 +139,56 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	INSERT INTO PAYMENT values(#{payment_amount},
 							   #{order_no},
 							   #{payment_method},
-							   #{payment_date})
+							   #{payment_date},
+							   #{payment_state})
 </insert>
+
+<!-- 주문: 특정 주문서 호출 -->
+<select id="getOrderInfo" parameterType="String" resultType="order">
+	SELECT * from ORDERS where order_no=#{order_no}
+</select>
+
+<!-- 주문: 특정 주문서의 결제 정보 호출 -->
+<select id="getPaymentInfo" parameterType="String" resultType="order">
+	SELECT * from PAYMENT where order_no=#{order_no}
+</select>
+
+<!-- 주문: 주문서 수정(사용자) -->
+<update id="modifyOrderUser" parameterType="order">
+	UPDATE ORDERS set order_address = #{order_address},
+					  order_email = #{order_email},
+					  order_tel = #{order_tel},
+					  order_name= #{order_name},
+					  order_receiver = #{order_receiver}) where order_no = #{order_no}
+</update>
+
+<!-- 주문: 주문서 수정(비밀번호 분실로 인한 업데이트) -->
+<update id="modifyOrderPwd" parameterType="order">
+	UPDATE ORDERS set order_pwd = #{order_pwd} where order_no = #{order_no}
+</update>
+
+<!-- 주문: 주문서 수정(상태 변경) -->
+<update id="modifyOrderAdmin" parameterType="order">
+	UPDATE ORDERS set order_state = #{order_state},
+	 					<if test="order_deliverynum !='' and order_deliverynum !=null"> 
+					      order_deliverynum =#{order_deliverynum},
+						</if>
+	 					<if test="order_refundaccount !='' and order_refundaccount !=null"> 
+					 	 order_refundaccount=#{order_refundaccount},
+					  	</if>
+					  	order_statement=#{order_statement},
+					  	order_logtime=SYSDATE where order_no = #{order_no}
+</update>
+
+<!-- 주문: 결제/환불준비시 수정 -->
+<update id="modifyPayment" parameterType="order">
+	UPDATE PAYMENT set payment_date=SYSDATE,payment_state = #{payment_state} where order_no = #{order_no} and payment_method=${payment_method}
+</update>
+
+<!-- 주문: 결제/환불준비시 수정 -->
+<delete id="cancelPayment" parameterType="String">
+	delete PAYMENT where order_no = #{order_no}
+</delete>
 
 <!-- 이벤트 : 배너리스트 호출 -->
 <select id="getBannerList" resultType="event">

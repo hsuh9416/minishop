@@ -50,12 +50,12 @@
 				</div>				
 			</div>	
 			<div class="form-row justify-content-center">
-				<div class="form-group col-4">[주문 중인 건수]</div>
-				<div class="form-group col-8"><a id="orderlistPg" href="#"></a></div>
+				<div class="form-group col-4">[진행 중인 주문 건수]</div>
+				<div class="form-group col-8"><a id="orderlistPg" href="/minishop/member/memberOrderlist.do"></a></div>
 			</div>	
 			<div class="form-row justify-content-center">
 				<div class="form-group col-4">[사용 가능한 쿠폰]</div>
-				<div class="form-group col-8"><a id="goCoupon" href="#"></a></div>
+				<div class="form-group col-8"><a id="goCoupon" href="/minishop/member/memberCouponlist.do"></a></div>
 			</div>		
 			<div class="form-row justify-content-center">
 				<div class="form-group col-4">[사용 가능한 포인트]</div>
