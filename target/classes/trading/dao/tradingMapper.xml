@@ -105,10 +105,46 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	where grant_id=#{id} and BENEFIT_GRANT.PERSONAL_CODE is not null
 </select>
 
-<!-- 주문 : (관리자) 주문 목록 가져오기 -->
-<select id="getUserOrderList" resultType="order">
-	SELECT * from ORDERS
+<!-- 주문 : (관리자) 총 개수 가져오기 -->
+<select id="getTotalA" resultType="Integer">
+	SELECT count(*) from ORDERS
 </select>
+<!-- 주문 : (관리자) 주문 목록 가져오기 -->
+<select id="getUserOrderList" parameterType="java.util.Map" resultType="order">
+			SELECT * from 
+			(SELECT rownum rn, tt.* from 
+			(SELECT * from ORDERS 	
+			order by order_date desc)tt)		
+			where (rn between #{startNum} and #{endNum}) 
+</select>
+<!-- 주문 : (관리자) 검색 후 총 개수 가져오기 -->
+<select id="getTotalSearchA" parameterType="java.util.Map" resultType="Integer">
+		SELECT count(*) from ORDERS 
+		<if test="searchOption != null and searchOption !=''">where
+			<choose>
+				<when test="searchOption eq 'order_no'"> order_no = #{keyword}</when>
+			    <when test="searchOption eq 'order_date'"> order_date = to_date(#{keyword},'yyyy-MM-dd')</when>
+			    <when test="searchOption eq 'order_state'"> order_state = #{keyword}</when>		    		    
+			    <otherwise> ${searchOption} like '%'||#{keyword}||'%' </otherwise>
+			</choose> 
+		</if> 
+</select>
+<!-- 주문 : (관리자) 검색 후 주문 목록 가져오기 -->
+<select id="userSearchOrderList" parameterType="java.util.Map" resultType="order">
+		SELECT * from (SELECT rownum rn, tt.* from 
+			(SELECT * from ORDERS 
+			<if test="searchOption != null and searchOption !=''">where
+				<choose>
+					<when test="searchOption eq 'order_no'"> order_no = #{keyword}</when>
+					<when test="searchOption eq 'order_date'"> order_date like to_date(#{keyword},'yyyy-MM-dd')</when>
+					<when test="searchOption eq 'order_state'"> order_state = #{keyword}</when>		    		    
+					<otherwise> ${searchOption} like '%'||#{keyword}||'%' </otherwise>
+				</choose> 
+			</if> 
+			order by order_date desc)tt)
+			where (rn between #{startNum} and #{endNum}) 
+</select>
+
 <!-- 주문 : 비밀번호 변경 -->
 <update id="setNewOrderPwd" parameterType="order">
 	UPDATE ORDERS set order_pwd=#{order_pwd} where order_no=#{order_no}

@@ -50,7 +50,7 @@ public class ProductPaging {
 			if(i==currentPage) pagingHTML.append("<li class='page-item'><a class='page-link' id='currentPaging' onclick='productSearchPaging("+i+")'>"+i+"</a></li>");
 			else pagingHTML.append("<li class='page-item'><a class='page-link' id='paging' onclick='productSearchPaging("+i+")'>"+i+"</a></li>");}
 		
-		if(endPage < totalP) pagingHTML.append("<li class='page-item'><a class='page-link' id='paging' onclick='boardSearchPaging("+(endPage+1)+")'>다음</a></li>");}
+		if(endPage < totalP) pagingHTML.append("<li class='page-item'><a class='page-link' id='paging' onclick='productSearchPaging("+(endPage+1)+")'>다음</a></li>");}
 	
 }	
 	

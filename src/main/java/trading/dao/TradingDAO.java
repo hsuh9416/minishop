@@ -34,7 +34,10 @@ public interface TradingDAO {
 	List<CouponDTO> getAvailableUserCoupon(String id);	
 //--------쿠폰 : END--------//	
 //--------주문 : START--------//	
-	List<OrderDTO> getUserOrderList();
+	int getTotalA();
+	int getTotalSearchA(Map<String, String> map);
+	List<OrderDTO> getUserOrderList(int startNum, int endNum);
+	List<OrderDTO> userSearchOrderList(Map<String, String> map);	
 	List<OrderDTO> getOrderList(String id);	
 	void setNewOrderPwd(OrderDTO orderDTO);
 	int putOrder(OrderDTO orderDTO);
@@ -53,6 +56,10 @@ public interface TradingDAO {
 	int modifyDeliveryPolicy(DeliveryDTO deliveryDTO);
 	int verifyAdditionalFee(String zipcode);
 //--------배송료 : END--------//
+
+
+
+
 
 
 

@@ -135,8 +135,26 @@ public class TradingDAOImpl implements TradingDAO {
 //----------- 주문 : START ----------//
 	
 	@Override
-	public List<OrderDTO> getUserOrderList() {
-		return sqlSession.selectList("tradingSQL.getUserOrderList");
+	public int getTotalA() {
+		return sqlSession.selectOne("tradingSQL.getTotalA");
+	}
+	
+	@Override
+	public List<OrderDTO> getUserOrderList(int startNum, int endNum) {
+		Map<String,Integer> map = new HashMap<String,Integer>();
+		map.put("startNum", startNum);
+		map.put("endNum", endNum);		
+		return sqlSession.selectList("tradingSQL.getUserOrderList",map);
+	}
+
+	@Override
+	public int getTotalSearchA(Map<String, String> map) {
+		return sqlSession.selectOne("tradingSQL.getTotalSearchA",map);
+	}
+	
+	@Override
+	public List<OrderDTO> userSearchOrderList(Map<String, String> map) {
+		return sqlSession.selectList("tradingSQL.userSearchOrderList",map);
 	}
 	
 	//1.주문서 목록 호출
