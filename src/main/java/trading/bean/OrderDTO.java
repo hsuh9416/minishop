@@ -33,6 +33,7 @@ public class OrderDTO {
  private String order_statement;
  @JsonFormat(pattern="yyyy-MM-dd")
  private Date order_logtime;
+ private int order_deliveryfee;
  
  //주문서 상세 내역
  private List<ProductDTO> orderList;

@@ -24,10 +24,15 @@ var couponList = null;
 function formatNumber(num){
 	return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g,'$1,');}
 
+function confirmTel(num){
+	var regExp = /^\d{2,3}-\d{3,4}-\d{4}$/;
+	return regExp.test(num);
+}
+
 //1-2. 배송료 적용
 function setDeliveryFee(){
 	if(deliveryPolicy!=null){
-		if(cartTotal>=300000) deliveryFee = 0;
+		if(cartTotal>=100000) deliveryFee = 0;
 		else if(additionalCost==true) deliveryFee = parseInt(deliveryPolicy[1].delivery_fee,10);
 		else deliveryFee =  parseInt(deliveryPolicy[0].delivery_fee,10);
 		$('#deliveryFeeDiv').text('총 '+formatNumber(deliveryFee)+' 원');
@@ -93,6 +98,57 @@ function checkAddtionalFee(){
 		}	
 	});
 }
+
+function setOrderList(orderList){
+	$.each(orderList, function(index, items){			
+		var unitcost_format=formatNumber(items.unitcost);
+		var totalCost=items.unitcost*items.cart_qty;
+		cartTotal=cartTotal+totalCost;//합계 정산
+		if(items.promotioncode=='1'){
+			discountableSubTotal=discountableSubTotal+totalCost;				
+		}
+		var totalCost_format=formatNumber(totalCost);
+		$('<div/>',{
+			class: 'form-row align-items-center'			
+		}).append($('<div/>',{
+			class : 'col-1',
+			align : 'center',
+			text : items.product_name_no
+		})).append($('<div/>',{
+			class : 'col-2',
+			align : 'center'
+		}).append($('<img/>',{
+			src : '/minishop/storage/showProduct.do?product_name_image='+items.product_name_image,
+			style : 'width:80px;height:80px;'
+		}))).append($('<div/>',{
+			class : 'col-2',
+			align : 'center',
+			html : items.productName
+		})).append($('<input/>',{
+			type : 'hidden',
+			value : items.unitcost
+		})).append($('<div/>',{
+			class : 'col-2',
+			align : 'center',
+			html : unitcost_format+'원'
+		})).append($('<div/>',{
+			class : 'col-2',
+			align : 'center',
+			html : items.cart_qty+'개',
+		})).append($('<div/>',{
+			class : 'col-3',
+			align : 'center',
+			html : totalCost_format+'원'
+		})).appendTo($('#cartListForm'));
+	
+	});	
+		setDeliveryFee();
+		$('#productTotalDiv').text('총 '+formatNumber(cartTotal)+' 원');
+		$('#deliveryFeeDiv').text('총 '+formatNumber(deliveryFee)+' 원');
+		$('#subTotalDiv').text('총 '+formatNumber(cartTotal+deliveryFee)+' 원');		
+		
+}
+
 //2. 최초 시작시에 셋팅
 $(document).ready(function(){
 	$('#wrap').hide();
@@ -105,55 +161,9 @@ $(document).ready(function(){
 		success: function(data){
 			orderList = data.orderList;
 			deliveryPolicy = data.deliveryPolicy;
-			$.each(orderList, function(index, items){			
-				var unitcost_format=formatNumber(items.unitcost);
-				var totalCost=items.unitcost*items.cart_qty;
-				cartTotal=cartTotal+totalCost;//합계 정산
-				if(items.promotioncode=='1'){
-					discountableSubTotal=discountableSubTotal+totalCost;				
-				}
-				var totalCost_format=formatNumber(totalCost);
-				$('<div/>',{
-					class: 'form-row align-items-center'			
-				}).append($('<div/>',{
-					class : 'col-1',
-					align : 'center',
-					text : items.product_name_no
-				})).append($('<div/>',{
-					class : 'col-2',
-					align : 'center'
-				}).append($('<a/>',{
-					href : '/minishop/product/productView.do?product_name_no='+items.product_name_no
-				}).append($('<img/>',{
-					src : '/minishop/storage/showProduct.do?product_name_image='+items.product_name_image,
-					style : 'width:80px;height:80px;'
-				})))).append($('<div/>',{
-					class : 'col-2',
-					align : 'center',
-					html : items.productName
-				})).append($('<input/>',{
-					type : 'hidden',
-					value : items.unitcost
-				})).append($('<div/>',{
-					class : 'col-2',
-					align : 'center',
-					html : unitcost_format+'원'
-				})).append($('<div/>',{
-					class : 'col-2',
-					align : 'center',
-					html : items.cart_qty+'개',
-				})).append($('<div/>',{
-					class : 'col-3',
-					align : 'center',
-					html : totalCost_format+'원'
-				})).appendTo($('#cartListForm'));
 			
-			});	
-				setDeliveryFee();
-				
-			$('#productTotalDiv').text('총 '+formatNumber(cartTotal)+' 원');
-			$('#deliveryFeeDiv').text('총 '+formatNumber(deliveryFee)+' 원');
-			$('#subTotalDiv').text('총 '+formatNumber(cartTotal+deliveryFee)+' 원');
+			setOrderList(orderList);
+			
 			$('#discoutableTotal').text('총 '+formatNumber(discountableSubTotal)+' 원').css('color','darkgreen');			
 			if(discountableSubTotal==0){
 				$('input[name=useBenefit][value=no]').prop('checked',true);
@@ -173,7 +183,7 @@ $(document).ready(function(){
 				
 				$('#order_name').val(memberDTO.name);
 				$('#order_receiver').val(memberDTO.name);
-				$('#order_tel').val(memberDTO.tel1+memberDTO.tel2+memberDTO.tel3);
+				$('#order_tel').val(memberDTO.tel1+'-'+memberDTO.tel2+'-'+memberDTO.tel3);
 				$('#order_email').val(memberDTO.email1+'@'+memberDTO.email2);
 				
 				
@@ -257,7 +267,7 @@ $('input[name=pesonalInfo]').on('change',function(){
 	else{
 		$('#order_name').val(memberDTO.name);
 		$('#order_receiver').val(memberDTO.name);
-		$('#order_tel').val(memberDTO.tel1+memberDTO.tel2+memberDTO.tel3);
+		$('#order_tel').val(memberDTO.tel1+'-'+memberDTO.tel2+'-'+memberDTO.tel3);
 		$('#order_email').val(memberDTO.email1+'@'+memberDTO.email2);	
 	}
 });
@@ -373,6 +383,7 @@ $('#checkPost').click(function(){
 //11. 최종 주문서 제출
 $('#choiceOrder').click(function(){
 	if($('#order_name').val()==''||$('#order_receiver').val()==''||$('#order_tel').val()==''||$('#order_email').val()=='') alert('기본정보를 입력해주세요');
+	else if(!confirmTel($('#order_tel').val())) alert('전화번호는 형식에 맞게 작성해주세요. ex>010-1234-5678/02-123-4567');	
 	else if($('#zipcode').val()==''||$('#addr1').val()==''||$('#addr2').val()=='') alert('배송지를 입력해주세요');
 	else if($('input[name=payment]:checked').val()=='1'&&!$('#cardPaid').is(':checked')) alert('카드결제란을 완성해주세요');
 	else if($('input[name=payment]:checked').val()=='2'&&!$('#bankPaid').is(':checked')) alert('무통장결제란을 완성해주세요');	
@@ -392,7 +403,8 @@ $('#choiceOrder').click(function(){
 					'order_total': cartTotal+deliveryFee,
 					'payment_amount': finalTotal,	
 					'directOrder':$('#directOrder').val(),
-					'payment_method':$('input[name=payment]:checked').val()					
+					'payment_method':$('input[name=payment]:checked').val(),
+					'order_deliveryfee':deliveryFee
 			},
 			dataType : 'text',
 			success: function(data){

@@ -191,3 +191,9 @@ font-weight: bold;
     color: white;
     text-decoration: none;
 }
+
+.under-line-title{
+	text-decoration:underline;
+	text-underline-position:under;
+	text-weight: bold;
+}

@@ -119,7 +119,7 @@ public class AdminOrderController {
 		return mav;	
 	}	
 	//4. 개별조회서 조회 및 수정사항 반영 팝업창 이동
-	@RequestMapping(value="/personalOrderView.do",method= RequestMethod.POST)
+	@RequestMapping(value="/personalOrderView.do",method= RequestMethod.GET)
 	public ModelAndView personalOrderView(@RequestParam String order_no, String order_state) {
 		
 		ModelAndView mav = new ModelAndView();		
@@ -137,13 +137,22 @@ public class AdminOrderController {
 		
 		OrderDTO orderDTO = tradingDAO.getOrderInfo(order_no);
 		List<OrderDTO> paymentInfo = tradingDAO.getPaymentInfo(order_no);
-		
+		List<ProductDTO> productList = jsonTrans.makeJsonToList(orderDTO.getOrderlist_json());
 		ModelAndView mav = new ModelAndView();		
 			mav.addObject("orderDTO", orderDTO);
+			mav.addObject("productList", productList);	
 			mav.addObject("paymentInfo", paymentInfo);		
 			mav.setViewName("jsonView");
 		
 	return mav;	
 	}
 	
+	//6. 회원 주문 배송지 변경 이벤트
+	@RequestMapping(value="/changeDeliberyInfo.do",method=RequestMethod.POST)
+	@ResponseBody
+	public String changeDeliberyInfo(@RequestParam Map<String,Object> map) {
+		
+		
+		return "fail";
+	}
 }

@@ -167,7 +167,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 							  null,
 							  null,
 							  '[주문접수]',
-							  SYSDATE)
+							  SYSDATE,
+							  ${order_deliveryfee})
 </insert>
 
 <!-- 주문: 결제 업로드 -->

@@ -99,7 +99,7 @@
 			<label for="order_tel" style="padding-right:20px; padding-top:-5px;"><strong>주문자 연락처</strong></label> 
 		</div>		    
 		<div class="form-group col-3" align="center">
-			<input type="text" class="form-control-plaintext inline-form" id="order_tel" value="" placeholder="숫자로만 입력">
+			<input type="text" class="form-control-plaintext inline-form" id="order_tel" value="" placeholder="ex>010-1234-5678">
 		</div>
 		<div class="form-group col-3" align="center">
 			<label for="order_email" style="padding-right:20px; padding-top:-5px;"><strong>주문자 이메일</strong></label> 

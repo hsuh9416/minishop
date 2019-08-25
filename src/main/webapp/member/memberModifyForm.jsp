@@ -87,7 +87,7 @@
 		</div>
   
 		<label for="address1"><strong>우편 번호</strong></label>	
- 	 	<div class="form-row" id="address1">
+ 	 	<div class="form-row" id="zip">
 		    <div class="form-group col-md-3">
 				<input type="text" readonly class="form-control-plaintext inline-form" name="zipcode" id="zipcode" value="${memberDTO.zipcode }"> 
 		    </div>
@@ -97,7 +97,7 @@
 		</div>	
 
 		<label for="address2"><strong>상세 주소</strong></label>	
-		<div class="form-row" id="address2">
+		<div class="form-row" id="address1">
 		    <div class="form-group col-6">
 		    	<input type="text" readonly class="form-control-plaintext inline-form" name="addr1" id="addr1" value="${memberDTO.addr1 }">
 		    </div>

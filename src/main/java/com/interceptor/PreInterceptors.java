@@ -109,7 +109,7 @@ public class PreInterceptors extends HandlerInterceptorAdapter{
 			response.sendRedirect(request.getContextPath()+"/common/inaccessible.jsp");//경고 페이지 이동
 			return false;			
 		}
-		else if(adminDTO != null && !uri.contains("/admin/")&&!uri.contains("/storage/")) {//관리자계정이 개설된 상태에서 관리자 메뉴 이외로 접근할 경우 제지
+		else if(adminDTO != null && !uri.contains("/admin/")&&!uri.contains("/storage/")&&!uri.contains("/trading/")) {//관리자계정이 개설된 상태에서 관리자 메뉴 이외로 접근할 경우 제지
 			logger.info("요청한 주소명: "+request.getRequestURI());
 			logger.info("관리자계정의 이중 접근은 불가능합니다.");
 				response.sendRedirect(request.getContextPath()+"/admin/adminHome.do");

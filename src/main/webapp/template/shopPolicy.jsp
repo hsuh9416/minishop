@@ -9,7 +9,7 @@
 						<div class="benefit_icon"><i class="fa fa-truck" aria-hidden="true"></i></div>
 						<div class="benefit_content">
 							<h6>무료 배송 정책</h6>
-							<p>30,000원 이상 무료 배송</p>
+							<p>100,000원 이상 무료 배송</p>
 						</div>
 					</div>
 				</div>

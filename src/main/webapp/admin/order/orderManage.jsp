@@ -4,7 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 	<!--CSS Local LINK:START-->    
-<link rel="stylesheet" href="/minishop/resources/custom/css/orderForm.css">
+<link rel="stylesheet" type="text/css" href="/minishop/resources/custom/css/orderForm.css">
 	<!--CSS Local LINK:END-->	
 	
 <div class="col-lg-8">

@@ -139,12 +139,12 @@ function getOrderList(data){
 				$('#state'+items.order_no+' option[value=7]').prop('disabled',true);	
 			}
 			$('#state'+items.order_no).on('change',function(){
-				var newState = $(this).val();
+				var order_state = $(this).val();
 				var order_no = $(this).parent().prev().prev().prev().prev().prev().text();
-				if(newState!=items.order_state){
-						viewPopUp(order_no);
-					
+				if(order_state!=items.order_state){
+						viewPopUp(order_no,order_state);
 				}
+				else viewPopUp(order_no,order_no);
 			});	
 		});
 		

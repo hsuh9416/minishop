@@ -269,7 +269,6 @@ public class TradingController {
 
 		
 		String order_pwd = "회원비밀번호와 동일함";
-		
 		MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
 		AdminDTO adminDTO = adminDAO.getAdmin();
 		JsonElement orderList_JSON = (JsonElement)session.getAttribute("orderList_JSON");	

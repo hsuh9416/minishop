@@ -6,6 +6,8 @@
 	font-family: 'Hanna', fantasy;
 }
 
+
+
 body{
  background-color: #1e1e27;
 }
@@ -52,4 +54,15 @@ p{color:red;}
 .form-group{
 	margin: 5px;
 	padding: 5px;
+}
+
+.inline-form{
+	border-bottom: 1px solid;
+}
+
+h5 .sub-title-undeline{
+	align: center;
+	text-decoration: underline;
+	text-underline-position:under;
+	padding-bottom: 15px;
 }
