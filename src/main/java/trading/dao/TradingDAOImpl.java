@@ -192,8 +192,27 @@ public class TradingDAOImpl implements TradingDAO {
 	
 	// 주문서 상태 업데이트(주문취소, 환불 공통)
 	@Override
-	public void modifyOrderAdmin(OrderDTO orderDTO) {
-		sqlSession.update("tradingSQL.modifyOrderAdmin",orderDTO);
+	public int modifyOrderAdmin(OrderDTO orderDTO) {
+		return sqlSession.update("tradingSQL.modifyOrderAdmin",orderDTO);
+	}
+	
+	//주문서 정보 수정
+	@Override
+	public int changeOrderInfo(Map<String, Object> map) {
+		return sqlSession.update("tradingSQL.changeOrderInfo",map);
+	}
+	//입금 완료 반영
+	@Override
+	public int updatePayment(OrderDTO orderDTO) {
+		return sqlSession.update("tradingSQL.changeOrderInfo",orderDTO);
+	}
+	@Override
+	public int implementingInventoryChange(OrderDTO orderDTO) {
+		return sqlSession.update("tradingSQL.implementingInventoryChange",orderDTO);
+	}
+	@Override
+	public int cancelPayment(int order_no) {
+		return sqlSession.delete("tradingSQL.cancelPayment", order_no);
 	}
 //----------- 주문 : END ----------//	
 

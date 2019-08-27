@@ -1,5 +1,6 @@
 package mail.bean;
 
+import java.text.NumberFormat;
 import java.util.Properties;
 import java.util.UUID;
 
@@ -115,6 +116,7 @@ public class MailingImpl implements Mailing {
 						 "배송지 변경의 경우에는 최소 발송 전에 저희 샵으로 연락바라며, 발송 이후에는 주문취소와 주소지 변경 등의 제약이 발생합니다.\n"+
 						 "연락처 변경의 경우에는 주문서에 따른 연락처를 기준으로 하고 있으며 이는 고객 정보 수정과는 별도로 저희 직원에 요청 부탁드립니다.\n"+
 						 "주문서상 연락처 변경에 따른 변경 연락처는 요청 수락에 따른 변경으로부터 전진적으로 적용됩니다.(유선 및 무선 전화,전자메일  모두 동일)\n"+
+						 "주문서상 변경에 따라 발생하는 차액 등은 별도로 환불해드리지 않으며 불가피한 경우에는 차기 구입에 사용할 수 있는 포인트 등으로 적립됩니다.\n"+
 						 "갑작스런 재고 부족 등의 상황에 관하여는 저희 샵에서 별도의 메일 및 연락을 드리오니 해당 경우에는 양해 부탁드립니다.\n"+
 						 "저희 Kissin'Bugs와 거래해주신 것에 감사드리며, 앞으로도 많은 관심 부탁드립니다.\n"+
 						 "저희 Kissin'Bugs와 함께 고객님의 설레는 매일이 계속되길 바랍니다.\n\n"+				
@@ -123,6 +125,53 @@ public class MailingImpl implements Mailing {
 			
 		return messageDTO;
 	}
+	@Override
+	public MessageDTO sendOrderModifiedMail(MessageDTO messageDTO, OrderDTO orderDTO) {
+			messageDTO.setReceiver(orderDTO.getOrder_name()+" 고객님");
+			messageDTO.setReceiveAddr(orderDTO.getOrder_email());
+			messageDTO.setSender("[Kissin' Bugs]");		  
+			messageDTO.setSubject(orderDTO.getOrder_name()+" 님의 주문서가 정상적으로 수정되었습니다.");	
+		String context = "안녕하세요, 감각적인 쇼핑몰 Kissin' Bugs 입니다.\n"+
+				orderDTO.getOrder_name()+"님의 주문이 정상적으로 수정되었습니다.\n"+
+				 "이 메일은 "+orderDTO.getOrder_name()+" 님의 주문정보가 수정되었음을 확인하는 목적으로 발송된 것입니다.\n"+
+				 "주문서의 상세 내역은 주문서의 아이디와 비밀번호로 접속하신 뒤에 조회하시기 바랍니다.\n"+
+				 "주문서를 분실하시거나 비밀번호를 잊어 버리신 경우에는 저희 고객센터에 직접 문의바랍니다.\n"+
+				 "저희 샵은 중도 주소변경 등으로 인한  착오 발생을 방지하기 위하여 고객 정보 변경의 경우에는 유선상 또는 메일 서신을 통한 요청만 허용하고 있습니다.\n"+
+				 "배송지 변경의 경우에는 최소 발송 전에 저희 샵으로 연락바라며, 발송 이후에는 주문취소와 주소지 변경 등의 제약이 발생합니다.\n"+
+				 "연락처 변경의 경우에는 주문서에 따른 연락처를 기준으로 하고 있으며 이는 고객 정보 수정과는 별도로 저희 직원에 요청 부탁드립니다.\n"+
+				 "주문서상 연락처 변경에 따른 변경 연락처는 요청 수락에 따른 변경으로부터 전진적으로 적용됩니다.(유선 및 무선 전화,전자메일  모두 동일)\n"+
+				 "주문서상 변경에 따라 발생하는 차액 등은 별도로 환불해드리지 않으며 불가피한 경우에는 차기 구입에 사용할 수 있는 포인트 등으로 적립됩니다.\n"+
+				 "갑작스런 재고 부족 등의 상황에 관하여는 저희 샵에서 별도의 메일 및 연락을 드리오니 해당 경우에는 양해 부탁드립니다.\n"+
+				 "저희 Kissin'Bugs와 거래해주신 것에 감사드리며, 앞으로도 많은 관심 부탁드립니다.\n"+
+				 "저희 Kissin'Bugs와 함께 고객님의 설레는 매일이 계속되길 바랍니다.\n\n"+				
+				 "\t\t\t\t\t[Kissin' Bugs] 드림";	
+				messageDTO.setContent(context);
+		return messageDTO;
+	}
+	@Override
+	public MessageDTO sendPaymentConfirmMail(MessageDTO messageDTO, OrderDTO orderDTO) {
+		messageDTO.setReceiver(orderDTO.getOrder_name()+" 고객님");
+		messageDTO.setReceiveAddr(orderDTO.getOrder_email());
+		messageDTO.setSender("[Kissin' Bugs]");		  
+		messageDTO.setSubject(orderDTO.getOrder_name()+" 님의 주문서가 정상적으로 수정되었습니다.");	
+	String context = "안녕하세요, 감각적인 쇼핑몰 Kissin' Bugs 입니다.\n"+
+			orderDTO.getOrder_name()+"님의 주문이 정상적으로 수정되었습니다.\n"+
+			 "이 메일은 "+orderDTO.getOrder_name()+" 님의 주문정보가 수정되었음을 확인하는 목적으로 발송된 것입니다.\n"+
+			 "주문서의 상세 내역은 주문서의 아이디와 비밀번호로 접속하신 뒤에 조회하시기 바랍니다.\n"+
+			 "주문서를 분실하시거나 비밀번호를 잊어 버리신 경우에는 저희 고객센터에 직접 문의바랍니다.\n"+
+			 "저희 샵은 중도 주소변경 등으로 인한  착오 발생을 방지하기 위하여 고객 정보 변경의 경우에는 유선상 또는 메일 서신을 통한 요청만 허용하고 있습니다.\n"+
+			 "배송지 변경의 경우에는 최소 발송 전에 저희 샵으로 연락바라며, 발송 이후에는 주문취소와 주소지 변경 등의 제약이 발생합니다.\n"+
+			 "연락처 변경의 경우에는 주문서에 따른 연락처를 기준으로 하고 있으며 이는 고객 정보 수정과는 별도로 저희 직원에 요청 부탁드립니다.\n"+
+			 "주문서상 연락처 변경에 따른 변경 연락처는 요청 수락에 따른 변경으로부터 전진적으로 적용됩니다.(유선 및 무선 전화,전자메일  모두 동일)\n"+
+			 "주문서상 변경에 따라 발생하는 차액 등은 별도로 환불해드리지 않으며 불가피한 경우에는 차기 구입에 사용할 수 있는 포인트 등으로 적립됩니다.\n"+
+			 "갑작스런 재고 부족 등의 상황에 관하여는 저희 샵에서 별도의 메일 및 연락을 드리오니 해당 경우에는 양해 부탁드립니다.\n"+
+			 "저희 Kissin'Bugs와 거래해주신 것에 감사드리며, 앞으로도 많은 관심 부탁드립니다.\n"+
+			 "저희 Kissin'Bugs와 함께 고객님의 설레는 매일이 계속되길 바랍니다.\n\n"+				
+			 "\t\t\t\t\t[Kissin' Bugs] 드림";	
+			messageDTO.setContent(context);
+	return messageDTO;
+	}
+	
 	@Override
 	public MessageDTO sendDeliveryInfoMail(MessageDTO messageDTO, OrderDTO orderDTO) {
 		messageDTO.setReceiver(orderDTO.getOrder_name()+" 고객님");
@@ -181,7 +230,9 @@ public class MailingImpl implements Mailing {
 				 		" 금번 주문하신 주문서의 주문서에 대한 환불 접수 일자:  ["+orderDTO.getOrder_logtime()+"]\n"+	
 				 		" 금번 주문하신 주문서의 주문서에 대한 추가 정보:  ["+orderDTO.getOrder_statement()+"]\n"+	
 				 		"========================================\n"+	
-						"Kissin'Bugs의 내부규정 및 절차상 환불요청으로부터 일정 시간이 소요됩을 알립니다.\n"+					 		
+						"Kissin'Bugs의 내부규정 및 절차상 환불요청으로부터 일정 시간이 소요됨을 알립니다.\n"+	
+						"환불이 요청된 건에 대해서는 부득이한 경우를 제외하고는 복구되지 않사오니, 환불의사가 변경된 경우 등에는 새로이 주문서를 작성해주시기 바랍니다.\n"+	
+						"사용하신 포인트와 쿠폰은 최종 환불 완료시에 일괄 복원됩니다.\n"+
 						"환불의 건이 완료되는 고객님께 확인 메일을 발송하오니 양해부탁드립니다.\n"+					 		
 						"Kissin' Bugs은 고객만족을 위하여 항상 최선을 다하려고 노력하고 있습니다.\n\n"+
 						"\t\t\t\t\t[Kissin' Bugs] 직원 일동 드림";	
@@ -208,7 +259,46 @@ public class MailingImpl implements Mailing {
 			messageDTO.setContent(context);	 	
 		return messageDTO;
 	}
+	@Override
+	public MessageDTO sendOrderCompletedMail(MessageDTO messageDTO, OrderDTO orderDTO, String state, int point){
 
+		NumberFormat df = NumberFormat.getInstance();
+		messageDTO.setReceiver(orderDTO.getOrder_name()+" 고객님");
+		messageDTO.setReceiveAddr(orderDTO.getOrder_email());
+		messageDTO.setSender("[Kissin' Bugs]");		  
+		messageDTO.setSubject(orderDTO.getOrder_name()+" 님께 포인트지급이 완료되었습니다.");
+		String context = "안녕하세요, 감각적인 쇼핑몰 Kissin' Bugs 입니다.\n"+
+				orderDTO.getOrder_name()+"님께서 수취확인을 하신 결과로 아래와 같은 회원 혜택을 지급합니다.\n"+
+				 		"========================================\n"+
+				 		" 포인트 적립 대상 ID(등급) :  ["+orderDTO.getOrder_id()+"("+state+")]\n"+
+				 		" 금번 주문하신 주문서의 주문번호 :  ["+orderDTO.getOrder_no()+"]\n"+
+				 		" 금번 주문하신 주문서의 총 거래금액:  ["+df.format(orderDTO.getOrder_total())+"원]\n"+
+				 		" 금번 주문하신 주문서로 인한 지급 포인트 :  ["+df.format(point)+"점]\n"+	
+				 		"========================================\n"+	
+						"이는 Kissin'Bugs의 내부규정에 따른 지급 혜택이오니 참고바랍니다.\n"+	
+						"저희 Kissin'Bugs는 항상 새롭고 참신한 상품을 준비하고 있습니다. 앞으로도 많은 관심 부탁드립니다.\n\n"+	
+						"\t\t\t\t\t[Kissin' Bugs] 직원 일동 드림";	
+			messageDTO.setContent(context);	 	
+		return messageDTO;
+	}
+	@Override
+	public MessageDTO sendOrderCancelMail(MessageDTO messageDTO, OrderDTO orderDTO) {
+		messageDTO.setReceiver(orderDTO.getOrder_name()+" 고객님");
+		messageDTO.setReceiveAddr(orderDTO.getOrder_email());
+		messageDTO.setSender("[Kissin' Bugs]");		  
+		messageDTO.setSubject(orderDTO.getOrder_name()+" 님의 주문이 취소되었습니다.");
+		String context = "안녕하세요, 감각적인 쇼핑몰 Kissin' Bugs 입니다.\n"+
+						orderDTO.getOrder_name()+"님의 다음의 주문이 취소처리되었습니다.\n"+
+				 		"========================================\n"+
+				 		" 금번 주문하신 주문서의 주문번호 :  ["+orderDTO.getOrder_no()+"]\n"+	
+				 		"========================================\n"+	
+						"이는 Kissin'Bugs의 내부규정에 따라 일정한 경우(상품 및 배송 문제 혹은 고객의 요청 등) 관리자가 주문을 취소하는 규정을 두고 있습니다.\n"+
+						"주문 취소 처리로 인한 고객님의 불편을 끼친 점 대단히 죄송합니다. 빠른 시일 내에 관련 문제를 시정하도록 노력하겠습니다.\n"+				 		
+						"Kissin' Bugs은 고객만족을 위하여 항상 최선을 다하려고 노력하고 있습니다.\n\n"+
+						"\t\t\t\t\t[Kissin' Bugs] 직원 일동 드림";	
+			messageDTO.setContent(context);	
+		return messageDTO;
+	}
 	@Override
 	public MessageDTO sendGoodbyeMail(MessageDTO messageDTO) {
 			messageDTO.setSender("[Kissin' Bugs]");		  

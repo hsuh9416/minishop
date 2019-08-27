@@ -119,25 +119,40 @@ function getOrderList(data){
 				text: '8:주문취소'						
 			})))).appendTo($('#orderListForm'));
 			$('#state'+items.order_no).val(items.order_state);
+			if(items.order_state==0) {//주문완료후에는 입금완료,배송준비중,배송중을 반드시 거쳐가야 함
+				$('#state'+items.order_no+' option[value=4]').prop('disabled',true);
+				$('#state'+items.order_no+' option[value=5]').prop('disabled',true);
+				$('#state'+items.order_no+' option[value=6]').prop('disabled',true);
+				$('#state'+items.order_no+' option[value=7]').prop('disabled',true);
+			}
+			else{//한번 진행된 거래는 주문완료로 복귀하지 않음
+				$('#state'+items.order_no+' option[value=0]').prop('disabled',true);
+				$('#state'+items.order_no+' option[value=8]').prop('disabled',true);		
+			}
 			if(items.order_state==6||items.order_state==7||items.order_state==8) {//돌이킬 수 없는 거래 상태
 				$('#state'+items.order_no+' option').prop('disabled',true);
 				$('#state'+items.order_no).prop('disabled',true);
 			}
-			if(items.order_state!=0) {//한번 진행된 거래는 주문완료로 복귀하지 않음
-				$('#state'+items.order_no+' option[value=0]').prop('disabled',true);
-				$('#state'+items.order_no+' option[value=8]').prop('disabled',true);
+			else if(items.order_state==1||items.order_state==2){//입금 완료 후나 배송 준비중에 각종 완료행위로 이동할 수 없다.
+				$('#state'+items.order_no+' option[value=5]').prop('disabled',true);
+				$('#state'+items.order_no+' option[value=6]').prop('disabled',true);
+				$('#state'+items.order_no+' option[value=7]').prop('disabled',true);				
 			}
-			if(items.order_state==3){//배송중에는 환불/거래완료만 가능
+			else if(items.order_state==3||items.order_state==5){//배송중,배송완료에는 환불요청/거래완료만 가능
+				if(items.order_state==5) $('#state'+items.order_no+' option[value=3]').prop('disabled',true);
 				$('#state'+items.order_no+' option[value=1]').prop('disabled',true);
-				$('#state'+items.order_no+' option[value=2]').prop('disabled',true);	
+				$('#state'+items.order_no+' option[value=2]').prop('disabled',true);
+				$('#state'+items.order_no+' option[value=6]').prop('disabled',true);
+				$('#state'+items.order_no+' option[value=7]').prop('disabled',true);
 			}
-			if(items.order_state==4){//환불중에는 환불만 가능
+			else if(items.order_state==4){//환불중에는 환불만 가능
 				$('#state'+items.order_no+' option[value=1]').prop('disabled',true);
 				$('#state'+items.order_no+' option[value=2]').prop('disabled',true);	
 				$('#state'+items.order_no+' option[value=3]').prop('disabled',true);
 				$('#state'+items.order_no+' option[value=5]').prop('disabled',true);	
 				$('#state'+items.order_no+' option[value=7]').prop('disabled',true);	
 			}
+			
 			$('#state'+items.order_no).on('change',function(){
 				var order_state = $(this).val();
 				var order_no = $(this).parent().prev().prev().prev().prev().prev().text();

@@ -60,7 +60,16 @@
 			<div class="col-3" align="center">
 				<font id="order_logtime"></font>
 			</div>					  				  	
-		</div>		
+		</div>	
+		<div class="form-row">	
+			<div class="col-2" align="center">
+				<label for="order_statement" class="under-line-title">비고</label>
+		  	</div>	
+			<div class="col-10" align="center">
+				<input type="text" readonly class="form-control-plaintext inline-form" id="order_statement"/>			
+			</div>	
+		</div>
+					
 		<hr class="sub-hr" noshade/>		
 		<h5 class="sub-title-undeline">[배송 정보]</h5>
 		<div class="form-row" >	
@@ -220,14 +229,7 @@
 			</div>
 			<div class="col-4"></div>
 		</div>			
-		<div class="form-row">	
-			<div class="col-2" align="center">
-				<label for="order_statement" class="under-line-title">비고</label>
-		  	</div>	
-			<div class="col-10" align="center">
-				<input type="text" readonly class="form-control-plaintext inline-form" id="order_statement"/>			
-			</div>	
-		</div>
+
 		<div class="form-row">					
 			<div class="col-2" align="center">
 				<label for="order_deliverynum" class="under-line-title">배송장번호</label>
@@ -258,7 +260,7 @@
 		</div>	
 		<div class="form-row justify-content-center">
 			<div class="form-group col" align="center">      								
-				<input type="button" class="btn btn-outline-danger btn-block" value="확인"/>
+				<input type="button" class="btn btn-outline-danger btn-block" id="stateChangeBtn" value="확인"/>
 			</div>
 		</div>
 		</form>								

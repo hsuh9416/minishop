@@ -457,9 +457,94 @@ public class TradingController {
 					
 				}
 			}
+			int subResult = tradingDAO.cancelPayment(orderDTO.getOrder_no());
+			if(subResult==0) return "fail";
 		}
 		return "fail";
 	}
+	//12. 환불요청 팝업창 이동하기
+	@RequestMapping(value="/refundForm.do",method = RequestMethod.GET)
+	public ModelAndView refundForm(@RequestParam String order_no) {
+		ModelAndView mav = new ModelAndView();
+			mav.addObject("order_no", order_no);		
+			mav.setViewName("/trading/refundForm");
+			
+		return mav;
+	}	
+	
+	//13. 환불요청하기
+	@RequestMapping(value="/requestRefund.do",method = RequestMethod.POST)
+	@ResponseBody
+	public String requestRefund(@RequestParam String order_no,String order_refundaccount,String order_statement) {
+		
+		OrderDTO orderDTO = tradingDAO.getOrderInfo(order_no);
+			orderDTO.setOrder_logtime(new Date());
+			
+		MessageDTO messageDTO = new MessageDTO();
+		AdminDTO adminDTO = adminDAO.getAdmin();	
+		
+		List<ProductDTO> requestInventory = jsonTrans.makeJsonToList(orderDTO.getOrderlist_json());
+
+		for(ProductDTO dto : requestInventory) {
+				int returnedStock = dto.getStock()+dto.getCart_qty();
+				Map<String,String> map = new HashMap<String,String>();
+					map.put("stock", returnedStock+""); 
+					map.put("unitcost", dto.getUnitcost()+""); 
+					map.put("productid", dto.getProductID());
+					map.put("ordernum","0");
+				productDAO.inventoryUpdate(map);
+				dto.setStock(returnedStock);
+		}	
+		
+		orderDTO.setOrderlist_json(jsonTrans.makeListToJson(requestInventory));
+		int subResult = tradingDAO.implementingInventoryChange(orderDTO);
+		if(subResult==0) return "fail";
+		
+			orderDTO.setOrder_statement("[환불진행중 (전환일자:"+new SimpleDateFormat("yyyy.MM.dd").format(new Date())+")] [환불사유 : "+order_statement+"]");
+			messageDTO = mailing.sendRefundInfoMail(messageDTO, orderDTO);
+			mailing.sendMail(adminDTO, messageDTO);		
+		
+		int result = tradingDAO.modifyOrderAdmin(orderDTO);
+		if(result==0) return "fail";
+		 
+		return "success";
+	}	
+	
+	//14. 수취확인하기
+	@RequestMapping(value="/confirmDelivery.do",method = RequestMethod.GET)
+	@ResponseBody
+	public void confirmDelivery(@RequestParam String order_no) {
+		
+		OrderDTO orderDTO = tradingDAO.getOrderInfo(order_no);
+			orderDTO.setOrder_logtime(new Date());
+		MemberDTO memberDTO = memberDAO.getUser(orderDTO.getOrder_id());
+		MessageDTO messageDTO = new MessageDTO();
+		AdminDTO adminDTO = adminDAO.getAdmin();
+		if(memberDTO!=null) {
+			String state="일반"; double pointRate = 0.05;
+			
+			if(memberDTO.getState()==2) {
+				state="특별";
+				pointRate = 0.10;
+			}
+			else if(memberDTO.getState()==0) {
+				state="특수";
+				pointRate = 0.15;
+			}
+			
+			int point = (int)Math.round(orderDTO.getOrder_total()*pointRate);
+			
+			memberDAO.setPoint(memberDTO.getId(), point+"");
+			
+			messageDTO = mailing.sendOrderCompletedMail(messageDTO, orderDTO,state,point);
+			mailing.sendMail(adminDTO, messageDTO);		
+		}
+		
+		orderDTO.setOrder_statement("[거래완료 (완료일자:"+new SimpleDateFormat("yyyy.MM.dd").format(new Date())+")]");
+		
+		tradingDAO.modifyOrderAdmin(orderDTO);
+
+	}		
 	
 	//1333. 배너 호출하기
 	@RequestMapping(value="/getBannerList.do",method = RequestMethod.GET)

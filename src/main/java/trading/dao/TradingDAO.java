@@ -44,7 +44,11 @@ public interface TradingDAO {
 	void setPayment(OrderDTO orderDTO);
 	OrderDTO getOrderInfo(String order_no);
 	List<OrderDTO> getPaymentInfo(String order_no);
-	void modifyOrderAdmin(OrderDTO orderDTO);
+	int modifyOrderAdmin(OrderDTO orderDTO);
+	int changeOrderInfo(Map<String, Object> map);
+	int updatePayment(OrderDTO orderDTO);
+	int implementingInventoryChange(OrderDTO orderDTO);
+	int cancelPayment(int order_no);
 //--------주문 : END--------//	
 //--------이벤트 : START--------//	
 	List<EventDTO> getBannerList();
@@ -56,6 +60,10 @@ public interface TradingDAO {
 	int modifyDeliveryPolicy(DeliveryDTO deliveryDTO);
 	int verifyAdditionalFee(String zipcode);
 //--------배송료 : END--------//
+
+
+
+
 
 
 

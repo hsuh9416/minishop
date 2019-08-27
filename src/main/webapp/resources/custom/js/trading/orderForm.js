@@ -396,7 +396,7 @@ $('#choiceOrder').click(function(){
 					'order_receiver':$('#order_receiver').val(),
 					'order_tel':$('#order_tel').val(),
 					'order_email':$('#order_email').val(),
-					'order_address':'['+$('#zipcode').val()+'] '+$('#addr1').val()+' '+$('#addr2').val(),
+					'order_address':'['+$('#zipcode').val()+'] '+$('#addr1').val()+','+$('#addr2').val(),
 					'point':$('#point').val(),
 					'coupon_amount':$('#coupon_no option:selected').val(),					
 					'coupon_option':$('#coupon_no option:selected').text(),

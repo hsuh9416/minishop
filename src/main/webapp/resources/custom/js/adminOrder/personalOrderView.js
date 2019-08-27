@@ -87,8 +87,19 @@ $(document).ready(function(){
 			
 			$('#order_no').text(orderDTO.order_no);
 			$('#order_date').text(formatDate(orderDTO.order_date));
-			$('#order_state').text(orderDTO.order_state);
+			
 			originalState = orderDTO.order_state;
+			
+			if(originalState==0) $('#order_state').text('주문완료');
+			else if(originalState==1) $('#order_state').text('입금완료');
+			else if(originalState==2) $('#order_state').text('배송대기중');
+			else if(originalState==3) $('#order_state').text('배송중');
+			else if(originalState==4) $('#order_state').text('환불진행중');
+			else if(originalState==5) $('#order_state').text('배송완료');
+			else if(originalState==6) $('#order_state').text('환불완료');
+			else if(originalState==7) $('#order_state').text('수취완료');
+			else $('#order_state').text('주문취소');
+			
 			$('#order_name').text(orderDTO.order_name);
 			$('#order_id').text(orderDTO.order_id);
 			$('#order_logtime').text(formatDate(orderDTO.order_logtime));	
@@ -141,8 +152,17 @@ $(document).ready(function(){
 	});
 	if(newState!=originalState){
 		$('#changeDiv').show();
-		$('#originalState').text(originalState);
-		$('#newState').text(newState);
+
+		$('#originalState').text($('#order_state').text());
+		
+		if(newState==1) $('#newState').text('입금완료');
+		else if(newState==2) $('#newState').text('배송대기중');
+		else if(newState==3) $('#newState').text('배송중');
+		else if(newState==4) $('#newState').text('환불진행중');
+		else if(newState==5) $('#newState').text('배송완료');
+		else if(newState==6) $('#newState').text('환불완료');
+		else if(newState==7) $('#newState').text('수취완료');
+		else $('#newState').text('주문취소');		
 	}
 	else $('#changeDiv').hide();
 });
@@ -169,8 +189,10 @@ $('#doModifyDelivery').click(function(){
 	else{
 		$.ajax({
 			type: 'post',
-			url: '/minishop/admin/order/changeDeliberyInfo.do',
-			data:{},
+			url: '/minishop/admin/order/changeOrderInfo.do',
+			data:{'order_address':'['+$('#zipcode').val()+'] '+$('#addr1').val()+','+$('#addr2').val(),
+				  'modify_type' : 'deliveryInfo',
+				  'order_no':$('input[name=order_no]').val()},
 			dataType: 'text',
 			success: function(data){
 				if(data=='success'){
@@ -204,35 +226,94 @@ $('#modifyContact').click(function(){
 	if(($('#order_tel').val()==orderDTO.order_tel) && ($('#order_email').val()==orderDTO.order_email)) alert('변동 사항이 없으므로 반영하지 않습니다.');
 	else if(!checkTel($('#order_tel').val()||!checkEmail($('#order_email').val()))) alert('형식이 올바르지 않습니다.');
 	else{
-		alert('마음의 준비중!');
+		$.ajax({
+			type: 'post',
+			url: '/minishop/admin/order/changeOrderInfo.do',
+			data:{'order_tel':$('#order_tel').val(),
+				  'order_email' : $('#order_email').val(),
+				  'modify_type' : 'contactInfo',
+				  'order_no':$('input[name=order_no]').val()},
+			dataType: 'text',
+			success: function(data){
+				if(data=='success'){
+					alert('성공적으로 반영되었습니다.');
+					window.location.reload();
+				}
+				else{
+					alert('오류로 인하여 변경이 실패하였습니다. 다시 한번 시도해주세요.');
+				}
+			}
+		});
 	}
 });
 
 $('#extraAddCheck').click(function(){
-	if($(this).is(':checked')){
-		$('#order_statement').prop('readonly',false);		
+	if($(this).is(':checked')){	
 		$('#order_deliverynum').prop('readonly',false);	
 		$('#order_refundaccount').prop('readonly',false);			
 		$('#modifyExtra').prop('disabled',false);			
 	}
-	else {
-
-		$('#order_statement').prop('readonly',false);		
-		$('#order_deliverynum').prop('readonly',false);	
-		$('#order_refundaccount').prop('readonly',false);	
+	else {	
+		$('#order_deliverynum').prop('readonly',true);	
+		$('#order_refundaccount').prop('readonly',true);	
 		$('#modifyExtra').prop('disabled',true);	
 		window.location.reload();
 	}
 });
 
 $('#modifyExtra').click(function(){
-	if(($('#order_statement').val()==orderDTO.order_statement) && 
-			($('#order_deliverynum').val()==deliveryNum) && 
-			($('#order_refundaccount').val()==refundAccount)) alert('변동 사항이 없으므로 반영하지 않습니다.');
-	else if($('#order_statement').val()=='') alert('해당 거래에 대한 추가 설명은 필수 사항입니다.');
+	if($('#order_deliverynum').val()==deliveryNum && $('#order_refundaccount').val()==refundAccount) alert('변동 사항이 없으므로 반영하지 않습니다.');
 	else if(newState>2&&newState<8&&($('#order_deliverynum').val()==''||$('#order_deliverynum').val()=='[미정]')) alert('송장번호의 입력을 확인해주세요.');
 	else if((newState==4 || newState==6) && ($('#order_refundaccount').val()==''||$('#order_refundaccount').val()=='[미입력]')) alert('환불계좌의 입력을 확인해주세요.');
 	else{
-		alert('마음의 준비중!');
+		if($('#order_deliverynum').val()=='') $('#order_deliverynum').val('[미정]');
+		if($('#order_refundaccount').val()=='') $('#order_refundaccount').val('[미입력]');
+		$.ajax({
+			type: 'post',
+			url: '/minishop/admin/order/changeOrderInfo.do',
+			data:{'order_deliverynum' : $('#order_deliverynum').val(),				
+				  'order_refundaccount' : $('#order_refundaccount').val(),
+				  'modify_type' : 'extraInfo',
+				  'order_no':$('input[name=order_no]').val()},
+			dataType: 'text',
+			success: function(data){
+				if(data=='success'){
+					alert('성공적으로 반영되었습니다.');
+					window.location.reload();
+				}
+				else{
+					alert('오류로 인하여 변경이 실패하였습니다. 다시 한번 시도해주세요.');
+				}
+			}
+		});
+	}
+});
+
+$('#stateChangeBtn').click(function(){
+	if(newState>2&&newState<8&&($('#order_deliverynum').val()==''||$('#order_deliverynum').val()=='[미정]')) alert('송장번호의 입력을 확인하고 먼저 주문서에 반영해주세요.');
+	else if((newState==4 || newState==6) && ($('#order_refundaccount').val()==''||$('#order_refundaccount').val()=='[미입력]')) alert('환불계좌의 입력을 확인하고 먼저 주문서에 반영해주세요.');
+	else{
+		var realChange = confirm('[주의]거래상태는 현재 입력된 정보가 아닌 반영이 완료된 정보에 기반하여 변경됩니다.\n'+
+								'배송정보,연락정보,추가정보가 정확하게 수정 및 반영되었는지 다시 한번 확인하신 후가 아니라면 취소 버튼을'+
+								'확인이 완료되어 진행하시려면 확인 버튼을 클릭해주세요.');
+		if(realChange){
+			$.ajax({
+				type: 'post',
+				url: '/minishop/admin/order/changeOrderState.do',
+				data:{'newState' : newState,				
+					  'order_no':$('input[name=order_no]').val()},
+				dataType: 'text',
+				success: function(data){
+					if(data=='success'){
+						alert('성공적으로 반영되었습니다.');
+						window.close();
+					}
+					else{
+						alert('오류로 인하여 변경이 실패하였습니다. 다시 한번 시도해주세요.');
+					}
+				}
+			});			
+		}
+		else alert('취소하셨습니다. 주문 정보의 변경 상태를 꼼꼼히 확인해주시기 바랍니다.');
 	}
 });

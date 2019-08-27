@@ -135,12 +135,12 @@ $(document).ready(function(){
 				
 				$('input[name=refundBtn]').on('click',function(){
 					var order_no =$(this).parent().prev().prev().prev().prev().text();
-					var refundPop = window.open('/minishop/member/refundForm.do?order_no='+order_no,'환불요청','width=455,height=455,resizable=no');
+					var refundPop = window.open('/minishop/trading/refundForm.do?order_no='+order_no,'환불요청','width=455,height=455,resizable=no');
 				});
 				
 				$('input[name=confirmBtn]').on('click',function(){
 					var order_no =$(this).parent().prev().prev().prev().prev().text();
-					var realConfirm = confirm('수취확인을 하신 후에는 교환 또는 환불이 제한됩니다. 또한 구입하신 부분에 대한 포인트가 적립됩니다. 수취확인하시겠습니까?');
+					var realConfirm = confirm('수취확인을 하신 후에는 교환 또는 환불이 제한됩니다. 수취확인하시겠습니까?');
 					$.ajax({
 						type: 'get',
 						url: '/minishop/trading/confirmDelivery.do',

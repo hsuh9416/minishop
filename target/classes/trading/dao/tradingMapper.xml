@@ -207,22 +207,41 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <!-- 주문: 주문서 수정(상태 변경) -->
 <update id="modifyOrderAdmin" parameterType="order">
 	UPDATE ORDERS set order_state = #{order_state},
-	 					<if test="order_deliverynum !='' and order_deliverynum !=null"> 
-					      order_deliverynum =#{order_deliverynum},
-						</if>
-	 					<if test="order_refundaccount !='' and order_refundaccount !=null"> 
-					 	 order_refundaccount=#{order_refundaccount},
-					  	</if>
 					  	order_statement=#{order_statement},
-					  	order_logtime=SYSDATE where order_no = #{order_no}
+					  	order_logtime=SYSDATE 
+					  	where order_no = #{order_no}
 </update>
 
-<!-- 주문: 결제/환불준비시 수정 -->
-<update id="modifyPayment" parameterType="order">
-	UPDATE PAYMENT set payment_date=SYSDATE,payment_state = #{payment_state} where order_no = #{order_no} and payment_method=${payment_method}
+<!-- 주문: 주문서 정보 수정-->
+<update id="changeOrderInfo" parameterType="java.util.Map">
+	UPDATE ORDERS set 
+				<if test="modify_type eq 'deliveryInfo'"> 	
+					order_address =#{order_address},
+				</if>
+				<if test="modify_type eq 'contactInfo'"> 
+					order_tel =#{order_tel},
+					order_email =#{order_email},					
+				</if>
+				<if test="modify_type eq 'extraInfo'"> 
+					order_deliverynum =#{order_deliverynum},
+					order_refundaccount =#{order_refundaccount},	
+					order_statement =#{order_statement},								
+				</if>
+					 order_logtime=SYSDATE 
+					 where order_no = #{order_no}
 </update>
 
-<!-- 주문: 결제/환불준비시 수정 -->
+<!-- 주문: 입금완료시 수정-->
+<update id="updatePayment" parameterType="order">
+	UPDATE PAYMENT set payment_date=SYSDATE,payment_state = '[입금완료]'||payment_state where payment_date=null and order_no = #{order_no}
+</update>
+
+<!-- 주문: 재고변경 후 목록 수정-->
+<update id="implementingInventoryChange" parameterType="order">
+	UPDATE ORDERS set orderlist_json=#{orderlist_json} where order_no = #{order_no}
+</update>
+
+<!-- 주문: 환불,취소시 삭제 -->
 <delete id="cancelPayment" parameterType="String">
 	delete PAYMENT where order_no = #{order_no}
 </delete>
