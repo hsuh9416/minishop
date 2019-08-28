@@ -19,16 +19,17 @@
 								<!--  My Account -->
 								<li class="account">
 									<a href="#">
-										<c:if test="${memberDTO == null}">My Account</c:if>
+										<c:if test="${memberDTO == null&&guestDTO== null}">My Account</c:if>
 										<c:if test="${memberDTO != null}">${memberDTO.name} 님</c:if>
+										<c:if test="${guestDTO != null}">${guestDTO.guest_name} 님</c:if>
 										<i class="fa fa-angle-down"></i>
 									</a>
 									<ul class="account_selection">
-										<c:if test="${memberDTO == null}">
+										<c:if test="${memberDTO == null&&guestDTO== null}">
 											<li><a id="goLogin">Sign In</a></li>
 											<li><a id="goSignUp">Register</a></li>										
 										</c:if>
-										<c:if test="${memberDTO != null}">
+										<c:if test="${memberDTO != null||guestDTO != null}">
 											<li><a id="goLogout" href="#">SignOut</a></li>
 											<li><a id="goUserView" href="/minishop/member/memberView.do">My Info</a></li>																					
 										</c:if>										
@@ -88,16 +89,17 @@
 			<ul class="menu_top_nav">
 				<li class="menu_item has-children">
 					<a href="#">
-						<c:if test="${memberDTO == null}">My Account</c:if>
+						<c:if test="${memberDTO == null&&guestDTO == null}">My Account</c:if>
 						<c:if test="${memberDTO != null}">${memberDTO.name} 님</c:if>
+						<c:if test="${guestDTO != null}">${guestDTO.guest_name} 님</c:if>
 						<i class="fa fa-angle-down"></i>
 					</a>
 					<ul class="menu_selection">
-						<c:if test="${memberDTO == null}">
+						<c:if test="${memberDTO == null&&guestDTO == null}">
 							<li><a id="mgoLogin">Sign In</a></li>
 							<li><a id="mgoSignUp">Register</a></li>
 						</c:if>
-						<c:if test="${memberDTO != null}">
+						<c:if test="${memberDTO != null||guestDTO != null}">
 							<li><a id="mgoLogout" href="#">Sign Out</a></li>
 							<li><a id="mgoUserView" href="/minishop/member/memberView.do">My Info</a></li>														
 						</c:if>

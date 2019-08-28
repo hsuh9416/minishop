@@ -225,7 +225,11 @@ public class TradingDAOImpl implements TradingDAO {
 	public void deleteOrder(String order_no) {
 		sqlSession.delete("tradingSQL.deleteOrder", order_no);
 	}
-	
+	//비회원 로그인
+	@Override
+	public OrderDTO orderCheck(String id) {
+		return sqlSession.selectOne("tradingSQL.orderCheck",id);
+	}
 //----------- 주문 : END ----------//	
 
 //----------- 이벤트 : START ----------//	

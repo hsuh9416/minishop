@@ -12,7 +12,6 @@ import org.springframework.stereotype.Repository;
 
 import mail.bean.MessageDTO;
 import member.bean.MemberDTO;
-import trading.bean.OrderDTO;
 /*
  * MEMBER,QAMESSAGE DB 제어 메소드를 관리하는 클래스
  */
@@ -71,15 +70,6 @@ public class MemberDAOImpl implements MemberDAO {
 	@Override
 	public void deleteMember(String id) {
 		sqlSession.update("memberSQL.deleteMember", id);	
-	}
-
-	//8. 주문 정보 호출(비회원 로그인)
-	@Override
-	public OrderDTO orderCheck(String id, String pwd) {
-		Map<String,String> map = new HashMap<String,String>();
-			map.put("orderId",id);
-			map.put("orderPwd",pwd);
-		return sqlSession.selectOne("memberSQL.orderCheck",map);
 	}
 
 	//9. 아이디 찾기 결과 반환

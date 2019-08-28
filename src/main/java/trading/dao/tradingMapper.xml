@@ -246,6 +246,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	delete ORDERS where order_no = #{order_no}
 </delete>
 
+<!-- 주문: 비회원 로그인 -->
+<select id="orderCheck" parameterType="String" resultType="order">
+	select * from ORDERS where order_id=#{id}
+</select>
+
 <!-- 이벤트 : 배너리스트 호출 -->
 <select id="getBannerList" resultType="event">
 	SELECT * from EVENT

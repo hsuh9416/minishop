@@ -6,7 +6,6 @@ import java.util.Map;
 
 import mail.bean.MessageDTO;
 import member.bean.MemberDTO;
-import trading.bean.OrderDTO;
 /*
  * MemberDAOImple의 인터페이스
  */
@@ -20,7 +19,6 @@ public interface MemberDAO {
 	void keepLogin(String id, String sessionId, Date sessionLimit);
 	MemberDTO checkLoginBefore(String value);
 	void deleteMember(String id);
-	OrderDTO orderCheck(String id, String pwd);
 	MemberDTO findLostId(Map<String, String> map);
 	void setNewPwd(MemberDTO memberDTO);
 	MemberDTO getUser(String id);

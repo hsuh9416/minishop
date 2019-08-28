@@ -69,7 +69,7 @@
 						</div>					  		  	
 					</div> 		
 					<div class="form-row">
-						<p id="checkP">[주의]회원님께서는 회원 아이디로 조회 부탁드립니다</p>
+						<p id="checkP"></p>
 					</div>								   
 					<div class="form-row">
 						<div class="col" align="right">             	

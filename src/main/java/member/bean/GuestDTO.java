@@ -14,5 +14,5 @@ public class GuestDTO {
 	private String guest_name;
 	private String guest_address;
 	private String guest_tel;
-	private String order_no;
+	private int order_no;
 }

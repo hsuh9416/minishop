@@ -7,7 +7,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="login" parameterType="java.util.Map" resultType="member">
 		select * from member where id=#{id} and pwd=#{pwd}
 	</select>
-
 	<!-- 중복 아이디 체크 -->
 	<select id="checkId" parameterType="String" resultType="member">
 		select * from member where id=#{id}

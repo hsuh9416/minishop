@@ -375,7 +375,7 @@ public class TradingController {
 				guestDTO.setGuest_name(orderDTO.getOrder_name());
 				guestDTO.setGuest_address(orderDTO.getOrder_address());
 				guestDTO.setGuest_tel(orderDTO.getOrder_tel());
-				guestDTO.setOrder_no(orderDTO.getOrder_id());
+				guestDTO.setOrder_no(orderDTO.getOrder_no());
 				session.setAttribute("guestDTO", guestDTO);
 		}	
 		

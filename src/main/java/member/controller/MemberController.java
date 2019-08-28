@@ -92,22 +92,8 @@ public class MemberController {
 		List<ProductDTO> cartList;
 		
 			//(1) 회원/주문 정보 찾기
-		MemberDTO memberDTO = memberDAO.checkId(id);
-		
-		if(memberDTO==null) {
-			OrderDTO orderDTO = memberDAO.orderCheck(id,pwd);
-			if(orderDTO==null) return "fail";
-			else {
-				GuestDTO guestDTO = new GuestDTO();
-					guestDTO.setGuest_id(orderDTO.getOrder_id());
-					guestDTO.setGuest_pwd(orderDTO.getOrder_pwd());
-					guestDTO.setGuest_name(orderDTO.getOrder_name());
-					guestDTO.setGuest_address(orderDTO.getOrder_address());
-					guestDTO.setGuest_tel(orderDTO.getOrder_tel());
-					guestDTO.setOrder_no(orderDTO.getOrder_id());
-					session.setAttribute("guestDTO", guestDTO);
-				return "guestLogin";}}
-		
+			MemberDTO memberDTO = memberDAO.checkId(id);
+				
 			//(2) 비밀번호 일치 확인
 			objectPwd = memberDTO.getPwd();
 			if(passwordEncoder.matches(pwd, objectPwd)) {
@@ -141,8 +127,31 @@ public class MemberController {
 					return "userLogin";}}	
 			return "fail";
 	}
-
-	//4. 로그아웃하기
+	
+	//4. 주문번호 로그인
+	@RequestMapping(value="/orderCheck.do",method = RequestMethod.POST)
+	@ResponseBody
+	public String orderCheck(@RequestParam String id, String pwd,HttpSession session){
+		MemberDTO memberDTO = memberDAO.checkId(id);
+		if(memberDTO!=null) return "memberLogin";
+		
+		OrderDTO orderDTO = tradingDAO.orderCheck(id);
+		if(orderDTO==null) return "fail";
+		String objectPwd = orderDTO.getOrder_pwd();
+		if(!passwordEncoder.matches(pwd, objectPwd)) return "pwdMissMatch"; 
+		GuestDTO guestDTO = new GuestDTO();
+				guestDTO.setGuest_id(orderDTO.getOrder_id());
+				guestDTO.setGuest_pwd(orderDTO.getOrder_pwd());
+				guestDTO.setGuest_name(orderDTO.getOrder_name());
+				guestDTO.setGuest_address(orderDTO.getOrder_address());
+				guestDTO.setGuest_tel(orderDTO.getOrder_tel());
+				guestDTO.setOrder_no(orderDTO.getOrder_no());
+				session.setAttribute("guestDTO", guestDTO);
+					
+			return orderDTO.getOrder_no()+"";
+	}
+			
+	//5. 로그아웃하기
 	@RequestMapping(value="/logout.do",method=RequestMethod.GET)
 
 	public ModelAndView logout(HttpServletRequest request,HttpServletResponse response, HttpSession session){

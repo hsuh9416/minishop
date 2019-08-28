@@ -43,6 +43,7 @@ public class PreInterceptors extends HandlerInterceptorAdapter{
 		HttpSession session = request.getSession();	
 		String[] addr = request.getRequestURI().split("\\.");
 		MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");//현재 로그인 여부부터 확인
+		GuestDTO guestDTO = (GuestDTO)session.getAttribute("guestDTO");
 		if(uri.contains("/storage/")||uri.contains("/main/")) return true;//storage,main 누구나 접근 가능함
 		else if(uri.contains("/getBannerList.do")||uri.contains("/getUserProductList.do")) return true;//배너와 상품 목록을 불러오는 과정에도 유효성 검사 배제
 		//END 0.공통/
@@ -89,10 +90,11 @@ public class PreInterceptors extends HandlerInterceptorAdapter{
 			logger.info("요청한 주소명: "+request.getRequestURI());
 			logger.info("로그인 여부를 체크합니다.");			
 		if(memberDTO == null) {		
-			GuestDTO guestDTO = (GuestDTO)session.getAttribute("guestDTO");
 			if((uri.contains("/trading/orderView")||
 				uri.contains("/qa/")||
-				uri.contains("/review/")) && guestDTO!=null) return true;
+				uri.contains("/review/")||
+				uri.contains("logout")||
+				uri.contains("personalQAForm")) && guestDTO!=null) return true;
 			logger.info("올바르지 않은 접근입니다.");	
 			response.sendRedirect(request.getContextPath()+"/common/noLogin.jsp");//경고 페이지 이동
 			return false;
@@ -120,7 +122,7 @@ public class PreInterceptors extends HandlerInterceptorAdapter{
 			if((uri.contains("/member/loginForm") ||
 				uri.contains("/member/loginModal") ||
 				uri.contains("/member/findForm") ||				
-				uri.contains("/member/writeForm")) && memberDTO !=null) {
+				uri.contains("/member/writeForm")) && (memberDTO !=null||guestDTO!=null)) {
 				logger.info("요청한 주소명: "+request.getRequestURI());
 				logger.info("로그인 후에 접근할 수 없는 경로입니다.");
 				response.sendRedirect(request.getContextPath()+"/main/home.do");
