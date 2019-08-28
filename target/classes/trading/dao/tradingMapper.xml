@@ -82,14 +82,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <!-- 쿠폰: 해당 회원 지급 쿠폰 수정하기(사유:쿠폰 사용) -->
 <update id="modifyUserBenefit" parameterType="java.util.Map">
-	update BENEFIT_GRANT set
- 		<if test="personal_code ==''"> 
- 			personal_code=null
-		</if>
- 		<if test="personal_code !=''"> 
- 			personal_code=#{personal_code}
-		</if>
-		where coupon_no = #{coupon_no} and grant_id=#{id} 
+	update BENEFIT_GRANT set personal_code=#{personal_code} where coupon_no = #{coupon_no} and grant_id=#{id} 
 </update>
 
 <!-- 쿠폰: 해당 회원 지급 쿠폰 삭제하기(사유:계정삭제) -->
@@ -102,7 +95,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	SELECT * from BENEFIT_GRANT 
 	inner join COUPON_BOOK
 	on BENEFIT_GRANT.COUPON_NO = COUPON_BOOK.COUPON_NO
-	where grant_id=#{id} and BENEFIT_GRANT.PERSONAL_CODE is not null
+	where grant_id=#{id} 
+		and BENEFIT_GRANT.PERSONAL_CODE is not null
+		and BENEFIT_GRANT.COUPON_DUEDATE > SYSDATE
 </select>
 
 <!-- 주문 : (관리자) 총 개수 가져오기 -->
@@ -244,6 +239,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <!-- 주문: 환불,취소시 삭제 -->
 <delete id="cancelPayment" parameterType="String">
 	delete PAYMENT where order_no = #{order_no}
+</delete>
+
+<!-- 주문: 거래 내역 삭제 -->
+<delete id="deleteOrder" parameterType="String">
+	delete ORDERS where order_no = #{order_no}
 </delete>
 
 <!-- 이벤트 : 배너리스트 호출 -->

@@ -10,43 +10,18 @@
 	
 	<div class="col-lg-3" style="padding-top: 20px;">    
 		<div class="position-fixed" id="menuDiv">
-	
+				<!-- 사용자 -->
 			<c:if test="${location=='home'}">
-		        <h2>바로가기</h2>
+		         <h2>Welcome<br><Strong>Kissin'</Strong> <font style="color:red;">BUGS</font></h2>
 			     <div class="list-group list-group-lg">
 			     	  <a href="/minishop/main/introduce.do" class="list-group-item">About Kissin' Bugs</a>
 			          <a href="/minishop/product/categories.do?product_category_name=ALL" class="list-group-item">상품 카테고리</a>
 			          <a href="/minishop/product/eventProductList.do?condition=newArrival" class="list-group-item">특별전</a>
 			          <a href="/minishop/main/userContact.do" class="list-group-item">찾아오시는 길</a>
 			     </div>			
-			</c:if>
-			<c:if test="${location=='userContact'}">
-		        <h2>찾아 오시는 길</h2>
-			     <div class="list-group list-group-lg">
-			          <a href="/minishop/main/home.do" class="list-group-item">메인</a>
-			          <a href="/minishop/main/introduce.do" class="list-group-item">About Kissin' Bugs</a>
-			          <a href="javascript:history.back()" class="list-group-item">돌아가기</a>
-			     </div>			
-			</c:if>	
-			<c:if test="${location=='introduce'}">
-		        <h2>About<br><Strong>Kissin'</Strong> <font style="color:red;">BUGS</font></h2>
-			     <div class="list-group list-group-lg">
-			          <a href="/minishop/main/home.do" class="list-group-item">메인</a>
-			          <a href="/minishop/main/userContact.do" class="list-group-item">찾아오시는 길</a>
-			          <a href="javascript:history.back()" class="list-group-item">돌아가기</a>
-			     </div>			
-			</c:if>						
-			<c:if test="${location=='adminHome'}">
-		        <h2>빠른 조회</h2>
-			     <div class="list-group list-group-lg">
-			          <a href="/minishop/admin/shop/salesInfo.do" class="list-group-item">매출현황</a>
-			          <a href="/minishop/admin/order/orderManage.do" class="list-group-item">고객주문 조회</a>			          
-			          <a href="/minishop/admin/user/personalQAManager.do" class="list-group-item">1:1문의 조회</a>
-			          <a href="/minishop/admin/board/qaManage.do" class="list-group-item">일반문의 조회</a>
-			     </div>			
-			</c:if>			
+			</c:if>					
 			<c:if test="${location=='beforeLogin'}">
-		        <h2>WELCOME</h2>
+		        <h2>Welcome <br>Our <font style="color:red;">Members</font></h2>
 			     <div class="list-group list-group-lg">
 			          <a href="/minishop/member/writeForm.do" class="list-group-item">회원가입</a>			     
 			          <a href="/minishop/member/loginForm.do" class="list-group-item">로그인</a>	
@@ -60,27 +35,23 @@
 			          <a href="/minishop/board/review/reviewList.do" class="list-group-item">후기 게시판</a>				     
 			          <a href="javascript:history.back()" class="list-group-item">돌아가기</a>
 			     </div>					
-			</c:if>				
-	
-			<c:if test="${location=='adminQAList'}">
-		        <h2>답변대기중인<br>문의글 현황</h2>
-			     <div class="list-group list-group-lg">		     
-			          <a href="javascript:history.back()" class="list-group-item">돌아가기</a>
-			     </div>			        			
-			</c:if>
-			<c:if test="${location=='adminQA'}">
-		        <h2>답변대기중인<br>문의글</h2>			
-			     <div class="list-group list-group-lg">		     
-			          <a href="/minishop/admin/board/qaManage.do" class="list-group-item">목록으로</a>
-			     </div>			        
-			</c:if>
-	
+			</c:if>					
 			<c:if test="${location=='member'}">
 		        <h2>MY ACCOUNT</h2>			
 			     <div class="list-group list-group-lg">
 			          <a href="/minishop/member/memberView.do" class="list-group-item">My Info</a>
 			          <a href="/minishop/member/memberOrderlist.do" class="list-group-item">내 주문 현황</a>
 			          <a href="/minishop/member/memberCouponlist.do" class="list-group-item">내 쿠폰 현황</a>			     
+			          <a href="javascript:history.back()" class="list-group-item">돌아가기</a>
+			     </div>					
+			</c:if>
+			<c:if test="${location=='orderUser'}">
+		        <h2>주문/거래 현황</h2>			
+			     <div class="list-group list-group-lg">
+			     	<c:if test="${memberDTO!=null&&memberDTO!=''}">
+			     		<a href="/minishop/member/memberOrderlist.do" class="list-group-item">주문 목록</a>
+			     	</c:if>
+			          <a href="/minishop/trading/userCart.do" class="list-group-item">장바구니</a>			     
 			          <a href="javascript:history.back()" class="list-group-item">돌아가기</a>
 			     </div>					
 			</c:if>			
@@ -92,7 +63,28 @@
 			          <a href="javascript:history.back()" class="list-group-item">돌아가기</a>
 			     </div>				
 			</c:if>	
-
+			<!-- 관리자 -->
+			<c:if test="${location=='adminHome'}">
+		        <h2>빠른 조회</h2>
+			     <div class="list-group list-group-lg">
+			          <a href="/minishop/admin/shop/salesInfo.do" class="list-group-item">매출현황</a>
+			          <a href="/minishop/admin/order/orderManage.do" class="list-group-item">고객주문 조회</a>			          
+			          <a href="/minishop/admin/user/personalQAManager.do" class="list-group-item">1:1문의 조회</a>
+			          <a href="/minishop/admin/board/qaManage.do" class="list-group-item">일반문의 조회</a>
+			     </div>			
+			</c:if>	
+			<c:if test="${location=='adminQAList'}">
+		        <h2>답변대기중인<br>문의글 현황</h2>
+			     <div class="list-group list-group-lg">		     
+			          <a href="javascript:history.back()" class="list-group-item">돌아가기</a>
+			     </div>			        			
+			</c:if>
+			<c:if test="${location=='adminQA'}">
+		        <h2>답변대기중인<br>문의글</h2>			
+			     <div class="list-group list-group-lg">		     
+			          <a href="/minishop/admin/board/qaManage.do" class="list-group-item">목록으로</a>
+			     </div>			        
+			</c:if>			
 			<c:if test="${location=='productAdmin'}">
 		        <h2>상품관리</h2>			
 			     <div class="list-group list-group-lg">

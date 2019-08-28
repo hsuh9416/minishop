@@ -5,6 +5,16 @@
 *{
 	font-family: 'Hanna', fantasy;
 }
+h5 .sub-title-undeline{
+	align: center;
+	text-decoration: underline;
+	text-underline-position:under;
+	padding-bottom: 15px;
+}
+
+.inline-form{
+	border-bottom: 1px solid;
+}
 
 hr.sub-hr{
 	border-top: double 3px;

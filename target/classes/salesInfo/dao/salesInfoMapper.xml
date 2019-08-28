@@ -6,8 +6,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <!-- STATE_OF_SALES : 기간별 매출 정보 호출하기 -->
 <select id="getSalesInfoList" resultType="salesInfo">
-	select * from STATE_OF_SALES
+	select * from SALES_INFO
 </select>
+<!-- STATE_OF_SALES : 시퀀스 넘버 받아오기 -->
+<select id="getSalesSeq" resultType="Integer">
+	select sales_seq.nextVal from dual
+</select>
+<insert id="uploadSalesInfo" parameterType="salesInfo">
+	insert into SALES_INFO values(#{sales_seq},
+								  #{order_no},
+								  #{order_id},
+								  #{sales_revenue},
+								  #{sales_payment_json},
+								  SYSDATE)
+</insert>
 
 </mapper>
 

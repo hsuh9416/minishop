@@ -31,6 +31,8 @@ import member.bean.MemberDTO;
 import member.dao.MemberDAO;
 import product.bean.ProductDTO;
 import product.dao.ProductDAO;
+import salesInfo.bean.SalesInfoDTO;
+import salesInfo.dao.SalesInfoDAO;
 import trading.bean.CouponDTO;
 import trading.bean.DeliveryDTO;
 import trading.bean.EventDTO;
@@ -55,6 +57,9 @@ public class TradingController {
 	@Autowired 
 	ProductDAO productDAO;
 
+	@Autowired
+	SalesInfoDAO salesInfoDAO;
+	
 	@Autowired
 	TradingDAO tradingDAO;
 	
@@ -81,6 +86,7 @@ public class TradingController {
 			session.setAttribute("shoppingCart", shoppingCart);
 		
 		ModelAndView mav = new ModelAndView();
+			mav.addObject("location", "orderUser");
 			mav.addObject("display", "/trading/userCart.jsp");
 			mav.setViewName("/main/home");
 			
@@ -226,6 +232,7 @@ public class TradingController {
 		
 		ModelAndView mav = new ModelAndView();	
 			mav.addObject("directOrder", directOrder);
+			mav.addObject("location", "orderUser");
 			mav.addObject("display", "/trading/orderForm.jsp");	
 			mav.setViewName("/main/home");
 			
@@ -403,6 +410,7 @@ public class TradingController {
 	public ModelAndView orderView(@RequestParam String order_no) {
 		
 		ModelAndView mav = new ModelAndView();
+			mav.addObject("location", "orderUser");
 			mav.addObject("order_no", order_no);
 			mav.addObject("display", "/trading/orderView.jsp");
 			mav.setViewName("/main/home");
@@ -410,17 +418,20 @@ public class TradingController {
 		return mav;
 	}
 
-	//10. 주문 명세 호출 이동
+	//10. 주문 명세 호출
 	@RequestMapping(value="/getOrderInfo.do",method = RequestMethod.GET)
 	@ResponseBody
 	public ModelAndView getOrderInfo(@RequestParam String order_no) {
-		 OrderDTO orderDTO = tradingDAO.getOrderInfo(order_no);
-		ModelAndView mav = new ModelAndView();
+		OrderDTO orderDTO = tradingDAO.getOrderInfo(order_no);
+		List<OrderDTO> paymentInfo = tradingDAO.getPaymentInfo(order_no);
+		List<ProductDTO> productList = jsonTrans.makeJsonToList(orderDTO.getOrderlist_json());
+		ModelAndView mav = new ModelAndView();		
 			mav.addObject("orderDTO", orderDTO);
-			mav.addObject("display", "/trading/orderView.jsp");
-			mav.setViewName("/main/home");
+			mav.addObject("productList", productList);	
+			mav.addObject("paymentInfo", paymentInfo);		
+			mav.setViewName("jsonView");
 		
-		return mav;
+	return mav;	
 	}
 
 	//11. 주문 취소 요청 
@@ -457,7 +468,7 @@ public class TradingController {
 					
 				}
 			}
-			int subResult = tradingDAO.cancelPayment(orderDTO.getOrder_no());
+			int subResult = tradingDAO.cancelPayment(Integer.parseInt(order_no));
 			if(subResult==0) return "fail";
 		}
 		return "fail";
@@ -543,8 +554,34 @@ public class TradingController {
 		orderDTO.setOrder_statement("[거래완료 (완료일자:"+new SimpleDateFormat("yyyy.MM.dd").format(new Date())+")]");
 		
 		tradingDAO.modifyOrderAdmin(orderDTO);
+		
+		//매출계상하기
+		List<ProductDTO> salesProductList = jsonTrans.makeJsonToList(orderDTO.getOrderlist_json());
+		for(ProductDTO dto : salesProductList) {
+			int product_salesMount = dto.getProduct_salesMount()+dto.getCart_qty();
+			dto.setProduct_salesMount(product_salesMount);
+			productDAO.updateSalesProductInfo(dto);
+		}
 
-	}		
+		SalesInfoDTO salesInfoDTO = new SalesInfoDTO();
+			salesInfoDTO.setSales_seq(salesInfoDAO.getSalesSeq());
+			salesInfoDTO.setOrder_no(order_no);
+			if(memberDTO!=null) salesInfoDTO.setOrder_id(memberDTO.getId());
+			else salesInfoDTO.setOrder_id("GUEST");
+			salesInfoDTO.setSales_revenue(orderDTO.getOrder_total());
+		List<OrderDTO> paymentList = tradingDAO.getPaymentInfo(order_no);	
+			String sales_payment_Info = jsonTrans.makePaymentListToJson(paymentList);
+			salesInfoDTO.setSales_payment_json(sales_payment_Info);
+			
+			salesInfoDAO.uploadSalesInfo(salesInfoDTO);
+	}
+	
+	//14. 거래내역 삭제하기
+	@RequestMapping(value="/deleteOrder.do",method = RequestMethod.GET)
+	@ResponseBody
+	public void deleteOrder(@RequestParam String order_no) {
+		tradingDAO.deleteOrder(order_no);
+	}
 	
 	//1333. 배너 호출하기
 	@RequestMapping(value="/getBannerList.do",method = RequestMethod.GET)

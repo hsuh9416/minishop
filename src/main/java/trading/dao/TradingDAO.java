@@ -31,7 +31,8 @@ public interface TradingDAO {
 	void setCoupon(CouponDTO couponDTO);
 	void modifyUserBenefit(Map<String, String> map);
 	void deleteUserBenefit(String id);
-	List<CouponDTO> getAvailableUserCoupon(String id);	
+	List<CouponDTO> getAvailableUserCoupon(String id);
+	List<CouponDTO> getCouponListAll(String id);
 //--------쿠폰 : END--------//	
 //--------주문 : START--------//	
 	int getTotalA();
@@ -49,6 +50,7 @@ public interface TradingDAO {
 	int updatePayment(OrderDTO orderDTO);
 	int implementingInventoryChange(OrderDTO orderDTO);
 	int cancelPayment(int order_no);
+	void deleteOrder(String order_no);
 //--------주문 : END--------//	
 //--------이벤트 : START--------//	
 	List<EventDTO> getBannerList();
@@ -60,6 +62,8 @@ public interface TradingDAO {
 	int modifyDeliveryPolicy(DeliveryDTO deliveryDTO);
 	int verifyAdditionalFee(String zipcode);
 //--------배송료 : END--------//
+
+
 
 
 

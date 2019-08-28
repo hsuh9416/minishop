@@ -23,6 +23,8 @@ import member.bean.MemberDTO;
 import member.dao.MemberDAO;
 import product.bean.ProductDTO;
 import product.dao.ProductDAO;
+import salesInfo.bean.SalesInfoDTO;
+import salesInfo.dao.SalesInfoDAO;
 import trading.bean.JsonTransitioner;
 import trading.bean.OrderDTO;
 import trading.bean.OrderPaging;
@@ -41,6 +43,9 @@ public class AdminOrderController {
 	
 	@Autowired
 	MemberDAO memberDAO;
+	
+	@Autowired
+	SalesInfoDAO salesInfoDAO;
 	
 	@Autowired
 	TradingDAO tradingDAO;
@@ -145,9 +150,12 @@ public class AdminOrderController {
 	@RequestMapping(value="/personalOrderView.do",method= RequestMethod.GET)
 	public ModelAndView personalOrderView(@RequestParam String order_no, String order_state) {
 		
+		OrderDTO orderDTO = tradingDAO.getOrderInfo(order_no);
+		String original_order_state = orderDTO.getOrder_state()+"";
 		ModelAndView mav = new ModelAndView();		
-			mav.addObject("order_no", order_no);		
-			mav.addObject("new_order_state",order_state);
+			mav.addObject("order_no", order_no);	
+			mav.addObject("old_state",original_order_state);
+			mav.addObject("new_state",order_state);
 			mav.setViewName("/admin/order/personalOrderView");
 		
 	return mav;	
@@ -219,7 +227,7 @@ public class AdminOrderController {
 		//1. 주문완료에서 입금완료로 변경(payment 업데이트, 메일 없음)
 		if(order_original_state==OrderState.ORDERPLACED.ordinal()&&order_new_state==OrderState.PAYMENTDONE.ordinal()) {
 			int paymentUpdated = tradingDAO.updatePayment(orderDTO);
-			if(paymentUpdated==0) return "no_payment_updated";
+			if(paymentUpdated==0) return "fail";
 			orderDTO.setPayment_date(new Date());
 			orderDTO.setOrder_statement("[입금확인(최종확인일자:"+orderDTO.getPayment_date()+")]");
 		}
@@ -231,7 +239,7 @@ public class AdminOrderController {
 			}
 			List<ProductDTO> requestInventory = jsonTrans.makeJsonToList(orderDTO.getOrderlist_json());
 			for(ProductDTO dto : requestInventory) {
-				if(dto.getCart_qty()>dto.getStock()) return "not_enough_inventory";
+				if(dto.getCart_qty()>dto.getStock()) return "fail";
 			}
 			orderDTO.setOrder_statement("[배송대기중]");
 			
@@ -242,7 +250,7 @@ public class AdminOrderController {
 		
 		//3. 주문완료/입금완료/배송대기중에서 배송중으로 변경(재고 차감,송장 업데이트 유효성 검사, 배송 메일 전송)
 		else if(order_new_state==OrderState.INDELIVERY.ordinal()) {
-			if(orderDTO.getOrder_deliverynum().equals("")||orderDTO.getOrder_deliverynum()==null) return "no_delivery_num";
+			if(orderDTO.getOrder_deliverynum().equals("")||orderDTO.getOrder_deliverynum()==null) return "fail";
 			if(order_original_state==OrderState.ORDERPLACED.ordinal()) {
 				tradingDAO.updatePayment(orderDTO);
 				orderDTO.setPayment_date(new Date());}
@@ -250,7 +258,7 @@ public class AdminOrderController {
 			List<ProductDTO> requestInventory = jsonTrans.makeJsonToList(orderDTO.getOrderlist_json());
 
 				for(ProductDTO dto : requestInventory) {
-					if(dto.getCart_qty()>dto.getStock()) return "not_enough_inventory";
+					if(dto.getCart_qty()>dto.getStock()) return "fail";
 					else {
 						int leftStock = dto.getStock()-dto.getCart_qty();
 						Map<String,String> map = new HashMap<String,String>();
@@ -352,7 +360,26 @@ public class AdminOrderController {
 				mailing.sendMail(adminDTO, messageDTO);		
 			}
 			orderDTO.setOrder_statement("[거래완료 (완료일자:"+new SimpleDateFormat("yyyy.MM.dd").format(new Date())+")]");
+			//매출계상하기
+			List<ProductDTO> salesProductList = jsonTrans.makeJsonToList(orderDTO.getOrderlist_json());
+			for(ProductDTO dto : salesProductList) {
+				int product_salesMount = dto.getProduct_salesMount()+dto.getCart_qty();
+				dto.setProduct_salesMount(product_salesMount);
+				productDAO.updateSalesProductInfo(dto);
+			}
 
+			SalesInfoDTO salesInfoDTO = new SalesInfoDTO();
+				salesInfoDTO.setSales_seq(salesInfoDAO.getSalesSeq());
+				salesInfoDTO.setOrder_no(order_no);
+				if(memberDTO!=null) salesInfoDTO.setOrder_id(memberDTO.getId());
+				else salesInfoDTO.setOrder_id("GUEST");
+				salesInfoDTO.setSales_revenue(orderDTO.getOrder_total());
+			List<OrderDTO> paymentList = tradingDAO.getPaymentInfo(order_no);	
+				String sales_payment_Info = jsonTrans.makePaymentListToJson(paymentList);
+				salesInfoDTO.setSales_payment_json(sales_payment_Info);
+				
+				int uploadResult = salesInfoDAO.uploadSalesInfo(salesInfoDTO);
+				if(uploadResult==0) return "fail";
 		}	
 		
 		//8. 주문완료에서 주문취소로 변경(관리자 권한으로 변경됨, 메일 전송)

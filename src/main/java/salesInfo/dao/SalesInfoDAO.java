@@ -9,4 +9,8 @@ import salesInfo.bean.SalesInfoDTO;
 public interface SalesInfoDAO {
 
 	List<SalesInfoDTO> getSalesInfoList();
+	
+	int getSalesSeq();
+	
+	int uploadSalesInfo(SalesInfoDTO salesInfoDTO);
 }

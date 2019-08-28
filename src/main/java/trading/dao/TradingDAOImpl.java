@@ -129,7 +129,11 @@ public class TradingDAOImpl implements TradingDAO {
 	public List<CouponDTO> getAvailableUserCoupon(String id) {
 		return sqlSession.selectList("tradingSQL.getAvailableUserCoupon",id);
 	}
-	
+	//9. 존재하는 모든 쿠폰 가져오기
+	@Override
+	public List<CouponDTO> getCouponListAll(String id) {
+		return sqlSession.selectList("tradingSQL.getCouponList",id);
+	}
 //----------- 쿠폰 : END ----------//	
 
 //----------- 주문 : START ----------//
@@ -206,14 +210,22 @@ public class TradingDAOImpl implements TradingDAO {
 	public int updatePayment(OrderDTO orderDTO) {
 		return sqlSession.update("tradingSQL.changeOrderInfo",orderDTO);
 	}
+	//거래로 인한 재고 변동 반영
 	@Override
 	public int implementingInventoryChange(OrderDTO orderDTO) {
 		return sqlSession.update("tradingSQL.implementingInventoryChange",orderDTO);
 	}
+	//결제내역 삭제 및 결제 취소
 	@Override
 	public int cancelPayment(int order_no) {
 		return sqlSession.delete("tradingSQL.cancelPayment", order_no);
 	}
+	//주문서 삭제
+	@Override
+	public void deleteOrder(String order_no) {
+		sqlSession.delete("tradingSQL.deleteOrder", order_no);
+	}
+	
 //----------- 주문 : END ----------//	
 
 //----------- 이벤트 : START ----------//	

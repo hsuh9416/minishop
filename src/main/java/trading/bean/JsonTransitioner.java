@@ -19,6 +19,11 @@ public class JsonTransitioner {
 	public String makeListToJson(List<ProductDTO> cartList) {
 		Gson gson = new GsonBuilder().create();
 		return gson.toJson(cartList);}
+
+	//DB로 저장하기 위해 결제목록을 JSONString으로 변환
+	public String makePaymentListToJson(List<OrderDTO> paymentList) {
+		Gson gson = new GsonBuilder().create();
+		return gson.toJson(paymentList);}
 	
 	//웹으로 보내기 위해 카트를 JSONElement으로 변환
 	public JsonElement makeListToJsonElement(List<ProductDTO> cartList) {

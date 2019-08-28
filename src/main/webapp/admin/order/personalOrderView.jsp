@@ -17,7 +17,8 @@
 	</div>
 
 	<input type="hidden" name="order_no" value="${order_no}">
-	<input type="hidden" id="new_order_state" value="${new_order_state}">	
+	<input type="hidden" id="old_state" value="${old_state}">	
+	<input type="hidden" id="new_state" value="${new_state}">	
 	<div class="card card-body">		
 		<h5 class="sub-title-undeline">[기본 정보]</h5>
 		<div class="form-row ">	
@@ -252,17 +253,17 @@
 			</div>
 		</div>
 		<form id="changeDiv">
-		<div class="form-row justify-content-center">
-			<div class="form-group col" align="center">      								
-				<h6><strong>[<font id="originalState"></font>]상태에서 [<font id="newState"></font>]상태로 변경합니다.</strong></h6>
-				<p>(주)상태 변경시에는 하단의 확인 버튼으로 최종 반영됩니다.<br> 확인 없이 창을 닫을 경우 원상태로 복귀합니다.</p>
+			<div class="form-row justify-content-center">
+				<div class="form-group col" align="center">      								
+					<h6><strong>[<font id="oldState"></font>]상태에서 [<font id="newState"></font>]상태로 변경합니다.</strong></h6>
+					<p>(주)상태 변경시에는 하단의 확인 버튼으로 최종 반영됩니다.<br> 확인 없이 창을 닫을 경우 원상태로 복귀합니다.</p>
+				</div>
+			</div>	
+			<div class="form-row justify-content-center">
+				<div class="form-group col" align="center">      								
+					<input type="button" class="btn btn-outline-danger btn-block" id="stateChangeBtn" value="확인"/>
+				</div>
 			</div>
-		</div>	
-		<div class="form-row justify-content-center">
-			<div class="form-group col" align="center">      								
-				<input type="button" class="btn btn-outline-danger btn-block" id="stateChangeBtn" value="확인"/>
-			</div>
-		</div>
 		</form>								
 	</div>
 </div>		

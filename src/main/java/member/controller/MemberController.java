@@ -429,6 +429,7 @@ public class MemberController {
 	public ModelAndView memberOrderlist(){
 		
 		ModelAndView mav = new ModelAndView();
+			mav.addObject("location","member");
 			mav.addObject("display", "/member/memberOrderlist.jsp");
 			mav.setViewName("/main/home");
 			
@@ -545,7 +546,34 @@ public class MemberController {
 		return "fail";		
 	}	
 	
-	//25. 관리자계정 접속(접속 후 관리자 화면으로 이동)
+	//25. 회원 쿠폰 목록 조회 창이동
+	@RequestMapping(value="/memberCouponlist.do",method = RequestMethod.GET)
+	public ModelAndView memberCouponlist() {
+		
+		ModelAndView mav = new ModelAndView();
+			mav.addObject("location", "member");
+			mav.addObject("display", "/member/memberCouponlist.jsp");
+			mav.setViewName("/main/home");
+			
+	return mav;		
+	}
+	
+	//26. 회원 쿠폰 목록 호출
+	@RequestMapping(value="/getCouponlist.do",method = RequestMethod.GET)
+	@ResponseBody
+	public ModelAndView getCouponlist(HttpSession session) {
+		
+		MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
+		
+		List<CouponDTO> couponlist = tradingDAO.getCouponListAll(memberDTO.getId());
+		
+		ModelAndView mav = new ModelAndView();
+			mav.addObject("couponlist", couponlist);
+			mav.setViewName("jsonView");
+			
+	return mav;		
+	}	
+	//27. 관리자계정 접속(접속 후 관리자 화면으로 이동)
 	@RequestMapping(value="/adminLogin.do",method = RequestMethod.GET)
 	public ModelAndView adminLogin(HttpSession session) {
 		

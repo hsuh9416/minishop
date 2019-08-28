@@ -23,4 +23,19 @@ public class SalesInfoDAOImpl implements SalesInfoDAO {
 		return sqlSession.selectList("salesInfoSQL.getSalesInfoList");
 	}
 	
+	//2. 시퀀스 넘버 가져오기
+	@Override
+	public int getSalesSeq() {
+		return sqlSession.selectOne("salesInfoSQL.getSalesSeq");
+	}
+	
+	//3. 매상정보 업로드
+	@Override
+	public int uploadSalesInfo(SalesInfoDTO salesInfoDTO) {
+		return sqlSession.insert("salesInfoSQL.uploadSalesInfo", salesInfoDTO);
+	}
+	//4. 매상정보 삭제(단일)
+	
+	//5. 매상정보 삭제(복수)
+	
 }

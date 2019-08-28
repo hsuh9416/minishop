@@ -159,7 +159,7 @@ function getOrderList(data){
 				if(order_state!=items.order_state){
 						viewPopUp(order_no,order_state);
 				}
-				else viewPopUp(order_no,order_no);
+				else viewPopUp(order_no,items.order_state);
 			});	
 		});
 		

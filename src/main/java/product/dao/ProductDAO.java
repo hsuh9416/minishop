@@ -26,6 +26,7 @@ public interface ProductDAO {
 	List<ProductDTO> productList(int startNum, int endNum);
 	List<ProductDTO> productSearch(Map<String, String> map);	
 	ProductDTO getProductInfo(String product_name_no);	
+	void updateSalesProductInfo(ProductDTO dto);
 //----------상품(공통):END----------//		
 //----------상품(관리자):START----------//	
 	int productUpload(ProductDTO productDTO);
@@ -39,5 +40,6 @@ public interface ProductDAO {
 	int addLike(Map<String, String> map);	
 	void removeLike(int SEQ);	
 //----------상품(사용자):END----------//	
+
 
 }

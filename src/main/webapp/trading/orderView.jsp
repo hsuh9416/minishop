@@ -13,7 +13,7 @@
 	 		<h3>주문 내역서</h3>		
 	 	</div>
 	</div>
-	
+		<input type="hidden" name="order_no" value="${order_no}"/>
 		<h5 class="sub-title-undeline">[기본 정보]</h5>
 		<div class="form-row ">	
 			<div class="col-1" align="center">
@@ -219,13 +219,7 @@
 		<hr class="sub-hr" noshade/>	
 			
 		<h5 class="sub-title-undeline">[추가 정보]</h5>	
-		<div class="form-row">
-			<div class="col-8">
-				<input type="checkbox" id="extraAddCheck" value="1">추가 정보를 변경합니다
-			</div>
-			<div class="col-4"></div>
-		</div>			
-
+	
 		<div class="form-row">					
 			<div class="col-2" align="center">
 				<label for="order_deliverynum" class="under-line-title">배송장번호</label>
@@ -242,11 +236,7 @@
 				<input type="text" readonly class="form-control-plaintext inline-form"  id="order_refundaccount"/>
 			</div>							  				  			  		  				  	
 		</div>	
-		<div class="form-row justify-content-center">
-			<div class="form-group col" align="right">      								
-				<button type="button" id="modifyExtra" class="btn btn-outline-info" disabled>반영하기</button>			
-			</div>
-		</div>	
+
 		
 		<hr class="sub-hr" noshade/>
 			

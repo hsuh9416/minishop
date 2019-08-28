@@ -1,6 +1,6 @@
 var cartTotal = 0;
-var originalState = 0;
 var newState = 0;
+var originalState = 0;
 var orderDTO = null;
 var paymentInfo = null;
 var orderList = null;
@@ -70,11 +70,45 @@ function setOrderList(orderList){
 $(document).ready(function(){
 	$('#wrap').hide();
 	$('#modifyDeliveryForm').hide();
+	$('#changeDiv').hide();	
 	
-	if($('#new_order_state').val()!=null&&$('#new_order_state').val()!=''){
-		newState = parseInt($('#new_order_state').val(),10);
+	if($('#new_state').val()!=null&&$('#new_state').val()!=''){
+		newState = parseInt($('#new_state').val(),10);}
+	
+	if($('#old_state').val()!=null&&$('#old_state').val()!=''){
+		originalState = parseInt($('#old_state').val(),10);}
+
+	if(newState!=originalState) {
+		$('#changeDiv').show();				
+		
+		if(newState==1) $('#newState').text('입금완료');
+		else if(newState==2) $('#newState').text('배송대기중');
+		else if(newState==3) $('#newState').text('배송중');
+		else if(newState==4) $('#newState').text('환불진행중');
+		else if(newState==5) $('#newState').text('배송완료');
+		else if(newState==6) $('#newState').text('환불완료');
+		else if(newState==7) $('#newState').text('수취완료');
+		else $('#newState').text('주문취소');		
+		
+		if(originalState==1) $('#oldState').text('입금완료');
+		else if(originalState==2) $('#oldState').text('배송대기중');
+		else if(originalState==3) $('#oldState').text('배송중');
+		else if(originalState==4) $('#oldState').text('환불진행중');
+		else if(originalState==5) $('#oldState').text('배송완료');
+		else if(originalState==6) $('#oldState').text('환불완료');
+		else if(originalState==7) $('#oldState').text('수취완료');
+		else $('#oldState').text('주문취소');			
+	}
+
+	if(originalState>=3) {
+		$('input[name=selectModify]').prop('disabled',true);
 	}
 	
+	if(originalState>=5) {
+		$('#modifyCheck').prop('disabled',true);
+		$('#extraAddCheck').prop('disabled',true);
+	}
+
 	$.ajax({
 		type: 'get',
 		url: '/minishop/admin/order/getPersonalOrderInfo.do',
@@ -88,9 +122,7 @@ $(document).ready(function(){
 			$('#order_no').text(orderDTO.order_no);
 			$('#order_date').text(formatDate(orderDTO.order_date));
 			
-			originalState = orderDTO.order_state;
-			
-			if(originalState==0) $('#order_state').text('주문완료');
+			if(originalState==0)  $('#order_state').text('주문완료');
 			else if(originalState==1) $('#order_state').text('입금완료');
 			else if(originalState==2) $('#order_state').text('배송대기중');
 			else if(originalState==3) $('#order_state').text('배송중');
@@ -148,23 +180,13 @@ $(document).ready(function(){
 					text: items.payment_state				
 				})).appendTo($('#paymentForm'));
 			});
+			
+			
+
+		
 		}
 	});
-	if(newState!=originalState){
-		$('#changeDiv').show();
 
-		$('#originalState').text($('#order_state').text());
-		
-		if(newState==1) $('#newState').text('입금완료');
-		else if(newState==2) $('#newState').text('배송대기중');
-		else if(newState==3) $('#newState').text('배송중');
-		else if(newState==4) $('#newState').text('환불진행중');
-		else if(newState==5) $('#newState').text('배송완료');
-		else if(newState==6) $('#newState').text('환불완료');
-		else if(newState==7) $('#newState').text('수취완료');
-		else $('#newState').text('주문취소');		
-	}
-	else $('#changeDiv').hide();
 });
 
 $('input[name=selectModify]').on('change',function(){
@@ -249,7 +271,8 @@ $('#modifyContact').click(function(){
 
 $('#extraAddCheck').click(function(){
 	if($(this).is(':checked')){	
-		$('#order_deliverynum').prop('readonly',false);	
+		if(originalState>=3)$('#order_deliverynum').prop('readonly',true);	
+		else $('#order_deliverynum').prop('readonly',false);	
 		$('#order_refundaccount').prop('readonly',false);			
 		$('#modifyExtra').prop('disabled',false);			
 	}

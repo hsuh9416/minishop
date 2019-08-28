@@ -116,6 +116,11 @@ public class ProductDAOImpl implements ProductDAO {
 	public ProductDTO getProductInfo(String product_name_no) {
 		return sqlSession.selectOne("productSQL.getProductInfo", product_name_no);
 	}
+	//4. 매상 추가하기
+	@Override
+	public void updateSalesProductInfo(ProductDTO dto) {
+		sqlSession.update("productSQL.updateSalesProductInfo",dto);
+	}
 	
 //-------------상품(공통):END-------------//		
 	

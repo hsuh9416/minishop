@@ -8,29 +8,22 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Data;
-import product.bean.ProductDTO;
+import trading.bean.OrderDTO;
 /*
- * STATE_OF_SALES를 관련 정보 관리 클래스
+ * SALES_INFO 관련 정보 관리 클래스
  */
 @Component
 @Data
 public class SalesInfoDTO {
-private int seq;
-private String salesId;//orderDate+sequence Number
-private int salesRevenue;
-private List<ProductDTO> cartdetail;
-private String salesdetail;//can be stored as html or else
-private String specialOrder;//user comment
+//SALES_INFO 관련 요소들
+private int sales_seq;
+private String order_no;//주문서
+private String order_id;//주문자(비회원일 경우 guest로 통일됨)
+private int sales_revenue;//총매출액
+private String sales_payment_json;//매출액 지급 정보
+private List<OrderDTO> sales_payment_Info;
 @JsonFormat(pattern="yyyy.MM.dd")
-private Date salesDate;
-private String salesPwd;//주문번호 조회를 위한 비밀번호
+private Date sales_date;//매출일자(확인일자)
 
-//STATE_OF_SALES 관련 요소들
-private int year;
-private int month;
-private int week;
-private String product_category;
-private int number_of_orders;
-private int periodical_revenue;
 
 }

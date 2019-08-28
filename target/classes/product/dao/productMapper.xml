@@ -187,6 +187,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  		where product_name.product_name_no=#{product_name_no} 		
  	</select>
 
+ 	<!-- 상품(공통) : 상품 매상 업데이트 -->
+ 	<update id="updateSalesProductInfo" parameterType="product">
+ 		update PRODUCT_NAME set PRODUCT_SALESMOUNT=#{product_salesMount} where PRODUCT_NAME_NO=#{product_name_no}
+ 	</update>
+ 	
  	<!-- 상품(관리자) : 상품 업로드 -->
  	<insert id="productUpload" parameterType="product">
  	 insert into product_name values(#{product_name_no},

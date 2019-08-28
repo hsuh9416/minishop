@@ -1,3 +1,13 @@
+function dueDateCheck(date){
+	if(date!=null&&date!=''){
+		var today =  Date.parse(new Date());
+		var targetDate = Date.parse(date);
+		if(today>targetDate) return false;
+		else return true;
+	}
+	else return true;
+}
+
 //1.최초 시작시에 고객 거래 정보 불러오기(장바구니 제외)
 $(document).ready(function(){
 	$.ajax({
@@ -10,7 +20,7 @@ $(document).ready(function(){
 			else {
 				var couponNum = 0;
 				$.each(coupon,function(index,items){
-					if (items.personal_code!=null && items.personal_code!='') couponNum++; 
+					if (items.personal_code!=null && items.personal_code!=''&& dueDateCheck(items.coupon_duedate)==true) couponNum++;
 				});
 				$('#goCoupon').text(couponNum+'개');		
 			}

@@ -98,6 +98,12 @@ $(document).ready(function(){
 						value: '수취확인',
 						name : 'confirmBtn',
 						id : 'confirm'+items.order_no
+					})).append($('<input/>',{
+						type: 'button',
+						class: 'btn btn-outline-dark orderBtn',
+						value: '내역삭제',
+						name : 'deleteBtn',
+						id : 'delete'+items.order_no
 					}))).appendTo($('#orderListForm'));
 					if(items.order_state==0) $('#cancel'+items.order_no).show();
 					else $('#cancel'+items.order_no).hide();
@@ -105,32 +111,35 @@ $(document).ready(function(){
 					else $('#refund'+items.order_no).hide();
 					if(items.order_state==3||items.order_state==5) $('#confirm'+items.order_no).show();
 					else $('#confirm'+items.order_no).hide();
-					
+					if(items.order_state==8) $('#delete'+items.order_no).show();
+					else $('#delete'+items.order_no).hide();
 				});
 				
 				$('input[name=cancelBtn]').on('click',function(){
 					var order_no =$(this).parent().prev().prev().prev().prev().text();
 					var realCancel = confirm('정말로 취소하시겠습니까?');
-					$.ajax({
-						type: 'get',
-						url: '/minishop/trading/cancelOrder.do',
-						data: 'order_no='+order_no,
-						dataType: 'text',
-						success: function(data){
-							if(data=='success'){
-								alert('주문취소가 완료되었습니다.');
-								window.location.reload();							
+					if(realCancel){
+						$.ajax({
+							type: 'get',
+							url: '/minishop/trading/cancelOrder.do',
+							data: 'order_no='+order_no,
+							dataType: 'text',
+							success: function(data){
+								if(data=='success'){
+									alert('주문취소가 완료되었습니다.');
+									window.location.reload();							
+								}
+								else if(data=='nonVerifiedAttempt'){
+									alert('유효하지 않은 접근입니다. 해당페이지의 접근을 종료합니다');
+									window.location='/minishop/main/home.do';
+								}
+								else{
+									alert('오류로 인하여 주문취소가 반영되지 않았습니다. 다시 한번 시도해주시고 오류가 재발생시에는 고객센터에 문의주세요.');
+									window.location.reload();
+								}
 							}
-							else if(data=='nonVerifiedAttempt'){
-								alert('유효하지 않은 접근입니다. 해당페이지의 접근을 종료합니다');
-								window.location='/minishop/main/home.do';
-							}
-							else{
-								alert('오류로 인하여 주문취소가 반영되지 않았습니다. 다시 한번 시도해주시고 오류가 재발생시에는 고객센터에 문의주세요.');
-								window.location.reload();
-							}
-						}
-					});
+						});
+					}
 				});
 				
 				$('input[name=refundBtn]').on('click',function(){
@@ -141,16 +150,34 @@ $(document).ready(function(){
 				$('input[name=confirmBtn]').on('click',function(){
 					var order_no =$(this).parent().prev().prev().prev().prev().text();
 					var realConfirm = confirm('수취확인을 하신 후에는 교환 또는 환불이 제한됩니다. 수취확인하시겠습니까?');
-					$.ajax({
-						type: 'get',
-						url: '/minishop/trading/confirmDelivery.do',
-						data: 'order_no='+order_no,
-						success: function(){
-							alert('수취확인 작업이 완료되었습니다.');
-							window.location.reload();
-						}
-					});
+					if(realConfirm){
+						$.ajax({
+							type: 'get',
+							url: '/minishop/trading/confirmDelivery.do',
+							data: 'order_no='+order_no,
+							success: function(){
+								alert('수취확인 작업이 완료되었습니다.');
+								window.location.reload();
+							}
+						});
+					}
 				});
+				
+				$('input[name=deleteBtn]').on('click',function(){
+					var order_no =$(this).parent().prev().prev().prev().prev().text();
+					var realDelete = confirm('주문내역을 삭제하시면 복구되지 않습니다. 삭제하시겠습니까?');
+					if(realDelete){
+						$.ajax({
+							type: 'get',
+							url: '/minishop/trading/deleteOrder.do',
+							data: 'order_no='+order_no,
+							success: function(){
+								alert('정상적으로 삭제되었습니다.');
+								window.location.reload();
+							}
+						});
+					}
+				});				
 			}
 		}
 	});
