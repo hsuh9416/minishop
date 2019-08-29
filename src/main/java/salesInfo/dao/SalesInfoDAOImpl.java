@@ -1,6 +1,7 @@
 package salesInfo.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,8 @@ public class SalesInfoDAOImpl implements SalesInfoDAO {
 
 	//1. 기간별 매출 정보 목록 호출하기
 	@Override
-	public List<SalesInfoDTO> getSalesInfoList() {
-		return sqlSession.selectList("salesInfoSQL.getSalesInfoList");
+	public List<SalesInfoDTO> getSalesInfoList(Map<String, String> map) {
+		return sqlSession.selectList("salesInfoSQL.getSalesInfoList",map);
 	}
 	
 	//2. 시퀀스 넘버 가져오기
@@ -35,7 +36,25 @@ public class SalesInfoDAOImpl implements SalesInfoDAO {
 		return sqlSession.insert("salesInfoSQL.uploadSalesInfo", salesInfoDTO);
 	}
 	//4. 매상정보 삭제(단일)
-	
-	//5. 매상정보 삭제(복수)
-	
+
+	@Override
+	public int getTotalA() {
+		return sqlSession.selectOne("salesInfoSQL.getTotalA");
+	}
+
+	@Override
+	public List<SalesInfoDTO> getsalesInfoList(Map<String, String> map) {
+		return sqlSession.selectList("salesInfoSQL.getsalesInfoList", map);
+	}
+
+	@Override
+	public int getTotalSearchA(Map<String, String> map) {
+		return sqlSession.selectOne("salesInfoSQL.getTotalSearchA",map);
+	}
+
+	@Override
+	public List<SalesInfoDTO> salesInfoSearch(Map<String, String> map) {
+		return sqlSession.selectList("salesInfoSQL.salesInfoSearch", map);
+	}
+
 }

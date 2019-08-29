@@ -35,4 +35,11 @@ public class JsonTransitioner {
 		Gson gson = new GsonBuilder().create();
 		List<ProductDTO> cartList = gson.fromJson(json, new TypeToken<ArrayList<ProductDTO>>() {}.getType());
 		return cartList;}
+
+	//DB에 저장되어 있던 String을 PaymentList로 반환
+	public List<OrderDTO> makeJsonToPaymentList(String sales_payment_json) {
+		Gson gson = new GsonBuilder().create();
+		List<OrderDTO> sales_payment_Info = gson.fromJson(sales_payment_json, new TypeToken<ArrayList<OrderDTO>>() {}.getType());
+		return sales_payment_Info;
+	}
 }

@@ -123,7 +123,7 @@
 					</ul>						
 				</li>
 				<li class="menu_item">
-					<a href="/minishop/admin/order/orderList.do">주문관리</a>					
+					<a href="/minishop/admin/order/orderManage.do">주문관리</a>					
 				</li>								
 				<li class="menu_item">
 					<a href="/minishop/admin/qa/qaManage.do">문의글관리</a>

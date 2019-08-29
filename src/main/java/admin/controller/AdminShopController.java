@@ -6,7 +6,9 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -21,9 +23,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import salesInfo.bean.SalesInfoDTO;
+import salesInfo.bean.SalesInfoPaging;
+import salesInfo.dao.SalesInfoDAO;
 import trading.bean.CouponDTO;
 import trading.bean.DeliveryDTO;
 import trading.bean.EventDTO;
+import trading.bean.JsonTransitioner;
+import trading.bean.OrderDTO;
 import trading.dao.TradingDAO;
 /*
  * 관리자: 관리자 및 상점 정보를 제어하는 클래스
@@ -34,6 +41,15 @@ public class AdminShopController {
 
 	@Autowired
 	TradingDAO tradingDAO;
+	
+	@Autowired
+	SalesInfoDAO salesInfoDAO;
+	
+	@Autowired
+	SalesInfoPaging salesInfoPaging;
+	
+	@Autowired
+	JsonTransitioner jsonTrans;
 	
 	//1. 관리자 정보 화면 이동
 	@RequestMapping(value="/adminManage.do",method = RequestMethod.GET)
@@ -261,5 +277,118 @@ public class AdminShopController {
 			mav.setViewName("/admin/shop/stateCode");
 			
 		return mav;
+	}
+	
+
+	//12. 매출 목록 가져오기(한페이지당 10게시물,3블록 표시)
+	@RequestMapping(value="/getsalesInfoList.do",method= RequestMethod.POST)
+	public ModelAndView getsalesInfoList(@RequestParam(required=false,defaultValue="1") String pg,@RequestParam(required=false,defaultValue="sales_date") String sortSubject,@RequestParam(required=false,defaultValue="desc") String sortType){
+		
+		int page = Integer.parseInt(pg);
+		int endNum = page*10;
+		int startNum = endNum-9;		
+		int totalA=0;
+				
+			totalA = salesInfoDAO.getTotalA();
+			Map<String,String> map = new HashMap<String,String>();
+				map.put("startNum", startNum+"");
+				map.put("endNum", endNum+"");
+				map.put("sortSubject",sortSubject);
+				map.put("sortType", sortType);	
+		List<SalesInfoDTO> salesInfoList = salesInfoDAO.getsalesInfoList(map);
+	
+			salesInfoPaging.setCurrentPage(page);
+			salesInfoPaging.setPageBlock(3);
+			salesInfoPaging.setPageSize(10);
+			salesInfoPaging.setTotalA(totalA);
+			salesInfoPaging.makePagingHTML();;	
+		
+			for(SalesInfoDTO dto : salesInfoList) {
+				List<OrderDTO> sales_payment_Info = jsonTrans.makeJsonToPaymentList(dto.getSales_payment_json());
+				dto.setSales_payment_Info(sales_payment_Info);
+			}
+			
+		ModelAndView mav = new ModelAndView();
+			mav.addObject("salesInfoPaging", salesInfoPaging);
+			mav.addObject("salesInfoList", salesInfoList);
+			mav.addObject("sortSubject", sortSubject);
+			mav.addObject("sortType", sortType);	
+			mav.setViewName("jsonView");
+			
+		return mav;
+	}
+	
+	//13. 특정 검색어에 해당하는 매출 목록 가져오기(한페이지당 10게시물,3블록 표시)
+	@RequestMapping(value="/salesInfoSearch.do",method= RequestMethod.POST)
+	public ModelAndView salesInfoSearch(@RequestParam(required=false,defaultValue="1") String pg, String keyword,String searchOption,@RequestParam(required=false,defaultValue="sales_date") String sortSubject,@RequestParam(required=false,defaultValue="desc") String sortType) {
+		
+		int page = Integer.parseInt(pg);
+		int endNum = page*10;
+		int startNum = endNum-9;
+		int totalA=0;
+		
+		
+		Map<String,String> map = new HashMap<String,String>();
+			map.put("startNum", startNum+"");
+			map.put("endNum", endNum+"");
+			map.put("searchOption",searchOption);
+			map.put("keyword", keyword);
+			map.put("sortSubject",sortSubject);
+			map.put("sortType", sortType);	
+			totalA = salesInfoDAO.getTotalSearchA(map);	
+			
+			salesInfoPaging.setCurrentPage(page);
+			salesInfoPaging.setPageBlock(3);
+			salesInfoPaging.setPageSize(10);
+			salesInfoPaging.setTotalA(totalA);
+			salesInfoPaging.makeSearchPagingHTML();				
+
+			
+			List<SalesInfoDTO> salesInfoSearchList = salesInfoDAO.salesInfoSearch(map);
+		
+		for(SalesInfoDTO dto : salesInfoSearchList) {
+			List<OrderDTO> sales_payment_Info = jsonTrans.makeJsonToPaymentList(dto.getSales_payment_json());
+			dto.setSales_payment_Info(sales_payment_Info);
+		}
+		
+		ModelAndView mav = new ModelAndView();		
+			mav.addObject("pg", pg);
+			mav.addObject("salesInfoList", salesInfoSearchList);
+			mav.addObject("searchOption", searchOption);
+			mav.addObject("keyword", keyword);
+			mav.addObject("salesInfoPaging", salesInfoPaging);
+			mav.addObject("sortSubject", sortSubject);
+			mav.addObject("sortType", sortType);	
+			mav.setViewName("jsonView");
+		
+		return mav;	
+	}	
+	
+	//14. 특정 검색어에 해당하는 차트 불러오기
+	@RequestMapping(value="/salesChart.do",method= RequestMethod.POST)
+	public ModelAndView salesChart(@RequestParam(required=false,defaultValue="1") String pg,@RequestParam(required=false,defaultValue="") String keyword,@RequestParam(required=false) String searchOption,@RequestParam(required=false,defaultValue="sales_date") String sortSubject,@RequestParam(required=false,defaultValue="desc") String sortType) {
+		
+		Map<String,String> map = new HashMap<String,String>();
+		map.put("searchOption",searchOption);
+		map.put("keyword", keyword);
+		map.put("sortSubject",sortSubject);
+		map.put("sortType", sortType);			
+		List<SalesInfoDTO> salesInfoSearchList = salesInfoDAO.getSalesInfoList(map);
+		
+		for(SalesInfoDTO dto : salesInfoSearchList) {
+			List<OrderDTO> sales_payment_Info = jsonTrans.makeJsonToPaymentList(dto.getSales_payment_json());
+			dto.setSales_payment_Info(sales_payment_Info);
+		}
+		
+		ModelAndView mav = new ModelAndView();		
+		mav.addObject("pg", pg);
+		mav.addObject("salesInfoList", salesInfoSearchList);
+		mav.addObject("searchOption", searchOption);
+		mav.addObject("keyword", keyword);
+		mav.addObject("sortSubject", sortSubject);
+		mav.addObject("sortType", sortType);		
+		mav.setViewName("jsonView");
+	
+	return mav;	
 	}	
 }

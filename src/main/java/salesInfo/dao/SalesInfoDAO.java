@@ -1,6 +1,7 @@
 package salesInfo.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import salesInfo.bean.SalesInfoDTO;
 /*
@@ -8,9 +9,19 @@ import salesInfo.bean.SalesInfoDTO;
  */
 public interface SalesInfoDAO {
 
-	List<SalesInfoDTO> getSalesInfoList();
+	List<SalesInfoDTO> getSalesInfoList(Map<String, String> map);
 	
 	int getSalesSeq();
 	
 	int uploadSalesInfo(SalesInfoDTO salesInfoDTO);
+
+	int getTotalA();
+
+	List<SalesInfoDTO> getsalesInfoList(Map<String, String> map);
+
+	int getTotalSearchA(Map<String, String> map);
+
+	List<SalesInfoDTO> salesInfoSearch(Map<String, String> map);
+
+
 }

@@ -576,13 +576,33 @@ public class TradingController {
 			salesInfoDAO.uploadSalesInfo(salesInfoDTO);
 	}
 	
-	//14. 거래내역 삭제하기
+	//15. 거래내역 삭제하기
 	@RequestMapping(value="/deleteOrder.do",method = RequestMethod.GET)
 	@ResponseBody
 	public void deleteOrder(@RequestParam String order_no) {
 		tradingDAO.deleteOrder(order_no);
 	}
-	
+	//16. 주문서 내역 수정요청하기
+	@RequestMapping(value="/changeOrderInfo.do",method = RequestMethod.GET)
+	@ResponseBody
+	public String changeOrderInfo(@RequestParam Map<String,Object> map) {
+		
+		int result = tradingDAO.changeOrderInfo(map);
+		
+		if(result!=0) {
+			AdminDTO adminDTO = adminDAO.getAdmin();
+			OrderDTO orderDTO = tradingDAO.getOrderInfo((String)map.get("order_no"));
+			if(!map.get("modify_type").equals("extraInfo")) {
+			MessageDTO messageDTO = new MessageDTO();
+				messageDTO = mailing.sendOrderModifiedMail(messageDTO,orderDTO);
+
+				mailing.sendMail(adminDTO, messageDTO);
+			}
+			return "success";
+			
+		}
+		else return "fail";
+	}	
 	//1333. 배너 호출하기
 	@RequestMapping(value="/getBannerList.do",method = RequestMethod.GET)
 	public ModelAndView getBannerList() {
