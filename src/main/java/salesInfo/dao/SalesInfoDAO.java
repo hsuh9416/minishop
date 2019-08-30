@@ -9,7 +9,7 @@ import salesInfo.bean.SalesInfoDTO;
  */
 public interface SalesInfoDAO {
 
-	List<SalesInfoDTO> getSalesInfoList(Map<String, String> map);
+	List<SalesInfoDTO> getChartRawData(Map<String, String> map);
 	
 	int getSalesSeq();
 	

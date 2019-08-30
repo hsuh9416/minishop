@@ -73,7 +73,8 @@
 					</div>								   
 					<div class="form-row">
 						<div class="col" align="right">             	
-							<button type="reset" class="btn btn-outline-secondary">다시 작성</button>																	
+							<button type="reset" class="btn btn-outline-secondary">다시 작성</button>	
+							<button type="button" id="resetPwdBtn" class="btn btn-outline-info">비밀번호 재발급</button>																	
 							<button type="button" id="orderCheckBtn" class="btn btn-outline-success">주문조회</button>			
 						</div>
 					</div>					 

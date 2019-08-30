@@ -42,9 +42,9 @@
 				<div class="form-group col-4">[내 장바구니 ]</div>
 				<div class="form-group col-8">
 			   		<c:if test="${cartList==null||cartList.size()==0}">		
-			   			장바구니에 담긴 상품이 없습니다
+			   			<a href="/minishop/trading/userCart.do">장바구니에 담긴 상품이 없습니다</a>	  
 			   		</c:if>
-			   		<c:if test="${cartList!=null}">
+			   		<c:if test="${cartList!=null&&cartList.size()>0}">
 				   		<a href="/minishop/trading/userCart.do">${cartList.size()}건</a>	   		
 			   		</c:if>				
 				</div>				

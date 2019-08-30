@@ -56,7 +56,7 @@ public class AdminShopController {
 	public ModelAndView adminManage() {
 		
 		ModelAndView mav = new ModelAndView();
-			mav.addObject("location", "adminHome");
+			mav.addObject("location", "shopAdmin");
 			mav.addObject("display", "/admin/shop/adminManage.jsp");
 			mav.setViewName("/main/home");
 			
@@ -65,10 +65,11 @@ public class AdminShopController {
 	
 	//2. 매출 정보 화면 이동
 	@RequestMapping(value="/salesInfo.do",method = RequestMethod.GET)
-	public ModelAndView salesInfo() {
+	public ModelAndView salesInfo(@RequestParam(required = false,defaultValue = "1") String pg) {
 		
 		ModelAndView mav = new ModelAndView();
-			mav.addObject("location", "adminHome");
+			mav.addObject("location", "shopAdmin");
+			mav.addObject("pg", pg);
 			mav.addObject("display", "/admin/shop/salesInfo.jsp");
 			mav.setViewName("/main/home");
 			
@@ -80,7 +81,7 @@ public class AdminShopController {
 	public ModelAndView eventManage(@RequestParam(required = false) String event_no) {
 		
 		ModelAndView mav = new ModelAndView();
-			mav.addObject("location", "adminHome");
+			mav.addObject("location", "shopAdmin");
 			mav.addObject("event_no", event_no);			
 			mav.addObject("display", "/admin/shop/eventManage.jsp");
 			mav.setViewName("/main/home");
@@ -365,30 +366,32 @@ public class AdminShopController {
 	}	
 	
 	//14. 특정 검색어에 해당하는 차트 불러오기
-	@RequestMapping(value="/salesChart.do",method= RequestMethod.POST)
-	public ModelAndView salesChart(@RequestParam(required=false,defaultValue="1") String pg,@RequestParam(required=false,defaultValue="") String keyword,@RequestParam(required=false) String searchOption,@RequestParam(required=false,defaultValue="sales_date") String sortSubject,@RequestParam(required=false,defaultValue="desc") String sortType) {
-		
-		Map<String,String> map = new HashMap<String,String>();
-		map.put("searchOption",searchOption);
-		map.put("keyword", keyword);
-		map.put("sortSubject",sortSubject);
-		map.put("sortType", sortType);			
-		List<SalesInfoDTO> salesInfoSearchList = salesInfoDAO.getSalesInfoList(map);
-		
-		for(SalesInfoDTO dto : salesInfoSearchList) {
-			List<OrderDTO> sales_payment_Info = jsonTrans.makeJsonToPaymentList(dto.getSales_payment_json());
-			dto.setSales_payment_Info(sales_payment_Info);
-		}
-		
+	@RequestMapping(value="/salesChart.do",method= RequestMethod.GET)
+	public ModelAndView salesChart() {
+
 		ModelAndView mav = new ModelAndView();		
-		mav.addObject("pg", pg);
-		mav.addObject("salesInfoList", salesInfoSearchList);
-		mav.addObject("searchOption", searchOption);
-		mav.addObject("keyword", keyword);
-		mav.addObject("sortSubject", sortSubject);
-		mav.addObject("sortType", sortType);		
-		mav.setViewName("jsonView");
+		mav.setViewName("/admin/shop/salesChart");
 	
 	return mav;	
 	}	
+	
+	//15. 페이징 없는 리스트 불러오기
+	@RequestMapping(value="/getChartRawData.do",method= RequestMethod.POST)
+	public ModelAndView getChartRawData(@RequestParam(required=false) String keyword,String searchOption) {
+		
+		Map<String,String> map = new HashMap<String,String>();
+		
+		List<SalesInfoDTO> salesInfoList = salesInfoDAO.getChartRawData(map);
+		
+	for(SalesInfoDTO dto : salesInfoList) {
+		List<OrderDTO> sales_payment_Info = jsonTrans.makeJsonToPaymentList(dto.getSales_payment_json());
+		dto.setSales_payment_Info(sales_payment_Info);
+	}
+		
+		ModelAndView mav = new ModelAndView();	
+		mav.addObject("salesRawInfoList", salesInfoList);
+		mav.setViewName("jsonView");
+	
+	return mav;	
+	}
 }

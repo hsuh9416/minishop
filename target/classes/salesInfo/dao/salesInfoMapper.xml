@@ -9,9 +9,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 </select>
 
 <!-- 공통 : 전체 매상 정보 호출(페이징 없음) -->
-<select id="getSalesInfoList" parameterType="java.util.Map" resultType="salesInfo">
+<select id="getChartRawData" parameterType="java.util.Map" resultType="salesInfo">
 	select * from SALES_INFO
-				<if test="keyword !=''"> where
+				<if test="keyword !='' and searchOption!=''"> where
 				 	<choose>
 						<when test="searchOption eq 'order_no'"> 
 							SALES_INFO.order_no like #{keyword}
@@ -25,18 +25,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				    	<otherwise> ${searchOption} like '%'||#{keyword}||'%' </otherwise>		
 				 	</choose>
 				</if>		
-				<if test="sortSubject !=null and sortType !=''"> order by
-				 	<choose>
-						<when test="sortSubject eq 'order_no'"> order_no </when>
-						<when test="sortSubject eq 'order_id'"> order_id </when>
-						<when test="sortSubject eq 'sales_revenue'"> sales_revenue </when>								
-				    	<otherwise> sales_date </otherwise>			
-				 	</choose>
-					<choose>
-					    <when test="sortType eq 'asc'"> ASC </when>
-					    <otherwise> DESC </otherwise>
-					</choose>				 	
-				</if>	
 </select>
 
 <!-- 매상 정보 업로드 -->
@@ -57,7 +45,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <!-- 공통 : 검색 총글수 -->
 <select id="getTotalSearchA" parameterType="java.util.Map" resultType="Integer">
  		select count(*) from SALES_INFO	
-				<if test="keyword !=''"> where
+				<if test="keyword !='' and searchOption!=''"> where
 				 	<choose>
 						<when test="searchOption eq 'order_no'"> 
 							SALES_INFO.order_no like #{keyword}
@@ -99,7 +87,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		 		select * from 
 				(select rownum rn, tt.* from 
 				(select * from SALES_INFO
-				<if test="keyword !=''"> where
+				<if test="keyword !='' and searchOption!=''"> where
 				 	<choose>
 						<when test="searchOption eq 'order_no'"> 
 							SALES_INFO.order_no like #{keyword}

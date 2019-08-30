@@ -81,7 +81,8 @@ $(document).ready(function(){
 	if(newState!=originalState) {
 		$('#changeDiv').show();				
 		
-		if(newState==1) $('#newState').text('입금완료');
+		if(newState==0) $('#newState').text('주문완료');
+		else if(newState==1) $('#newState').text('입금완료');
 		else if(newState==2) $('#newState').text('배송대기중');
 		else if(newState==3) $('#newState').text('배송중');
 		else if(newState==4) $('#newState').text('환불진행중');
@@ -90,7 +91,8 @@ $(document).ready(function(){
 		else if(newState==7) $('#newState').text('수취완료');
 		else $('#newState').text('주문취소');		
 		
-		if(originalState==1) $('#oldState').text('입금완료');
+		if(originalState==0) $('#oldState').text('주문완료');
+		else if(originalState==1) $('#oldState').text('입금완료');
 		else if(originalState==2) $('#oldState').text('배송대기중');
 		else if(originalState==3) $('#oldState').text('배송중');
 		else if(originalState==4) $('#oldState').text('환불진행중');

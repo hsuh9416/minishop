@@ -38,6 +38,7 @@ import trading.bean.DeliveryDTO;
 import trading.bean.EventDTO;
 import trading.bean.JsonTransitioner;
 import trading.bean.OrderDTO;
+import trading.bean.OrderState;
 import trading.bean.PaymentMethod;
 import trading.bean.ShoppingCart;
 import trading.dao.TradingDAO;
@@ -373,7 +374,7 @@ public class TradingController {
 				guestDTO.setGuest_id(orderDTO.getOrder_id());
 				guestDTO.setGuest_pwd(orderDTO.getOrder_pwd());
 				guestDTO.setGuest_name(orderDTO.getOrder_name());
-				guestDTO.setGuest_address(orderDTO.getOrder_address());
+				guestDTO.setGuest_email(orderDTO.getOrder_email());
 				guestDTO.setGuest_tel(orderDTO.getOrder_tel());
 				guestDTO.setOrder_no(orderDTO.getOrder_no());
 				session.setAttribute("guestDTO", guestDTO);
@@ -446,7 +447,7 @@ public class TradingController {
 		
 		if( (memberDTO!=null&&orderDTO.getOrder_id().equals(memberDTO.getId())) || 
 			(guestDTO!=null&&orderDTO.getOrder_id().equals(guestDTO.getGuest_id())) ){
-			orderDTO.setOrder_state(8);
+			orderDTO.setOrder_state(OrderState.ORDERCANCELED.ordinal());
 			orderDTO.setOrder_statement("[주문취소(일자:"+new SimpleDateFormat("yyyy.MM.dd").format(new Date())+")]");
 			tradingDAO.modifyOrderAdmin(orderDTO);
 		}
@@ -471,7 +472,7 @@ public class TradingController {
 			int subResult = tradingDAO.cancelPayment(Integer.parseInt(order_no));
 			if(subResult==0) return "fail";
 		}
-		return "fail";
+		return "success";
 	}
 	//12. 환불요청 팝업창 이동하기
 	@RequestMapping(value="/refundForm.do",method = RequestMethod.GET)
@@ -489,32 +490,76 @@ public class TradingController {
 	public String requestRefund(@RequestParam String order_no,String order_refundaccount,String order_statement) {
 		
 		OrderDTO orderDTO = tradingDAO.getOrderInfo(order_no);
+		List<OrderDTO> paymentList = tradingDAO.getPaymentInfo(order_no);
 			orderDTO.setOrder_logtime(new Date());
+			orderDTO.setOrder_refundaccount(order_refundaccount);
+			orderDTO.setOrder_statement("[환불진행중 (전환일자:"+new SimpleDateFormat("yyyy.MM.dd").format(new Date())+")] [환불사유 : "+order_statement+"]");
+			int total = 0;
+			for(OrderDTO payment: paymentList) {
+				if(payment.getPayment_method()==1||payment.getPayment_method()==2) total+=payment.getPayment_amount();
+			}
+			orderDTO.setPayment_amount(total);
+			
+			if(orderDTO.getOrder_state()==OrderState.INDELIVERY.ordinal()||orderDTO.getOrder_state()==OrderState.DELIVERED.ordinal()) {
+				List<ProductDTO> requestInventory = jsonTrans.makeJsonToList(orderDTO.getOrderlist_json());
+
+				for(ProductDTO dto : requestInventory) {
+					
+					ProductDTO existInventory = productDAO.getInventoryInfo(dto.getProductID());
+						int returnedStock = existInventory.getStock()+dto.getCart_qty();
+						System.out.println(dto.getCart_qty());
+						System.out.println(returnedStock);
+						Map<String,String> map = new HashMap<String,String>();
+							map.put("stock", returnedStock+""); 
+							map.put("unitcost", dto.getUnitcost()+""); 
+							map.put("productID", dto.getProductID());
+							map.put("product_name_no", dto.getProduct_name_no()+"");
+							map.put("ordering","no");
+						productDAO.inventoryUpdate(map);
+						dto.setStock(returnedStock);
+				}		
+				orderDTO.setOrderlist_json(jsonTrans.makeListToJson(requestInventory));
+				int subResult = tradingDAO.implementingInventoryChange(orderDTO);
+				if(subResult==0) return "fail";
+			}
 			
 		MessageDTO messageDTO = new MessageDTO();
 		AdminDTO adminDTO = adminDAO.getAdmin();	
 		
+		
+		Map<String,Object> Modifymap = new HashMap<String,Object>();
+			Modifymap.put("modify_type", "extraInfo");
+			Modifymap.put("order_no", order_no);
+			Modifymap.put("order_deliverynum", "[해당없음]");
+			Modifymap.put("order_refundaccount", orderDTO.getOrder_refundaccount());
+			Modifymap.put("order_statement", orderDTO.getOrder_statement());
+			
+		int modify = tradingDAO.changeOrderInfo(Modifymap);
+		if(modify==0) return "fail";
+		
+		if(orderDTO.getOrder_state()>OrderState.INDELIVERY.ordinal()) {
 		List<ProductDTO> requestInventory = jsonTrans.makeJsonToList(orderDTO.getOrderlist_json());
-
-		for(ProductDTO dto : requestInventory) {
-				int returnedStock = dto.getStock()+dto.getCart_qty();
-				Map<String,String> map = new HashMap<String,String>();
-					map.put("stock", returnedStock+""); 
-					map.put("unitcost", dto.getUnitcost()+""); 
-					map.put("productid", dto.getProductID());
-					map.put("ordernum","0");
-				productDAO.inventoryUpdate(map);
-				dto.setStock(returnedStock);
-		}	
+			for(ProductDTO dto : requestInventory) {
+				ProductDTO existInventory = productDAO.getInventoryInfo(dto.getProductID());
+					int returnedStock = existInventory.getStock()+dto.getCart_qty();
+					Map<String,String> map = new HashMap<String,String>();
+						map.put("stock", returnedStock+""); 
+						map.put("unitcost", dto.getUnitcost()+""); 
+						map.put("productID", dto.getProductID());
+						map.put("product_name_no", dto.getProduct_name_no()+"");
+						map.put("ordering","0");
+					productDAO.inventoryUpdate(map);
+					dto.setStock(returnedStock);
+			}		
 		
-		orderDTO.setOrderlist_json(jsonTrans.makeListToJson(requestInventory));
-		int subResult = tradingDAO.implementingInventoryChange(orderDTO);
-		if(subResult==0) return "fail";
-		
-			orderDTO.setOrder_statement("[환불진행중 (전환일자:"+new SimpleDateFormat("yyyy.MM.dd").format(new Date())+")] [환불사유 : "+order_statement+"]");
+			orderDTO.setOrderlist_json(jsonTrans.makeListToJson(requestInventory));
+			int subResult = tradingDAO.implementingInventoryChange(orderDTO);
+			if(subResult==0) return "fail";
+		}
+			
 			messageDTO = mailing.sendRefundInfoMail(messageDTO, orderDTO);
 			mailing.sendMail(adminDTO, messageDTO);		
-		
+			orderDTO.setOrder_state(OrderState.REFUNDPROCESSING.ordinal());
 		int result = tradingDAO.modifyOrderAdmin(orderDTO);
 		if(result==0) return "fail";
 		 
@@ -552,9 +597,7 @@ public class TradingController {
 		}
 		
 		orderDTO.setOrder_statement("[거래완료 (완료일자:"+new SimpleDateFormat("yyyy.MM.dd").format(new Date())+")]");
-		
-		tradingDAO.modifyOrderAdmin(orderDTO);
-		
+				
 		//매출계상하기
 		List<ProductDTO> salesProductList = jsonTrans.makeJsonToList(orderDTO.getOrderlist_json());
 		for(ProductDTO dto : salesProductList) {
@@ -574,6 +617,11 @@ public class TradingController {
 			salesInfoDTO.setSales_payment_json(sales_payment_Info);
 			
 			salesInfoDAO.uploadSalesInfo(salesInfoDTO);
+			
+			
+			orderDTO.setOrder_state(OrderState.ORDERCOMPLETED.ordinal());
+			tradingDAO.modifyOrderAdmin(orderDTO);
+			
 	}
 	
 	//15. 거래내역 삭제하기
@@ -583,7 +631,7 @@ public class TradingController {
 		tradingDAO.deleteOrder(order_no);
 	}
 	//16. 주문서 내역 수정요청하기
-	@RequestMapping(value="/changeOrderInfo.do",method = RequestMethod.GET)
+	@RequestMapping(value="/changeOrderInfo.do",method = RequestMethod.POST)
 	@ResponseBody
 	public String changeOrderInfo(@RequestParam Map<String,Object> map) {
 		
@@ -603,7 +651,7 @@ public class TradingController {
 		}
 		else return "fail";
 	}	
-	//1333. 배너 호출하기
+	//17. 배너 호출하기
 	@RequestMapping(value="/getBannerList.do",method = RequestMethod.GET)
 	public ModelAndView getBannerList() {
 		
@@ -619,7 +667,34 @@ public class TradingController {
 			
 		return mav;
 	}
-	
+	//18. 주문 비밀번호 변경 발급하기
+	@RequestMapping(value="/resetOrderPwd.do",method = RequestMethod.GET)
+	@ResponseBody
+	public String resetOrderPwd(@RequestParam String guest_id) {
+		OrderDTO orderDTO = tradingDAO.orderCheck(guest_id);
+		if(orderDTO==null) return "no_order_exist";
+		else {
+			
+			String newPwd = mailing.getKey(8);
+			orderDTO.setOrder_pwd(passwordEncoder.encode(newPwd));
+
+			Map<String,Object> map =new HashMap<String,Object>();
+				map.put("order_no",orderDTO.getOrder_no());
+				map.put("order_pwd",orderDTO.getOrder_pwd());
+				map.put("modify_type","resetPwd");
+				
+			int result = tradingDAO.changeOrderInfo(map);
+			if(result==0) return "fail";
+			
+			AdminDTO adminDTO = adminDAO.getAdmin();
+			
+			MessageDTO messageDTO = new MessageDTO();
+				messageDTO = mailing.sendPwdResetMail(messageDTO,orderDTO,newPwd);
+				mailing.sendMail(adminDTO, messageDTO);	
+				
+			return "success";
+		}
+	}
 	
 }
 

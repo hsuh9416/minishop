@@ -182,7 +182,10 @@ public class AdminOrderController {
 	@RequestMapping(value="/changeOrderInfo.do",method=RequestMethod.POST)
 	@ResponseBody
 	public String changeOrderInfo(@RequestParam Map<String,Object> map) {
-				
+		
+		if(map.get("modify_type").equals("extraInfo")) {
+			map.put("order_statement", "관리자 변경으로 비고 없음");
+		}
 		int result = tradingDAO.changeOrderInfo(map);
 		
 		if(result!=0) {
@@ -256,16 +259,18 @@ public class AdminOrderController {
 				orderDTO.setPayment_date(new Date());}
 
 			List<ProductDTO> requestInventory = jsonTrans.makeJsonToList(orderDTO.getOrderlist_json());
-
+			
 				for(ProductDTO dto : requestInventory) {
-					if(dto.getCart_qty()>dto.getStock()) return "fail";
+					ProductDTO existInventory = productDAO.getInventoryInfo(dto.getProductID());
+					if(dto.getCart_qty()>existInventory.getStock()) return "fail";
 					else {
-						int leftStock = dto.getStock()-dto.getCart_qty();
+						int leftStock = existInventory.getStock()-dto.getCart_qty();
 						Map<String,String> map = new HashMap<String,String>();
 							map.put("stock", leftStock+""); 
 							map.put("unitcost", dto.getUnitcost()+""); 
-							map.put("productid", dto.getProductID());
-							map.put("ordernum","0");
+							map.put("productID", dto.getProductID());
+							map.put("ordering","no");
+							map.put("product_name_no", dto.getProduct_name_no()+"");
 						productDAO.inventoryUpdate(map);
 						dto.setStock(leftStock);
 					}
@@ -291,12 +296,15 @@ public class AdminOrderController {
 				List<ProductDTO> requestInventory = jsonTrans.makeJsonToList(orderDTO.getOrderlist_json());
 
 				for(ProductDTO dto : requestInventory) {
-						int returnedStock = dto.getStock()+dto.getCart_qty();
+					
+					ProductDTO existInventory = productDAO.getInventoryInfo(dto.getProductID());
+						int returnedStock = existInventory.getStock()+dto.getCart_qty();
 						Map<String,String> map = new HashMap<String,String>();
 							map.put("stock", returnedStock+""); 
 							map.put("unitcost", dto.getUnitcost()+""); 
-							map.put("productid", dto.getProductID());
-							map.put("ordernum","0");
+							map.put("productID", dto.getProductID());
+							map.put("product_name_no", dto.getProduct_name_no()+"");
+							map.put("ordering","no");
 						productDAO.inventoryUpdate(map);
 						dto.setStock(returnedStock);
 				}		
@@ -304,20 +312,38 @@ public class AdminOrderController {
 				int subResult = tradingDAO.implementingInventoryChange(orderDTO);
 				if(subResult==0) return "fail";
 			}
+			List<OrderDTO> paymentList = tradingDAO.getPaymentInfo(order_no);
+				orderDTO.setOrder_logtime(new Date());
+				orderDTO.setOrder_statement("[환불진행중 (전환일자:"+new SimpleDateFormat("yyyy.MM.dd").format(new Date())+")] [환불사유:고객요청]");
+				int total = 0;
+				for(OrderDTO payment: paymentList) {
+					if(payment.getPayment_method()==1||payment.getPayment_method()==2) total+=payment.getPayment_amount();
+				}
+				orderDTO.setPayment_amount(total);
 			
-			orderDTO.setOrder_statement("[환불진행중 (전환일자:"+new SimpleDateFormat("yyyy.MM.dd").format(new Date())+")] [환불사유:고객요청]");
-			messageDTO = mailing.sendRefundInfoMail(messageDTO, orderDTO);
-			mailing.sendMail(adminDTO, messageDTO);
-		}
+			Map<String,Object> Modifymap = new HashMap<String,Object>();
+				Modifymap.put("modify_type", "extraInfo");
+				Modifymap.put("order_no", order_no);
+				Modifymap.put("order_deliverynum", "[해당없음]");
+				Modifymap.put("order_refundaccount", orderDTO.getOrder_refundaccount());
+				Modifymap.put("order_statement", orderDTO.getOrder_statement());
+				
+				int modify = tradingDAO.changeOrderInfo(Modifymap);
+				if(modify==0) return "fail";
+		
+
+				messageDTO = mailing.sendRefundInfoMail(messageDTO, orderDTO);
+				mailing.sendMail(adminDTO, messageDTO);
+		}	
 		
 		//6. 환불진행중에서 환불완료로 변경(포인트, 입금 취소 및 복원, 메일 전송)
 		else if(order_new_state==OrderState.REFUNDED.ordinal()) {
 			
 			MemberDTO memberDTO = memberDAO.getUser(orderDTO.getOrder_id());
+			List<OrderDTO> paymentList = tradingDAO.getPaymentInfo(order_no);
 			if(memberDTO!=null) {
-				List<OrderDTO> paymentList = tradingDAO.getPaymentInfo(order_no);
 				for(OrderDTO payment: paymentList) {
-					if(payment.getPayment_method()==4&&payment.getPayment_amount()!=0) memberDAO.setPoint(memberDTO.getId(), payment.getPayment_amount()+"");
+					if(payment.getPayment_method()==4&&payment.getPayment_amount()>0) memberDAO.setPoint(memberDTO.getId(), payment.getPayment_amount()+"");
 					else if(payment.getPayment_method()==5) {
 						String[] primarySplit = payment.getPayment_state().split("\\[");
 						String[] secondarySplit = primarySplit[1].split("\\]");
@@ -326,12 +352,16 @@ public class AdminOrderController {
 							map.put("personal_code", UUID.randomUUID().toString());
 							map.put("coupon_no", coupon_no);
 							map.put("id", memberDTO.getId());
-							tradingDAO.modifyUserBenefit(map);}
-				
-				}	
-				int subResult = tradingDAO.cancelPayment(orderDTO.getOrder_no());
-				if(subResult==0) return "fail";
+							tradingDAO.modifyUserBenefit(map);}}}
+			int total = 0;
+			for(OrderDTO payment: paymentList) {
+				if(payment.getPayment_method()==1||payment.getPayment_method()==2) total+=payment.getPayment_amount();
 			}
+			orderDTO.setPayment_amount(total);
+			
+			int subResult = tradingDAO.cancelPayment(orderDTO.getOrder_no());
+			if(subResult==0) return "fail";
+			
 			orderDTO.setOrder_statement("[환불완료 (환불일자:"+new SimpleDateFormat("yyyy.MM.dd").format(new Date())+")]");
 			messageDTO = mailing.sendRefundCompleteMail(messageDTO, orderDTO);
 			mailing.sendMail(adminDTO, messageDTO);

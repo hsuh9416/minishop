@@ -1,6 +1,7 @@
 package mail.bean;
 
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.Properties;
 import java.util.UUID;
 
@@ -202,7 +203,7 @@ public class MailingImpl implements Mailing {
 				 		"========================================\n"+
 				 		" 금번 주문하신 주문서의 주문번호 :  ["+orderDTO.getOrder_no()+"]\n"+
 				 		" 금번 주문하신 주문서의 주문서에 대한 송장번호:  ["+orderDTO.getOrder_deliverynum()+"]\n"+
-				 		" 금번 주문하신 주문서의 주문서에 대한 배송 완료 일자:  ["+orderDTO.getOrder_logtime()+"]\n"+	
+				 		" 금번 주문하신 주문서의 주문서에 대한 배송 완료 일자:  ["+new SimpleDateFormat("yyyy.MM.dd").format(orderDTO.getOrder_logtime())+"]\n"+	
 				 		" 금번 주문하신 주문서의 주문서에 대한 추가 정보:  ["+orderDTO.getOrder_statement()+"]\n"+	
 				 		"========================================\n"+	
 						"Kissin'Bugs의 내부규정상 수취확인을 한 이후에 포인트 등의 혜택이 지급됩니다.\n"+					 		
@@ -215,6 +216,7 @@ public class MailingImpl implements Mailing {
 
 	@Override
 	public MessageDTO sendRefundInfoMail(MessageDTO messageDTO, OrderDTO orderDTO) {
+		NumberFormat df = NumberFormat.getInstance();
 		messageDTO.setReceiver(orderDTO.getOrder_name()+" 고객님");
 		messageDTO.setReceiveAddr(orderDTO.getOrder_email());
 		messageDTO.setSender("[Kissin' Bugs]");		  
@@ -224,8 +226,8 @@ public class MailingImpl implements Mailing {
 				 		"========================================\n"+
 				 		" 금번 주문하신 주문서의 주문번호 :  ["+orderDTO.getOrder_no()+"]\n"+
 				 		" 금번 주문하신 주문서의 주문서에 대한 환불 계좌:  ["+orderDTO.getOrder_refundaccount()+"]\n"+
-				 		" 금번 주문하신 주문서의 주문서에 대한 환불 예상액:  ["+orderDTO.getPayment_amount()+"]\n"+
-				 		" 금번 주문하신 주문서의 주문서에 대한 환불 접수 일자:  ["+orderDTO.getOrder_logtime()+"]\n"+	
+				 		" 금번 주문하신 주문서의 주문서에 대한 환불 예상액:  ["+df.format(orderDTO.getPayment_amount())+"]\n"+
+				 		" 금번 주문하신 주문서의 주문서에 대한 환불 접수 일자:  ["+new SimpleDateFormat("yyyy.MM.dd").format(orderDTO.getOrder_logtime())+"]\n"+	
 				 		" 금번 주문하신 주문서의 주문서에 대한 추가 정보:  ["+orderDTO.getOrder_statement()+"]\n"+	
 				 		"========================================\n"+	
 						"Kissin'Bugs의 내부규정 및 절차상 환불요청으로부터 일정 시간이 소요됨을 알립니다.\n"+	
@@ -239,6 +241,7 @@ public class MailingImpl implements Mailing {
 	}
 	@Override
 	public MessageDTO sendRefundCompleteMail(MessageDTO messageDTO, OrderDTO orderDTO) {
+		NumberFormat df = NumberFormat.getInstance();
 		messageDTO.setReceiver(orderDTO.getOrder_name()+" 고객님");
 		messageDTO.setReceiveAddr(orderDTO.getOrder_email());
 		messageDTO.setSender("[Kissin' Bugs]");		  
@@ -248,8 +251,8 @@ public class MailingImpl implements Mailing {
 				 		"========================================\n"+
 				 		" 금번 주문하신 주문서의 주문번호 :  ["+orderDTO.getOrder_no()+"]\n"+
 				 		" 금번 주문하신 주문서의 주문서에 대한 환불 계좌:  ["+orderDTO.getOrder_refundaccount()+"]\n"+
-				 		" 금번 주문하신 주문서의 주문서에 대한 최종 환불액:  ["+orderDTO.getPayment_amount()+"]\n"+	
-				 		" 금번 주문하신 주문서의 주문서에 대한 환불 일자:  ["+orderDTO.getOrder_logtime()+"]\n"+	
+				 		" 금번 주문하신 주문서의 주문서에 대한 최종 환불액:  ["+df.format(orderDTO.getPayment_amount())+"]\n"+	
+				 		" 금번 주문하신 주문서의 주문서에 대한 환불 일자:  ["+new SimpleDateFormat("yyyy.MM.dd").format(orderDTO.getOrder_logtime())+"]\n"+	
 				 		"========================================\n"+	
 						"확인된 금액은 Kissin'Bugs의 내부규정에 따라 지급하는 최종 금액이므로 양해부탁드립니다.\n"+					 		
 						"Kissin' Bugs은 고객만족을 위하여 항상 최선을 다하려고 노력하고 있습니다.\n\n"+
@@ -359,6 +362,28 @@ public class MailingImpl implements Mailing {
 			
 		return messageDTO;
 	}
+	
+	//주문 비밀번호 재설정 메일 보내기
+	@Override
+	public MessageDTO sendPwdResetMail(MessageDTO messageDTO, OrderDTO orderDTO,String rePwd) {
+		messageDTO.setSender("[Kissin' Bugs]");
+		messageDTO.setReceiver(orderDTO.getOrder_name());
+		messageDTO.setReceiveAddr(orderDTO.getOrder_email());
+		messageDTO.setSubject(orderDTO.getOrder_name()+"님의 주문서에 대한 비밀번호 재설정 안내 메일입니다.");
+		String confirmText = "안녕하세요, Kissin' Bugs입니다.\n"+
+						orderDTO.getOrder_name()+"님의 주문서 비밀번호 변경 요청에 따라 주문서의 비밀번호가 재설정되었습니다.\n"+
+						"변경 후의 주문서에 대한 간단 명세는 아래와 같습니다.\n"+
+						"========================================\n"+
+						 " 금번 주문하신 주문서의 주문번호 :  ["+orderDTO.getOrder_no()+"]\n"+
+						 " 금번 주문하신 주문서의 주문서 아이디:  ["+orderDTO.getOrder_id()+"]\n"+
+						 " 금번 주문하신 주문서의 주문서 비밀번호 :  ["+rePwd+"]\n"+		
+						"========================================\n"+
+						"*주> 주문서의 비밀번호는 규정상 사용자가 직접 수정하지 않도록 되어 있으며, 관리자가 변경시마다 새로이 임의의 비밀번호를 발급합니다.\n"+	
+						"기타 문의사항은 고객센터에 직접 문의 바랍니다.\n";	
+		messageDTO.setContent(confirmText);
+		return messageDTO;
+	}
+	
 	//일반 메일 보내기
 	@Override
 	public void sendMail(AdminDTO adminDTO, MessageDTO messageDTO) {
@@ -429,6 +454,8 @@ public class MailingImpl implements Mailing {
 					
 		return mailSender;
 	}
+
+
 
 
 

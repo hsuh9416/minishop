@@ -1,3 +1,8 @@
+function checkEmail(text){
+	var regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+	return regExp.test(text);
+}
+
 //1. 미작성 등 경고창 on/off
 $('#QAreturnAddr').focusout(function(){
 	 if($('#QAreturnAddr').val()!=''){ 
@@ -21,7 +26,7 @@ $('#QAdetail').focusout(function(){
 $('#sendQABtn').click(function(){
 		$('#QAreturnAddr').tooltip('disable');
 		$('#QAdetail').tooltip('disable');	
-	if($('#QAreturnAddr').val()==''){ 
+	if($('#QAreturnAddr').val()==''||checkEmail($('#QAreturnAddr').val())==false){ 
 		$('#QAreturnAddr').tooltip('enable');
 		$('#QAreturnAddr').tooltip('show');
 		$('#QAreturnAddr').focus();}

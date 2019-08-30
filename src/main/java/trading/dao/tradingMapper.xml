@@ -210,6 +210,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <!-- 주문: 주문서 정보 수정-->
 <update id="changeOrderInfo" parameterType="java.util.Map">
 	UPDATE ORDERS set 
+				<if test="modify_type eq 'resetPwd'"> 	
+					order_pwd =#{order_pwd},
+				</if>	
 				<if test="modify_type eq 'deliveryInfo'"> 	
 					order_address =#{order_address},
 				</if>
@@ -237,7 +240,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 </update>
 
 <!-- 주문: 환불,취소시 삭제 -->
-<delete id="cancelPayment" parameterType="String">
+<delete id="cancelPayment" parameterType="Integer">
 	delete PAYMENT where order_no = #{order_no}
 </delete>
 

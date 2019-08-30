@@ -25,9 +25,11 @@ public interface Mailing {
 	public MessageDTO sendGoodbyeMail(MessageDTO messageDTO);
 	public MessageDTO sendResetPwdMail(MessageDTO messageDTO, String resetPwd);
 	public MessageDTO sendRestoreMail(MessageDTO messageDTO,String resetPwd);
+	public MessageDTO sendPwdResetMail(MessageDTO messageDTO, OrderDTO orderDTO,String rePwd);
 	public JavaMailSender getJavaMailSender(AdminDTO adminDTO);
 	public void sendMail(AdminDTO adminDTO,MessageDTO messageDTO);
 	public void sendMailwithFile(AdminDTO adminDTO,MessageDTO messageDTO);
+
 
 
 

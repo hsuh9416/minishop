@@ -11,65 +11,51 @@
 			<h3>매출 현황</h3>		
 		</div>
 	</div>  
-	
-	<div class="form-row">
-		<div class="col" align="right">
-			<label>[정렬기준]</label>
+	<input type="hidden" id="pg" value="1">	
+	<div class="form-row justify-content-center">
+		<div class="col-6"></div>
+		<div class="col-1"><label>[기준]</label></div>
+		<div class="col-2">
 			<select id="sortSubject" class="form-control-plaintext inline-form">
 				<option value="sales_date">매출일자</option>			
 				<option value="order_no">주문번호</option>
 				<option value="order_id">주문자</option>
-				<option value="sales_revenue">거래합계</option>	
-																								
+				<option value="sales_revenue">거래합계</option>																					
 			</select>
-			<label >[정렬차순]</label>
-			<select id="sortType"  class="form-control-plaintext inline-form">
+		</div>
+		<div class="col-1"><label>[차순]</label></div>
+		<div class="col-2">
+			<select id="sortType" class="form-control-plaintext inline-form">
 				<option value="desc">내림차순</option>	
 				<option value="asc">오름차순</option>							
 			</select>
 		</div>														
 	</div>
-	
+	<br>
 	<div class="table-responsive-md table-hover">	
-	<table class="table" id="salesInfoTable">
-		<caption>(단위:원)</caption>
-		<thead class="thead-dark">
-			<tr>
-				<th scope="col">#</th>
-				<th scope="col">주문번호</th>
-				<th scope="col">주문자</th>					
-				<th scope="col">거래합계</th>
-				<th scope="col">현금결제</th>
-				<th scope="col">카드결제</th>
-				<th scope="col">포인트결제</th>
-				<th scope="col">쿠폰결제</th>	
-				<th scope="col">기타금액</th>												
-				<th scope="col">매출일자</th>					
-			</tr>
-		</thead>
-		<tbody>
-		
-		</tbody>
-		<tfoot>
-			<tr>
-				<td colspan="3">총 합계</td>			
-				<td id="sales_total"></td>
-				<td id="cash_total"></td>
-				<td id="card_total"></td>
-				<td id="point_total"></td>
-				<td id="coupon_total"></td>	
-				<td id="etc_total"></td>												
-				<td id="view_date">
-					(<fmt:formatDate value="${new Date()}" pattern="yyyy.MM.dd. hh:mm"/> 현재)
-				</td>					
-			</tr>		
-		</tfoot>
-	</table>
+		<table class="table" id="salesInfoTable">
+			<caption>(단위:원)</caption>
+			<thead class="thead-dark">
+				<tr align="center">
+					<th scope="col">#</th>
+					<th scope="col">주문<br>번호</th>
+					<th scope="col">주문자</th>					
+					<th scope="col">거래v합계</th>
+					<th scope="col">현금<br>결제</th>
+					<th scope="col">카드<br>결제</th>
+					<th scope="col">포인트<br>결제</th>
+					<th scope="col">쿠폰<br>결제</th>	
+					<th scope="col">기타<br>금액</th>												
+					<th scope="col" align="center">매출일자</th>					
+				</tr>
+			</thead>
+			<tbody></tbody>
+		</table>
 	</div>
 	
 	<div class="form-row align-items-center">
 		<div class="col-3">
-			<a id="reloadIcon"><i class="fas fa-retweet">새로고침</i></a>
+			<a id="reloadIcon" href="#"><i class="fas fa-retweet">새로고침</i></a>
 		</div>
 		<div class="col-9"></div>
 	</div>	
@@ -80,6 +66,24 @@
 			  	<ul class="pagination justify-content-center" id="salesInfoPagingDiv"></ul>
 			</nav>
 		</div>								
+	</div>
+
+	<div class="table-responsive-md table-hover">	
+		<table class="table" id="totalSalesTable">
+			<caption>(단위:원)</caption>
+			<thead class="thead-dark">
+				<tr align="center">
+					<th scope="col">총누적거래수</th>					
+					<th scope="col">총매출:합계</th>
+					<th scope="col">총매출:현금</th>
+					<th scope="col">총매출:카드</th>
+					<th scope="col">총매출:포인트</th>
+					<th scope="col">총매출:쿠폰</th>	
+					<th scope="col">총매출:기타</th>									
+				</tr>
+			</thead>
+			<tbody></tbody>
+		</table>
 	</div>
 	
 	<form id="salesInfoSearch" method="post" name="salesInfoSearch">	
@@ -100,7 +104,7 @@
 			    <input type="button" id="salesInfoSearchBtn" class="form-control btn btn-outline-dark" value="검색">		
 			</div>
 			<div class="col-2">
-			    <input type="button" onclick="openChart()" class="form-control btn btn-outline-info" value="차트보기">		
+			    <input type="button" id="openChart" class="form-control btn btn-outline-info" value="차트보기">		
 			</div>							
 		</div>				
 	</form>

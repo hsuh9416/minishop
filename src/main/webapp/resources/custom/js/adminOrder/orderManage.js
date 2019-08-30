@@ -180,7 +180,7 @@ function orderSearchPaging(pg){
 }
 
 function viewPopUp(order_no,order_state){
-	var popup = window.open('/minishop/admin/order/personalOrderView.do?order_no='+order_no+'&order_state='+order_state,'개별주문서조회','width=565,height=435,resizable=no');
+	var popup = window.open('/minishop/admin/order/personalOrderView.do?order_no='+order_no+'&order_state='+order_state,'개별주문서조회','width=785,height=1570,resizable=no');
 }
 
 //1. 최초 시작시 주문 목록 호출하기

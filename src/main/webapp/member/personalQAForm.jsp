@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
    	<!--CSS Local LINK:START-->
 <link rel="stylesheet" type="text/css" href="/minishop/resources/bootstrap4/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="/minishop/resources/fontawesome5/css/all.css">
@@ -22,7 +22,15 @@
 			<div class="form-row">
 				<div class="form-group col">
 			    	<label for="QAreturnAddr">답변을 받으실 주소</label>
-			    	<input type="email" class="form-control" id="QAreturnAddr" value="${memberDTO.email1}@${memberDTO.email2}" data-toggle="tooltip" data-placement="bottom" title="회신받으실 [메일 주소]를 입력하세요.">			
+			    	<c:if test="${memberDTO!=null}">
+			    	<input type="email" class="form-control" id="QAreturnAddr" value="${memberDTO.email1}@${memberDTO.email2}" data-toggle="tooltip" data-placement="bottom" title="회신받으실 [메일 주소]를 입력하세요.">				    	
+			    	</c:if>
+			    	<c:if test="${guestDTO!=null}">
+			    	<input type="email" class="form-control" id="QAreturnAddr" value="${guestDTO.guest_email}" data-toggle="tooltip" data-placement="bottom" title="회신받으실 [메일 주소]를 입력하세요.">				    	
+			    	</c:if>
+			    	<c:if test="${memberDTO==null&&guestDTO==null}">
+			    	<input type="email" class="form-control" id="QAreturnAddr" value="" data-toggle="tooltip" data-placement="bottom" title="회신받으실 [메일 주소]를 입력하세요.">				    	
+			    	</c:if>			    			
 				</div>
 		    </div>
 			<div class="form-row">

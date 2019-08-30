@@ -20,7 +20,7 @@ public class SalesInfoDAOImpl implements SalesInfoDAO {
 
 	//1. 기간별 매출 정보 목록 호출하기
 	@Override
-	public List<SalesInfoDTO> getSalesInfoList(Map<String, String> map) {
+	public List<SalesInfoDTO> getChartRawData(Map<String, String> map) {
 		return sqlSession.selectList("salesInfoSQL.getSalesInfoList",map);
 	}
 	

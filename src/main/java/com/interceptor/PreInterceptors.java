@@ -94,6 +94,7 @@ public class PreInterceptors extends HandlerInterceptorAdapter{
 				uri.contains("/qa/")||
 				uri.contains("/review/")||
 				uri.contains("logout")||
+				uri.contains("memberQASend")||
 				uri.contains("personalQAForm")) && guestDTO!=null) return true;
 			logger.info("올바르지 않은 접근입니다.");	
 			response.sendRedirect(request.getContextPath()+"/common/noLogin.jsp");//경고 페이지 이동

@@ -78,7 +78,7 @@ public class MemberController {
 	}	
 		
 
-	//3. 로그인 체크(주문조회도 로그인으로 받음)
+	//3. 로그인 체크
 	@RequestMapping(value="/login.do",method = RequestMethod.POST)
 	@ResponseBody
 	public String login(@RequestParam String id, String pwd,String autoLogin,HttpSession session,HttpServletResponse response,Model model){
@@ -93,7 +93,7 @@ public class MemberController {
 		
 			//(1) 회원/주문 정보 찾기
 			MemberDTO memberDTO = memberDAO.checkId(id);
-				
+			if(memberDTO==null) return "invalidLogin";
 			//(2) 비밀번호 일치 확인
 			objectPwd = memberDTO.getPwd();
 			if(passwordEncoder.matches(pwd, objectPwd)) {
@@ -143,7 +143,7 @@ public class MemberController {
 				guestDTO.setGuest_id(orderDTO.getOrder_id());
 				guestDTO.setGuest_pwd(orderDTO.getOrder_pwd());
 				guestDTO.setGuest_name(orderDTO.getOrder_name());
-				guestDTO.setGuest_address(orderDTO.getOrder_address());
+				guestDTO.setGuest_email(orderDTO.getOrder_email());
 				guestDTO.setGuest_tel(orderDTO.getOrder_tel());
 				guestDTO.setOrder_no(orderDTO.getOrder_no());
 				session.setAttribute("guestDTO", guestDTO);
@@ -492,8 +492,8 @@ public class MemberController {
 	public void memberQASend(@ModelAttribute MessageDTO messageDTO, HttpSession session) {
 				
 		MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
-		if(memberDTO == null) {OrderDTO orderDTO = (OrderDTO) session.getAttribute("orderDTO");
-			messageDTO.setSender(orderDTO.getOrder_name());}
+		if(memberDTO == null) {GuestDTO guestDTO = (GuestDTO) session.getAttribute("guestDTO");
+			messageDTO.setSender(guestDTO.getGuest_name());}
 		else {messageDTO.setSender(memberDTO.getName());}
 
 		memberDAO.memberQASend(messageDTO);	

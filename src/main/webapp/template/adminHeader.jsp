@@ -50,7 +50,7 @@
 									<a href="/minishop/admin/adminHome.do">메인</a>
 								</li>
 								<li class="nav-item">
-									<a href="/minishop/admin/shop/eventManage.do">상점관리</a>
+									<a href="/minishop/admin/shop/salesInfo.do">상점관리</a>
 								</li>								
 								<li class="nav-item">
 							        <a href="/minishop/admin/product/inventoryManage.do">상품관리</a>														

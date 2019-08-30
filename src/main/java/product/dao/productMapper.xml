@@ -97,16 +97,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   	<!-- 재고 : 재고 업데이트 반영 -->
  	<update id="inventoryUpdate" parameterType="java.util.Map">
  	begin
- 		<if test="ordernum !=''">
-			<choose>
-				<when test="ordernum eq '1'"> 
-					update product set stock=#{stock},unitcost=#{unitcost},ordernum=ordernum+1 where productid=#{productID};
-				</when>
-				<otherwise>
-		 			update product set stock=#{stock},unitcost=#{unitcost} where productid=#{productID};		
-				</otherwise>			
-			</choose>
-		</if>	
+		<choose>
+			<when test="ordering eq 'no'"> 
+				update product set stock=#{stock},unitcost=#{unitcost} where productid=#{productID};
+			</when>
+			<otherwise>
+				update product set stock=#{stock},unitcost=#{unitcost},ordernum=ordernum+1 where productid=#{productID};		
+			</otherwise>			
+		</choose>	
 
  		update product_name set product_name_instockdate=sysdate where product_name_no=#{product_name_no};
  	end;	

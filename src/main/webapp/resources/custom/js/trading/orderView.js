@@ -273,7 +273,7 @@ $('#orderCancelBtn').click(function(){
 			success: function(data){
 				if(data=='success'){
 					alert('주문취소가 완료되었습니다.');
-					window.location.reload();							
+					window.location.reload();						
 				}
 				else if(data=='nonVerifiedAttempt'){
 					alert('유효하지 않은 접근입니다. 해당페이지의 접근을 종료합니다');
@@ -291,13 +291,14 @@ $('#orderCancelBtn').click(function(){
 $('#requestRefundBtn').click(function(){
 	var refundPop = window.open('/minishop/trading/refundForm.do?order_no='+$('input[name=order_no]').val(),'환불요청','width=455,height=455,resizable=no');
 });
+
 $('#deliveryConfirmBtn').click(function(){
 	var realConfirm = confirm('수취확인을 하신 후에는 교환 또는 환불이 제한됩니다. 수취확인하시겠습니까?');
 	if(realConfirm){
 		$.ajax({
 			type: 'get',
 			url: '/minishop/trading/confirmDelivery.do',
-			data: 'order_no='+order_no,
+			data: 'order_no='+$('input[name=order_no]').val(),
 			success: function(){
 				alert('수취확인 작업이 완료되었습니다.');
 				window.location.reload();

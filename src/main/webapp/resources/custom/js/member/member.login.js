@@ -14,6 +14,13 @@ var loginErrorMsg = '<div class="alert alert-danger alert-dismissible fade show"
 '<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+
 '<span aria-hidden="true">&times;</span></button></div>'
 
+//주문번호는 yyyyMMdd-N(N)로 설정해야 함
+function checkOrderNumFormat(text){
+	var pattern = /^\d{8}-\d{1,2}$/;
+	var check = pattern.test(text);
+	return check;
+}
+
 //1. 미작성 등 경고창 on/off
 $('#loginId').focusout(function(){
 	 if($('#loginId').val()!=''){ 
@@ -122,3 +129,28 @@ $('#loginPwd').focusout(function(){
 	 	 });
 	  }
  });
+ 
+ $('#resetPwdBtn').click(function(){
+		var guest_id = prompt("[중요]주문서의 주문아이디를 입력하세요. ex>20190801-02");
+		if(guest_id==null || guest_id=='') alert('주문아이디를 입력하셔야 조회가 가능합니다.');
+		else if(checkOrderNumFormat(guest_id)==false) alert('유효한 주문아이디 형식이 아닙니다. ex>20190801-02');
+		else{
+			var realChange = confirm('확인을 누르면 주문시에 입력하신 메일주소로 새 비밀번호가 발급됩니다.\n 발급 이후에는 원래의 비밀번호로 복구되지 않사오니 주의 부탁드립니다.\n 주문서의 분실 등의 사유로 인한 경우에는 고객센터에 직접 문의 바랍니다.');
+			if(realChange){
+				$.ajax({
+					type: 'get',
+					url : '/minishop/trading/resetOrderPwd.do',
+					data : 'guest_id='+guest_id,
+					dataType: 'text',
+					success: function(data){
+						if(data=='success'){
+							alert('변경된 비밀번호에 대한 메일이 주문서상의 메일 주소로 발송되었습니다. \n 메일이 도착하지 않았거나 주문서를 분실하였을 경우에는 고객센터에 연락 바랍니다.');
+							window.location.reload();
+						}
+						else if(data=='no_order_exist') alert('아이디에 해당하는 주문서가 존재하지 않습니다.');
+						else alert('오류로 실패하였습니다. 다시 한번 시도해주세요.');
+					}
+				});
+			}		
+		}
+	});

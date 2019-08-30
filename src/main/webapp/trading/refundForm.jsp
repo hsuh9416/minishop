@@ -28,7 +28,7 @@
 		<h5 class="sub-title-undeline">[환불 계좌번호]</h5>
 		<div class="form-row ">	
 			<div class="col-4" align="center">
-				<select name="searchOption" id="searchOption" class="form-control-plaintext form-inline">		
+				<select id="bankOption" class="form-control-plaintext form-inline">		
 					<option value="">[은행 선택]</option>					
 					<option value="woori">우리은행</option>
 					<option value="hana">하나은행</option>
@@ -43,15 +43,15 @@
 		<h5 class="sub-title-undeline">[환불 사유]</h5>
 		<div class="form-row">	
 			<div class="col" align="center">
-				<input type="text" class ="form-control-plaintext form-inline" id="order_statement" placeholder="환불사유를 입력해주세요()"/>
+				<input type="text" class ="form-control-plaintext form-inline" id="order_statement" placeholder="환불사유를 입력해주세요."/>
 			</div>				  		  				  	
 		</div>	
 	
 		<div class="form-row justify-content-center">
 			<div class="form-group col-6"></div>
 			<div class="form-group col-6">      	
-				<button type="button" id="resetMod" class="btn btn-outline-secondary">다시작성</button>								
-				<button type="button" id="doModify" class="btn btn-outline-info">환불요청</button>			
+				<button type="button" id="resetBtn" class="btn btn-outline-secondary">다시작성</button>								
+				<button type="button" id="doRefund" class="btn btn-outline-info">환불요청</button>			
 			</div>
 		</div>		
 			
