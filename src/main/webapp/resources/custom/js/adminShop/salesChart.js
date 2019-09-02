@@ -8,9 +8,9 @@ $(document).ready(function(){
 		
 		searchOption = $('#searchOption',opener.document).val();
 		keyword = $('#keyword',opener.document).val();
-		if($('#searchOption option:selected',opener.document).text()=='검색조건') $('#searchOption').text('없음');
-		else $('#searchOption').text($('#searchOption option:selected',opener.document).text());
-		if($('#keyword',opener.document).val()=='') $('#keyword').text('없음');
+		if($('#searchOption option:selected',opener.document).text()=='검색조건') $('#searchOption').css('color','black').text('없음').css('color','red');
+		else $('#searchOption').css('color','black').text($('#searchOption option:selected',opener.document).text());
+		if($('#keyword',opener.document).val()=='') $('#keyword').text('없음').css('color','red');
 		else $('#keyword').text($('#keyword',opener.document).val());
 	$.ajax({
 		type : 'post',
@@ -18,7 +18,8 @@ $(document).ready(function(){
 		data: {'searchOption':searchOption,'keyword':keyword},
 		dataType: 'json',
 		success: function(data){
-			if(data.totalSalesList.length<=0 || data.totalSalesList==null) {
+			var period = data.periodicList;
+			if(data.totalSalesData.length<=0 || data.totalSalesData==null) {
 				$('#chart_div').empty();
 				$('#chart_div').html('<h5 style="color:red;font-weight:bold;text-decoration:underline;text-undeline-position:under;">[해당하는 데이터가 없으므로 차트를 나타낼 수 없습니다]</h5>')
 			}
@@ -29,7 +30,7 @@ $(document).ready(function(){
 			var women_total = 0;	var men_total = 0;		var accessories_total = 0;
 			var unknown_total = 0;
 			
-			$.each(data.totalSalesList,function(idx,data){				
+			$.each(data.totalSalesData,function(idx,data){				
 				order_total++;
 				sales_total += parseInt(data.sales_revenue,10);
 				cash_total += parseInt(data.cash_total,10);	
@@ -65,6 +66,22 @@ $(document).ready(function(){
 				{'c':[{'v':'쿠폰','f':null},{'v':coupon_total,'f':null}]},
 				{'c':[{'v':'기타','f':null},{'v':etc_total,'f':null}]},
 				]};	
+			
+
+				lineChart_period = {'cols':[
+					{'id':'','label':'기간','pattern':'','type': 'string'},
+					{'id':'','label':'전체','pattern':'','type':'number'},				
+					{'id':'','label':'여성','pattern':'','type':'number'},
+					{'id':'','label':'남성','pattern':'','type':'number'},
+					{'id':'','label':'잡화','pattern':'','type':'number'}],					
+				'rows':[
+					{'c':[{'v':'전전월','f':null},{'v':period.total_previousM,'f':null},
+						{'v':period.women_previousM,'f':null},{'v':period.men_previousM,'f':null},{'v':period.accessories_previousM,'f':null}]},
+					{'c':[{'v':'전월','f':null},{'v':period.total_lastM,'f':null},
+						{'v':period.women_lastM,'f':null},{'v':period.men_lastM,'f':null},{'v':period.accessories_lastM,'f':null}]},
+					{'c':[{'v':'당월','f':null},{'v':period.total_thisM,'f':null},
+						{'v':period.women_thisM,'f':null},{'v':period.men_thisM,'f':null},{'v':period.accessories_thisM,'f':null}]},
+					]};
 				
 			google.charts. setOnLoadCallback (drawChart);
 				drawChart();
@@ -77,8 +94,8 @@ $(document).ready(function(){
 });
 
 function drawChart() {
-	drawPieChart();
-	//if(searchOption!='sales_date') drawLineChart();
+	drawPieChart(pieChart_payment,pieChart_category);
+	if(searchOption!='sales_date') drawLineChart(lineChart_period);
 	
 }
 
@@ -97,32 +114,18 @@ function drawPieChart(){
     var chart = new google.visualization.PieChart(document.getElementById('pieChart_category_div'));
     chart.draw(data_category, options_category);    
 }
-/*
-//기간별 매출 추이
-function drawLineChart(){
-	var today = new Date();
-	
-	var firstM = today.getMonth()-1;
-	var secondM = today.getMonth();
-	var thirdM = today.getMonth()+1;
-	
-	if(secondM==0) {firstM = 11; secondM = 12;}
-	
 
-	
-	var dataM = new google.visualization.DataTable();
-	dataM.addColumn('number', '월');
-	dataM.addColumn('number', '전체 매출액');
-	dataM.addColumn('number', '여성 매출액');
-	dataM.addColumn('number', '남성 매출액');
-	dataM.addColumn('number', '잡화 매출액');
-    
-	var optionsM = {'title':'[월별 매출액 추이]'};
+
+function drawLineChart(lineChart_period){
+
+	var dataM = new google.visualization.DataTable(lineChart_period);
+   
+	var optionsM = {'title':'[기간별 매출액 추이]'};
 		
-    var chart = new google.visualization.Line(document.getElementById('lineChartM_div'));
+    var chart = new google.visualization.LineChart(document.getElementById('lineChartM_div'));
     chart.draw(dataM, optionsM);
 }
-*/
+
 $('#resetBtn').click(function(){
 	window.location.reload();
 });

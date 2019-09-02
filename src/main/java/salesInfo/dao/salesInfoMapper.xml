@@ -65,8 +65,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="getsalesInfoList" parameterType="java.util.Map" resultType="salesInfo">
 			select * from 
 			(select rownum rn, tt.* from 
-			(select * from SALES_INFO
-				<if test="sortSubject !=null and sortType !=''"> order by
+			(select * from SALES_INFO order by
+				<if test="sortSubject !='' and sortType !=''"> 
 				 	<choose>
 						<when test="sortSubject eq 'order_no'"> order_no </when>
 						<when test="sortSubject eq 'order_id'"> order_id </when>
@@ -77,6 +77,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 					    <when test="sortType eq 'asc'"> ASC </when>
 					    <otherwise> DESC </otherwise>
 					</choose>				 	
+				</if>
+				<if test="sortSubject eq '' and sortType eq ''">
+					sales_seq asc
 				</if>						
 				)tt) 
 			where (rn between #{startNum} and #{endNum}) 
@@ -101,7 +104,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				    	<otherwise> ${searchOption} like '%'||#{keyword}||'%' </otherwise>		
 				 	</choose>
 				</if>	
-				<if test="sortSubject !=null and sortType !=''"> order by
+				<if test="sortSubject !='' and sortType !=''"> 
 				 	<choose>
 						<when test="sortSubject eq 'order_no'"> order_no </when>
 						<when test="sortSubject eq 'order_id'"> order_id </when>
@@ -112,7 +115,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 					    <when test="sortType eq 'asc'"> ASC </when>
 					    <otherwise> DESC </otherwise>
 					</choose>				 	
-				</if>	
+				</if>
+				<if test="sortSubject eq '' and sortType eq ''">
+					sales_seq asc
+				</if>
 				) tt) 
 				where (rn between #{startNum} and #{endNum})
  	</select>
@@ -121,10 +127,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	select sum(SALES_REVENUE) as first_month from SALES_INFO
 				<if test="month !='' and month!=null"> where
 				 	<choose>
-						<when test="month eq '1'"> 
-							<![CDATA[SALES_DATE <= add_months(LAST_DAY(SYSDATE),-2)]]>
+						<when test="month eq 'previous'"> 
+							to_char(SALES_DATE,'month') = to_char(add_months(SYSDATE,-2),'month')
 						</when>
-						<when test="month eq '2'">
+						<when test="month eq 'last'">
 							to_char(SALES_DATE,'month') = to_char(add_months(SYSDATE,-1),'month')
 						</when>
 						<otherwise>

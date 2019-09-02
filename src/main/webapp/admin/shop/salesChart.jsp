@@ -12,12 +12,20 @@
 
  	<div class="row" id="titleDiv">
  		<div class="col" align="center">
- 			<h2 class="first">[Sales Chart]</h2>		
+ 			<h2 class="first">[매출 분석]</h2>		
  		</div>
 	</div>	
 	<div class="card card-body">
 	<div class="form-row justify-content-center">
-		<h4>[검색 조건 : <font id="searchOption"></font>] [검색 키워드 :<font id="keyword"></font>]</h4>
+		<h4>[분석조건]</h4>
+	</div>	
+	<div class="form-row justify-content-center">
+		<p style="color:black;">[검색 조건 : <font id="searchOption"></font>] [검색 키워드 :<font id="keyword"></font>]</p>
+	</div>
+	<hr style="color:lightgrey;width:100%;">
+	
+	<div class="form-row justify-content-center">
+		<h4>[차트 분석]</h4>
 	</div>
 	<div class="form-row justify-content-center" id="pieChart_div">
 		<!-- 카테고리별 매출액  비중-->
@@ -29,10 +37,14 @@
 	<!-- 주문번호, 주문일자로는 보이지 않는 구역 -->
 	<div class="form-row justify-content-center" id="lineChart_div">
 			<!--월별 매출액(기간별 비중도 표현)-->
-		<div class="col-12" id="lineChartM_div"></div>
+		<div class="col" id="lineChartM_div"></div>
 	</div>	
 	
-	<!-- 비 차트 통계 -->
+	<hr style="color:lightgrey;width:100%;">
+	
+	<div class="form-row justify-content-center">
+		<h4>[단위 분석]</h4>
+	</div>
 	<!-- 공통 출현 -->
 	<div class="form-row justify-content-center">
 		<div class="col-2">
@@ -62,7 +74,7 @@
 		</div>
 		<div class="col-2"></div>
 		<div class="col-2">
-			<label>최고기여회원</label>
+			<h6>최고기여회원</h6>
 		</div>		
 		<div class="col-2"></div>	
 		<div class="col-2">

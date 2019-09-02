@@ -17,7 +17,7 @@ function getsalesInfoList(data){
 	var coupon_total = 0; 	
 	var etc_total = 0;
 	$.each(data.salesInfoList, function(index, items){
-	
+
 		$('<tr/>').append($('<td/>',{
 			align: 'center',
 			text: items.sales_seq
@@ -50,13 +50,12 @@ function getsalesInfoList(data){
 			text: items.sales_date			
 		})).appendTo($('#salesInfoTable tbody'));
 		
-		order_total++;
-		sales_total += parseInt(data.sales_revenue,10);
-		cash_total += parseInt(data.cash_total,10);	
-		card_total += parseInt(data.card_total,10);			
-		point_total += parseInt(data.point_total,10);			
-		coupon_total += parseInt(data.coupon_total,10);	
-		etc_total += parseInt(data.etc_total,10);		
+		sales_total += parseInt(items.sales_revenue,10);
+		cash_total += parseInt(items.cash_total,10);	
+		card_total += parseInt(items.card_total,10);			
+		point_total += parseInt(items.point_total,10);			
+		coupon_total += parseInt(items.coupon_total,10);	
+		etc_total += parseInt(items.etc_total,10);		
 	});
 	$('<tr/>').append($('<td/>',{
 		align: 'center',
@@ -138,16 +137,15 @@ $(document).ready(function(){
 			var point_total = 0; 		
 			var coupon_total = 0; 	
 			var etc_total = 0;
-			$.each(data.totalSalesList,function(idx,data){
+			$.each(data.totalSalesData,function(idx,item){
 				order_total++;
-				sales_total += parseInt(data.sales_revenue,10);
-				cash_total += parseInt(data.cash_total,10);	
-				card_total += parseInt(data.card_total,10);			
-				point_total += parseInt(data.point_total,10);			
-				coupon_total += parseInt(data.coupon_total,10);	
-				etc_total += parseInt(data.etc_total,10);
+				sales_total += parseInt(item.sales_revenue,10);
+				cash_total += parseInt(item.cash_total,10);	
+				card_total += parseInt(item.card_total,10);			
+				point_total += parseInt(item.point_total,10);			
+				coupon_total += parseInt(item.coupon_total,10);	
+				etc_total += parseInt(item.etc_total,10);
 			});
-			
 			$('<tr>').append($('<td>',{
 				align: 'center',
 				html: '<font style="text-decoration:undeline;text-underline-position:under;text-weight:bold;">'+formatNumber(order_total)+'</font>'				

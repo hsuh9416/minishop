@@ -1,6 +1,5 @@
 package salesInfo.dao;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -59,16 +58,8 @@ public class SalesInfoDAOImpl implements SalesInfoDAO {
 	}
 
 	@Override
-	public Map<String,Integer> getPeriodicData(Map<String, String> map) {
-		
-		Map<String,Integer> list = new HashMap<String,Integer>();
-		for(int i=1;i<=list.size();i++) {
-			map.put("month", i+"");
-			list.put(i+"_month",sqlSession.selectOne("salesInfoSQL.getPeriodicData",map));
-			System.out.println(list.get(i+"_month"));
-		}
-		
-		return list;
+	public int getPeriodicData(Map<String, String> map) {
+		return sqlSession.selectOne("salesInfoSQL.getPeriodicData",map);
 	}
 
 }

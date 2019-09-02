@@ -17,6 +17,7 @@
 		<div class="col-1"><label>[기준]</label></div>
 		<div class="col-2">
 			<select id="sortSubject" class="form-control-plaintext inline-form">
+				<option value="">[정렬기준]</option>
 				<option value="sales_date">매출일자</option>			
 				<option value="order_no">주문번호</option>
 				<option value="order_id">주문자</option>
@@ -26,6 +27,7 @@
 		<div class="col-1"><label>[차순]</label></div>
 		<div class="col-2">
 			<select id="sortType" class="form-control-plaintext inline-form">
+				<option value="">[정렬차순]</option>
 				<option value="desc">내림차순</option>	
 				<option value="asc">오름차순</option>							
 			</select>
@@ -40,7 +42,7 @@
 					<th scope="col">#</th>
 					<th scope="col">주문<br>번호</th>
 					<th scope="col">주문자</th>					
-					<th scope="col">거래v합계</th>
+					<th scope="col">거래합계</th>
 					<th scope="col">현금<br>결제</th>
 					<th scope="col">카드<br>결제</th>
 					<th scope="col">포인트<br>결제</th>

@@ -345,7 +345,7 @@ public class TradingController {
 					orderDTO.setPayment_state("전액 포인트 등 결제");
 					orderDTO.setPayment_date(today);
 				}
-				else if(orderDTO.getPayment_method()==PaymentMethod.BANK.ordinal()) {
+				else if(orderDTO.getPayment_method()==PaymentMethod.CASH.ordinal()) {
 					orderDTO.setPayment_state("입금 은행 계좌 : ["+adminDTO.getAdmin_account()+"] ");
 					orderDTO.setPayment_date(today);
 				}
@@ -363,7 +363,7 @@ public class TradingController {
 				orderDTO.setPayment_state("카드 결제");
 				orderDTO.setPayment_date(today);
 			}
-			else if(orderDTO.getPayment_method()==PaymentMethod.BANK.ordinal()) {
+			else if(orderDTO.getPayment_method()==PaymentMethod.CASH.ordinal()) {
 				orderDTO.setPayment_state("입금 은행 계좌 : ["+adminDTO.getAdmin_account()+"] ");
 				orderDTO.setPayment_date(today);
 			}

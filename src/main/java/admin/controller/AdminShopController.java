@@ -9,7 +9,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -297,15 +296,15 @@ public class AdminShopController {
 			Map<String,String> map = new HashMap<String,String>();
 				map.put("startNum", startNum+"");
 				map.put("endNum", endNum+"");
-				map.put("sortSubject",sortSubject);
+				map.put("sortSubject", sortSubject);
 				map.put("sortType", sortType);	
 		List<SalesInfoDTO> salesInfoList = salesInfoDAO.getsalesInfoList(map);
-	
+
 			salesInfoPaging.setCurrentPage(page);
 			salesInfoPaging.setPageBlock(3);
 			salesInfoPaging.setPageSize(10);
 			salesInfoPaging.setTotalA(totalA);
-			salesInfoPaging.makePagingHTML();;	
+			salesInfoPaging.makePagingHTML();
 		
 			for(SalesInfoDTO dto : salesInfoList) {
 				
@@ -324,6 +323,7 @@ public class AdminShopController {
 					else if(product.getProduct_category_no()==ProductCategory.ACCESSORIES.ordinal())  dto.setAccessories_total(product.getUnitcost()*product.getCart_qty());
 					else dto.setUnknown_total(product.getUnitcost()*product.getCart_qty());
 				}
+				
 				for(OrderDTO payment: paymentInfo) {
 					if(payment.getPayment_method()==PaymentMethod.CARD.ordinal()) dto.setCard_total(payment.getPayment_amount());
 					else if(payment.getPayment_method()==PaymentMethod.CASH.ordinal()) dto.setCash_total(payment.getPayment_amount());
@@ -331,10 +331,7 @@ public class AdminShopController {
 					else if(payment.getPayment_method()==PaymentMethod.COUPON.ordinal()) dto.setCoupon_total(payment.getPayment_amount());
 					else dto.setEtc_total(payment.getPayment_amount());
 				}
-				
-
-			}
-			
+			}	
 		ModelAndView mav = new ModelAndView();
 			mav.addObject("salesInfoPaging", salesInfoPaging);
 			mav.addObject("salesInfoList", salesInfoList);
@@ -428,14 +425,19 @@ public class AdminShopController {
 	//15. 차트 분석을 위한 데이터 가져오기
 	@RequestMapping(value="/getChartRawData.do",method= RequestMethod.POST)
 	public ModelAndView getChartRawData(@RequestParam(required=false) String keyword, String searchOption) {
-		
+		int total_previousM =0; int total_lastM =0; int total_thisM =0;
+		int women_previousM =0; int women_lastM =0; int women_thisM =0;
+		int men_previousM =0; int men_lastM =0; int men_thisM =0;
+		int accessories_previousM =0; int accessories_lastM =0; int accessories_thisM =0;		
 		
 		Map<String,String> map = new HashMap<String,String>();
 			map.put("keyword", keyword);
 			map.put("searchOption", searchOption);
-		List<SalesInfoDTO> totalSalesList = salesInfoDAO.getChartRawData(map);
-	//선택된 검색어에 따른 무제한 데이터 호출 
-	for(SalesInfoDTO dto : totalSalesList) {
+		List<SalesInfoDTO> totalSalesData = salesInfoDAO.getChartRawData(map);
+	//선택된 검색어에 따른 무제한 데이터 호출
+		SimpleDateFormat sf = new SimpleDateFormat("MM");
+	for(SalesInfoDTO dto : totalSalesData) {
+
 		
 		OrderDTO orderDTO = tradingDAO.getOrderInfo(dto.getOrder_no());
 		List<ProductDTO> productList = jsonTrans.makeJsonToList(orderDTO.getOrderlist_json());
@@ -459,14 +461,61 @@ public class AdminShopController {
 			else if(payment.getPayment_method()==PaymentMethod.COUPON.ordinal()) dto.setCoupon_total(payment.getPayment_amount());
 			else dto.setEtc_total(payment.getPayment_amount());
 		}
-		
-		System.out.println(dto);
+		int thisMonth = Integer.parseInt(sf.format(new Date()));
+		int targetMonth = Integer.parseInt(sf.format(dto.getSales_date())); 
+		if(targetMonth==thisMonth) {
+			total_thisM += dto.getSales_revenue();
+			women_thisM += dto.getWomen_total();
+			men_thisM += dto.getMen_total();
+			accessories_thisM += dto.getAccessories_total();
+		}
+		else if(targetMonth==thisMonth-1) {
+			total_lastM += dto.getSales_revenue();
+			women_lastM += dto.getWomen_total();
+			men_lastM += dto.getMen_total();
+			accessories_lastM += dto.getAccessories_total();
+			
+		}
+		else {
+			total_previousM += dto.getSales_revenue();
+			women_previousM += dto.getWomen_total();
+			men_previousM += dto.getMen_total();
+			accessories_previousM += dto.getAccessories_total();
+		}
 	}
 	//선택된 검색어에 따른 기간 데이터 호출 
-	Map<String,Integer> periodicList = salesInfoDAO.getPeriodicData(map);
-
+	/*
+	Map<String,Integer> periodicList = new HashMap<String,Integer>();
+	
+			map.put("month", "previous");
+		int resultSum = salesInfoDAO.getPeriodicData(map);
+			periodicList.put("previous_month",resultSum);
+			
+			map.replace("month", "last");
+			resultSum = salesInfoDAO.getPeriodicData(map);
+			periodicList.put("last_month",resultSum);
+			
+			map.put("month", "this");
+			resultSum = salesInfoDAO.getPeriodicData(map);
+			periodicList.put("this_month",resultSum);		
+*/
+	Map<String,Integer> periodicList = new HashMap<String,Integer>();
+		periodicList.put("total_previousM", total_previousM);
+		periodicList.put("total_lastM", total_lastM); 
+		periodicList.put("total_thisM", total_thisM);
+		periodicList.put("women_previousM", women_previousM);	
+		periodicList.put("women_lastM", women_lastM);		
+		periodicList.put("women_thisM", women_thisM);		
+		periodicList.put("men_previousM", men_previousM);
+		periodicList.put("men_lastM", men_lastM);
+		periodicList.put("men_thisM", men_thisM);
+		periodicList.put("accessories_previousM", accessories_previousM);
+		periodicList.put("accessories_lastM", accessories_lastM);
+		periodicList.put("accessories_thisM", accessories_thisM);
+		
+		System.out.println(periodicList);
 		ModelAndView mav = new ModelAndView();	
-		mav.addObject("totalSalesList", totalSalesList);
+		mav.addObject("totalSalesData", totalSalesData);
 		mav.addObject("periodicList", periodicList);
 		mav.setViewName("jsonView");
 	
