@@ -104,7 +104,7 @@
 			    <input type="button" id="salesInfoSearchBtn" class="form-control btn btn-outline-dark" value="검색">		
 			</div>
 			<div class="col-2">
-			    <input type="button" id="openChart" class="form-control btn btn-outline-info" value="차트보기">		
+			    <input type="button" id="openChart" class="form-control btn btn-outline-info" value="차트분석">		
 			</div>							
 		</div>				
 	</form>

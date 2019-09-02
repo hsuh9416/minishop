@@ -1,5 +1,6 @@
 package salesInfo.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,7 +22,7 @@ public class SalesInfoDAOImpl implements SalesInfoDAO {
 	//1. 기간별 매출 정보 목록 호출하기
 	@Override
 	public List<SalesInfoDTO> getChartRawData(Map<String, String> map) {
-		return sqlSession.selectList("salesInfoSQL.getSalesInfoList",map);
+		return sqlSession.selectList("salesInfoSQL.getChartRawData",map);
 	}
 	
 	//2. 시퀀스 넘버 가져오기
@@ -55,6 +56,19 @@ public class SalesInfoDAOImpl implements SalesInfoDAO {
 	@Override
 	public List<SalesInfoDTO> salesInfoSearch(Map<String, String> map) {
 		return sqlSession.selectList("salesInfoSQL.salesInfoSearch", map);
+	}
+
+	@Override
+	public Map<String,Integer> getPeriodicData(Map<String, String> map) {
+		
+		Map<String,Integer> list = new HashMap<String,Integer>();
+		for(int i=1;i<=list.size();i++) {
+			map.put("month", i+"");
+			list.put(i+"_month",sqlSession.selectOne("salesInfoSQL.getPeriodicData",map));
+			System.out.println(list.get(i+"_month"));
+		}
+		
+		return list;
 	}
 
 }

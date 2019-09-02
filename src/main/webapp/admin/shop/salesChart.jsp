@@ -15,6 +15,72 @@
  			<h2 class="first">[Sales Chart]</h2>		
  		</div>
 	</div>	
+	<div class="card card-body">
+	<div class="form-row justify-content-center">
+		<h4>[검색 조건 : <font id="searchOption"></font>] [검색 키워드 :<font id="keyword"></font>]</h4>
+	</div>
+	<div class="form-row justify-content-center" id="pieChart_div">
+		<!-- 카테고리별 매출액  비중-->
+		<div class="col-6" id="pieChart_category_div"></div>	
+		<!-- 지급방법별 매출액 비중 -->
+		<div class="col-6" id="pieChart_payment_div"></div>
+
+	</div>
+	<!-- 주문번호, 주문일자로는 보이지 않는 구역 -->
+	<div class="form-row justify-content-center" id="lineChart_div">
+			<!--월별 매출액(기간별 비중도 표현)-->
+		<div class="col-12" id="lineChartM_div"></div>
+	</div>	
+	
+	<!-- 비 차트 통계 -->
+	<!-- 공통 출현 -->
+	<div class="form-row justify-content-center">
+		<div class="col-2">
+			<label>최고매출상품</label>
+		</div>
+		<div class="col-4"></div>
+		<div class="col-2">
+			<label>최다판매상품</label>
+		</div>		
+		<div class="col-4"></div>					
+	</div>
+	<div class="form-row justify-content-center">
+		<div class="col-2">
+			<label>최저매출상품</label>
+		</div>
+		<div class="col-4"></div>
+		<div class="col-2">
+			<label>최소판매상품</label>
+		</div>		
+		<div class="col-4"></div>					
+	</div>	
+	
+	<!-- 주문번호,주문자 선택시 조회 안됨 -->		
+	<div class="form-row justify-content-center" id="order_div">
+		<div class="col-2">
+			<label>최다주문회원</label>
+		</div>
+		<div class="col-2"></div>
+		<div class="col-2">
+			<label>최고기여회원</label>
+		</div>		
+		<div class="col-2"></div>	
+		<div class="col-2">
+			<label>비회원주문비율</label>
+		</div>		
+		<div class="col-2"></div>						
+	</div>
+	<!-- 주문번호,매출일자 선택시 조회 안됨 -->	
+	<div class="form-row justify-content-center" id="sales_div">
+		<div class="col-2">
+			<label>최고매출주문</label>
+		</div>
+		<div class="col-4"></div>
+		<div class="col-2">
+			<label>최고매출일자</label>
+		</div>		
+		<div class="col-4"></div>					
+	</div>
 			
 	<div class="form-row">
 		<div class="form-group col" align="right">     	
@@ -22,10 +88,15 @@
 			<button type="button" id="closeBtn" class="btn btn-outline-dark">닫기</button>							
 		</div>
 	</div>	
+		
+	</div>	
+		
+
 
 </div>
 	
 	<!--JavaScript Local LINK:START-->
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript" src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script type="text/javascript" src="/minishop/resources/bootstrap4/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript" src="/minishop/resources/custom/js/adminShop/salesChart.js"></script>

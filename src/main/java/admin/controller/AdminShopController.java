@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import product.bean.ProductCategory;
+import product.bean.ProductDTO;
 import salesInfo.bean.SalesInfoDTO;
 import salesInfo.bean.SalesInfoPaging;
 import salesInfo.dao.SalesInfoDAO;
@@ -31,6 +33,7 @@ import trading.bean.DeliveryDTO;
 import trading.bean.EventDTO;
 import trading.bean.JsonTransitioner;
 import trading.bean.OrderDTO;
+import trading.bean.PaymentMethod;
 import trading.dao.TradingDAO;
 /*
  * 관리자: 관리자 및 상점 정보를 제어하는 클래스
@@ -305,8 +308,31 @@ public class AdminShopController {
 			salesInfoPaging.makePagingHTML();;	
 		
 			for(SalesInfoDTO dto : salesInfoList) {
-				List<OrderDTO> sales_payment_Info = jsonTrans.makeJsonToPaymentList(dto.getSales_payment_json());
-				dto.setSales_payment_Info(sales_payment_Info);
+				
+				OrderDTO orderDTO = tradingDAO.getOrderInfo(dto.getOrder_no());
+				List<ProductDTO> productList = jsonTrans.makeJsonToList(orderDTO.getOrderlist_json());
+				List<OrderDTO> paymentInfo = jsonTrans.makeJsonToPaymentList(dto.getSales_payment_json());
+				
+					dto.setSales_product_Info(productList);
+					dto.setSales_payment_Info(paymentInfo);
+					dto.setWomen_total(0); dto.setMen_total(0); dto.setAccessories_total(0); dto.setUnknown_total(0);
+					dto.setCard_total(0); dto.setCash_total(0); dto.setCoupon_total(0); dto.setPoint_total(0); dto.setEtc_total(0);
+				
+				for(ProductDTO product : productList) {
+					if(product.getProduct_category_no()==ProductCategory.WOMEN.ordinal()) dto.setWomen_total(product.getUnitcost()*product.getCart_qty());
+					else if(product.getProduct_category_no()==ProductCategory.MEN.ordinal())  dto.setMen_total(product.getUnitcost()*product.getCart_qty());
+					else if(product.getProduct_category_no()==ProductCategory.ACCESSORIES.ordinal())  dto.setAccessories_total(product.getUnitcost()*product.getCart_qty());
+					else dto.setUnknown_total(product.getUnitcost()*product.getCart_qty());
+				}
+				for(OrderDTO payment: paymentInfo) {
+					if(payment.getPayment_method()==PaymentMethod.CARD.ordinal()) dto.setCard_total(payment.getPayment_amount());
+					else if(payment.getPayment_method()==PaymentMethod.CASH.ordinal()) dto.setCash_total(payment.getPayment_amount());
+					else if(payment.getPayment_method()==PaymentMethod.POINT.ordinal()) dto.setPoint_total(payment.getPayment_amount());
+					else if(payment.getPayment_method()==PaymentMethod.COUPON.ordinal()) dto.setCoupon_total(payment.getPayment_amount());
+					else dto.setEtc_total(payment.getPayment_amount());
+				}
+				
+
 			}
 			
 		ModelAndView mav = new ModelAndView();
@@ -347,10 +373,34 @@ public class AdminShopController {
 			
 			List<SalesInfoDTO> salesInfoSearchList = salesInfoDAO.salesInfoSearch(map);
 		
-		for(SalesInfoDTO dto : salesInfoSearchList) {
-			List<OrderDTO> sales_payment_Info = jsonTrans.makeJsonToPaymentList(dto.getSales_payment_json());
-			dto.setSales_payment_Info(sales_payment_Info);
-		}
+			//선택된 검색어에 따른 무제한 데이터 호출 
+			for(SalesInfoDTO dto : salesInfoSearchList) {
+				
+				OrderDTO orderDTO = tradingDAO.getOrderInfo(dto.getOrder_no());
+				List<ProductDTO> productList = jsonTrans.makeJsonToList(orderDTO.getOrderlist_json());
+				List<OrderDTO> paymentInfo = jsonTrans.makeJsonToPaymentList(dto.getSales_payment_json());
+				
+					dto.setSales_product_Info(productList);
+					dto.setSales_payment_Info(paymentInfo);
+					dto.setWomen_total(0); dto.setMen_total(0); dto.setAccessories_total(0); dto.setUnknown_total(0);
+					dto.setCard_total(0); dto.setCash_total(0); dto.setCoupon_total(0); dto.setPoint_total(0); dto.setEtc_total(0);
+				
+				for(ProductDTO product : productList) {
+					if(product.getProduct_category_no()==ProductCategory.WOMEN.ordinal()) dto.setWomen_total(product.getUnitcost()*product.getCart_qty());
+					else if(product.getProduct_category_no()==ProductCategory.MEN.ordinal())  dto.setMen_total(product.getUnitcost()*product.getCart_qty());
+					else if(product.getProduct_category_no()==ProductCategory.ACCESSORIES.ordinal())  dto.setAccessories_total(product.getUnitcost()*product.getCart_qty());
+					else dto.setUnknown_total(product.getUnitcost()*product.getCart_qty());
+				}
+				for(OrderDTO payment: paymentInfo) {
+					if(payment.getPayment_method()==PaymentMethod.CARD.ordinal()) dto.setCard_total(payment.getPayment_amount());
+					else if(payment.getPayment_method()==PaymentMethod.CASH.ordinal()) dto.setCash_total(payment.getPayment_amount());
+					else if(payment.getPayment_method()==PaymentMethod.POINT.ordinal()) dto.setPoint_total(payment.getPayment_amount());
+					else if(payment.getPayment_method()==PaymentMethod.COUPON.ordinal()) dto.setCoupon_total(payment.getPayment_amount());
+					else dto.setEtc_total(payment.getPayment_amount());
+				}
+				
+
+			}
 		
 		ModelAndView mav = new ModelAndView();		
 			mav.addObject("pg", pg);
@@ -375,23 +425,71 @@ public class AdminShopController {
 	return mav;	
 	}	
 	
-	//15. 페이징 없는 리스트 불러오기
+	//15. 차트 분석을 위한 데이터 가져오기
 	@RequestMapping(value="/getChartRawData.do",method= RequestMethod.POST)
-	public ModelAndView getChartRawData(@RequestParam(required=false) String keyword,String searchOption) {
+	public ModelAndView getChartRawData(@RequestParam(required=false) String keyword, String searchOption) {
+		
 		
 		Map<String,String> map = new HashMap<String,String>();
+			map.put("keyword", keyword);
+			map.put("searchOption", searchOption);
+		List<SalesInfoDTO> totalSalesList = salesInfoDAO.getChartRawData(map);
+	//선택된 검색어에 따른 무제한 데이터 호출 
+	for(SalesInfoDTO dto : totalSalesList) {
 		
-		List<SalesInfoDTO> salesInfoList = salesInfoDAO.getChartRawData(map);
+		OrderDTO orderDTO = tradingDAO.getOrderInfo(dto.getOrder_no());
+		List<ProductDTO> productList = jsonTrans.makeJsonToList(orderDTO.getOrderlist_json());
+		List<OrderDTO> paymentInfo = jsonTrans.makeJsonToPaymentList(dto.getSales_payment_json());
 		
-	for(SalesInfoDTO dto : salesInfoList) {
-		List<OrderDTO> sales_payment_Info = jsonTrans.makeJsonToPaymentList(dto.getSales_payment_json());
-		dto.setSales_payment_Info(sales_payment_Info);
+			dto.setSales_product_Info(productList);
+			dto.setSales_payment_Info(paymentInfo);
+			dto.setWomen_total(0); dto.setMen_total(0); dto.setAccessories_total(0); dto.setUnknown_total(0);
+			dto.setCard_total(0); dto.setCash_total(0); dto.setCoupon_total(0); dto.setPoint_total(0); dto.setEtc_total(0);
+		
+		for(ProductDTO product : productList) {
+			if(product.getProduct_category_no()==ProductCategory.WOMEN.ordinal()) dto.setWomen_total(product.getUnitcost()*product.getCart_qty());
+			else if(product.getProduct_category_no()==ProductCategory.MEN.ordinal())  dto.setMen_total(product.getUnitcost()*product.getCart_qty());
+			else if(product.getProduct_category_no()==ProductCategory.ACCESSORIES.ordinal())  dto.setAccessories_total(product.getUnitcost()*product.getCart_qty());
+			else dto.setUnknown_total(product.getUnitcost()*product.getCart_qty());
+		}
+		for(OrderDTO payment: paymentInfo) {
+			if(payment.getPayment_method()==PaymentMethod.CARD.ordinal()) dto.setCard_total(payment.getPayment_amount());
+			else if(payment.getPayment_method()==PaymentMethod.CASH.ordinal()) dto.setCash_total(payment.getPayment_amount());
+			else if(payment.getPayment_method()==PaymentMethod.POINT.ordinal()) dto.setPoint_total(payment.getPayment_amount());
+			else if(payment.getPayment_method()==PaymentMethod.COUPON.ordinal()) dto.setCoupon_total(payment.getPayment_amount());
+			else dto.setEtc_total(payment.getPayment_amount());
+		}
+		
+		System.out.println(dto);
 	}
-		
+	//선택된 검색어에 따른 기간 데이터 호출 
+	Map<String,Integer> periodicList = salesInfoDAO.getPeriodicData(map);
+
 		ModelAndView mav = new ModelAndView();	
-		mav.addObject("salesRawInfoList", salesInfoList);
+		mav.addObject("totalSalesList", totalSalesList);
+		mav.addObject("periodicList", periodicList);
 		mav.setViewName("jsonView");
 	
 	return mav;	
 	}
+	
+	//16/ 기간별 매출 자료 불러오기
+	@RequestMapping(value="/getPeriodicData.do",method= RequestMethod.POST)
+	public ModelAndView getPeriodicData(@RequestParam(required=false) String keyword, String searchOption) {
+		
+		
+		Map<String,String> map = new HashMap<String,String>();
+			map.put("keyword", keyword);
+			map.put("searchOption", searchOption);
+		
+		Map<String,Integer> annualData = new HashMap<String,Integer>();
+		Map<String,Integer> monthlyData = new HashMap<String,Integer>();
+		ModelAndView mav = new ModelAndView();	
+		mav.addObject("monthlyData", monthlyData);
+		mav.addObject("annualData", annualData);
+		mav.setViewName("jsonView");
+	
+	return mav;	
+	}
+	
 }

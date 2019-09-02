@@ -116,7 +116,37 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				) tt) 
 				where (rn between #{startNum} and #{endNum})
  	</select>
- 	
+
+<select id="getPeriodicData" parameterType="java.util.Map" resultType="Integer">
+	select sum(SALES_REVENUE) as first_month from SALES_INFO
+				<if test="month !='' and month!=null"> where
+				 	<choose>
+						<when test="month eq '1'"> 
+							<![CDATA[SALES_DATE <= add_months(LAST_DAY(SYSDATE),-2)]]>
+						</when>
+						<when test="month eq '2'">
+							to_char(SALES_DATE,'month') = to_char(add_months(SYSDATE,-1),'month')
+						</when>
+						<otherwise>
+							to_char(SALES_DATE,'month') = to_char(SYSDATE,'month')
+						</otherwise>
+					</choose>				
+				</if> 
+				<if test="keyword !='' and searchOption!=''"> and
+				 	<choose>
+						<when test="searchOption eq 'order_no'"> 
+							SALES_INFO.order_no like #{keyword} 
+						</when>
+						<when test="searchOption eq 'order_id'"> 
+							SALES_INFO.order_id like #{keyword}
+						</when>
+						<when test="searchOption eq 'sales_date'"> 
+							SALES_INFO.sales_date like to_date(#{keyword},'yyyy-MM-dd')
+						</when>																				
+				    	<otherwise> ${searchOption} like '%'||#{keyword}||'%' </otherwise>		
+				 	</choose>
+				</if>							
+</select>
 </mapper>
 
 

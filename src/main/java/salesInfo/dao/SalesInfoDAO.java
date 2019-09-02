@@ -23,5 +23,6 @@ public interface SalesInfoDAO {
 
 	List<SalesInfoDTO> salesInfoSearch(Map<String, String> map);
 
+	Map<String,Integer> getPeriodicData(Map<String, String> map);
 
 }

@@ -17,20 +17,7 @@ function getsalesInfoList(data){
 	var coupon_total = 0; 	
 	var etc_total = 0;
 	$.each(data.salesInfoList, function(index, items){
-		var cash_subtotal = 0; 		
-		var card_subtotal = 0; 		
-		var point_subtotal = 0; 		
-		var coupon_subtotal = 0; 	
-		var etc_subtotal = 0;
-		
-		$.each(items.sales_payment_Info, function(idx, item){
-			if(item.payment_method=='1') card_subtotal = parseInt(item.payment_amount,10); 
-			else if(item.payment_method=='2') cash_subtotal = parseInt(item.payment_amount,10); 
-			else if(item.payment_method=='4') point_subtotal = parseInt(item.payment_amount,10); 
-			else if(item.payment_method=='5') coupon_subtotal = parseInt(item.payment_amount,10);
-			else etc_subtotal = parseInt(item.payment_amount,10);
-		});
-
+	
 		$('<tr/>').append($('<td/>',{
 			align: 'center',
 			text: items.sales_seq
@@ -45,30 +32,31 @@ function getsalesInfoList(data){
 			text: formatNumber(items.sales_revenue)			
 		})).append($('<td/>',{
 			align: 'center',
-			text: formatNumber(cash_subtotal)			
+			text: formatNumber(items.cash_total)			
 		})).append($('<td/>',{
 			align: 'center',
-			text: formatNumber(card_subtotal)				
+			text: formatNumber(items.card_total)				
 		})).append($('<td/>',{
 			align: 'center',
-			text: formatNumber(point_subtotal)				
+			text: formatNumber(items.point_total)				
 		})).append($('<td/>',{
 			align: 'center',
-			text: formatNumber(coupon_subtotal)			
+			text: formatNumber(items.coupon_total)			
 		})).append($('<td/>',{
 			align: 'center',
-			text: formatNumber(etc_subtotal)	
+			text: formatNumber(items.etc_total)	
 		})).append($('<td/>',{
 			align: 'center',
 			text: items.sales_date			
 		})).appendTo($('#salesInfoTable tbody'));
 		
-		sales_total += parseInt(items.sales_revenue,10);
-		cash_total += cash_subtotal; 		
-		card_total += card_subtotal; 		
-		point_total += point_subtotal; 		
-		coupon_total += coupon_subtotal; 	
-		etc_total += etc_subtotal;
+		order_total++;
+		sales_total += parseInt(data.sales_revenue,10);
+		cash_total += parseInt(data.cash_total,10);	
+		card_total += parseInt(data.card_total,10);			
+		point_total += parseInt(data.point_total,10);			
+		coupon_total += parseInt(data.coupon_total,10);	
+		etc_total += parseInt(data.etc_total,10);		
 	});
 	$('<tr/>').append($('<td/>',{
 		align: 'center',
@@ -138,12 +126,11 @@ $(document).ready(function(){
 	$.ajax({
 		type: 'post',
 		url : '/minishop/admin/shop/getChartRawData.do',
-		data:{'searchOption':$('#searchOption').val(),
-			   'keyword':$('#keyword').val()},
+		data: {'searchOption':$('#searchOption').val(),
+			   'keyword': $('#keyword').val()},
 		dataType: 'json',
 		success: function(data){
 			$('#totalSalesTable tr:gt(0)').empty();
-			var totalSalesList = data.salesRawInfoList;
 			var order_total = 0;
 			var sales_total = 0;
 			var cash_total = 0; 		
@@ -151,27 +138,14 @@ $(document).ready(function(){
 			var point_total = 0; 		
 			var coupon_total = 0; 	
 			var etc_total = 0;
-			$.each(totalSalesList,function(idx,data){
-					var cash_subtotal = 0; 		
-					var card_subtotal = 0; 		
-					var point_subtotal = 0; 		
-					var coupon_subtotal = 0; 	
-					var etc_subtotal = 0;
-				$.each(items.sales_payment_Info, function(subIdx, subData){
-					if(subData.payment_method=='1') card_subtotal = parseInt(subData.payment_amount,10); 
-					else if(subData.payment_method=='2') cash_subtotal = parseInt(subData.payment_amount,10); 
-					else if(subData.payment_method=='4') point_subtotal = parseInt(subData.payment_amount,10); 
-					else if(subData.payment_method=='5') coupon_subtotal = parseInt(subData.payment_amount,10);
-					else etc_subtotal = parseInt(subData.payment_amount,10);
-				});
-				
+			$.each(data.totalSalesList,function(idx,data){
 				order_total++;
 				sales_total += parseInt(data.sales_revenue,10);
-				cash_total += cash_subtotal; 		
-				card_total += card_subtotal; 		
-				point_total += point_subtotal; 		
-				coupon_total += coupon_subtotal; 	
-				etc_total += etc_subtotal;
+				cash_total += parseInt(data.cash_total,10);	
+				card_total += parseInt(data.card_total,10);			
+				point_total += parseInt(data.point_total,10);			
+				coupon_total += parseInt(data.coupon_total,10);	
+				etc_total += parseInt(data.etc_total,10);
 			});
 			
 			$('<tr>').append($('<td>',{
