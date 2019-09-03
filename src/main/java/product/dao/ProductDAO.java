@@ -21,6 +21,7 @@ public interface ProductDAO {
 	int inventoryUpload(ProductDTO productDTO);	
 	int inventoryModify(ProductDTO productDTO);	
 	int inventoryDelete(String product_name_no);
+	List<ProductDTO> getInventoryCatalog();
 //----------재고:END----------//	
 //----------상품(공통):START----------//
 	List<ProductDTO> productList(int startNum, int endNum);
@@ -40,6 +41,7 @@ public interface ProductDAO {
 	int addLike(Map<String, String> map);	
 	void removeLike(int SEQ);	
 //----------상품(사용자):END----------//	
+
 
 
 }

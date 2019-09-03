@@ -88,7 +88,10 @@ public class ProductDAOImpl implements ProductDAO {
 	public int inventoryDelete(String product_name_no) {
 		return sqlSession.delete("productSQL.inventoryDelete",product_name_no);
 	}
-	
+	@Override
+	public List<ProductDTO> getInventoryCatalog() {
+		return sqlSession.selectList("productSQL.getInventoryCatalog");
+	}
 //-------------재고:END-------------//
 	
 //-------------상품(공통):START-------------//		

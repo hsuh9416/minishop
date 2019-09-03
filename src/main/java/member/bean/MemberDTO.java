@@ -39,4 +39,9 @@ public class MemberDTO{
 	private String reason_etc;
 	@JsonFormat(pattern="yyyy.MM.dd")
 	private Date delete_date;
+	
+	//매출 관련 요소
+	private int orderTotal;
+	private int orderNum;
+	
 }

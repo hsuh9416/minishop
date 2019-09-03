@@ -134,7 +134,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  	<delete id="inventoryDelete" parameterType="String">
 		delete product where product_name_no = #{product_name_no}		
 	</delete>		
-	 	
+	<!-- 재고: 총 입점재고 목록 호출 -->
+	 <select id="getInventoryCatalog" resultType="product">
+	 	select * from PRODUCT 
+	 	join PRODUCT_NAME 
+	 	on PRODUCT.PRODUCT_NAME_NO = PRODUCT_NAME.PRODUCT_NAME_NO
+	 </select>
  	<!-- 상품(공통) : 전체 상품 목록 가져오기 -->
 	<select id="productList" parameterType="java.util.Map" resultType="product">
 		 		select * from 

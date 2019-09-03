@@ -47,53 +47,57 @@
 	</div>
 	<!-- 공통 출현 -->
 	<div class="form-row justify-content-center">
-		<div class="col-2">
-			<label>최고매출상품</label>
+		<div class="col-3">
+			<h6>최고매출상품</h6>
 		</div>
-		<div class="col-4"></div>
-		<div class="col-2">
-			<label>최다판매상품</label>
+		<div class="col-3" align="center" id="maxRevenueItem"></div>
+		<div class="col-3">
+			<h6>최다판매상품</h6>
 		</div>		
-		<div class="col-4"></div>					
+		<div class="col-3" align="center" id="maxSalesItem"></div>					
 	</div>
 	<div class="form-row justify-content-center">
-		<div class="col-2">
-			<label>최저매출상품</label>
+		<div class="col-3">
+			<h6>최저매출상품</h6>
 		</div>
-		<div class="col-4"></div>
-		<div class="col-2">
-			<label>최소판매상품</label>
+		<div class="col-3" align="center" id="minRevenueItem"></div>
+		<div class="col-3">
+			<h6>최소판매상품</h6>
 		</div>		
-		<div class="col-4"></div>					
+		<div class="col-3" align="center" id="minSalesItem"></div>					
 	</div>	
 	
 	<!-- 주문번호,주문자 선택시 조회 안됨 -->		
 	<div class="form-row justify-content-center" id="order_div">
-		<div class="col-2">
-			<label>최다주문회원</label>
+		<div class="col-3">
+			<h6>최다주문회원</h6>
 		</div>
-		<div class="col-2"></div>
-		<div class="col-2">
+		<div class="col-3" align="center" id="mostOrderedMember"></div>
+		<div class="col-3">
 			<h6>최고기여회원</h6>
 		</div>		
-		<div class="col-2"></div>	
-		<div class="col-2">
-			<label>비회원주문비율</label>
-		</div>		
-		<div class="col-2"></div>						
+		<div class="col-3" align="center" id="mostBenefitMemeber"></div>					
 	</div>
-	<!-- 주문번호,매출일자 선택시 조회 안됨 -->	
-	<div class="form-row justify-content-center" id="sales_div">
-		<div class="col-2">
-			<label>최고매출주문</label>
+	<div class="form-row justify-content-center" id="ratio_div">
+		<div class="col-3">
+			<h6>비회원주문비율</h6>
 		</div>
-		<div class="col-4"></div>
-		<div class="col-2">
-			<label>최고매출일자</label>
+		<div class="col-3" align="center" id="guestOrderRatio"></div>
+		<div class="col-3">
+			<h6>전월대비증감율</h6>
 		</div>		
-		<div class="col-4"></div>					
+		<div class="col-3" align="center" id="salesDiffRatio"></div>			
 	</div>
-			
+	<div class="form-row justify-content-center" id="ratio_div">
+		<div class="col-3" >
+			<h6>최다조회상품</h6>
+		</div>
+		<div class="col-3" align="center" id="mostViewedItem"></div>
+		<div class="col-3">
+			<h6>최다좋아요상품</h6>
+		</div>		
+		<div class="col-3" align="center" id="bestLikeitItem"></div>			
+	</div>				
 	<div class="form-row">
 		<div class="form-group col" align="right">     	
 			<input type="button" class="btn btn-outline-secondary" id="resetBtn" value="새로고침"/>     	

@@ -3,6 +3,7 @@ var keyword = '';
 var pieChart_payment={};
 var pieChart_category={};
 var lineChart_period={};
+
 $(document).ready(function(){
 		google.charts.load('current',{'packages':['corechart']});
 		
@@ -29,6 +30,18 @@ $(document).ready(function(){
 			var coupon_total = 0; 	var etc_total = 0;
 			var women_total = 0;	var men_total = 0;		var accessories_total = 0;
 			var unknown_total = 0;
+			
+			var analysis = data.analysisData;
+			$('#maxRevenueItem').append(analysis.maxRevenueItem);
+			$('#maxSalesItem').append(analysis.maxSalesItem);
+			$('#minRevenueItem').append(analysis.minRevenueItem);
+			$('#minSalesItem').append(analysis.minSalesItem);
+			$('#mostOrderedMember').append(analysis.mostOrderedMember);
+			$('#mostBenefitMemeber').append(analysis.mostBenefitMemeber);	
+			$('#guestOrderRatio').append(analysis.guestOrderRatio);	
+			$('#salesDiffRatio').append(analysis.salesDiffRatio);	
+			$('#mostViewedItem').append(analysis.mostViewedItem);
+			$('#bestLikeitItem').append(analysis.bestLikeitItem);				
 			
 			$.each(data.totalSalesData,function(idx,data){				
 				order_total++;

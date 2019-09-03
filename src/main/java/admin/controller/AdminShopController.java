@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -22,10 +23,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import member.bean.MemberDTO;
+import member.dao.MemberDAO;
 import product.bean.ProductCategory;
 import product.bean.ProductDTO;
+import product.dao.ProductDAO;
 import salesInfo.bean.SalesInfoDTO;
 import salesInfo.bean.SalesInfoPaging;
+import salesInfo.bean.SortCollection;
 import salesInfo.dao.SalesInfoDAO;
 import trading.bean.CouponDTO;
 import trading.bean.DeliveryDTO;
@@ -49,6 +54,12 @@ public class AdminShopController {
 	
 	@Autowired
 	SalesInfoPaging salesInfoPaging;
+	
+	@Autowired
+	MemberDAO memberDAO;
+	
+	@Autowired
+	ProductDAO productDAO;
 	
 	@Autowired
 	JsonTransitioner jsonTrans;
@@ -388,6 +399,9 @@ public class AdminShopController {
 					else if(product.getProduct_category_no()==ProductCategory.ACCESSORIES.ordinal())  dto.setAccessories_total(product.getUnitcost()*product.getCart_qty());
 					else dto.setUnknown_total(product.getUnitcost()*product.getCart_qty());
 				}
+
+
+
 				for(OrderDTO payment: paymentInfo) {
 					if(payment.getPayment_method()==PaymentMethod.CARD.ordinal()) dto.setCard_total(payment.getPayment_amount());
 					else if(payment.getPayment_method()==PaymentMethod.CASH.ordinal()) dto.setCash_total(payment.getPayment_amount());
@@ -425,6 +439,7 @@ public class AdminShopController {
 	//15. 차트 분석을 위한 데이터 가져오기
 	@RequestMapping(value="/getChartRawData.do",method= RequestMethod.POST)
 	public ModelAndView getChartRawData(@RequestParam(required=false) String keyword, String searchOption) {
+		int grobe_total=0;
 		int total_previousM =0; int total_lastM =0; int total_thisM =0;
 		int women_previousM =0; int women_lastM =0; int women_thisM =0;
 		int men_previousM =0; int men_lastM =0; int men_thisM =0;
@@ -434,10 +449,16 @@ public class AdminShopController {
 			map.put("keyword", keyword);
 			map.put("searchOption", searchOption);
 		List<SalesInfoDTO> totalSalesData = salesInfoDAO.getChartRawData(map);
-	//선택된 검색어에 따른 무제한 데이터 호출
-		SimpleDateFormat sf = new SimpleDateFormat("MM");
-	for(SalesInfoDTO dto : totalSalesData) {
 
+		SimpleDateFormat sf = new SimpleDateFormat("MM");
+		List<ProductDTO> dataList = productDAO.getInventoryCatalog();
+		List<MemberDTO> memberList = memberDAO.getMemberList();
+		MemberDTO guestDTO = new MemberDTO();
+			guestDTO.setId("GUEST");
+			guestDTO.setOrderNum(0);
+			guestDTO.setOrderTotal(0);	
+	for(SalesInfoDTO dto : totalSalesData) {	
+		grobe_total+= dto.getSales_revenue();
 		
 		OrderDTO orderDTO = tradingDAO.getOrderInfo(dto.getOrder_no());
 		List<ProductDTO> productList = jsonTrans.makeJsonToList(orderDTO.getOrderlist_json());
@@ -448,12 +469,22 @@ public class AdminShopController {
 			dto.setWomen_total(0); dto.setMen_total(0); dto.setAccessories_total(0); dto.setUnknown_total(0);
 			dto.setCard_total(0); dto.setCash_total(0); dto.setCoupon_total(0); dto.setPoint_total(0); dto.setEtc_total(0);
 		
-		for(ProductDTO product : productList) {
-			if(product.getProduct_category_no()==ProductCategory.WOMEN.ordinal()) dto.setWomen_total(product.getUnitcost()*product.getCart_qty());
-			else if(product.getProduct_category_no()==ProductCategory.MEN.ordinal())  dto.setMen_total(product.getUnitcost()*product.getCart_qty());
-			else if(product.getProduct_category_no()==ProductCategory.ACCESSORIES.ordinal())  dto.setAccessories_total(product.getUnitcost()*product.getCart_qty());
-			else dto.setUnknown_total(product.getUnitcost()*product.getCart_qty());
-		}
+
+			
+			for(ProductDTO product : productList) {
+				for(ProductDTO data: dataList) {
+					if(data.getProduct_name_no()==product.getProduct_name_no()) {
+						int cart_qty = data.getCart_qty()+product.getCart_qty();
+						data.setCart_qty(cart_qty);
+						break;
+					}
+				}
+				if(product.getProduct_category_no()==ProductCategory.WOMEN.ordinal()) dto.setWomen_total(product.getUnitcost()*product.getCart_qty());
+				else if(product.getProduct_category_no()==ProductCategory.MEN.ordinal())  dto.setMen_total(product.getUnitcost()*product.getCart_qty());
+				else if(product.getProduct_category_no()==ProductCategory.ACCESSORIES.ordinal())  dto.setAccessories_total(product.getUnitcost()*product.getCart_qty());
+				else dto.setUnknown_total(product.getUnitcost()*product.getCart_qty());
+			}
+
 		for(OrderDTO payment: paymentInfo) {
 			if(payment.getPayment_method()==PaymentMethod.CARD.ordinal()) dto.setCard_total(payment.getPayment_amount());
 			else if(payment.getPayment_method()==PaymentMethod.CASH.ordinal()) dto.setCash_total(payment.getPayment_amount());
@@ -482,23 +513,47 @@ public class AdminShopController {
 			men_previousM += dto.getMen_total();
 			accessories_previousM += dto.getAccessories_total();
 		}
+		boolean isMember = false;
+		for(MemberDTO member: memberList) {
+			if(dto.getOrder_id().equals(member.getId())) {
+				member.setOrderTotal(member.getOrderTotal()+dto.getSales_revenue());
+				member.setOrderNum(member.getOrderNum()+1);
+				isMember = true;
+				break;
+			}
+		}
+		if(!isMember) {
+			guestDTO.setOrderTotal(guestDTO.getOrderTotal()+dto.getSales_revenue());
+			guestDTO.setOrderNum(guestDTO.getOrderNum()+1);
+		}
+
 	}
-	//선택된 검색어에 따른 기간 데이터 호출 
-	/*
-	Map<String,Integer> periodicList = new HashMap<String,Integer>();
 	
-			map.put("month", "previous");
-		int resultSum = salesInfoDAO.getPeriodicData(map);
-			periodicList.put("previous_month",resultSum);
-			
-			map.replace("month", "last");
-			resultSum = salesInfoDAO.getPeriodicData(map);
-			periodicList.put("last_month",resultSum);
-			
-			map.put("month", "this");
-			resultSum = salesInfoDAO.getPeriodicData(map);
-			periodicList.put("this_month",resultSum);		
-*/
+	//단위 분석 자료 추출:START
+	SortCollection sortCollection = new SortCollection();
+	Collections.sort(dataList,sortCollection.getSalesSort());	
+	String maxRevenueItem = dataList.get(0).getProduct_name_no()+"";
+	String minRevenueItem = dataList.get(dataList.size()-1).getProduct_name_no()+"";
+	
+	Collections.sort(dataList,sortCollection.getQtySort());
+	String maxSalesItem = dataList.get(0).getProduct_name_no()+"";
+	String minSalesItem = dataList.get(dataList.size()-1).getProduct_name_no()+"";
+	
+	Collections.sort(dataList,sortCollection.getHitSort());
+	String mostViewedItem = dataList.get(0).getProduct_name_no()+"";
+	
+	Collections.sort(dataList,sortCollection.getLikeitSort());		
+	String bestLikeitItem = dataList.get(0).getProduct_name_no()+"";
+	
+	Collections.sort(memberList,sortCollection.getOrderNumSort());
+	String mostOrderedMember =memberList.get(0).getId();
+	
+	Collections.sort(memberList,sortCollection.getOrderTotalSort());
+	String mostBenefitMemeber=memberList.get(0).getId();
+	
+	String guestOrderRatio = String.format("%.2f",(float)guestDTO.getOrderTotal()/grobe_total*100);
+	String salesDiffRatio = String.format("%.2f",(float)total_lastM/total_thisM*100);
+	//단위 분석 자료 추출:END
 	Map<String,Integer> periodicList = new HashMap<String,Integer>();
 		periodicList.put("total_previousM", total_previousM);
 		periodicList.put("total_lastM", total_lastM); 
@@ -513,32 +568,30 @@ public class AdminShopController {
 		periodicList.put("accessories_lastM", accessories_lastM);
 		periodicList.put("accessories_thisM", accessories_thisM);
 		
-		System.out.println(periodicList);
+
+	String[][] stringData = new String[10][3];
+		stringData[0] = new String[] {"maxRevenueItem",maxRevenueItem,"/minishop/admin/product/productViewPop.do?product_name_no="+maxRevenueItem};
+		stringData[1] = new String[] {"maxSalesItem",maxSalesItem,"/minishop/admin/product/productViewPop.do?product_name_no="+maxSalesItem};
+		stringData[2] = new String[] {"minRevenueItem",minRevenueItem,"/minishop/admin/product/productViewPop.do?product_name_no="+minRevenueItem};
+		stringData[3] = new String[] {"minSalesItem",minSalesItem,"/minishop/admin/product/productViewPop.do?product_name_no="+minSalesItem};
+		stringData[4] = new String[] {"mostOrderedMember",mostOrderedMember,"/minishop/admin/user/memberDetailView.do?id="+mostOrderedMember};
+		stringData[5] = new String[] {"mostBenefitMemeber",mostBenefitMemeber,"/minishop/admin/user/memberDetailView.do?id="+mostBenefitMemeber};
+		stringData[6] = new String[] {"guestOrderRatio",guestOrderRatio+"%","N/A"};
+		stringData[7] = new String[] {"salesDiffRatio",salesDiffRatio+"%","N/A"};
+		stringData[8] = new String[] {"mostViewedItem",mostViewedItem,"/minishop/admin/product/productViewPop.do?product_name_no="+mostViewedItem};
+		stringData[9] = new String[] {"bestLikeitItem",bestLikeitItem,"/minishop/admin/product/productViewPop.do?product_name_no="+bestLikeitItem};
+		
+		Map<String,String> analysisData = new HashMap<String,String>();
+		for(int i=0; i<10;i++) {
+			analysisData.put(stringData[i][0], stringData[i][1]);
+		}
 		ModelAndView mav = new ModelAndView();	
 		mav.addObject("totalSalesData", totalSalesData);
 		mav.addObject("periodicList", periodicList);
+		mav.addObject("analysisData", analysisData);
 		mav.setViewName("jsonView");
 	
 	return mav;	
 	}
-	
-	//16/ 기간별 매출 자료 불러오기
-	@RequestMapping(value="/getPeriodicData.do",method= RequestMethod.POST)
-	public ModelAndView getPeriodicData(@RequestParam(required=false) String keyword, String searchOption) {
 		
-		
-		Map<String,String> map = new HashMap<String,String>();
-			map.put("keyword", keyword);
-			map.put("searchOption", searchOption);
-		
-		Map<String,Integer> annualData = new HashMap<String,Integer>();
-		Map<String,Integer> monthlyData = new HashMap<String,Integer>();
-		ModelAndView mav = new ModelAndView();	
-		mav.addObject("monthlyData", monthlyData);
-		mav.addObject("annualData", annualData);
-		mav.setViewName("jsonView");
-	
-	return mav;	
-	}
-	
 }

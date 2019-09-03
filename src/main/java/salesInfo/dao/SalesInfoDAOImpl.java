@@ -57,9 +57,4 @@ public class SalesInfoDAOImpl implements SalesInfoDAO {
 		return sqlSession.selectList("salesInfoSQL.salesInfoSearch", map);
 	}
 
-	@Override
-	public int getPeriodicData(Map<String, String> map) {
-		return sqlSession.selectOne("salesInfoSQL.getPeriodicData",map);
-	}
-
 }
