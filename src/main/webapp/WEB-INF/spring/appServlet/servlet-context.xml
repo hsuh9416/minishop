@@ -48,19 +48,11 @@
 			<mapping path="/**/*.do"/>	
 			<mapping path="/**/**/*.do"/>					
 			<beans:bean id="PreInterceptors" class="com.interceptor.PreInterceptors"/>	 
-		</interceptor>	
-		<!-- AfterInterceptor-->
-		<interceptor>
-			<mapping path="/board/**/*.do"/>
-			<mapping path="/member/*.do"/>
-			<mapping path="/product/*.do"/>
-			<mapping path="/trading/*.do"/>
-			<beans:bean id="AfterInterceptors" class="com.interceptor.AfterInterceptors"/>
 		</interceptor>			
 	</interceptors>	
 	
 	<context:component-scan base-package="com.conf"/>	
-	<context:component-scan base-package="com.mallproject.minishop" />
+	<context:component-scan base-package="com.main" />
 	<context:component-scan base-package="admin.controller"/>
 	<context:component-scan base-package="board.controller"/>		
 	<context:component-scan base-package="member.controller"/>	
