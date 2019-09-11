@@ -388,6 +388,7 @@ public class AdminProductController {
 				System.out.println(productDTO);
 				//(6) DB upload
 				try {
+					if(productDTO.getProduct_onstore().equals("NO")) productDTO.setProduct_name_instockdate(new Date());
 					done1 = productDAO.productUpload(productDTO);
 					if(done1==0) {
 						state="입점실패";}
