@@ -22,7 +22,7 @@ public class AdminController {
 		
 		ModelAndView mav = new ModelAndView();
 			mav.addObject("location", "homeAdmin");
-			mav.addObject("display", "/admin/shop/adminManage.jsp");//초기화면은 임시로 관리자 정보 화면
+			mav.addObject("display", "/admin/shop/adminManage.jsp");
 			mav.setViewName("/main/home");
 			
 		return mav;

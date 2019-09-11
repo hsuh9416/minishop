@@ -27,7 +27,7 @@ public class SpringConfiguration extends WebMvcConfigurationSupport {
 		BasicDataSource basicDataSource = new BasicDataSource();
 		basicDataSource.setDriverClassName("oracle.jdbc.driver.OracleDriver");
 		basicDataSource.setUrl("jdbc:oracle:thin:@localhost:1521:xe");
-		basicDataSource.setUsername("haeun");
+		basicDataSource.setUsername("admin");
 		basicDataSource.setPassword("4589");
 		basicDataSource.setMaxTotal(20);
 		basicDataSource.setMaxIdle(3);

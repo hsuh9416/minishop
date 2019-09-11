@@ -78,7 +78,7 @@
 			     <div class="list-group list-group-lg">
 			     	  <a href="/minishop/admin/shop/adminManage.do" class="list-group-item">관리자정보</a>
 			          <a href="/minishop/admin/shop/salesInfo.do" class="list-group-item">매출현황</a>
-			          <a href="/minishop/admin/order/orderManage.do" class="list-group-item">이벤트관리</a>	
+			          <a href="/minishop/admin/shop/eventManage.do" class="list-group-item">이벤트관리</a>	
 			          <a href="javascript:history.back()" class="list-group-item">돌아가기</a>
 			     </div>			
 			</c:if>				

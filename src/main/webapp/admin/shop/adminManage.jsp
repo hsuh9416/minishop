@@ -15,7 +15,7 @@
 	</div>  
 	
 	<div class="form-row justify-content-center">	
-		<div class="form-group col">
+		<div class="form-group col" align="center">
 			<strong>KISSIN' BUGS MAIN INFO</strong>
 		</div>
 	</div>		 	
@@ -27,17 +27,14 @@
 			</figure>	
 		</div>
 		<div class="form-group col-8">
-			<div class="form-row justify-content-center">
-				<div class="form-group col">[ADMIN INFO]</div>
+			<div class="form-row justify-content-center" style="border-bottom:1px solid darkgrey;">
+				<div class="form-group col" align="center">[ADMIN INFO]</div>
 			</div>
+			<br>
 			<div class="form-row justify-content-center">
 				<div class="form-group col-4">[접속 관리자 명]</div>
 				<div class="form-group col-8">${memberDTO.name}</div>
 			</div>
-			<div class="form-row justify-content-center">
-				<div class="form-group col-4">[Unread QAs]</div>
-				<div class="form-group col-8"><a></a></div>
-			</div>		
 			<div class="form-row justify-content-center">
 				<div class="form-group col-4">[대표 이메일]</div>
 				<div class="form-group col-8">${adminDTO.admin_email_addr}</div>
@@ -52,7 +49,9 @@
 			</div>				
 			<div class="form-row justify-content-center">
 				<div class="form-group col-4">[개설일자]</div>
-				<div class="form-group col-8">${adminDTO.admin_opendate}</div>
+				<div class="form-group col-8">
+					<fmt:formatDate value="${adminDTO.admin_opendate}" pattern="yyyy년 MM월 dd일"/> 
+				</div>
 			</div>															
 		</div>				
 	</div>	
@@ -60,5 +59,4 @@
 
 	<!--JavaScript Local LINK:START-->
 <script type="text/javascript" src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
-<script type="text/javascript" src="/minishop/resources/custom/js/adminShop/adminManage.js"></script>
 	<!--JavaScript Local LINK:END-->

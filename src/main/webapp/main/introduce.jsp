@@ -7,7 +7,7 @@
 			<h3>Kissin' BUGS 소개</h3>		
 		</div>
 	</div>
-	<div class="row" id="introduceImg" style="background-image:url('/minishop/resources/image/background/title_slide1(notext).jpg');">
+	<div class="row" id="introduceImg" style="background-image:url('/minishop/resources/image/background/introduce.jpg');">
 		<div class="col" align="left" style="padding-bottom: 20px;">
 			<h2>안녕하세요!</h2>
 			<h2>

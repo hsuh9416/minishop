@@ -21,8 +21,14 @@
 	<div class="form-row justify-content-center">	
 		<div class="form-group col-4">
 			<c:if test="${memberDTO.state==1}">
-				<i id="figure" class="fas fa-user">USER</i>
-			</c:if>			
+				<img style="width:100%;height:100%;" alt="general_user" src="/minishop/resources/image/icons/general_icon.jpg"/>
+			</c:if>	
+			<c:if test="${memberDTO.state==2}">
+				<img style="width:100%;height:100%;" alt="viip_user" src="/minishop/resources/image/icons/vip_icon.jpg"/>
+			</c:if>	
+			<c:if test="${memberDTO.state==0}">
+				<img style="width:100%;height:100%;" alt="admin" src="/minishop/resources/image/gif/duck1.gif"/>
+			</c:if>									
 		</div>
 		<div class="form-group col-8">
 			<div class="form-row justify-content-center">
@@ -31,10 +37,10 @@
 						현재 [관리자 모드]입니다. (접속 관리자명: ${memberDTO.name})
 					</c:if>	
 					<c:if test="${memberDTO.state==1}">
-						<strong>${memberDTO.name}</strong> 님은 <strong>일반 회원</strong> 이십니다.
+						<strong>${memberDTO.name}</strong> 님은 <strong>일반 회원(Clover)</strong> 이십니다.
 					</c:if>		
 					<c:if test="${memberDTO.state==2}">
-						<strong>${memberDTO.name}</strong> 님은 <strong>특별 회원</strong> 이십니다
+						<strong>${memberDTO.name}</strong> 님은 <strong>특별 회원(Star)</strong> 이십니다
 					</c:if>																
 				</div>
 			</div>	
