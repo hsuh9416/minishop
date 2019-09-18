@@ -1,6 +1,8 @@
 package member.controller;
 
 import java.io.File;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -245,7 +247,7 @@ public class MemberController {
 	//7. 회원 가입 반영하기
 	@RequestMapping(value="/write.do",method=RequestMethod.POST)
 	@ResponseBody
-	public String write(@ModelAttribute MemberDTO memberDTO) {
+	public String write(@ModelAttribute MemberDTO memberDTO) throws ParseException {
 		String pwd;
 		int result;
 		
@@ -266,6 +268,7 @@ public class MemberController {
 				CouponDTO couponDTO = new CouponDTO();
 					couponDTO.setGrant_id(memberDTO.getId());
 					couponDTO.setCoupon_no(9999);
+					couponDTO.setCoupon_duedate(new SimpleDateFormat("yyyyMMdd").parse("99991231"));
 					couponDTO.setPersonal_code(messageDTO.getCode());		
 					tradingDAO.setCoupon(couponDTO);
 				

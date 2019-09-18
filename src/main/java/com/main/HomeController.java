@@ -10,7 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @Controller
 public class HomeController {
-	
+		
 	//1. 쇼핑몰 내부 메인 이동
 	@RequestMapping(value = "/main/home.do", method = RequestMethod.GET)
 	public ModelAndView home() {
