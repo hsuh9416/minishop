@@ -21,7 +21,7 @@
 	<input type="hidden" id="unitcost" value="${productDTO.unitcost}"/>
 	<input type="hidden" id="stock" value="${productDTO.stock}"/>	
 	<input type="hidden" id="userName" value="${memberDTO.name}"/>
-	<input type="hidden" id="orderName" value="${orderDTO.order_name}"/>
+	<input type="hidden" id="orderName" value="${guestDTO.guest_name}"/>
 	<input type="hidden" id="memberID" value="${memberDTO.id}"/>
 	<input type="hidden" id="guestID" value="${guestDTO.guest_id}"/>
 					
@@ -89,11 +89,11 @@
 					<td colspan="2">
 						<div align="center">
 							<button type="button" id="putCartBtn" class="btn btn-outline-danger btn-lg">add to cart</button>
-							<c:if test="${SEQ==0}">
-								<button class="btn btn-outline-light" id="product_like"><i class="fas fa-heart">좋아요</i></button>
+							<c:if test="${SEQ=='NO'}">
+								<button class="btn btn-danger" id="product_like"><i class="fas fa-heart">좋아요</i></button>
 							</c:if>
-							<c:if test="${SEQ!=0}">
-								<button class="btn btn-light" id="product_like"><i class="fas fa-heart">좋아요</i></button>
+							<c:if test="${SEQ=='YES'}">
+								<button class="btn btn-secondary" id="product_like"><i class="fas fa-heart">좋아요 취소</i></button>
 							</c:if>							
 							
 						</div>

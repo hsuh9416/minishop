@@ -11,7 +11,6 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,7 +22,6 @@ import member.bean.MemberDTO;
 import product.bean.ProductDTO;
 import product.bean.ProductPaging;
 import product.dao.ProductDAO;
-import trading.bean.OrderDTO;
 /*
  * 상품 관련 활동을 제어하는 클래스
  */
@@ -124,24 +122,25 @@ public class ProductController {
 
 	//6. 특정 상품 조회 화면 이동
 	@RequestMapping(value="/productView.do",method = RequestMethod.GET)
-	public ModelAndView productView(@RequestParam String product_name_no, HttpSession Session,HttpServletRequest request,HttpServletResponse response) {
+	public ModelAndView productView(@RequestParam String product_name_no, HttpSession session,HttpServletRequest request,HttpServletResponse response) {
 		
-		String id=""; int SEQ =0; boolean today = false;
-		MemberDTO memberDTO =null; OrderDTO orderDTO=null; GuestDTO guestDTO=null;
+		String id=""; String SEQ="NO"; boolean today = false;
+		MemberDTO memberDTO =null; GuestDTO guestDTO=null;  GuestDTO visitorDTO=null;
 		
 		//(1) 조회자 정보 호출하기
-		memberDTO = (MemberDTO)Session.getAttribute("memberDTO");
+		memberDTO = (MemberDTO)session.getAttribute("memberDTO");
 		if(memberDTO!=null) id=memberDTO.getId();
-		else if(memberDTO==null) {
-				orderDTO = (OrderDTO) Session.getAttribute("memberDTO");
-			if(orderDTO!=null)	id = orderDTO.getOrder_id();
-			else if(orderDTO==null) {
-					guestDTO = (GuestDTO) Session.getAttribute("guestDTO");
-				if(guestDTO!=null) id = guestDTO.getGuest_id();}}
+		else{
+			guestDTO = (GuestDTO) session.getAttribute("guestDTO");
+			if(guestDTO!=null) id = guestDTO.getGuest_id();
+			else {
+				visitorDTO = (GuestDTO) session.getAttribute("visitorDTO");	
+				id = visitorDTO.getGuest_id();}
+		}
 		
 		//(2) 조회수 업데이트
 		Cookie[] ar = request.getCookies();
-		if(ar!=null&&(memberDTO!=null|| orderDTO !=null|| guestDTO!=null)) {
+		if(ar!=null&&(memberDTO!=null || guestDTO!=null || visitorDTO!=null)) {
 			for(int i=0; i<ar.length; i++) {
 				if((ar[i].getName()).equals(id+product_name_no)) {
 					today = true;}
@@ -153,13 +152,13 @@ public class ProductController {
 					cookie.setMaxAge(30*60);
 					response.addCookie(cookie);}
 		}
-		
 		//(3) 좋아요 여부 호출
-		if(guestDTO==null&&!id.equals("")) {
+		if(!id.equals("")) {
 			Map<String,String> map = new HashMap<String,String>();
 				map.put("USERID", id);
 				map.put("PRODUCT_NO", product_name_no);		
-				SEQ = productDAO.getLikeValue(map);		
+				int result = productDAO.getLikeValue(map);	
+				if(result !=0) SEQ="YES";
 		}
 	
 		//(4) 상품 정보 호출
@@ -178,34 +177,34 @@ public class ProductController {
 	//7. 좋아요 처리하기
 	@RequestMapping(value="/likeOnAndOff.do",method = RequestMethod.GET)
 	@ResponseBody
-	public void likeOnAndOff(@RequestParam int product_name_no, HttpSession session,Model model)
+	public String likeOnAndOff(@RequestParam int product_name_no, HttpSession session)
 	{		
 		
-		String id=""; int SEQ = 0;
-		MemberDTO memberDTO =null; OrderDTO orderDTO=null; GuestDTO guestDTO=null;
-
-		//(1) 조회자 정보 호출
+		String id=""; 
+		MemberDTO memberDTO =null; GuestDTO guestDTO=null;
+		
+		//(1) 조회자 정보 호출하기
 		memberDTO = (MemberDTO)session.getAttribute("memberDTO");
 		if(memberDTO!=null) id=memberDTO.getId();
-		else if(memberDTO==null) {
-			orderDTO = (OrderDTO) session.getAttribute("memberDTO");
-			if(orderDTO!=null)	id = orderDTO.getOrder_id();
-			else if(orderDTO==null) {
-					guestDTO = (GuestDTO) session.getAttribute("guestDTO");
-				if(guestDTO!=null) return;}}
+		else{
+			guestDTO = (GuestDTO) session.getAttribute("guestDTO");
+			if(guestDTO!=null) id = guestDTO.getGuest_id();
+		}
+		if(!id.equals("")) {
+			//(2) 좋아요 처리하기
+			Map<String,String> map = new HashMap<String,String>();
+				map.put("USERID", id);
+				map.put("PRODUCT_NO", product_name_no+"");		
+				int result = productDAO.getLikeValue(map);	
+				if(result==0) {
+					productDAO.addLike(map);
+					return "YES";}
+				else if(result!=0){
+					productDAO.removeLike(result);
+					return "NO";}}
 		
-		//(2) 좋아요 처리하기
-		Map<String,String> map = new HashMap<String,String>();
-			map.put("USERID", id);
-			map.put("PRODUCT_NO", product_name_no+"");		
-			SEQ = productDAO.getLikeValue(map);
-			
-		if(SEQ==0) {
-			SEQ = productDAO.addLike(map);
-			model.addAttribute("SEQ", SEQ);}
-		else {
-			productDAO.removeLike(SEQ);
-			model.addAttribute("SEQ", 0);}
-	}
-	
+		return "NO";
+		}
+		
+
 }

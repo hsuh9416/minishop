@@ -130,8 +130,10 @@ $('#product_like').click(function(){
 		type: 'get',
 		url : '/minishop/product/likeOnAndOff.do',
 		data: {'product_name_no':$('#product_name_no').val()},
-		success: function(){
-			$('#SEQ').val($('#SEQ').val());
+		dataType: 'text',
+		success: function(data){
+			$('#SEQ').val(data);
+			
 			window.location.reload();
 		}
 

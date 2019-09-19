@@ -48,7 +48,14 @@
 			<mapping path="/**/*.do"/>	
 			<mapping path="/**/**/*.do"/>					
 			<beans:bean id="PreInterceptors" class="com.interceptor.PreInterceptors"/>	 
-		</interceptor>			
+		</interceptor>	
+		<!-- afterInterceptor-->			
+		<interceptor>
+			<mapping path="/**/*.do"/>	
+			<mapping path="/**/**/*.do"/>	
+			<exclude-mapping path="/product/productView.do"/>				
+			<beans:bean id="PostInterceptors" class="com.interceptor.PostInterceptors"/>	 
+		</interceptor>					
 	</interceptors>	
 	
 	<context:component-scan base-package="com.conf"/>	
