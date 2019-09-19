@@ -52,6 +52,7 @@ public interface TradingDAO {
 	int cancelPayment(int order_no);
 	void deleteOrder(String order_no);
 	OrderDTO orderCheck(String id);
+	void setNewOrderId(OrderDTO dto);
 //--------주문 : END--------//	
 //--------이벤트 : START--------//	
 	List<EventDTO> getBannerList();
@@ -63,6 +64,7 @@ public interface TradingDAO {
 	int modifyDeliveryPolicy(DeliveryDTO deliveryDTO);
 	int verifyAdditionalFee(String zipcode);
 //--------배송료 : END--------//
+
 
 
 

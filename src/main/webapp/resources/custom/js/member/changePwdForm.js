@@ -65,7 +65,7 @@ $('#resetPwdBtn').click(function(){
 				else{
 					alert('비밀번호가 성공적으로 변경되었습니다.');
 					window.close();
-					widow.openter.reload();
+					widow.opener.reload();
 				}
 				
 			}

@@ -36,6 +36,7 @@ public class FileMaker {
 				for(OrderDTO dto: orderList) {
 					int orderNum = dto.getOrder_no();
 					String orderName = dto.getOrder_name();
+					String orderId = dto.getOrder_id();
 					String orderAddress = dto.getOrder_address();
 					String orderDate = sf2.format(dto.getOrder_date());
 					String orderState="";
@@ -46,7 +47,7 @@ public class FileMaker {
 						}
 					}
 					
-					String content="[주문번호 : "+orderNum+" ,주문자명 : "+orderName+" ,배송주소 : "+orderAddress+" ,주문일자 : "
+					String content="[주문번호 : "+orderNum+" ,주문서ID: "+orderId+" ,주문자명 : "+orderName+" ,배송주소 : "+orderAddress+" ,주문일자 : "
 					+orderDate+" ,거래 상태 : "+orderState+"]";
 						writer.write(content);
 						writer.newLine();

@@ -529,9 +529,12 @@ public class MemberController {
 					memberDAO.deleteMemberAdmin(map);
 				List<OrderDTO> orderList = tradingDAO.getOrderList(memberDTO.getId());
 				String orderPwd = mailing.getKey(8); 
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 					if(orderList!=null) {
 						for(OrderDTO dto : orderList) {
+								dto.setOrder_id(sdf.format(dto.getOrder_date()).toString()+"-"+dto.getOrder_no());
 								dto.setOrder_pwd(passwordEncoder.encode(orderPwd));
+								tradingDAO.setNewOrderId(dto);
 								tradingDAO.setNewOrderPwd(dto);}}		
 					
 				MessageDTO messageDTO = new MessageDTO();

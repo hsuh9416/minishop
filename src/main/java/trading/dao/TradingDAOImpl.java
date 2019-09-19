@@ -230,6 +230,11 @@ public class TradingDAOImpl implements TradingDAO {
 	public OrderDTO orderCheck(String id) {
 		return sqlSession.selectOne("tradingSQL.orderCheck",id);
 	}
+	@Override
+	public void setNewOrderId(OrderDTO dto) {
+		sqlSession.update("tradingSQL.setNewOrderId", dto);
+	}
+	
 //----------- 주문 : END ----------//	
 
 //----------- 이벤트 : START ----------//	

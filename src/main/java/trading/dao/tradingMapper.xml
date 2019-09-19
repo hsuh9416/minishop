@@ -140,6 +140,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			where (rn between #{startNum} and #{endNum}) 
 </select>
 
+<!-- 주문 : 아이디 변경 -->
+<update id="setNewOrderId" parameterType="order">
+	UPDATE ORDERS set order_id=#{order_id} where order_no=#{order_no}
+</update>
+
 <!-- 주문 : 비밀번호 변경 -->
 <update id="setNewOrderPwd" parameterType="order">
 	UPDATE ORDERS set order_pwd=#{order_pwd} where order_no=#{order_no}
