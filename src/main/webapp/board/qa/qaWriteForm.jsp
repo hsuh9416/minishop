@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>   
 	<!--CSS Local LINK:START-->
 <link rel="stylesheet" type="text/css" href="/minishop/resources/custom/css/userboard.css">
 	<!--CSS Local LINK:END-->	  
@@ -12,9 +12,15 @@
 	 		<h3>문의글 작성</h3>		
 	 	</div>
 	</div>
-
-	<input type="hidden" id="user_id" value="${memberDTO.id}">
-	<input type="hidden" id="name" value="${memberDTO.name}">
+	<c:if test="${memberDTO!=null}">
+		<input type="hidden" id="user_id" value="${memberDTO.id}">
+		<input type="hidden" id="name" value="${memberDTO.name}">
+	</c:if>
+	<c:if test="${memberDTO==null&&guestDTO!=null}">
+		<input type="hidden" id="user_id" value="${guestDTO.guest_id}">
+		<input type="hidden" id="name" value="${guestDTO.guest_name}">
+	</c:if>	
+	
 	<input type="hidden" name="productid" value="${productID}"/>
 				
 	<div class="form-row justify-content-center">

@@ -28,7 +28,6 @@ import board.bean.ReviewboardDTO;
 import board.dao.BoardDAO;
 import member.bean.GuestDTO;
 import member.bean.MemberDTO;
-import trading.bean.OrderDTO;
 /*
  * 사용자: 후기 게시판 관련 제어를 하는 클래스
  */
@@ -206,21 +205,17 @@ public class ReviewboardController {
 		Cookie[] ar;
 		GuestDTO guestDTO=null;
 		MemberDTO memberDTO =null; 
-		OrderDTO orderDTO=null; 
-		
 			memberDTO = (MemberDTO)Session.getAttribute("memberDTO");
 			if(memberDTO!=null) id=memberDTO.getId();
-			else if(memberDTO==null) {
-				orderDTO = (OrderDTO) Session.getAttribute("memberDTO");
-				if(orderDTO!=null)	id = orderDTO.getOrder_id();
-				else if(orderDTO==null) {
-					guestDTO = (GuestDTO) Session.getAttribute("guestDTO");
-					if(guestDTO!=null) id = guestDTO.getGuest_id();}}
+			else {
+				guestDTO = (GuestDTO) Session.getAttribute("guestDTO");
+				if(guestDTO!=null) id = guestDTO.getGuest_id();
+			}
 			
 			today = false;
 			ar = request.getCookies();
 			
-			if(ar!=null&&(memberDTO!=null|| orderDTO !=null|| guestDTO!=null)) {
+			if(ar!=null&&(memberDTO!=null|| guestDTO!=null)) {
 				for(int i=0; i<ar.length; i++) {
 					if((ar[i].getName()).equals(id+review_seq)) {
 						today = true;}}
@@ -307,12 +302,16 @@ public class ReviewboardController {
 	@RequestMapping(value="/reviewReply.do",method= RequestMethod.POST)
 	@ResponseBody
 	public void boardReply(@RequestParam Map<String,String> map,HttpSession session) {
-
+		String user_id = "";
 		MemberDTO memberDTO = (MemberDTO)session.getAttribute("memberDTO");
-		
+		if(memberDTO==null) {
+			GuestDTO guestDTO = (GuestDTO) session.getAttribute("guestDTO");
+			user_id = guestDTO.getGuest_id();
+		}
+		else user_id=memberDTO.getId();
 		String review_seq = map.get("review_pseq");
 		ReviewboardDTO reviewboardDTO = boardDAO.getReviewBoard(review_seq);
-			map.put("user_id",memberDTO.getId());	
+			map.put("user_id",user_id);	
 			
 		boardDAO.reviewReply(reviewboardDTO,map);
 	}	

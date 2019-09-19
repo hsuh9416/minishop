@@ -51,7 +51,7 @@
 	 
 	<div class="form-group row" id="btnDiv">
 		<div class="col-4"></div>	 
-		<c:if test="${reviewboardDTO.user_id==memberDTO.id}">
+		<c:if test="${reviewboardDTO.user_id==memberDTO.id || reviewboardDTO.user_id==guestDTO.guest_id}">
 			<div class="col-2  reviewDiv">				  
 				<input type="button" class="btn btn-outline-dark" value="수정하기"  id="reviewModifyFormBtn">
 			</div>	

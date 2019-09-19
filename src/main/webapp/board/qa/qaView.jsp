@@ -65,7 +65,7 @@
 	
 	<div class="form-row"  id="btnDiv">
 		<div class="col-6"></div>
-		<c:if test="${qaBoardDTO.user_id==memberDTO.id }">	
+		<c:if test="${qaBoardDTO.user_id==memberDTO.id || qaBoardDTO.user_id==guestDTO.guest_id}">	
 			<div class="col-2  qaDiv">		
 				<c:if test="${qaBoardDTO.qa_reply=='0'}">				
 					<input type="button" class="btn btn-outline-dark" value="수정하기"  id="qaModifyFormBtn">	
