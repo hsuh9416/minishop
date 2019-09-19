@@ -85,7 +85,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		
 	<!-- 회원 정보 최종 삭제 -->
 	<delete id="deleteUserInfo" parameterType="String">
-		delete MEMBER where id=#{id}
+	begin
+		delete MEMBER where id=#{id};
+		delete MEMBER_DELETE where id=#{id};
+	end;
 	</delete>
 	
 	<!-- 회원 정보 복구 -->
