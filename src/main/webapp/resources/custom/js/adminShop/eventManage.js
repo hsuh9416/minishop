@@ -76,7 +76,7 @@ $('#changeBannerBtn').click(function(){
 	var perioddiff = enddate - startdate;
 	if($('input[name=event_name]').val()==''|| $('input[name=event_url]').val()==''||
 	 $('input[name=start_date]').val()==''||$('input[name=end_date]').val()=='') alert('필요한 정보를 전부 입력해주세요');
-	else if(startdiff<0 || enddiff<0|| perioddiff<0) alert('유효한 기간을 선택해주세요');
+	else if(startdiff>0 || enddiff<0|| perioddiff<0) alert('유효한 기간을 선택해주세요');
 	else{
 		$('#bannerManage').submit();
 	}
