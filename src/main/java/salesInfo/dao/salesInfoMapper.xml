@@ -14,13 +14,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				<if test="keyword !='' and searchOption!=''"> where
 				 	<choose>
 						<when test="searchOption eq 'order_no'"> 
-							SALES_INFO.order_no like #{keyword}
+							SALES_INFO.order_no = #{keyword}
 						</when>
 						<when test="searchOption eq 'order_id'"> 
-							SALES_INFO.order_id like #{keyword}
+							SALES_INFO.order_id = #{keyword}
 						</when>
 						<when test="searchOption eq 'sales_date'"> 
-							SALES_INFO.sales_date like to_date(#{keyword},'yyyy-MM-dd')
+							SALES_INFO.sales_date = to_date(#{keyword},'yyyy-MM-dd')
 						</when>																				
 				    	<otherwise> ${searchOption} like '%'||#{keyword}||'%' </otherwise>		
 				 	</choose>
@@ -48,13 +48,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				<if test="keyword !='' and searchOption!=''"> where
 				 	<choose>
 						<when test="searchOption eq 'order_no'"> 
-							SALES_INFO.order_no like #{keyword}
+							SALES_INFO.order_no = #{keyword}
 						</when>
 						<when test="searchOption eq 'order_id'"> 
-							SALES_INFO.order_id like #{keyword}
+							SALES_INFO.order_id = #{keyword}
 						</when>
 						<when test="searchOption eq 'sales_date'"> 
-							SALES_INFO.sales_date like to_date(#{keyword},'yyyy-MM-dd')
+							SALES_INFO.sales_date = to_date(#{keyword},'yyyy-MM-dd')
 						</when>																				
 				    	<otherwise> ${searchOption} like '%'||#{keyword}||'%' </otherwise>		
 				 	</choose>
@@ -93,17 +93,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				<if test="keyword !='' and searchOption!=''"> where
 				 	<choose>
 						<when test="searchOption eq 'order_no'"> 
-							SALES_INFO.order_no like #{keyword}
+							SALES_INFO.order_no = #{keyword}
 						</when>
 						<when test="searchOption eq 'order_id'"> 
-							SALES_INFO.order_id like #{keyword}
+							SALES_INFO.order_id = #{keyword}
 						</when>
 						<when test="searchOption eq 'sales_date'"> 
-							SALES_INFO.sales_date like to_date(#{keyword},'yyyy-MM-dd')
+							SALES_INFO.sales_date = to_date(#{keyword},'yyyy-MM-dd')
 						</when>																				
 				    	<otherwise> ${searchOption} like '%'||#{keyword}||'%' </otherwise>		
 				 	</choose>
 				</if>	
+				order by
 				<if test="sortSubject !='' and sortType !=''"> 
 				 	<choose>
 						<when test="sortSubject eq 'order_no'"> order_no </when>
