@@ -193,7 +193,7 @@
 	<dependency>
 	    <groupId>org.springframework.security</groupId>
 	    <artifactId>spring-security-core</artifactId>
-	    <version>5.0.17.RELEASE</version>
+	    <version>5.5.7</version>
 	</dependency>
 
 	<!-- spring-security-web -->
